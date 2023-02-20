@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	{
 		animator.SetBool("isDead", true);
 		isMorto = true;
+		playerMovement.canMove = false;
 	}
 
 	[PunRPC]
