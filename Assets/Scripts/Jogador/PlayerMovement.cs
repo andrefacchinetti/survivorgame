@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudança de cena
 
-	[SerializeField] GameObject cabecaPivot, pivotCameraInHead;
+	[SerializeField] GameObject cabecaPivot, pivotCameraInHead, pescocoPivot;
 	public Vector3 offset;
 	public Camera playerCamera;
 
@@ -112,7 +112,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	{
 		Cursor.SetCursor(null, Vector2.zero, cursorMode);
 	}
-
 	void Move()
 	{
 		// We are grounded, so recalculate move direction based on axes
@@ -178,10 +177,21 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		{
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-			cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0 , rotationX);
+			
+			
+			if(rotationX > 0)
+            {
+				pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
+				cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+			}
+            else
+            {
+				cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
+				pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+			}
+			
 			transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sensivity, 0);
 		}
-		cabecaPivot.transform.position = new Vector3(cabecaPivot.transform.position.x, cabecaPivot.transform.position.y, cabecaPivot.transform.position.z);
 
 		playerCamera.transform.position = pivotCameraInHead.transform.position + offset;
 		playerCamera.transform.localRotation = Quaternion.Euler(rotationX, playerCamera.transform.rotation.y, playerCamera.transform.rotation.z);

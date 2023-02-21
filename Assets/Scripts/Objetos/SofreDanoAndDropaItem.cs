@@ -51,7 +51,7 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
                     if (!Item.TipoItem.Nenhum.Equals(drop.tipoItemEnum))
                     {
                         int quantidade = UnityEngine.Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-                        string nomePrefab = drop.nomeItemEnum.GetEnumMemberValue() + "/" + drop.nomeItemEnum.GetEnumMemberValue();
+                        string nomePrefab = drop.tipoItemEnum.GetEnumMemberValue() + "/" + drop.nomeItemEnum.GetEnumMemberValue();
                         ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, transform.position, transform.rotation, PV.ViewID);
                     }
                 }
