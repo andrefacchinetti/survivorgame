@@ -13,8 +13,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudança de cena
 
 	//stats
-	[SerializeField][HideInInspector] public bool isMorto = false, isAttacking = false;
+	[SerializeField] public bool isMorto = false, isAttacking = false;
 	[SerializeField] public Inventario inventario;
+	[SerializeField] public GrabObjects grabObjects;
 	private Animator animator;
 	private GameController gameController;
 	private PlayerMovement playerMovement;
@@ -55,24 +56,37 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 		if (!inventario.canvasInventario.activeSelf && inventario.itemNaMao != null)
 		{
-			if (Input.GetMouseButtonDown(0))
-			{
-				inventario.itemNaMao.UsarItem();
-				if (inventario.itemNaMao.tipoItem == Item.TipoItem.Ferramenta)
-				{
-					bool atkFerramenta = animator.GetCurrentAnimatorStateInfo(0).IsName("atkFerramenta");
-					if (!atkFerramenta)
-					{
-						animator.SetTrigger("atkFerramenta");
-					}
-				}
+            if (Input.GetMouseButtonDown(0))
+            {
+				ativarAnimacaoPorTipoItem(inventario.itemNaMao.tipoItem);
 			}
-			if (Input.GetKeyDown(KeyCode.G))
+			else if (Input.GetKeyDown(KeyCode.G))
 			{
 				inventario.itemNaMao.DroparItem();
 			}
 		}
 
+	}
+
+	private void ativarAnimacaoPorTipoItem(Item.TipoItem tipoItemResponse)
+    {
+		if (tipoItemResponse == Item.TipoItem.Ferramenta)
+		{
+			string atkName;
+			if (grabObjects.isPlayerEstaOlhandoPraBaixo())
+			{
+				atkName = "atkFerramentaBaixo";
+			}
+			else
+			{
+				atkName = "atkFerramentaFrente";
+			}
+			bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName(atkName);
+			if (!atk)
+			{
+				animator.SetTrigger(atkName);
+			}
+		}
 	}
 
 	void GoAtk()

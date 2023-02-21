@@ -620,7 +620,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1330436933
 Transform:
   m_ObjectHideFlags: 0
@@ -6085,6 +6085,7 @@ GameObject:
   - component: {fileID: 6737041256933510500}
   - component: {fileID: 6737041256933510501}
   - component: {fileID: 6737041256933510498}
+  - component: {fileID: 2396442808040558481}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -6143,8 +6144,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -6175,9 +6176,6 @@ MonoBehaviour:
   forceGrab: 20
   maxDistPlayer: 0.5
   maxDistanceObjeto: 2
-  acceptLayers:
-    serializedVersion: 2
-    m_Bits: 0
   grabedObj: {fileID: 0}
   possibleGrab: 0
   cam: {fileID: 6737041256933510500}
@@ -6185,6 +6183,131 @@ MonoBehaviour:
   playerMovimentController: {fileID: 1061016265}
   inventario: {fileID: 1778224454}
   animator: {fileID: 0}
+--- !u!114 &2396442808040558481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6737041256933510496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearColorMode: 0
+  backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+  clearDepth: 1
+  volumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  volumeAnchorOverride: {fileID: 0}
+  antialiasing: 0
+  SMAAQuality: 2
+  dithering: 0
+  stopNaNs: 0
+  taaSharpenStrength: 0.5
+  TAAQuality: 1
+  taaHistorySharpening: 0.35
+  taaAntiFlicker: 0.5
+  taaMotionVectorRejection: 0
+  taaAntiHistoryRinging: 0
+  taaBaseBlendFactor: 0.875
+  taaJitterScale: 1
+  physicalParameters:
+    m_Iso: 200
+    m_ShutterSpeed: 0.005
+    m_Aperture: 16
+    m_FocusDistance: 10
+    m_BladeCount: 5
+    m_Curvature: {x: 2, y: 11}
+    m_BarrelClipping: 0.25
+    m_Anamorphism: 0
+  flipYMode: 0
+  xrRendering: 1
+  fullscreenPassthrough: 0
+  allowDynamicResolution: 0
+  customRenderingSettings: 0
+  invertFaceCulling: 0
+  probeLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  hasPersistentHistory: 0
+  allowDeepLearningSuperSampling: 1
+  deepLearningSuperSamplingUseCustomQualitySettings: 0
+  deepLearningSuperSamplingQuality: 0
+  deepLearningSuperSamplingUseCustomAttributes: 0
+  deepLearningSuperSamplingUseOptimalSettings: 1
+  deepLearningSuperSamplingSharpening: 0
+  exposureTarget: {fileID: 0}
+  materialMipBias: 0
+  m_RenderingPathCustomFrameSettings:
+    bitDatas:
+      data1: 72198260625768269
+      data2: 13763000477350330392
+    lodBias: 1
+    lodBiasMode: 0
+    lodBiasQualityLevel: 0
+    maximumLODLevel: 0
+    maximumLODLevelMode: 0
+    maximumLODLevelQualityLevel: 0
+    sssQualityMode: 0
+    sssQualityLevel: 0
+    sssCustomSampleBudget: 20
+    msaaMode: 1
+    materialQuality: 0
+  renderingPathCustomFrameSettingsOverrideMask:
+    mask:
+      data1: 0
+      data2: 0
+  defaultFrameSettings: 0
+  m_Version: 8
+  m_ObsoleteRenderingPath: 0
+  m_ObsoleteFrameSettings:
+    overrides: 0
+    enableShadow: 0
+    enableContactShadows: 0
+    enableShadowMask: 0
+    enableSSR: 0
+    enableSSAO: 0
+    enableSubsurfaceScattering: 0
+    enableTransmission: 0
+    enableAtmosphericScattering: 0
+    enableVolumetrics: 0
+    enableReprojectionForVolumetrics: 0
+    enableLightLayers: 0
+    enableExposureControl: 1
+    diffuseGlobalDimmer: 0
+    specularGlobalDimmer: 0
+    shaderLitMode: 0
+    enableDepthPrepassWithDeferredRendering: 0
+    enableTransparentPrepass: 0
+    enableMotionVectors: 0
+    enableObjectMotionVectors: 0
+    enableDecals: 0
+    enableRoughRefraction: 0
+    enableTransparentPostpass: 0
+    enableDistortion: 0
+    enablePostprocess: 0
+    enableOpaqueObjects: 0
+    enableTransparentObjects: 0
+    enableRealtimePlanarReflection: 0
+    enableMSAA: 0
+    enableAsyncCompute: 0
+    runLightListAsync: 0
+    runSSRAsync: 0
+    runSSAOAsync: 0
+    runContactShadowsAsync: 0
+    runVolumeVoxelizationAsync: 0
+    lightLoopSettings:
+      overrides: 0
+      enableDeferredTileAndCluster: 0
+      enableComputeLightEvaluation: 0
+      enableComputeLightVariants: 0
+      enableComputeMaterialVariants: 0
+      enableFptlForForwardOpaque: 0
+      enableBigTilePrepass: 0
+      isFptlEnabled: 0
 --- !u!1 &6737041257332721727
 GameObject:
   m_ObjectHideFlags: 0
@@ -6266,6 +6389,7 @@ MonoBehaviour:
   isMorto: 0
   isAttacking: 0
   inventario: {fileID: 1778224454}
+  grabObjects: {fileID: 6737041256933510498}
   statsJogador: {fileID: 0}
 --- !u!143 &6737041257339993024
 CharacterController:
@@ -6337,7 +6461,7 @@ MonoBehaviour:
   characterController: {fileID: 6737041257339993024}
   canMove: 1
   anim: {fileID: 6737041257339993087}
-  cursorTexture: {fileID: 0}
+  cursorTexture: {fileID: 2800000, guid: 7825633d016559249ade03ab1979c7b6, type: 3}
   cursorMode: 0
   hotSpot: {x: 0, y: 0}
 --- !u!114 &1711120085
@@ -6367,9 +6491,6 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: agachando
-  - Type: 9
-    SynchronizeType: 0
-    Name: atkFerramenta
   - Type: 4
     SynchronizeType: 0
     Name: correndo
@@ -6382,6 +6503,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: Hit
+  - Type: 9
+    SynchronizeType: 0
+    Name: atkFerramentaFrente
+  - Type: 9
+    SynchronizeType: 0
+    Name: atkFerramentaBaixo
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -8843,6 +8970,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1330436933}
     m_Modifications:
+    - target: {fileID: 2804427669940801537, guid: 534b79aec6ce1e94fa5897194f5e1703, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7174615562184234477, guid: 534b79aec6ce1e94fa5897194f5e1703, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -8902,6 +9033,10 @@ PrefabInstance:
     - target: {fileID: 7555503589331521367, guid: 534b79aec6ce1e94fa5897194f5e1703, type: 3}
       propertyPath: m_Name
       value: handle_Hammer_stone_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8348114652724784770, guid: 534b79aec6ce1e94fa5897194f5e1703, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 534b79aec6ce1e94fa5897194f5e1703, type: 3}

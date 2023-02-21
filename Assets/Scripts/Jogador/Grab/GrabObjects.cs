@@ -11,20 +11,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop";
 
     [Tooltip("Force to apply in object")]
-    public float forceGrab = 5;
-    public float maxDistPlayer, maxDistanceObjeto;
-    [Tooltip("Put all layers, the player layer not!")]
-    public LayerMask acceptLayers = 0;
+    [SerializeField] public float forceGrab = 5;
+    [SerializeField] public float maxDistPlayer, maxDistanceObjeto;
+    float anguloLimiteOlhandoPraBaixo = 140.0f;
 
     [HideInInspector] public GameObject grabedObj;
     [HideInInspector] public bool possibleGrab = false;
     private Vector2 rigSaveGrabed;
 
     [SerializeField] Camera cam;
-    [SerializeField] PlayerController playerController;
-    [SerializeField] PlayerMovement playerMovimentController;
-    [SerializeField] Inventario inventario;
-    [SerializeField] Animator animator;
+    [SerializeField] [HideInInspector] PlayerController playerController;
+    [SerializeField] [HideInInspector] PlayerMovement playerMovimentController;
+    [SerializeField] [HideInInspector] Inventario inventario;
+    [SerializeField] [HideInInspector] Animator animator;
 
     PhotonView PV;
 
@@ -134,4 +133,24 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             Gizmos.DrawLine(cam.position, cam.position + cam.forward * maxDistPlayer);
         }
     }
+
+    public bool isPlayerEstaOlhandoPraBaixo()
+    {
+        // Obter a direção da câmera
+        Vector3 cameraForward = Camera.main.transform.forward;
+        // Obter o ângulo em relação ao eixo Y (vertical)
+        float angle = Mathf.Abs(Vector3.Angle(cameraForward, Vector3.up));
+        // Verificar se o ângulo é menor que o limite
+        if (angle > anguloLimiteOlhandoPraBaixo)
+        {
+            // O player está olhando para baixo
+            return true;
+        }
+        else
+        {
+            // O player não está olhando para baixo
+            return false;
+        }
+    }
+
 }
