@@ -17,8 +17,8 @@ GameObject:
   - component: {fileID: 2615269358807204133}
   - component: {fileID: 5312890788562742796}
   - component: {fileID: 4727321616784754737}
-  - component: {fileID: 8039228505589572757}
   - component: {fileID: 1460611023943026999}
+  - component: {fileID: 2026325291}
   m_Layer: 0
   m_Name: FerramentaMartelo
   m_TagString: ItemDrop
@@ -33,7 +33,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5952493034154600309}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15.24, y: -0.993, z: 0}
   m_LocalScale: {x: 32, y: 32, z: 32}
   m_ConstrainProportionsScale: 0
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: b5463b9ef34e02340af12a060ca1a0dc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -195,7 +195,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01753693, y: 0.0017657138, z: 0.027912464}
   m_Center: {x: 0.0003120061, y: -2.6193447e-10, z: 0.0066117663}
---- !u!208 &8039228505589572757
+--- !u!114 &1460611023943026999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5952493034154600309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af9e60bf041c0f049a3193cbd0acf897, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PV: {fileID: 0}
+  posAlturaInicial: 0
+--- !u!208 &2026325291
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,20 +225,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.007}
   m_TimeToStationary: 0.5
---- !u!114 &1460611023943026999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5952493034154600309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af9e60bf041c0f049a3193cbd0acf897, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PV: {fileID: 0}
-  posAlturaInicial: 0
 --- !u!1001 &1329413298513280961
 PrefabInstance:
   m_ObjectHideFlags: 0

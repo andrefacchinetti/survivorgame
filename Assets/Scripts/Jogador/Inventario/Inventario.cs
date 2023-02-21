@@ -70,18 +70,28 @@ public class Inventario : MonoBehaviour
     {
         if (canvasInventario.activeSelf)
         {
-            canvasInventario.SetActive(false);
-            playerMovement.canMove = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            FecharInventario();
         }
         else
         {
-            canvasInventario.SetActive(true);
-            playerMovement.canMove = false;
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            AbrirInventario();
         }
+    }
+
+    public void FecharInventario()
+    {
+        canvasInventario.SetActive(false);
+        playerMovement.canMove = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void AbrirInventario()
+    {
+        canvasInventario.SetActive(true);
+        playerMovement.canMove = false;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 
     public bool AdicionarItemAoInventario(ItemDrop itemDropResponse)

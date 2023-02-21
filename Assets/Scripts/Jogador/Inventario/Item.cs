@@ -142,7 +142,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (objItemMaoJogador != null) objItemMaoJogador.SetActive(true);
         inventario.itemNaMao = this.tipoItem.Equals(TipoItem.Nenhum) ? null : this;
 
-        inventario.ToggleInventario();
+        inventario.FecharInventario();
     }
 
     public void DroparItem()

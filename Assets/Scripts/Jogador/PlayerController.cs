@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
             if (Input.GetMouseButtonDown(0))
             {
-				ativarAnimacaoPorTipoItem(inventario.itemNaMao.tipoItem);
+				ativarAnimacaoPorTipoItem(inventario.itemNaMao);
 			}
 			else if (Input.GetKeyDown(KeyCode.G))
 			{
@@ -68,18 +68,33 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	}
 
-	private void ativarAnimacaoPorTipoItem(Item.TipoItem tipoItemResponse)
+	private void ativarAnimacaoPorTipoItem(Item itemResponse)
     {
-		if (tipoItemResponse == Item.TipoItem.Ferramenta)
+		if (itemResponse.tipoItem == Item.TipoItem.Ferramenta)
 		{
 			string atkName;
 			if (grabObjects.isPlayerEstaOlhandoPraBaixo())
 			{
-				atkName = "atkFerramentaBaixo";
+                if (itemResponse.nomeFerramenta.Equals(Item.NomeFerramentaItemId.Martelo))
+                {
+					atkName = "atkFerramentaMarteloBaixo";
+                }
+                else
+                {
+					atkName = "atkFerramentaBaixo";
+				}
+				
 			}
 			else
 			{
-				atkName = "atkFerramentaFrente";
+				if (itemResponse.nomeFerramenta.Equals(Item.NomeFerramentaItemId.Martelo))
+				{
+					atkName = "atkFerramentaMarteloFrente";
+				}
+				else
+				{
+					atkName = "atkFerramentaFrente";
+				}
 			}
 			bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName(atkName);
 			if (!atk)
