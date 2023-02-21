@@ -11,10 +11,6 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField][HideInInspector] public string nomeId;
     [SerializeField] public TipoItem tipoItem;
     [SerializeField] public Item.NomeItem nomeItem;
-    /*[SerializeField] public Item.NomeRecursoItemId nomeRecurso;
-    [SerializeField] public Item.NomeFerramentaItemId nomeFerramenta;
-    [SerializeField] public Item.NomeConsumivelItemId nomeConsumivel;
-    [SerializeField] public Item.NomeArmaItemId nomeArma;*/
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;

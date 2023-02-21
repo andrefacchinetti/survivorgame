@@ -12,9 +12,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudança de cena
 
-	[SerializeField] GameObject cabecaPivot;
-	[SerializeField] GameObject cameraPivotFixo;
-	public GameObject cameraPivot;
+	[SerializeField] GameObject cabecaPivot, pivotCameraInHead;
+	public Vector3 offset;
 	public Camera playerCamera;
 
 	private float horizontalMove, verticalMove;
@@ -179,10 +178,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		{
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-			cameraPivot.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+			cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0 , rotationX);
 			transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sensivity, 0);
 		}
-		cameraPivot.transform.position = new Vector3(cameraPivotFixo.transform.position.x, cabecaPivot.transform.position.y, cabecaPivot.transform.position.z);
+		cabecaPivot.transform.position = new Vector3(cabecaPivot.transform.position.x, cabecaPivot.transform.position.y, cabecaPivot.transform.position.z);
+
+		playerCamera.transform.position = pivotCameraInHead.transform.position + offset;
+		playerCamera.transform.localRotation = Quaternion.Euler(rotationX, playerCamera.transform.rotation.y, playerCamera.transform.rotation.z);
 	}
 
 	void FixedUpdate() //testar update ao inves de fixed
