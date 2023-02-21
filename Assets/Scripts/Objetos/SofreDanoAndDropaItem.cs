@@ -9,12 +9,9 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] public int vida = 100, qtdMinDrops = 5, qtdMaxDrops = 10;
-    [SerializeField] public Item.NomeFerramentaItemId ferramentaRecomendada;
+    [SerializeField] public Item.NomeItem nomeItemFerramentaRecomendada;
     [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false, isDropaAlgumItem = true;
-    [SerializeField] public Item.NomeConsumivelItemId dropConsumivel;
-    [SerializeField] public Item.NomeRecursoItemId dropRecurso;
-    [SerializeField] public Item.NomeArmaItemId dropArma;
-    [SerializeField] public Item.NomeFerramentaItemId dropFerramenta;
+    [SerializeField] public Dictionary<Item.NomeItem, Item.TipoItem> dropsItems;
     PhotonView PV;
 
     private void Awake()
@@ -28,7 +25,7 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             int damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
-            if (other.transform.gameObject.GetComponent<ItemObjMao>().nomeFerramenta == ferramentaRecomendada)
+            if (other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem == nomeItemFerramentaRecomendada)
             {
                 vida -= damage;
             }
@@ -44,27 +41,15 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
                 {
                     for (int i = 0; i < (UnityEngine.Random.Range(qtdMinDrops, qtdMaxDrops)); i++)
                     {
-                        string nomePrefab = "";
-                        if (!Item.NomeConsumivelItemId.Nenhum.Equals(dropConsumivel))
+                        foreach (KeyValuePair<Item.NomeItem, Item.TipoItem> drop in dropsItems)
                         {
-                            nomePrefab = "Consumivel" + dropConsumivel.GetEnumMemberValue();
-                            ItemDrop.InstanciarPrefabPorPath(nomePrefab, transform.position, transform.rotation, PV.ViewID);
+                            if (!Item.TipoItem.Nenhum.Equals(drop.Key))
+                            {
+                                string nomePrefab = drop.Value.GetEnumMemberValue() + "/" + drop.Key.GetEnumMemberValue();
+                                ItemDrop.InstanciarPrefabPorPath(nomePrefab, transform.position, transform.rotation, PV.ViewID);
+                            }
                         }
-                        if (!Item.NomeRecursoItemId.Nenhum.Equals(dropRecurso))
-                        {
-                            nomePrefab = "Recurso" + dropRecurso.GetEnumMemberValue();
-                            ItemDrop.InstanciarPrefabPorPath(nomePrefab, transform.position, transform.rotation, PV.ViewID);
-                        }
-                        if (!Item.NomeArmaItemId.Nenhum.Equals(dropArma))
-                        {
-                            nomePrefab = "Arma" + dropRecurso.GetEnumMemberValue();
-                            ItemDrop.InstanciarPrefabPorPath(nomePrefab, transform.position, transform.rotation, PV.ViewID);
-                        }
-                        if (!Item.NomeFerramentaItemId.Nenhum.Equals(dropFerramenta))
-                        {
-                            nomePrefab = "Ferramenta" + dropRecurso.GetEnumMemberValue();
-                            ItemDrop.InstanciarPrefabPorPath(nomePrefab, transform.position, transform.rotation, PV.ViewID);
-                        }
+                        
                     }
                 }
                 PhotonNetwork.Destroy(this.gameObject);

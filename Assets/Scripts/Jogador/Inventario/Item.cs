@@ -10,10 +10,11 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField][HideInInspector] public string nomeId;
     [SerializeField] public TipoItem tipoItem;
-    [SerializeField] public Item.NomeRecursoItemId nomeRecurso;
+    [SerializeField] public Item.NomeItem nomeItem;
+    /*[SerializeField] public Item.NomeRecursoItemId nomeRecurso;
     [SerializeField] public Item.NomeFerramentaItemId nomeFerramenta;
     [SerializeField] public Item.NomeConsumivelItemId nomeConsumivel;
-    [SerializeField] public Item.NomeArmaItemId nomeArma;
+    [SerializeField] public Item.NomeArmaItemId nomeArma;*/
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
@@ -37,66 +38,113 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Consumivel")]
         Consumivel,
         [EnumMember(Value = "Recurso")]
-        Recurso
+        Recurso,
+        [EnumMember(Value = "Armadura")]
+        Armadura,
+        [EnumMember(Value = "Objeto")]
+        Objeto
     }
 
-    public enum NomeFerramentaItemId
+    public enum NomeItem
     {
         [EnumMember(Value = "Nenhum")]
         Nenhum,
-        [EnumMember(Value = "Machado")] 
-        Machado,
-        [EnumMember(Value = "Martelo")] 
-        Martelo,
-        [EnumMember(Value = "Picareta")] 
-        Picareta
-    }
-
-    public enum NomeRecursoItemId
-    {
-        [EnumMember(Value = "Nenhum")]
-        Nenhum,
-        [EnumMember(Value = "Madeira")] 
+        //RECURSO
+        [EnumMember(Value = "Madeira")]
         Madeira,
-        [EnumMember(Value = "Pedra")] 
-        Pedra
-    }
-
-    public enum NomeArmaItemId
-    {
         [EnumMember(Value = "Pedra")]
-        Nenhum,
-        [EnumMember(Value = "Lanca")] 
-        Lanca
+        Pedra,
+        [EnumMember(Value = "Metal")]
+        Metal,
+        [EnumMember(Value = "Couro")]
+        Couro,
+        [EnumMember(Value = "Osso")]
+        Osso,
+        [EnumMember(Value = "Corda")]
+        Corda,
+        [EnumMember(Value = "Seiva")]
+        Seiva,
+        [EnumMember(Value = "Folha")]
+        Folha,
+        //CONSUMIVEL
+        [EnumMember(Value = "Fruta")]
+        Fruta,
+        [EnumMember(Value = "CogumeloCru")]
+        CogumeloCru,
+        [EnumMember(Value = "CogumeloCozido")]
+        CogumeloCozido,
+        [EnumMember(Value = "PeixeCru")]
+        PeixeCru,
+        [EnumMember(Value = "PeixeCozido")]
+        PeixeCozido,
+        [EnumMember(Value = "CarneCrua")]
+        CarneCrua,
+        [EnumMember(Value = "CarneCozida")]
+        CarneCozida,
+        //FERRAMENTA
+        [EnumMember(Value = "MachadoSimples")]
+        MachadoSimples,
+        [EnumMember(Value = "MarteloSimples")]
+        MarteloSimples,
+        [EnumMember(Value = "PicaretaSimples")]
+        PicaretaSimples,
+        [EnumMember(Value = "MachadoAvancado")]
+        MachadoAvancado,
+        [EnumMember(Value = "MarteloAvancado")]
+        MarteloAvancado,
+        [EnumMember(Value = "PicaretaAvancada")]
+        PicaretaAvancada,
+        [EnumMember(Value = "FacaSimples")]
+        FacaSimples,
+        [EnumMember(Value = "FacaAvancada")]
+        FacaAvancada,
+        [EnumMember(Value = "Bussola")]
+        Bussola,
+        [EnumMember(Value = "Tocha")]
+        Tocha,
+        //ARMA
+        [EnumMember(Value = "LancaSimples")]
+        LancaSimples,
+        [EnumMember(Value = "LancaAvancada")]
+        LancaAvancada,
+        [EnumMember(Value = "ArcoSimples")]
+        ArcoSimples,
+        [EnumMember(Value = "ArcoAvancado")]
+        ArcoAvancado,
+        [EnumMember(Value = "Espada")]
+        Espada,
+        //ARMADURA
+        [EnumMember(Value = "CapaceteDeCouro")]
+        CapaceteDeCouro,
+        [EnumMember(Value = "CasacoDeCouro")]
+        CasacoDeCouro,
+        [EnumMember(Value = "CalcaDeCouro")]
+        CalcaDeCouro,
+        [EnumMember(Value = "BotaDeCouro")]
+        BotaDeCouro,
+        [EnumMember(Value = "EscudoSimples")]
+        EscudoSimples,
+        [EnumMember(Value = "EscudoAvancado")]
+        EscudoAvancado,
+        //OBJETO
+        [EnumMember(Value = "Tigela")]
+        Tigela,
+        [EnumMember(Value = "Panela")]
+        Panela,
+        [EnumMember(Value = "Cantil")]
+        Cantil,
+        [EnumMember(Value = "FlechaDeMadeira")]
+        FlechaDeMadeira,
+        [EnumMember(Value = "FlechaDeOsso")]
+        FlechaDeOsso,
+        [EnumMember(Value = "FlechaDeMetal")]
+        FlechaDeMetal,
+
     }
 
-    public enum NomeConsumivelItemId
+    public static string ObterNomeIdPorTipoItem(NomeItem nomeItemResponse)
     {
-        [EnumMember(Value = "Lanca")]
-        Nenhum,
-        [EnumMember(Value = "Fruta")] 
-        Fruta
-    }
-
-    public static string ObterNomeIdPorTipoItem(TipoItem tipoItemResponse, NomeRecursoItemId nomeRecursoResponse, NomeFerramentaItemId nomeFerramentaResponse, NomeConsumivelItemId nomeConsumivelResponse, NomeArmaItemId nomeArmaResponse)
-    {
-        if (Item.TipoItem.Recurso.Equals(tipoItemResponse))
-        {
-            return nomeRecursoResponse.GetEnumMemberValue();
-        }
-        else if (Item.TipoItem.Ferramenta.Equals(tipoItemResponse))
-        {
-            return nomeFerramentaResponse.GetEnumMemberValue();
-        }
-        else if (Item.TipoItem.Consumivel.Equals(tipoItemResponse))
-        {
-            return nomeConsumivelResponse.GetEnumMemberValue();
-        }
-        else if (Item.TipoItem.Arma.Equals(tipoItemResponse))
-        {
-            return nomeArmaResponse.GetEnumMemberValue();
-        }
-        return "Nenhum";
+        return nomeItemResponse.GetEnumMemberValue();
     }
 
     private void Awake()
@@ -113,7 +161,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void AtualizarNomeId()
     {
-        nomeId = ObterNomeIdPorTipoItem(tipoItem, nomeRecurso, nomeFerramenta, nomeConsumivel, nomeArma);
+        nomeId = ObterNomeIdPorTipoItem(nomeItem);
     }
 
     public void DeselecionarItem()

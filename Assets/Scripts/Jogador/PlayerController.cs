@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			string atkName;
 			if (grabObjects.isPlayerEstaOlhandoPraBaixo())
 			{
-                if (itemResponse.nomeFerramenta.Equals(Item.NomeFerramentaItemId.Martelo))
+                if (itemResponse.nomeItem.Equals(Item.NomeItem.MarteloSimples))
                 {
 					atkName = "atkFerramentaMarteloBaixo";
                 }
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			}
 			else
 			{
-				if (itemResponse.nomeFerramenta.Equals(Item.NomeFerramentaItemId.Martelo))
+				if (itemResponse.nomeItem.Equals(Item.NomeItem.MarteloSimples))
 				{
 					atkName = "atkFerramentaMarteloFrente";
 				}
