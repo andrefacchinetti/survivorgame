@@ -64,7 +64,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
                     if (inventario.AdicionarItemAoInventario(itemDrop)) //adicionou ao inventario do jogador
                     {
-                        PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
+                        if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
+                        else GameObject.Destroy(hit.transform.gameObject);
                     }
                     else
                     {

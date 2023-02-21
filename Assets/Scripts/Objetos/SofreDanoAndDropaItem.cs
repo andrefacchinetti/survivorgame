@@ -55,9 +55,11 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
                         ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, transform.position, transform.rotation, PV.ViewID);
                     }
                 }
-                PhotonNetwork.Destroy(this.gameObject);
+                if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(this.gameObject);
+                else GameObject.Destroy(this.gameObject);
             }
             other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking = false;
+            other.transform.root.gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
         }
     }
 

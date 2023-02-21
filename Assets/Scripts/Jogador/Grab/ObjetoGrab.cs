@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
-[RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(PhotonView)), RequireComponent(typeof(PhotonRigidbodyView)), RequireComponent(typeof(NavMeshObstacle))]
+[RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(PhotonView)), RequireComponent(typeof(PhotonRigidbodyView))]
 public class ObjetoGrab : MonoBehaviourPunCallbacks
 {
     [HideInInspector] private AudioSource audioS;

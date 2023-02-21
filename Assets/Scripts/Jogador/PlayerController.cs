@@ -116,7 +116,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	public void TakeDamage(float damage)
 	{
-		PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+		if (PhotonNetwork.IsConnected) PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+		else acoesTakeDamage(damage);
 	}
 
 	[PunRPC]
@@ -124,7 +125,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	{
 		if (!PV.IsMine)
 			return;
+		acoesTakeDamage(damage);
+	}
 
+	private void acoesTakeDamage(float damage)
+    {
 		statsJogador.setarVidaAtual(statsJogador.vidaAtual - damage);
 		animator.SetTrigger("Hit");
 		Debug.Log("player tomou " + damage + " de hit. Vida: " + statsJogador.vidaAtual);
@@ -137,12 +142,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void Die()
 	{
 		if (isMorto) return;
-		PV.RPC("RPC_ExecutarAcoesDie", RpcTarget.All);
+		if (PhotonNetwork.IsConnected) PV.RPC("RPC_ExecutarAcoesDie", RpcTarget.All);
+		else acoesExecutarAcoesDie();
 	}
 
 	[PunRPC]
 	void RPC_ExecutarAcoesDie()
 	{
+		acoesExecutarAcoesDie();
+	}
+
+	private void acoesExecutarAcoesDie()
+    {
 		animator.SetBool("isDead", true);
 		isMorto = true;
 		playerMovement.canMove = false;

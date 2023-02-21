@@ -194,7 +194,7 @@ public class Item : MonoBehaviourPunCallbacks
     public void DroparItem()
     {
         if (tipoItem.Equals(TipoItem.Nenhum)) return;
-        string nomePrefab = tipoItem + nomeId;
+        string nomePrefab = tipoItem +"/"+ nomeId;
         ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
         inventario.RemoverItemDoInventario(this, 1); //TODO: implementar opcao de dropar itens em quantidade
     }

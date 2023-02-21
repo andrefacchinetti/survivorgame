@@ -5,11 +5,13 @@ using UnityEngine;
 public class CollisorDamage : MonoBehaviour
 {
 
-    [SerializeField] EnemySelvagem enemySelvagemController;
+    [SerializeField] [HideInInspector] EnemyMovementZombie enemySelvagemController;
+    [SerializeField] [HideInInspector] EnemyStats enemyStats;
 
     private void Awake()
     {
-        if (enemySelvagemController == null)  enemySelvagemController = GetComponentInParent<EnemySelvagem>(); //Procura o controller do inimigo no objetos pais
+        enemySelvagemController = GetComponentInParent<EnemyMovementZombie>();
+        enemyStats = GetComponentInParent<EnemyStats>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -18,7 +20,7 @@ public class CollisorDamage : MonoBehaviour
         {
             if (enemySelvagemController.isAttacking)
             {
-                other.gameObject.GetComponent<PlayerController>().TakeDamage(enemySelvagemController.damage);
+                other.gameObject.GetComponent<PlayerController>().TakeDamage(enemyStats.damage);
             }
             // IA colidiu com o jogador e deve interromper o ataque
             enemySelvagemController.isAttacking = false;
@@ -28,7 +30,7 @@ public class CollisorDamage : MonoBehaviour
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             int damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
-            enemySelvagemController.TakeDamage(damage);
+            enemyStats.TakeDamage(damage);
         }
     }
 
