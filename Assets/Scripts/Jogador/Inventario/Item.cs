@@ -67,8 +67,8 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Folha")]
         Folha,
         //CONSUMIVEL
-        [EnumMember(Value = "Fruta")]
-        Fruta,
+        [EnumMember(Value = "FrutaLimao")]
+        FrutaLimao,
         [EnumMember(Value = "CogumeloCru")]
         CogumeloCru,
         [EnumMember(Value = "CogumeloCozido")]
@@ -111,8 +111,10 @@ public class Item : MonoBehaviourPunCallbacks
         ArcoSimples,
         [EnumMember(Value = "ArcoAvancado")]
         ArcoAvancado,
-        [EnumMember(Value = "Espada")]
-        Espada,
+        [EnumMember(Value = "EspadaSimples")]
+        EspadaSimples,
+        [EnumMember(Value = "EspadaAvancada")]
+        EspadaAvancada,
         //ARMADURA
         [EnumMember(Value = "CapaceteDeCouro")]
         CapaceteDeCouro,
@@ -120,8 +122,8 @@ public class Item : MonoBehaviourPunCallbacks
         CasacoDeCouro,
         [EnumMember(Value = "CalcaDeCouro")]
         CalcaDeCouro,
-        [EnumMember(Value = "BotaDeCouro")]
-        BotaDeCouro,
+        [EnumMember(Value = "BotasDeCouro")]
+        BotasDeCouro,
         [EnumMember(Value = "EscudoSimples")]
         EscudoSimples,
         [EnumMember(Value = "EscudoAvancado")]
