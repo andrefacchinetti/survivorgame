@@ -95,8 +95,6 @@ GameObject:
   - component: {fileID: 5803118876785890284}
   - component: {fileID: 5803118876785890274}
   - component: {fileID: 5803118876785890287}
-  - component: {fileID: 5803118876785890286}
-  - component: {fileID: 5803118876785890281}
   - component: {fileID: 3566365484361559543}
   - component: {fileID: 5803118876785890285}
   m_Layer: 0
@@ -146,68 +144,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75152add43de5f644af292ea69a194f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vida: 100
-  qtdMinDrops: 1
-  qtdMaxDrops: 5
-  danoFerramentaRecomendada: 80
-  danoOutrasFerramentas: 50
-  ferramentaRecomendada: 1
+  vida: 30
+  nomeItemFerramentasRecomendadas: 1000000012000000130000001500000016000000170000001e0000001f000000
   isApenasFerramentaRecomendadaCausaDano: 0
-  isDropaAlgumItem: 1
-  dropConsumivel: 1
-  dropRecurso: 0
-  dropArma: 0
-  dropFerramenta: 0
---- !u!23 &5803118876785890286
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5803118876785890283}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 90623549d4482f042ade35d8a0758e35, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &5803118876785890281
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5803118876785890283}
-  m_Mesh: {fileID: 4300000, guid: 8606c21208a6abf4aa86e39e9938598b, type: 3}
+  dropsItems:
+  - nomeItemEnum: 8
+    tipoItemEnum: 4
+    qtdMinDrops: 5
+    qtdMaxDrops: 10
+  - nomeItemEnum: 9
+    tipoItemEnum: 3
+    qtdMinDrops: 5
+    qtdMaxDrops: 10
 --- !u!114 &3566365484361559543
 MonoBehaviour:
   m_ObjectHideFlags: 0

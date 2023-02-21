@@ -17,14 +17,17 @@ public class ItemDrop : MonoBehaviourPunCallbacks
         nomeId = Item.ObterNomeIdPorTipoItem(nomeItem);
     }
 
-    public static void InstanciarPrefabPorPath(string nomePrefab, Vector3 position, Quaternion rotation, int viewID)
+    public static void InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, int viewID)
     {
         string prefabPath = Path.Combine("Objetos/Prefabs/ItensPegaveis/", nomePrefab);
-        if (PhotonNetwork.IsConnected) PhotonNetwork.Instantiate(prefabPath, position, new Quaternion(), 0, new object[] { viewID });
-        else
+        for(int i=0; i < quantidade; i++)
         {
-            GameObject prefab = Resources.Load<GameObject>(prefabPath);
-            GameObject newObject = Instantiate(prefab, position, rotation);
+            if (PhotonNetwork.IsConnected) PhotonNetwork.Instantiate(prefabPath, position, new Quaternion(), 0, new object[] { viewID });
+            else
+            {
+                GameObject prefab = Resources.Load<GameObject>(prefabPath);
+                GameObject newObject = Instantiate(prefab, position, rotation);
+            }
         }
     }
 

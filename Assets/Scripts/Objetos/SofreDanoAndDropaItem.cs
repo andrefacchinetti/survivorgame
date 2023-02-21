@@ -8,11 +8,20 @@ using System;
 public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
 {
 
-    [SerializeField] public int vida = 100, qtdMinDrops = 5, qtdMaxDrops = 10;
-    [SerializeField] public Item.NomeItem nomeItemFerramentaRecomendada;
-    [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false, isDropaAlgumItem = true;
-    [SerializeField] public Dictionary<Item.NomeItem, Item.TipoItem> dropsItems;
+    [SerializeField] public int vida = 100;
+    [SerializeField] public List<Item.NomeItem> nomeItemFerramentasRecomendadas;
+    [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false;
+    [SerializeField] public List<ItemDropStruct> dropsItems;
     PhotonView PV;
+
+    [System.Serializable]
+    public struct ItemDropStruct
+    {
+        public Item.NomeItem nomeItemEnum;
+        public Item.TipoItem tipoItemEnum;
+        public int qtdMinDrops;
+        public int qtdMaxDrops;
+    }
 
     private void Awake()
     {
@@ -25,31 +34,25 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             int damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
-            if (other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem == nomeItemFerramentaRecomendada)
+            if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))
             {
                 vida -= damage;
             }
             else
             {
-                vida -= damage/2;
+                if(!isApenasFerramentaRecomendadaCausaDano) vida -= damage/2;
             }
             Debug.Log("Vida: " + vida);
             //TODO: mostrar na tela um efeito do dano causado e bonus recebido
             if (vida <= 0)
             {
-                if (isDropaAlgumItem)
+                foreach (ItemDropStruct drop in dropsItems)
                 {
-                    for (int i = 0; i < (UnityEngine.Random.Range(qtdMinDrops, qtdMaxDrops)); i++)
+                    if (!Item.TipoItem.Nenhum.Equals(drop.tipoItemEnum))
                     {
-                        foreach (KeyValuePair<Item.NomeItem, Item.TipoItem> drop in dropsItems)
-                        {
-                            if (!Item.TipoItem.Nenhum.Equals(drop.Key))
-                            {
-                                string nomePrefab = drop.Value.GetEnumMemberValue() + "/" + drop.Key.GetEnumMemberValue();
-                                ItemDrop.InstanciarPrefabPorPath(nomePrefab, transform.position, transform.rotation, PV.ViewID);
-                            }
-                        }
-                        
+                        int quantidade = UnityEngine.Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
+                        string nomePrefab = drop.nomeItemEnum.GetEnumMemberValue() + "/" + drop.nomeItemEnum.GetEnumMemberValue();
+                        ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, transform.position, transform.rotation, PV.ViewID);
                     }
                 }
                 PhotonNetwork.Destroy(this.gameObject);
