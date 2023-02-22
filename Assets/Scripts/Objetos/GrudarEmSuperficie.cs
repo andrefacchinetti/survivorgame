@@ -5,12 +5,12 @@ using UnityEngine;
 public class GrudarEmSuperficie : MonoBehaviour
 {
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if(collision.gameObject.tag != "Player")
         {
-            transform.SetParent(collision.gameObject.transform);
-            //GetComponent<Rigidbody>().isKinematic = true;
+            transform.root.GetComponent<Rigidbody>().isKinematic = true;
+            transform.root.SetParent(collision.gameObject.transform);
         }
     }
 
