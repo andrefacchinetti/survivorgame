@@ -94,20 +94,20 @@ public class Inventario : MonoBehaviour
         Cursor.visible = true;
     }
 
-    public bool AdicionarItemAoInventario(ItemDrop itemDropResponse)
+    public bool AdicionarItemAoInventario(Item.NomeItem nomeItemResponse, int quantidadeResponse)
     {
         foreach (Item item in itens)
         {
-            if (item.nomeId.Equals(itemDropResponse.nomeId))
+            if (item.nomeItem.Equals(nomeItemResponse))
             {
-                if(pesoAtual + item.peso * item.quantidade > pesoCapacidadeMaxima)
+                if(pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
                 {
                     Debug.Log("Peso maximo do inventario atingido");
                     return false;
                 }
                 else
                 {
-                    return item.aumentarQuantidade();
+                    return item.aumentarQuantidade(quantidadeResponse);
                 }
             }
         }

@@ -9,7 +9,6 @@ public class Item : MonoBehaviourPunCallbacks
 
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField][HideInInspector] public string nomeId;
-    [SerializeField] public TipoItem tipoItem;
     [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso;
@@ -23,7 +22,7 @@ public class Item : MonoBehaviourPunCallbacks
     PhotonView PV;
 
 
-    public enum TipoItem
+    public enum TiposItems
     {
         [EnumMember(Value = "Nenhum")]
         Nenhum,
@@ -45,104 +44,112 @@ public class Item : MonoBehaviourPunCallbacks
     {
         [EnumMember(Value = "Nenhum")]
         Nenhum,
-        //RECURSO
-        [EnumMember(Value = "Madeira")]
+        //Recurso
+        [EnumMember(Value = "Recurso")]
         Madeira,
-        [EnumMember(Value = "Pedra")]
+        [EnumMember(Value = "Recurso")]
         Pedra,
-        [EnumMember(Value = "Metal")]
+        [EnumMember(Value = "Recurso")]
         Metal,
-        [EnumMember(Value = "Couro")]
+        [EnumMember(Value = "Recurso")]
         Couro,
-        [EnumMember(Value = "Osso")]
+        [EnumMember(Value = "Recurso")]
         Osso,
-        [EnumMember(Value = "Cipo")]
+        [EnumMember(Value = "Recurso")]
         Cipo,
-        [EnumMember(Value = "Seiva")]
+        [EnumMember(Value = "Recurso")]
         Seiva,
-        [EnumMember(Value = "Folha")]
+        [EnumMember(Value = "Recurso")]
         Folha,
-        //CONSUMIVEL
-        [EnumMember(Value = "FrutaLimao")]
+        //Consumivel
+        [EnumMember(Value = "Consumivel")]
         FrutaLimao,
-        [EnumMember(Value = "CogumeloCru")]
+        [EnumMember(Value = "Consumivel")]
         CogumeloCru,
-        [EnumMember(Value = "CogumeloCozido")]
+        [EnumMember(Value = "Consumivel")]
         CogumeloCozido,
-        [EnumMember(Value = "PeixeCru")]
+        [EnumMember(Value = "Consumivel")]
         PeixeCru,
-        [EnumMember(Value = "PeixeCozido")]
+        [EnumMember(Value = "Consumivel")]
         PeixeCozido,
-        [EnumMember(Value = "CarneCrua")]
+        [EnumMember(Value = "Consumivel")]
         CarneCrua,
-        [EnumMember(Value = "CarneCozida")]
+        [EnumMember(Value = "Consumivel")]
         CarneCozida,
-        //FERRAMENTA
-        [EnumMember(Value = "MachadoSimples")]
+        //Ferramenta
+        [EnumMember(Value = "Ferramenta")]
         MachadoSimples,
-        [EnumMember(Value = "MarteloSimples")]
+        [EnumMember(Value = "Ferramenta")]
         MarteloSimples,
-        [EnumMember(Value = "PicaretaSimples")]
+        [EnumMember(Value = "Ferramenta")]
         PicaretaSimples,
-        [EnumMember(Value = "MachadoAvancado")]
+        [EnumMember(Value = "Ferramenta")]
         MachadoAvancado,
-        [EnumMember(Value = "MarteloAvancado")]
+        [EnumMember(Value = "Ferramenta")]
         MarteloAvancado,
-        [EnumMember(Value = "PicaretaAvancada")]
+        [EnumMember(Value = "Ferramenta")]
         PicaretaAvancada,
-        [EnumMember(Value = "FacaSimples")]
+        [EnumMember(Value = "Ferramenta")]
         FacaSimples,
-        [EnumMember(Value = "FacaAvancada")]
+        [EnumMember(Value = "Ferramenta")]
         FacaAvancada,
-        [EnumMember(Value = "Bussola")]
+        [EnumMember(Value = "Ferramenta")]
         Bussola,
-        [EnumMember(Value = "Tocha")]
+        [EnumMember(Value = "Ferramenta")]
         Tocha,
-        //ARMA
-        [EnumMember(Value = "LancaSimples")]
+        //Arma
+        [EnumMember(Value = "Arma")]
         LancaSimples,
-        [EnumMember(Value = "LancaAvancada")]
+        [EnumMember(Value = "Arma")]
         LancaAvancada,
-        [EnumMember(Value = "ArcoSimples")]
+        [EnumMember(Value = "Arma")]
         ArcoSimples,
-        [EnumMember(Value = "ArcoAvancado")]
+        [EnumMember(Value = "Arma")]
         ArcoAvancado,
-        [EnumMember(Value = "EspadaSimples")]
+        [EnumMember(Value = "Arma")]
         EspadaSimples,
-        [EnumMember(Value = "EspadaAvancada")]
+        [EnumMember(Value = "Arma")]
         EspadaAvancada,
-        //ARMADURA
-        [EnumMember(Value = "CapaceteDeCouro")]
+        //Armadura
+        [EnumMember(Value = "Armadura")]
         CapaceteDeCouro,
-        [EnumMember(Value = "CasacoDeCouro")]
+        [EnumMember(Value = "Armadura")]
         CasacoDeCouro,
-        [EnumMember(Value = "CalcaDeCouro")]
+        [EnumMember(Value = "Armadura")]
         CalcaDeCouro,
-        [EnumMember(Value = "BotasDeCouro")]
+        [EnumMember(Value = "Armadura")]
         BotasDeCouro,
-        [EnumMember(Value = "EscudoSimples")]
+        [EnumMember(Value = "Armadura")]
         EscudoSimples,
-        [EnumMember(Value = "EscudoAvancado")]
+        [EnumMember(Value = "Armadura")]
         EscudoAvancado,
-        //OBJETO
-        [EnumMember(Value = "Tigela")]
+        //Objeto
+        [EnumMember(Value = "Objeto")]
         Tigela,
-        [EnumMember(Value = "Panela")]
+        [EnumMember(Value = "Objeto")]
         Panela,
-        [EnumMember(Value = "Cantil")]
+        [EnumMember(Value = "Objeto")]
         Cantil,
-        [EnumMember(Value = "FlechaDeMadeira")]
+        [EnumMember(Value = "Objeto")]
         FlechaDeMadeira,
-        [EnumMember(Value = "FlechaDeOsso")]
+        [EnumMember(Value = "Objeto")]
         FlechaDeOsso,
-        [EnumMember(Value = "FlechaDeMetal")]
+        [EnumMember(Value = "Objeto")]
         FlechaDeMetal,
 
     }
 
+    [System.Serializable]
+    public struct ItemDropStruct
+    {
+        public Item.NomeItem nomeItemEnum;
+        public int qtdMinDrops;
+        public int qtdMaxDrops;
+    }
+
     public static string ObterNomeIdPorTipoItem(NomeItem nomeItemResponse)
     {
-        return nomeItemResponse.GetEnumMemberValue();
+        return nomeItemResponse.ToString();
     }
 
     private void Awake()
@@ -186,15 +193,15 @@ public class Item : MonoBehaviourPunCallbacks
         }
 
         if (objItemMaoJogador != null) objItemMaoJogador.SetActive(true);
-        inventario.itemNaMao = this.tipoItem.Equals(TipoItem.Nenhum) ? null : this;
+        inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
 
         inventario.FecharInventario();
     }
 
     public void DroparItem()
     {
-        if (tipoItem.Equals(TipoItem.Nenhum)) return;
-        string nomePrefab = tipoItem +"/"+ nomeId;
+        if (this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum)) return;
+        string nomePrefab = this.nomeItem.GetTipoItemEnum() + "/"+ this.nomeItem.ToString();
         ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
         inventario.RemoverItemDoInventario(this, 1); //TODO: implementar opcao de dropar itens em quantidade
     }
@@ -231,7 +238,7 @@ public class Item : MonoBehaviourPunCallbacks
         txQuantidade.text = quantidade + "";
     }
 
-    public bool aumentarQuantidade()
+    public bool aumentarQuantidade(int quantidadeResponse)
     {
         if (!gameObject.activeSelf && inventario.qtdItensAtual >= inventario.qtdItensMaximo)
         {
@@ -245,8 +252,8 @@ public class Item : MonoBehaviourPunCallbacks
                 desativarOuAtivarUsoItemDaHotbar(false);
             }
             inventario.setarPesoAtual(inventario.pesoAtual + peso);
-            inventario.setarQtdItensAtual(inventario.qtdItensAtual + 1);
-            quantidade += 1;
+            inventario.setarQtdItensAtual(inventario.qtdItensAtual + quantidadeResponse);
+            quantidade += quantidadeResponse;
             txQuantidade.text = quantidade + "";
             gameObject.SetActive(true);
             return true;

@@ -30,6 +30,7 @@ public class EnemyMovementZombie : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        if (enemyStats.isDead) return;
         if(PhotonNetwork.IsConnected && players.Length < PhotonNetwork.CurrentRoom.PlayerCount)
         {
             players = GameObject.FindGameObjectsWithTag("Player");

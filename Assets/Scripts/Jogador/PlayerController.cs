@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	private GameController gameController;
 	private PlayerMovement playerMovement;
 	[SerializeField][HideInInspector] StatsJogador statsJogador;
+	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	PhotonView PV;
 
 	void Awake()
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	private void ativarAnimacaoPorTipoItem(Item itemResponse)
     {
-		if (itemResponse.tipoItem == Item.TipoItem.Ferramenta)
+		if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Ferramenta.ToString()))
 		{
 			string atkName;
 			if (grabObjects.isPlayerEstaOlhandoPraBaixo())
@@ -112,6 +113,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void NotAtk()
 	{
 		isAttacking = false;
+	}
+
+	void AnimEventDissecado()
+    {
+		foreach (Item.ItemDropStruct drop in itemsDropsPosDissecar)
+		{
+			inventario.AdicionarItemAoInventario(drop.nomeItemEnum, Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops));
+        }
+		itemsDropsPosDissecar = new List<Item.ItemDropStruct>();
 	}
 
 	public void TakeDamage(float damage)

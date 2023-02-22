@@ -11,17 +11,8 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
     [SerializeField] public int vida = 100;
     [SerializeField] public List<Item.NomeItem> nomeItemFerramentasRecomendadas;
     [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false;
-    [SerializeField] public List<ItemDropStruct> dropsItems;
+    [SerializeField] public List<Item.ItemDropStruct> dropsItems;
     PhotonView PV;
-
-    [System.Serializable]
-    public struct ItemDropStruct
-    {
-        public Item.NomeItem nomeItemEnum;
-        public Item.TipoItem tipoItemEnum;
-        public int qtdMinDrops;
-        public int qtdMaxDrops;
-    }
 
     private void Awake()
     {
@@ -46,15 +37,15 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
             //TODO: mostrar na tela um efeito do dano causado e bonus recebido
             if (vida <= 0)
             {
-                foreach (ItemDropStruct drop in dropsItems)
+                foreach (Item.ItemDropStruct drop in dropsItems)
                 {
-                    if (!Item.TipoItem.Nenhum.Equals(drop.tipoItemEnum))
+                    if (!Item.TiposItems.Nenhum.ToString().Equals(drop.nomeItemEnum.GetTipoItemEnum()))
                     {
                         int quantidade = UnityEngine.Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-                        string nomePrefab = drop.tipoItemEnum.GetEnumMemberValue() + "/" + drop.nomeItemEnum.GetEnumMemberValue();
+                        string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
                         ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, transform.position, transform.rotation, PV.ViewID);
                     }
-                }
+                } 
                 if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(this.gameObject);
                 else GameObject.Destroy(this.gameObject);
             }

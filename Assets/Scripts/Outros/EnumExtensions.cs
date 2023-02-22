@@ -6,7 +6,7 @@ using System.Linq;
 
 public static class EnumExtensions
 {
-    public static string GetEnumMemberValue<T>(this T item)
+    public static string GetTipoItemEnum<T>(this T item)
     {
         var enumMemberAttr = item.GetType()
             .GetField(item.ToString())

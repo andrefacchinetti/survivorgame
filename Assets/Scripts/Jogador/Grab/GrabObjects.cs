@@ -8,7 +8,7 @@ using Photon.Realtime;
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
     
-    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop";
+    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -16,7 +16,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     float anguloLimiteOlhandoPraBaixo = 140.0f;
 
     [HideInInspector] public GameObject grabedObj;
-    [HideInInspector] public bool possibleGrab = false;
+    [HideInInspector] public bool possibleGrab = false, possibleInteraction = false;
     private Vector2 rigSaveGrabed;
 
     [SerializeField] Camera cam;
@@ -62,7 +62,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     }
                     animator.SetTrigger("pegandoItemChao");
                     ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
-                    if (inventario.AdicionarItemAoInventario(itemDrop)) //adicionou ao inventario do jogador
+                    if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
                     {
                         if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
                         else GameObject.Destroy(hit.transform.gameObject);
@@ -73,6 +73,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     }
                 }
                 possibleGrab = true;
+            }
+            else if ((hit.transform.tag == tagEnemy && hit.transform.GetComponent<EnemyStats>().isDead))
+            {
+                if (Input.GetKeyDown(KeyCode.E)) //Interagir
+                {
+                    if (hit.transform.gameObject.GetComponent<PhotonView>().Owner != PhotonNetwork.LocalPlayer)
+                    {
+                        hit.transform.gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
+                    }
+                    animator.SetTrigger("dissecando");
+                    playerController.itemsDropsPosDissecar = hit.transform.gameObject.GetComponent<EnemyStats>().dropsItems;
+                }
+                possibleInteraction = true;
             }
         }
         else

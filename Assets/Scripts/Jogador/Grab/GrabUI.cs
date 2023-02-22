@@ -8,12 +8,7 @@ using Photon.Realtime;
 [RequireComponent(typeof(Image))]
 public class GrabUI : MonoBehaviourPunCallbacks
 {
-    [Tooltip("Sprite that will always be active")]
-    public Sprite DefaultAim;  //normal state
-    [Tooltip("Sprite that activates when it can pick up an object")]
-    public Sprite passiveAim;  //normal state
-    [Tooltip("Sprite that activates when holding an object")]
-    public Sprite grabAim;  //grab state
+    public Sprite DefaultAim, passiveAim, grabAim, interactionAim;
 
     private Image img;
     private GrabObjects grabSys;
@@ -38,6 +33,10 @@ public class GrabUI : MonoBehaviourPunCallbacks
             if (grabSys.possibleGrab)
             {
                 img.sprite = passiveAim;
+            }
+            else if (grabSys.possibleInteraction)
+            {
+                img.sprite = interactionAim;
             }
             else
             {

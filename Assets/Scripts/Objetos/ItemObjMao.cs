@@ -5,7 +5,6 @@ using UnityEngine;
 public class ItemObjMao : MonoBehaviour
 {
 
-    [SerializeField] public Item.TipoItem tipoItem;
     [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField] public int damage;
 

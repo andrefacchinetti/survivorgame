@@ -173,7 +173,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 518c44a468f949847a9aa7a7166b31f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7e80d39e3e102147a3be13caa7cd3d7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -195,9 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7144b03b1cd82854a9cc937f6271c1a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultAim: {fileID: 21300000, guid: 518c44a468f949847a9aa7a7166b31f4, type: 3}
-  passiveAim: {fileID: 21300000, guid: 9830ef3bbbff96640b3a4080e99a6158, type: 3}
-  grabAim: {fileID: 21300000, guid: 474b60469b9cba945864d58e0abd99bb, type: 3}
+  DefaultAim: {fileID: 21300000, guid: e7e80d39e3e102147a3be13caa7cd3d7, type: 3}
+  passiveAim: {fileID: 21300000, guid: b493e9a4650e7ec4cb70cf682d680f1e, type: 3}
+  grabAim: {fileID: 21300000, guid: dc7eb94056b536a4a9f810db7b171332, type: 3}
+  interactionAim: {fileID: 21300000, guid: b26c1b2c24c056a43931e5b20d8d9193, type: 3}
 --- !u!1 &384674124
 GameObject:
   m_ObjectHideFlags: 0
@@ -7927,11 +7928,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tagObjGrab: ObjetoGrab
   tagItemDrop: ItemDrop
+  tagEnemy: Inimigo
   forceGrab: 20
   maxDistPlayer: 0.5
   maxDistanceObjeto: 2
   grabedObj: {fileID: 0}
   possibleGrab: 0
+  possibleInteraction: 0
   cam: {fileID: 6737041256933510500}
   playerController: {fileID: 6737041257339993086}
   playerMovimentController: {fileID: 1061016265}

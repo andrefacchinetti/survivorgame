@@ -8,6 +8,7 @@ public class EnemyStats : MonoBehaviour
 
     public int vida = 100, damage = 10;
     public bool isDead = false;
+    [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
     [SerializeField] [HideInInspector] Animator animator;
     [SerializeField] [HideInInspector] NavMeshAgent navMeshAgent;

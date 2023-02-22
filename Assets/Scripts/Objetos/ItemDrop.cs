@@ -8,7 +8,6 @@ using System.IO;
 public class ItemDrop : MonoBehaviourPunCallbacks
 {
 
-    [SerializeField] public Item.TipoItem tipoItem;
     [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField][HideInInspector] public string nomeId;
 
