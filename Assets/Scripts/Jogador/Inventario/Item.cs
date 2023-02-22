@@ -243,6 +243,7 @@ public class Item : MonoBehaviourPunCallbacks
             inventario.setarQtdItensAtual(inventario.qtdItensAtual - 1);
             desativarOuAtivarUsoItemDaHotbar(true);
             if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
+            inventario.itemNaMao = null;
             gameObject.SetActive(false);
         }
         txQuantidade.text = quantidade + "";

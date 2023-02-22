@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	private Animator animator;
 	private GameController gameController;
 	private PlayerMovement playerMovement;
-	[SerializeField][HideInInspector] StatsJogador statsJogador;
+	[SerializeField][HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;

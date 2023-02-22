@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	private float horizontalMove, verticalMove;
 	public float walkingSpeed = 2.0f;
 	public float runningSpeed = 5.0f;
+	public float consumoEnergiaPorSegundo = 5.0f;
+	public float recuperacaoEnergiaPorSegundo = 2.0f;
 	public float pesoGrab = 0.0f;
 	public float jumpSpeed = 8.0f;
 	public bool isPulando = false;
@@ -118,7 +120,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		Vector3 forward = transform.TransformDirection(Vector3.forward);
 		Vector3 right = transform.TransformDirection(Vector3.right);
 		// Press Left Shift to run
-		bool isRunning = Input.GetKey(KeyCode.LeftShift) && pesoGrab == 0;
+		bool isRunning = Input.GetKey(KeyCode.LeftShift) && pesoGrab == 0 && playerController.statsJogador.energiaAtual > 0;
+        if (isRunning)
+        {
+			playerController.statsJogador.setarEnergiaAtual(playerController.statsJogador.energiaAtual - consumoEnergiaPorSegundo * Time.deltaTime);
+		}
+		else
+		{
+			playerController.statsJogador.setarEnergiaAtual(playerController.statsJogador.energiaAtual + recuperacaoEnergiaPorSegundo * Time.deltaTime);
+		}
 		float velocidade = (isRunning ? runningSpeed : walkingSpeed);
 		velocidade = velocidade - ((pesoGrab * velocidade *10) / 100);
 		if (velocidade < 0.6f) velocidade = 0.6f;

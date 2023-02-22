@@ -42,7 +42,7 @@ public class StatsJogador : MonoBehaviour
 
     public void setarVidaAtual(float valor)
     {
-        if (valor > vidaAtual) valor = vidaMaxima;
+        if (valor > vidaMaxima) valor = vidaMaxima;
         if (valor < 0) valor = 0;
         vidaAtual = valor;
         hudJogador.atualizarImgVida(vidaAtual, vidaMaxima);
@@ -50,7 +50,7 @@ public class StatsJogador : MonoBehaviour
 
     public void setarFomeAtual(float valor)
     {
-        if (valor > fomeAtual) valor = fomeMaxima;
+        if (valor > fomeMaxima) valor = fomeMaxima;
         if (valor < 0) valor = 0;
         fomeAtual = valor;
         hudJogador.atualizarImgFome(fomeAtual, fomeMaxima);
@@ -66,9 +66,10 @@ public class StatsJogador : MonoBehaviour
 
     public void setarEnergiaAtual(float valor)
     {
-        if (valor > energiaAtual) valor = energiaMaxima;
+        if (valor > energiaMaxima) valor = energiaMaxima;
         if (valor < 0) valor = 0;
         energiaAtual = valor;
+        Debug.Log(energiaAtual);
         hudJogador.atualizarImgEnergia(energiaAtual, energiaMaxima);
     }
 
