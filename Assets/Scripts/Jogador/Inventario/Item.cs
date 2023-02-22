@@ -192,10 +192,13 @@ public class Item : MonoBehaviourPunCallbacks
             }
         }
 
-        if (objItemMaoJogador != null) objItemMaoJogador.SetActive(true);
-        inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
-
-        inventario.FecharInventario();
+        if (objItemMaoJogador != null)
+        {
+            objItemMaoJogador.SetActive(true);
+            inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
+            inventario.FecharInventario();
+        }
+        
     }
 
     public void DroparItem()

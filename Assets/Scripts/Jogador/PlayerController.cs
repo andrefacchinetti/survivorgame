@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	private PlayerMovement playerMovement;
 	[SerializeField][HideInInspector] StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
+	[SerializeField] [HideInInspector] public GameObject corpoDissecando;
 	PhotonView PV;
 
 	void Awake()
@@ -117,11 +118,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	void AnimEventDissecado()
     {
+		Debug.Log("dissecou");
 		foreach (Item.ItemDropStruct drop in itemsDropsPosDissecar)
 		{
-			inventario.AdicionarItemAoInventario(drop.nomeItemEnum, Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops));
+			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
+			string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
+			ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, corpoDissecando.transform.position, corpoDissecando.transform.rotation, PV.ViewID);
         }
 		itemsDropsPosDissecar = new List<Item.ItemDropStruct>();
+		if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(corpoDissecando);
+		else GameObject.Destroy(corpoDissecando);
+		corpoDissecando = null;
 	}
 
 	public void TakeDamage(float damage)

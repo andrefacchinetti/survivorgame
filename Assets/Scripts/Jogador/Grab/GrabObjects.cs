@@ -84,6 +84,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     }
                     animator.SetTrigger("dissecando");
                     playerController.itemsDropsPosDissecar = hit.transform.gameObject.GetComponent<EnemyStats>().dropsItems;
+                    playerController.corpoDissecando = hit.transform.gameObject;
                 }
                 possibleInteraction = true;
             }
