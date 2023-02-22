@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudança de cena
 
-	[SerializeField] GameObject cabecaPivot, pivotCameraInHead, pescocoPivot;
+	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, pescocoPivot, pivotTiroBase;
 	public Vector3 offset;
 	public Camera playerCamera;
 

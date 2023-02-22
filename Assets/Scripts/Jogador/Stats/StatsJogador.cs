@@ -14,7 +14,7 @@ public class StatsJogador : MonoBehaviour
     //STATS CURRENT
     [SerializeField] [HideInInspector] public float vidaAtual, fomeAtual, sedeAtual, energiaAtual;
 
-    [SerializeField] float tempoPraDiminuirStatsFomeSedePorSegundos = 30, valorDiminuiFomeSedePorTempo = 30;
+    [SerializeField] float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
 
 
     private void Start()
@@ -30,8 +30,8 @@ public class StatsJogador : MonoBehaviour
 
     void DiminuirStatsPorTempo()
     {
-        setarFomeAtual(fomeAtual - valorDiminuiFomeSedePorTempo);
-        setarSedeAtual(sedeAtual - valorDiminuiFomeSedePorTempo);
+        setarFomeAtual(fomeAtual - valorDiminuiFomePorTempo);
+        setarSedeAtual(sedeAtual - valorDiminuiSedePorTempo);
         if(sedeAtual <= 0 || fomeAtual <= 0)
         {
             playerController.TakeDamage(10);
@@ -69,7 +69,6 @@ public class StatsJogador : MonoBehaviour
         if (valor > energiaMaxima) valor = energiaMaxima;
         if (valor < 0) valor = 0;
         energiaAtual = valor;
-        Debug.Log(energiaAtual);
         hudJogador.atualizarImgEnergia(energiaAtual, energiaMaxima);
     }
 

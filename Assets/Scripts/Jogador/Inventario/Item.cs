@@ -8,7 +8,6 @@ public class Item : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] public string nomePortugues, nomeIngles;
-    [SerializeField][HideInInspector] public string nomeId;
     [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso;
@@ -155,18 +154,12 @@ public class Item : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
-        AtualizarNomeId();
     }
 
     private void Start()
     {
         txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles;
         txQuantidade.text = quantidade + "";
-    }
-
-    public void AtualizarNomeId()
-    {
-        nomeId = ObterNomeIdPorTipoItem(nomeItem);
     }
 
     public void DeselecionarItem()
@@ -185,7 +178,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (inventario.itemNaMao != null)
         {
             inventario.itemNaMao.DeselecionarItem();
-            if (inventario.itemNaMao.nomeId.Equals(this.nomeId))
+            if (inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
             {
                 inventario.itemNaMao = null;
                 return;
@@ -275,7 +268,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         foreach (SlotHotbar slot in hotbar.slots)
         {
-            if (slot.item != null && slot.item.nomeId.Equals(this.nomeId))
+            if (slot.item != null && slot.item.nomeItem.Equals(this.nomeItem))
             {
                 slot.objEmbacarImg.SetActive(isDesativando);
             }

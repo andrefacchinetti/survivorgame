@@ -44,7 +44,6 @@ public class Inventario : MonoBehaviour
         setarPesoAtual(0);
         foreach (Item item in itens) //Ativando os itens que tem quantidade no inventario e desativando os que nao tem quantidade
         {
-            item.AtualizarNomeId();
             if (item.quantidade > 0)
             {
                 setarPesoAtual(pesoAtual + item.peso);
@@ -121,9 +120,9 @@ public class Inventario : MonoBehaviour
     {
         foreach (Item item in itens)
         {
-            if (item.nomeId.Equals(itemResponse.nomeId))
+            if (item.nomeItem.Equals(itemResponse.nomeItem))
             {
-                if (itemNaMao != null && itemResponse.nomeId.Equals(itemNaMao.nomeId))
+                if (itemNaMao != null && itemResponse.nomeItem.Equals(itemNaMao.nomeItem))
                 {
                     itemNaMao = null;
                 }
@@ -132,6 +131,19 @@ public class Inventario : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void RemoverItemDaMao()
+    {
+        if (itemNaMao == null) return;
+        foreach (Item item in itens)
+        {
+            if (item.nomeItem.Equals(itemNaMao.nomeItem))
+            {
+                item.diminuirQuantidade(1);
+                return;
+            }
+        }
     }
 
 
