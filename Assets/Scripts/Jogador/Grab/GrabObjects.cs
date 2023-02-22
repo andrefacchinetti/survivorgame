@@ -8,7 +8,7 @@ using Photon.Realtime;
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
     
-    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo";
+    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -37,29 +37,24 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (!playerMovimentController.canMove || inventario.itemNaMao != null || inventario.canvasInventario.activeSelf) return;
+        if (!playerMovimentController.canMove || inventario.canvasInventario.activeSelf) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
 
         if (Physics.Raycast(ray, out RaycastHit hit, maxDistanceObjeto))
         {
             possibleGrab = false;
-            if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop) //Precisa estar sem nenhum item na mao pra pegar
+            possibleInteraction = false;
+            if (inventario.itemNaMao == null && (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop)) //Precisa estar sem nenhum item na mao pra pegar
             {
                 if (Input.GetMouseButtonDown(1)) //Segura objeto
                 {
-                    if (hit.transform.gameObject.GetComponent<PhotonView>().Owner != PhotonNetwork.LocalPlayer)
-                    {
-                        hit.transform.gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
-                    }
+                    transferOwnerPV(hit.transform.gameObject);
                     grabedObj = hit.transform.gameObject;
                 }
                 else if (Input.GetMouseButtonDown(0)) //Pega item do chao
                 {
-                    if (hit.transform.gameObject.GetComponent<PhotonView>().Owner != PhotonNetwork.LocalPlayer)
-                    {
-                        hit.transform.gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
-                    }
+                    transferOwnerPV(hit.transform.gameObject);
                     animator.SetTrigger("pegandoItemChao");
                     ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
                     if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
@@ -69,22 +64,28 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     }
                     else
                     {
-                        //nao foi possivel adicionar ao inventario do jogador
+                        Debug.Log("nao foi possivel adicionar ao inventario do jogador");
                     }
                 }
                 possibleGrab = true;
             }
-            else if ((hit.transform.tag == tagEnemy && hit.transform.GetComponent<EnemyStats>().isDead))
+            else if (hit.transform.tag == tagEnemy && hit.transform.GetComponent<EnemyStats>().isDead && inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
             {
-                if (Input.GetKeyDown(KeyCode.E)) //Interagir
+                if (Input.GetMouseButtonDown(0)) //Interagir Dissecar
                 {
-                    if (hit.transform.gameObject.GetComponent<PhotonView>().Owner != PhotonNetwork.LocalPlayer)
-                    {
-                        hit.transform.gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
-                    }
+                    transferOwnerPV(hit.transform.gameObject);
                     animator.SetTrigger("dissecando");
                     playerController.itemsDropsPosDissecar = hit.transform.gameObject.GetComponent<EnemyStats>().dropsItems;
                     playerController.corpoDissecando = hit.transform.gameObject;
+                }
+                possibleInteraction = true;
+            }
+            else if(hit.transform.tag == tagAgua && inventario.itemNaMao == null)
+            {
+                if (Input.GetMouseButtonDown(0)) //Interagir Beber agua
+                {
+                    transferOwnerPV(hit.transform.gameObject);
+                    animator.SetTrigger("bebendoAguaBaixo");
                 }
                 possibleInteraction = true;
             }
@@ -92,6 +93,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else
         {
             possibleGrab = false;
+            possibleInteraction = false;
         }
 
         if (grabedObj != null)
@@ -124,6 +126,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else
         {
             playerMovimentController.pesoGrab = 0;
+        }
+    }
+
+    private void transferOwnerPV(GameObject obj)
+    {
+        if (obj.GetComponent<PhotonView>() != null && obj.GetComponent<PhotonView>().Owner != PhotonNetwork.LocalPlayer)
+        {
+            obj.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
         }
     }
 

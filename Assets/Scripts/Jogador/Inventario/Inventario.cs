@@ -13,8 +13,9 @@ public class Inventario : MonoBehaviour
     [SerializeField] public List<Item> itens = new List<Item>();
     [SerializeField][HideInInspector] public Item itemNaMao;
     [SerializeField] public Hotbar hotbar;
-    [SerializeField] PlayerMovement playerMovement;
-    
+    [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
+    [SerializeField] [HideInInspector] public StatsJogador statsJogador;
+
 
     private void Awake()
     {
@@ -37,6 +38,8 @@ public class Inventario : MonoBehaviour
 
     void Start()
     {
+        playerMovement = GetComponentInParent<PlayerMovement>();
+        statsJogador = GetComponentInParent<StatsJogador>();
         setarQtdItensAtual(0);
         setarPesoAtual(0);
         foreach (Item item in itens) //Ativando os itens que tem quantidade no inventario e desativando os que nao tem quantidade

@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField][HideInInspector] StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando;
+	[SerializeField] [HideInInspector] public Item itemConsumindo;
 	PhotonView PV;
 
 	void Awake()
@@ -104,6 +105,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				animator.SetTrigger(atkName);
 			}
 		}
+		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+        {
+			animator.SetTrigger("comendoEmPe");
+			itemConsumindo = itemResponse;
+		}
 	}
 
 	void GoAtk()
@@ -114,6 +120,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void NotAtk()
 	{
 		isAttacking = false;
+	}
+
+	void AnimEventComeu()
+    {
+		if (itemConsumindo == null) return;
+		itemConsumindo.UsarItem();
+		Debug.Log("comeu: " + itemConsumindo.nomeItem.ToString());
+		itemConsumindo = null;
 	}
 
 	void AnimEventDissecado()
@@ -129,6 +143,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(corpoDissecando);
 		else GameObject.Destroy(corpoDissecando);
 		corpoDissecando = null;
+	}
+
+	void AnimEventBebeuAgua()
+    {
+		Debug.Log("bebeu agua");
+		statsJogador.setarSedeAtual(statsJogador.sedeAtual + 100);
 	}
 
 	public void TakeDamage(float damage)

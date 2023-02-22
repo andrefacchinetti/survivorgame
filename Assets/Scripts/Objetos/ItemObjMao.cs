@@ -6,6 +6,6 @@ public class ItemObjMao : MonoBehaviour
 {
 
     [SerializeField] public Item.NomeItem nomeItem;
-    [SerializeField] public int damage;
+    [SerializeField] public int damage, curaFome, curaSede;
 
 }

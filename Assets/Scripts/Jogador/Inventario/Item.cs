@@ -13,7 +13,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
-    [SerializeField] public GameObject objItemMaoJogador;
+    [SerializeField] public ItemObjMao itemObjMao;
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
 
@@ -171,7 +171,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void DeselecionarItem()
     {
-        if(objItemMaoJogador != null) objItemMaoJogador.SetActive(false);
+        if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
     }
 
     public void SelecionarItem()
@@ -192,9 +192,9 @@ public class Item : MonoBehaviourPunCallbacks
             }
         }
 
-        if (objItemMaoJogador != null)
+        if (itemObjMao != null)
         {
-            objItemMaoJogador.SetActive(true);
+            itemObjMao.gameObject.SetActive(true);
             inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
             inventario.FecharInventario();
         }
@@ -213,6 +213,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if (isConsumivel)
         {
+            aplicarEfeitoConsumivel();
             diminuirQuantidade(1);
         }
         else
@@ -226,6 +227,12 @@ public class Item : MonoBehaviourPunCallbacks
         }
     }
 
+    private void aplicarEfeitoConsumivel()
+    {
+        inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + itemObjMao.curaSede);
+        inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + itemObjMao.curaFome);
+    }
+
     public void diminuirQuantidade(int valorQtd)
     {
         inventario.setarPesoAtual(inventario.pesoAtual - peso * valorQtd);
@@ -235,7 +242,7 @@ public class Item : MonoBehaviourPunCallbacks
             quantidade = 0;
             inventario.setarQtdItensAtual(inventario.qtdItensAtual - 1);
             desativarOuAtivarUsoItemDaHotbar(true);
-            if (objItemMaoJogador != null) objItemMaoJogador.SetActive(false);
+            if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
         txQuantidade.text = quantidade + "";
