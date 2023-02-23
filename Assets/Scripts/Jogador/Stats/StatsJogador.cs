@@ -36,7 +36,6 @@ public class StatsJogador : MonoBehaviour
         {
             playerController.TakeDamage(10);
         }
-        Debug.Log("Diminuiu fome: "+ fomeAtual + " Sede: "+sedeAtual);
     }
 
 

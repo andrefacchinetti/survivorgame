@@ -19,6 +19,11 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
         PV = GetComponent<PhotonView>();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("bateu2222" + collision.transform.tag);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("bateu"+ other.transform.tag);

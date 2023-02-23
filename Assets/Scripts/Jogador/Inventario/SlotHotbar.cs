@@ -46,6 +46,7 @@ public class SlotHotbar : MonoBehaviour
         hotbar.slotHotbarSelecionada = this;
         hotbar.estaSelecionandoSlotHotbar = true;
         bordaSelecionado.SetActive(true);
+        Debug.Log("slot");
     }
 
 }
