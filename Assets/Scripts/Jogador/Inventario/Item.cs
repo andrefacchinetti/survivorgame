@@ -166,6 +166,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
+        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null));
     }
 
     public void SelecionarItem()
@@ -183,19 +184,20 @@ public class Item : MonoBehaviourPunCallbacks
                 inventario.itemNaMao.DeselecionarItem();
                 return;
             }
-        }
-
-        if (itemObjMao != null)
-        {
-            itemObjMao.gameObject.SetActive(true);
+            else
+            {
+                inventario.itemNaMao.DeselecionarItem();
+            }
         }
 
         if(quantidade > 0)
         {
             inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
+            if (itemObjMao != null) itemObjMao.gameObject.SetActive(true);
             inventario.FecharInventario();
         }
 
+        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null &&  inventario.itemNaMao.itemObjMao != null));
     }
 
     public void DroparItem()
