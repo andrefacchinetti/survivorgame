@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField][HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo;
+	[SerializeField] public GameObject acendedorFogueira;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;
 	PhotonView PV;
 
@@ -62,7 +63,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				inventario.itemNaMao.DroparItem();
 			}
 		}
+		verificarAnimacoes();
+	}
 
+	private void verificarAnimacoes()
+    {
+		bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("acendendoFogueira");
+		if (!atk) acendedorFogueira.SetActive(false);
 	}
 
 	private void ativarAnimacaoPorTipoItem(Item itemResponse)
@@ -185,6 +192,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (fogueiraAcendendo == null) return;
 		fogueiraAcendendo.GetComponent<Fogueira>().AcenderFogueira();
 		fogueiraAcendendo = null;
+	}
+
+	void AnimEventApagandoFogueira()
+	{
+		if (fogueiraAcendendo == null) return;
+		fogueiraAcendendo.GetComponent<Fogueira>().ApagarFogueira();
+		fogueiraAcendendo = null;
+	}
+
+	void AnimEventApareceAcendedorFogueira()
+    {
+		acendedorFogueira.SetActive(true);
+    }
+
+	void AnimEventDesapareceAcendedorFogueira()
+	{
+		acendedorFogueira.SetActive(false);
 	}
 
 

@@ -52,8 +52,15 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 {
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        animator.SetTrigger("acendendoFogueira");
                         playerController.fogueiraAcendendo = hit.transform.gameObject;
+                        if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
+                        {
+                            animator.SetTrigger("acendendoFogueira");
+                        }
+                        else
+                        {
+                            animator.SetTrigger("apagandoFogueira");
+                        }
                     }
                     possibleInteraction = true;
                 }
