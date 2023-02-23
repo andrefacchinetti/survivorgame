@@ -127,10 +127,6 @@ public class Inventario : MonoBehaviour
         {
             if (item.nomeItem.Equals(itemResponse.nomeItem))
             {
-                if (itemNaMao != null && itemResponse.nomeItem.Equals(itemNaMao.nomeItem))
-                {
-                    itemNaMao = null;
-                }
                 item.diminuirQuantidade(quantidadeResponse);
                 return true;
             }

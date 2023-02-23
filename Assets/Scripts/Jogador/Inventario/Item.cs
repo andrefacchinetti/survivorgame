@@ -246,6 +246,7 @@ public class Item : MonoBehaviourPunCallbacks
             gameObject.SetActive(false);
         }
         txQuantidade.text = quantidade + "";
+        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null));
     }
 
     public bool aumentarQuantidade(int quantidadeResponse)
