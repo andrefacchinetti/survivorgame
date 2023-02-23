@@ -140,10 +140,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			anim.SetFloat("horizontalMove", horizontalMove);
 			anim.SetFloat("verticalMove", verticalMove);
 			anim.SetBool("correndo", isRunning);
-			anim.SetBool("isPlayerParado", (horizontalMove < 0.3f && verticalMove < 0.3f) || isRunning);
+			anim.SetBool("isPlayerParado", (horizontalMove == 0 && verticalMove == 0 && !isRunning));
 		}
         else
         {
+			anim.SetBool("isPlayerParado", false);
 			anim.SetBool("correndo", false);
 		}
 

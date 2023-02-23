@@ -135,6 +135,8 @@ public class Item : MonoBehaviourPunCallbacks
         FlechaDeOsso,
         [EnumMember(Value = "Objeto")]
         FlechaDeMetal,
+        [EnumMember(Value = "Objeto")]
+        Fogueira,
 
     }
 

@@ -45,31 +45,45 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             possibleGrab = false;
             possibleInteraction = false;
+            
             if (inventario.itemNaMao == null && (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop)) //Precisa estar sem nenhum item na mao pra pegar
             {
-                if (Input.GetMouseButtonDown(1)) //Segura objeto
+                if (hit.transform.tag == tagItemDrop && hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Fogueira)) //Itens que podem Interagir
                 {
-                    transferOwnerPV(hit.transform.gameObject);
-                    grabedObj = hit.transform.gameObject;
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        animator.SetTrigger("acendendoFogueira");
+                        playerController.fogueiraAcendendo = hit.transform.gameObject;
+                    }
+                    possibleInteraction = true;
                 }
-                else if (Input.GetMouseButtonDown(0)) //Pega item do chao
+                else
                 {
-                    transferOwnerPV(hit.transform.gameObject);
-                    animator.SetTrigger("pegandoItemChao");
-                    ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
-                    if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                    if (Input.GetMouseButtonDown(1)) //Segura objeto
                     {
-                        if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
-                        else GameObject.Destroy(hit.transform.gameObject);
+                        transferOwnerPV(hit.transform.gameObject);
+                        grabedObj = hit.transform.gameObject;
                     }
-                    else
+                    else if (Input.GetMouseButtonDown(0)) //Pega item do chao
                     {
-                        Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                        transferOwnerPV(hit.transform.gameObject);
+                        animator.SetTrigger("pegandoItemChao");
+                        ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
+                        if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                        {
+                            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
+                            else GameObject.Destroy(hit.transform.gameObject);
+                        }
+                        else
+                        {
+                            Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                        }
                     }
+                    possibleGrab = true;
                 }
-                possibleGrab = true;
             }
-            else if (hit.transform.tag == tagEnemy && hit.transform.GetComponent<EnemyStats>().isDead && inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
+            else if (hit.transform.tag == tagEnemy && hit.transform.GetComponent<EnemyStats>().isDead && inventario.itemNaMao != null 
+                && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
             {
                 if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
                 {

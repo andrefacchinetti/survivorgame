@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	private PlayerMovement playerMovement;
 	[SerializeField][HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
-	[SerializeField] [HideInInspector] public GameObject corpoDissecando;
+	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;
 	PhotonView PV;
 
@@ -179,6 +179,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		Debug.Log("bebeu agua");
 		statsJogador.setarSedeAtual(statsJogador.sedeAtual + 100);
 	}
+
+	void AnimEventAcendendoFogueira()
+	{
+		if (fogueiraAcendendo == null) return;
+		fogueiraAcendendo.GetComponent<Fogueira>().AcenderFogueira();
+		fogueiraAcendendo = null;
+	}
+
+
+	//Fim Acoes Animacoes
 
 	public void TakeDamage(float damage)
 	{
