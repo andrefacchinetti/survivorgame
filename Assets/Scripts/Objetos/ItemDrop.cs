@@ -10,6 +10,7 @@ public class ItemDrop : MonoBehaviourPunCallbacks
 
     [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField][HideInInspector] public string nomeId;
+    [SerializeField] public float damageQuandoColide;
 
     private void Awake()
     {

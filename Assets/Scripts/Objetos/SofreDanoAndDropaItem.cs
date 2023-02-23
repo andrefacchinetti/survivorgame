@@ -8,7 +8,7 @@ using System;
 public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
 {
 
-    [SerializeField] public int vida = 100;
+    [SerializeField] public float vida = 100;
     [SerializeField] public List<Item.NomeItem> nomeItemFerramentasRecomendadas;
     [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
@@ -19,12 +19,14 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
         PV = GetComponent<PhotonView>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
+        Debug.Log("bateu"+ other.transform.tag);
         if (other.transform.tag == "Ferramenta")
         {
+            Debug.Log("bateu");
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
-            int damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
+            float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
             if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))
             {
                 vida -= damage;

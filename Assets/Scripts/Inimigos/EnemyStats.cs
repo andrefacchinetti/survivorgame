@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyStats : MonoBehaviour
 {
 
-    public int vida = 100, damage = 10;
+    public float vida = 100, damage = 10;
     public bool isDead = false;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
@@ -19,7 +19,7 @@ public class EnemyStats : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         vida -= damage;
         Debug.Log("Vida enemy: " + vida);
