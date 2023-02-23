@@ -83,12 +83,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		if (!PV.IsMine)
 			return;
 
-		if (!gameController.isComecou)
-		{
-			gameController.isComecou = true;
-			PV.RPC("RPC_RespawnarPlayer", RpcTarget.All, false);
-		}
-
 		characterController.Move(moveDirection * Time.deltaTime);
 		Move();
 
@@ -102,6 +96,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			anim.SetBool("pulando", false);
 			isPulando = false;
 		}
+
+		if (playerController.isMorto) canMove = false;
 
 	}
 

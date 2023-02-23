@@ -71,7 +71,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
             else if (hit.transform.tag == tagEnemy && hit.transform.GetComponent<EnemyStats>().isDead && inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
             {
-                if (Input.GetMouseButtonDown(0)) //Interagir Dissecar
+                if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     animator.SetTrigger("dissecando");
@@ -82,7 +82,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
             else if(hit.transform.tag == tagAgua && inventario.itemNaMao == null)
             {
-                if (Input.GetMouseButtonDown(0)) //Interagir Beber agua
+                if (Input.GetKeyDown(KeyCode.E)) //Interagir BeberAgua
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     animator.SetTrigger("bebendoAguaBaixo");

@@ -9,7 +9,7 @@ public class GrudarEmSuperficie : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if(collision.gameObject.tag != "Player")
+        if (gameObjectPai.GetComponent<Rigidbody>().velocity.magnitude > 1f)
         {
             gameObjectPai.GetComponent<Rigidbody>().isKinematic = true;
             gameObjectPai.transform.SetParent(collision.gameObject.transform);

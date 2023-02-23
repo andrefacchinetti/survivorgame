@@ -8,6 +8,8 @@ public class Hotbar : MonoBehaviour
     [SerializeField] public List<SlotHotbar> slots = new List<SlotHotbar>();
     [SerializeField] [HideInInspector] public SlotHotbar slotHotbarSelecionada;
     [HideInInspector] public bool estaSelecionandoSlotHotbar = false;
+    [SerializeField] [HideInInspector] Item ultimoItemNaMao;
+    [SerializeField] Inventario inventario;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,20 @@ public class Hotbar : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.CapsLock))
+        {
+            if (inventario.itemNaMao != null)
+            {
+                ultimoItemNaMao = inventario.itemNaMao;
+                inventario.itemNaMao.DeselecionarItem();
+            }
+            else
+            {
+                if(ultimoItemNaMao != null) ultimoItemNaMao.SelecionarItem();
+            }
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             if(slots[0].item != null && slots[0].item.quantidade > 0) slots[0].item.SelecionarItem();

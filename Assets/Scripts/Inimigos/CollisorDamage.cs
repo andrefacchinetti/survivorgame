@@ -46,8 +46,11 @@ public class CollisorDamage : MonoBehaviour
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeOsso)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeMetal))
             {
-                float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
-                enemyStats.TakeDamage(damage);
+                if(other.transform.GetComponent<Rigidbody>().velocity.magnitude > 1f)
+                {
+                    float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
+                    enemyStats.TakeDamage(damage);
+                }
             }
         }
 

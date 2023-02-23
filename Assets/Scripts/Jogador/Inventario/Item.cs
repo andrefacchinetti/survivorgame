@@ -165,6 +165,7 @@ public class Item : MonoBehaviourPunCallbacks
     public void DeselecionarItem()
     {
         if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
+        inventario.itemNaMao = null;
     }
 
     public void SelecionarItem()
@@ -177,10 +178,9 @@ public class Item : MonoBehaviourPunCallbacks
 
         if (inventario.itemNaMao != null)
         {
-            inventario.itemNaMao.DeselecionarItem();
             if (inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
             {
-                inventario.itemNaMao = null;
+                inventario.itemNaMao.DeselecionarItem();
                 return;
             }
         }
@@ -188,10 +188,14 @@ public class Item : MonoBehaviourPunCallbacks
         if (itemObjMao != null)
         {
             itemObjMao.gameObject.SetActive(true);
+        }
+
+        if(quantidade > 0)
+        {
             inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
             inventario.FecharInventario();
         }
-        
+
     }
 
     public void DroparItem()

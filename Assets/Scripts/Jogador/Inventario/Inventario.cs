@@ -66,6 +66,10 @@ public class Inventario : MonoBehaviour
         {
             ToggleInventario();
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            FecharInventario();
+        }
     }
 
     public void ToggleInventario()
@@ -90,6 +94,7 @@ public class Inventario : MonoBehaviour
 
     public void AbrirInventario()
     {
+        if (!playerMovement.canMove) return;
         canvasInventario.SetActive(true);
         playerMovement.canMove = false;
         Cursor.lockState = CursorLockMode.Confined;

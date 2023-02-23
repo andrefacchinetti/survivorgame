@@ -26,10 +26,8 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("bateu"+ other.transform.tag);
         if (other.transform.tag == "Ferramenta")
         {
-            Debug.Log("bateu");
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
             if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))

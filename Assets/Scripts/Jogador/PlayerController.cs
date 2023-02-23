@@ -46,12 +46,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (!PV.IsMine)
 			return;
 
-		if (!gameController.isComecou)
-		{
-			gameController.isComecou = true;
-			PV.RPC("RPC_RespawnarPlayer", RpcTarget.All, false);
-		}
-
 		if (transform.position.y < -40f) // Die if you fall out of the world
 		{
 			Die();
@@ -100,10 +94,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				}
 			}
 			bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName(atkName);
-			if (!atk)
-			{
-				animator.SetTrigger(atkName);
-			}
+			if (!atk) animator.SetTrigger(atkName);
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
         {
@@ -114,7 +105,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
 			if(itemResponse.nomeItem.Equals(Item.NomeItem.LancaSimples) || itemResponse.nomeItem.Equals(Item.NomeItem.LancaAvancada))
             {
-				animator.SetTrigger("arremessandoLanca");
+				bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("arremessandoLanca");
+				if (!atk) animator.SetTrigger("arremessandoLanca");
 			}
         }
 	}
@@ -159,7 +151,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	}
 
 	// Força do arremesso
-	public float throwForce = 250f;
+	public float throwForce = 300f;
 	private void ArremessarItemNaMao() // Função que arremessa o objeto na direção da câmera
 	{
 		if (inventario.itemNaMao == null) return;
