@@ -179,6 +179,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     playerController.peixeDaVara.SetActive(false);
                     playerController.pescaPescando = hit.transform.gameObject;
                     animator.SetTrigger("pescando");
+                    playerController.animatorVaraDePesca.SetTrigger("pescando");
                 }
                 possibleInteraction = true;
             }

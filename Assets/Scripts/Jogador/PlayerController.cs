@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public bool isMorto = false, isAttacking = false;
 	[SerializeField] public Inventario inventario;
 	[SerializeField] public GrabObjects grabObjects;
-	[SerializeField] Animator animator, animatorVaraDePesca;
+	[SerializeField] public Animator animator, animatorVaraDePesca;
 	private GameController gameController;
 	private PlayerMovement playerMovement;
 	[SerializeField][HideInInspector] public StatsJogador statsJogador;
