@@ -66,10 +66,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		verificarAnimacoes();
 	}
 
-	private void verificarAnimacoes()
+    private void verificarAnimacoes()
     {
-		bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("acendendoFogueira");
-		if (!atk) acendedorFogueira.SetActive(false);
+		bool acendendo = animator.GetCurrentAnimatorStateInfo(0).IsName("AcendendoFogueira");
+		if (!acendendo) acendedorFogueira.SetActive(false);
+		else acendedorFogueira.SetActive(true);
 	}
 
 	private void ativarAnimacaoPorTipoItem(Item itemResponse)
@@ -204,7 +205,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void AnimEventApareceAcendedorFogueira()
     {
 		acendedorFogueira.SetActive(true);
-    }
+		acendedorFogueira.GetComponent<Animator>().Play("default");
+	}
 
 	void AnimEventDesapareceAcendedorFogueira()
 	{
