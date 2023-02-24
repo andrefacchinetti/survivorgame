@@ -46,10 +46,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             possibleGrab = false;
             possibleInteraction = false;
             
-            if ((hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop)) //Precisa estar sem nenhum item na mao pra pegar
+            if ((hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop)) 
             {
-                if (hit.transform.tag == tagItemDrop && hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Fogueira)) //Itens que podem Interagir
-                {
+
+                if (hit.transform.tag == tagItemDrop && hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Fogueira) )
+                { 
                     if(inventario.itemNaMao != null)
                     {
                         if (inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Panela) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Tigela)))
@@ -82,6 +83,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         possibleInteraction = true;
                     }
                 }
+                else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
+                    && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>())
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        Panela panela = hit.transform.GetComponent<ItemDrop>().GetComponent<Panela>();
+                        if (panela.ColocarConsumivelNaPanela(inventario.itemNaMao))
+                        {
+                            inventario.RemoverItemDaMao();
+                        }
+                    }
+                    possibleInteraction = true;
+                }
                 else
                 {
                     if(inventario.itemNaMao == null)
@@ -99,7 +113,24 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                             bool destruirObjetoDaCena = true;
                             if((itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null)
                             {
-                                itemDrop.gameObject.GetComponent<Panela>().fogueira.RetirarPanelaTigela();
+                                Panela panela = itemDrop.gameObject.GetComponent<Panela>();
+                                Item itemNaPanela = panela.ObterConsumivelDaPanela();
+                                if (itemNaPanela != null)
+                                {
+                                    if(inventario.AdicionarItemAoInventario(itemNaPanela.nomeItem, 1))
+                                    {
+                                        panela.RetirarConsumivelDaPanela();
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                                    }
+                                    return;
+                                }
+                                else
+                                {
+                                    panela.fogueira.RetirarPanelaTigela();
+                                }
                                 destruirObjetoDaCena = false;
                             }
                             if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador

@@ -212,6 +212,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void UsarItem() //Usa item qdo aperta o botoa do mouse com o item na mao
     {
+        if (quantidade <= 0) return;
         if (isConsumivel)
         {
             aplicarEfeitoConsumivel();
