@@ -46,47 +46,70 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             possibleGrab = false;
             possibleInteraction = false;
             
-            if (inventario.itemNaMao == null && (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop)) //Precisa estar sem nenhum item na mao pra pegar
+            if ((hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop)) //Precisa estar sem nenhum item na mao pra pegar
             {
                 if (hit.transform.tag == tagItemDrop && hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Fogueira)) //Itens que podem Interagir
                 {
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        playerController.fogueiraAcendendo = hit.transform.gameObject;
-                        if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
+                        if (inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Panela) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Tigela)))
                         {
-                            animator.SetTrigger("acendendoFogueira");
+                            Fogueira fogueira = hit.transform.GetComponent<ItemDrop>().GetComponent<Fogueira>();
+                            if (fogueira.ColocarPanelaTigela(inventario.itemNaMao))
+                            {
+                                inventario.RemoverItemDaMao();
+                            }
                         }
                         else
                         {
-                            animator.SetTrigger("apagandoFogueira");
+                            playerController.fogueiraAcendendo = hit.transform.gameObject;
+                            if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
+                            {
+                                animator.SetTrigger("acendendoFogueira");
+                            }
+                            else
+                            {
+                                animator.SetTrigger("apagandoFogueira");
+                            }
                         }
                     }
                     possibleInteraction = true;
                 }
                 else
                 {
-                    if (Input.GetMouseButtonDown(1)) //Segura objeto
+                    if(inventario.itemNaMao == null)
                     {
-                        transferOwnerPV(hit.transform.gameObject);
-                        grabedObj = hit.transform.gameObject;
-                    }
-                    else if (Input.GetMouseButtonDown(0)) //Pega item do chao
-                    {
-                        transferOwnerPV(hit.transform.gameObject);
-                        animator.SetTrigger("pegandoItemChao");
-                        ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
-                        if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                        if (Input.GetMouseButtonDown(1)) //Segura objeto
                         {
-                            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
-                            else GameObject.Destroy(hit.transform.gameObject);
+                            transferOwnerPV(hit.transform.gameObject);
+                            grabedObj = hit.transform.gameObject;
                         }
-                        else
+                        else if (Input.GetMouseButtonDown(0)) //Pega item do chao
                         {
-                            Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                            transferOwnerPV(hit.transform.gameObject);
+                            animator.SetTrigger("pegandoItemChao");
+                            ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
+                            bool destruirObjetoDaCena = true;
+                            if((itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null)
+                            {
+                                itemDrop.gameObject.GetComponent<Panela>().fogueira.RetirarPanelaTigela();
+                                destruirObjetoDaCena = false;
+                            }
+                            if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                            {
+                                if (destruirObjetoDaCena)
+                                {
+                                    if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
+                                    else GameObject.Destroy(hit.transform.gameObject);
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                            }
                         }
+                        possibleGrab = true;
                     }
-                    possibleGrab = true;
                 }
             }
             else if (hit.transform.tag == tagEnemy && hit.transform.GetComponent<EnemyStats>().isDead && inventario.itemNaMao != null 
