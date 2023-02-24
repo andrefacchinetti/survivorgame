@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	private PlayerMovement playerMovement;
 	[SerializeField][HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
-	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo;
+	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando;
 	[SerializeField] public GameObject acendedorFogueira;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;
 	PhotonView PV;
@@ -211,6 +211,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void AnimEventDesapareceAcendedorFogueira()
 	{
 		acendedorFogueira.SetActive(false);
+	}
+
+	void AnimEventPescou()
+    {
+		Debug.Log("pescou");
+		if (pescaPescando == null) return;
+		inventario.AdicionarItemAoInventario(Item.NomeItem.PeixeCru, 1);
+		pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
 	}
 
 

@@ -171,11 +171,12 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
                 possibleInteraction = true;
             }
-            else if (hit.transform.tag == tagPesca && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.VaraDePesca))
+            else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.VaraDePesca))
             {
                 if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
                 {
                     transferOwnerPV(hit.transform.gameObject);
+                    playerController.pescaPescando = hit.transform.gameObject;
                     animator.SetTrigger("pescando");
                 }
                 possibleInteraction = true;
