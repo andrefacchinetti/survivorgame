@@ -6,7 +6,7 @@ public class Fogueira : MonoBehaviour
 {
 
     [SerializeField] public Fogo fogo;
-    [SerializeField] public Panela panela;
+    [SerializeField] [HideInInspector] public Panela panela;
     [SerializeField] public GameObject slotPanela, slotTigela;
 
     public bool ColocarPanelaTigela(Item item)

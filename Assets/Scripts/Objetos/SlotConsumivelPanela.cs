@@ -5,23 +5,23 @@ using UnityEngine;
 public class SlotConsumivelPanela : MonoBehaviour
 {
 
-    [SerializeField] public Item itemNoSlot;
+    [SerializeField] public Item.NomeItem nomeItemNoSlot;
     [SerializeField] public GameObject slotCarneCrua, slotCarneCozida;
     [SerializeField] public GameObject slotCogumeloCru, slotCogumeloCozido;
     [SerializeField] public GameObject slotPeixeCru, slotPeixeCozido;
 
 
-    public void AtivarSlotPorTipoItem(Item item)
+    public void AtivarSlotPorNomeItem(Item.NomeItem nomeItem)
     {
-        itemNoSlot = item;
-        if (item.nomeItem.Equals(Item.NomeItem.CarneCrua)) slotCarneCrua.SetActive(true);
-        if (item.nomeItem.Equals(Item.NomeItem.CarneCozida)) slotCarneCozida.SetActive(true);
+        nomeItemNoSlot = nomeItem;
+        if (nomeItem.Equals(Item.NomeItem.CarneCrua)) slotCarneCrua.SetActive(true);
+        if (nomeItem.Equals(Item.NomeItem.CarneCozida)) slotCarneCozida.SetActive(true);
 
-        if (item.nomeItem.Equals(Item.NomeItem.CogumeloCru)) slotCogumeloCru.SetActive(true);
-        if (item.nomeItem.Equals(Item.NomeItem.CogumeloCozido)) slotCogumeloCozido.SetActive(true);
+        if (nomeItem.Equals(Item.NomeItem.CogumeloCru)) slotCogumeloCru.SetActive(true);
+        if (nomeItem.Equals(Item.NomeItem.CogumeloCozido)) slotCogumeloCozido.SetActive(true);
 
-        if (item.nomeItem.Equals(Item.NomeItem.PeixeCru)) slotPeixeCru.SetActive(true);
-        if (item.nomeItem.Equals(Item.NomeItem.PeixeCozido)) slotPeixeCozido.SetActive(true);
+        if (nomeItem.Equals(Item.NomeItem.PeixeCru)) slotPeixeCru.SetActive(true);
+        if (nomeItem.Equals(Item.NomeItem.PeixeCozido)) slotPeixeCozido.SetActive(true);
     }
 
     public void DesativarSlots()
@@ -32,7 +32,7 @@ public class SlotConsumivelPanela : MonoBehaviour
         slotCogumeloCozido.SetActive(false);
         slotPeixeCru.SetActive(false);
         slotPeixeCozido.SetActive(false);
-        itemNoSlot = null;
+        nomeItemNoSlot = Item.NomeItem.Nenhum;
     }
 
 }

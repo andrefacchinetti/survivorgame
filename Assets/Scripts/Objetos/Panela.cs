@@ -14,7 +14,7 @@ public class Panela : MonoBehaviour
         {
             if (!slot.gameObject.activeSelf)
             {
-                slot.AtivarSlotPorTipoItem(item);
+                slot.AtivarSlotPorNomeItem(item.nomeItem);
                 slot.gameObject.SetActive(true);
                 return true;
             }
@@ -36,16 +36,16 @@ public class Panela : MonoBehaviour
         return false;
     }
 
-    public Item ObterConsumivelDaPanela()
+    public Item.NomeItem ObterConsumivelDaPanela()
     {
         foreach (SlotConsumivelPanela slot in slotsConsumiveis)
         {
             if (slot.gameObject.activeSelf)
             {
-                return slot.itemNoSlot;
+                return slot.nomeItemNoSlot;
             }
         }
-        return null;
+        return Item.NomeItem.Nenhum;
     }
 
 }

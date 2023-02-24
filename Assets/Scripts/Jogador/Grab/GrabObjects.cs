@@ -114,10 +114,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                             if((itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null)
                             {
                                 Panela panela = itemDrop.gameObject.GetComponent<Panela>();
-                                Item itemNaPanela = panela.ObterConsumivelDaPanela();
-                                if (itemNaPanela != null)
+                                Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
+                                if (!itemNaPanela.Equals(Item.NomeItem.Nenhum))
                                 {
-                                    if(inventario.AdicionarItemAoInventario(itemNaPanela.nomeItem, 1))
+                                    if(inventario.AdicionarItemAoInventario(itemNaPanela, 1))
                                     {
                                         panela.RetirarConsumivelDaPanela();
                                     }
