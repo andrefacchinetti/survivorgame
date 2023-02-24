@@ -50,17 +50,24 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 if (hit.transform.tag == tagItemDrop && hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Fogueira)) //Itens que podem Interagir
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if(inventario.itemNaMao != null)
                     {
                         if (inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Panela) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Tigela)))
                         {
-                            Fogueira fogueira = hit.transform.GetComponent<ItemDrop>().GetComponent<Fogueira>();
-                            if (fogueira.ColocarPanelaTigela(inventario.itemNaMao))
+                            if (Input.GetKeyDown(KeyCode.E))
                             {
-                                inventario.RemoverItemDaMao();
+                                Fogueira fogueira = hit.transform.GetComponent<ItemDrop>().GetComponent<Fogueira>();
+                                if (fogueira.ColocarPanelaTigela(inventario.itemNaMao))
+                                {
+                                    inventario.RemoverItemDaMao();
+                                }
                             }
+                            possibleInteraction = true;
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (Input.GetKeyDown(KeyCode.E))
                         {
                             playerController.fogueiraAcendendo = hit.transform.gameObject;
                             if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
@@ -72,8 +79,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                                 animator.SetTrigger("apagandoFogueira");
                             }
                         }
+                        possibleInteraction = true;
                     }
-                    possibleInteraction = true;
                 }
                 else
                 {
