@@ -287,7 +287,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			isStartou = true;
 			PhotonNetwork.CurrentRoom.IsVisible = false;
 			PhotonNetwork.CurrentRoom.IsOpen = false;
-			PhotonNetwork.LoadLevel("Game0");
+			PhotonNetwork.LoadLevel("Game1");
 		}
 	}
 
