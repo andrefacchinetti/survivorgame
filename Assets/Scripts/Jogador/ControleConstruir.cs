@@ -20,6 +20,11 @@ public class ControleConstruir : MonoBehaviour
         {
             ToggleModoConstrucao();
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (tipoConstrucao.Equals(Construcao.TipoConstrucao.chao)) tipoConstrucao = Construcao.TipoConstrucao.parede;
+            else if (tipoConstrucao.Equals(Construcao.TipoConstrucao.parede)) tipoConstrucao = Construcao.TipoConstrucao.chao;
+        }
         if (isAtivo)
         {
             Debug.DrawRay(transform.position, transform.forward * distanciaMax, Color.red);
@@ -37,7 +42,6 @@ public class ControleConstruir : MonoBehaviour
             if(Input.GetButton("Rotacionar")){
                 if(isConectado && Input.GetButtonDown("Rotacionar")){
                     rotacao+=90f;
-                    Debug.Log("oi");
                 }
                 else{
                     rotacao+=velRotacao;
