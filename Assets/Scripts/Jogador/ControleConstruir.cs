@@ -5,30 +5,17 @@ using System.Collections.Generic;
 public class ControleConstruir : MonoBehaviour
 {
     public bool isAtivo = false, podeJuntar, isConectado;
-    public float distanciaMax,mouseX,mouseY,sensibilidade, rotacao, velRotacao;
+    public float distanciaMax, rotacao, velRotacao;
     public GameObject objeto;
     public GameObject constructionUI;
-    [SerializeField]
-    public GameObject[] construcoesPrefab;
     public Construcao construcao;
     public Construcao.TipoConstrucao tipoConstrucao;
     public Mesh meshObjeto;
     [SerializeField]
     public List<Construcao.conStruct> conStructs;
  
-
-
-    void Start(){
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
     
     void Update(){
-        //Movimentação da camera
-        mouseX+=Input.GetAxis("Mouse X") * sensibilidade;
-        mouseY=Mathf.Clamp(mouseY -(Input.GetAxis("Mouse Y") * sensibilidade), -90, 90);
-        transform.eulerAngles = new Vector3(mouseY,mouseX,0);
-        //
         if (Input.GetKeyDown(KeyCode.C))
         {
             ToggleModoConstrucao();
