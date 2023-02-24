@@ -28,7 +28,7 @@ public class SofreDanoAndDropaItem : MonoBehaviourPunCallbacks
     {
         if (other.transform.tag == "Ferramenta")
         {
-            if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
+            if (!other.transform.gameObject.GetComponentInParent<PlayerController>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
             if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))
             {
