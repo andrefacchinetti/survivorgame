@@ -198,6 +198,7 @@ public class Item : MonoBehaviourPunCallbacks
         {
             inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
             if (itemObjMao != null) itemObjMao.gameObject.SetActive(true);
+            if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
             inventario.FecharInventario();
         }
 

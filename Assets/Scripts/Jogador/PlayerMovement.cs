@@ -41,8 +41,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	public CursorMode cursorMode = CursorMode.Auto;
 	public Vector2 hotSpot = Vector2.zero;
 
-	private GameController gameController;
-	private PlayerController playerController;
+	public GameController gameController;
+	public PlayerController playerController;
 
 
 

@@ -176,6 +176,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
                 {
                     transferOwnerPV(hit.transform.gameObject);
+                    playerController.peixeDaVara.SetActive(false);
                     playerController.pescaPescando = hit.transform.gameObject;
                     animator.SetTrigger("pescando");
                 }

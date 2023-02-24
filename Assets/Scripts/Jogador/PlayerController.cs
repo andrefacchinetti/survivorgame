@@ -16,13 +16,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public bool isMorto = false, isAttacking = false;
 	[SerializeField] public Inventario inventario;
 	[SerializeField] public GrabObjects grabObjects;
-	private Animator animator;
+	[SerializeField] Animator animator, animatorVaraDePesca;
 	private GameController gameController;
 	private PlayerMovement playerMovement;
 	[SerializeField][HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando;
-	[SerializeField] public GameObject acendedorFogueira;
+	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;
 	PhotonView PV;
 
@@ -213,10 +213,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		acendedorFogueira.SetActive(false);
 	}
 
-	void AnimEventPescou()
+	void AnimEventAtivarPegandoPeixe()
     {
-		Debug.Log("pescou");
+		Debug.Log("pegando peixe");
+		peixeDaVara.SetActive(true);
+		animatorVaraDePesca.SetTrigger("pegandoPeixe");
+    }
+	public void EventPescou()
+	{
+		Debug.Log("event pescou");
 		if (pescaPescando == null) return;
+		peixeDaVara.SetActive(false);
 		inventario.AdicionarItemAoInventario(Item.NomeItem.PeixeCru, 1);
 		pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
 	}
