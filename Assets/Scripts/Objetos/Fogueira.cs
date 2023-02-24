@@ -19,7 +19,7 @@ public class Fogueira : MonoBehaviour
         }
         if (item.nomeItem.Equals(Item.NomeItem.Tigela))
         {
-            slotPanela.SetActive(true);
+            slotTigela.SetActive(true);
             panela = slotTigela.GetComponent<Panela>();
         }
         return true;

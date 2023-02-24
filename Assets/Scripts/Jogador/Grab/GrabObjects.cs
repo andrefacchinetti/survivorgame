@@ -8,7 +8,7 @@ using Photon.Realtime;
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
     
-    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua";
+    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -168,6 +168,15 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     animator.SetTrigger("bebendoAguaBaixo");
+                }
+                possibleInteraction = true;
+            }
+            else if (hit.transform.tag == tagPesca && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.VaraDePesca))
+            {
+                if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
+                {
+                    transferOwnerPV(hit.transform.gameObject);
+                    animator.SetTrigger("pescando");
                 }
                 possibleInteraction = true;
             }
