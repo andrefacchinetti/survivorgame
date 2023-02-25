@@ -116,7 +116,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("arremessandoLanca");
 				if (!atk) animator.SetTrigger("arremessandoLanca");
 			}
-        }
+			else if (itemResponse.nomeItem.Equals(Item.NomeItem.ArcoSimples) || itemResponse.nomeItem.Equals(Item.NomeItem.ArcoAvancado))
+			{
+				bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha");
+				if (!atk) animator.SetTrigger("usandoArcoFlecha");
+			}
+		}
 	}
 
 	void GoAtk()
@@ -227,6 +232,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		inventario.AdicionarItemAoInventario(Item.NomeItem.PeixeCru, 1);
 		pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
 	}
+
+	void AnimEventTiroArcoFlecha()
+    {
+		Debug.Log("tiro flecha");
+    }
 
 
 	//Fim Acoes Animacoes
