@@ -122,7 +122,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			else if (itemResponse.nomeItem.Equals(Item.NomeItem.ArcoSimples) || itemResponse.nomeItem.Equals(Item.NomeItem.ArcoAvancado))
 			{
 				bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha");
-				if (!atk) animator.SetTrigger("usandoArcoFlecha");
+				
+				if (!atk)
+				{
+					Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
+					if (flechaNaAljava != null)
+                    {
+						itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco(flechaNaAljava);
+					}
+					animator.SetTrigger("usandoArcoFlecha");
+				}
 			}
 		}
 	}

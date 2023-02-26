@@ -5,6 +5,7 @@ using UnityEngine;
 public class Armaduras : MonoBehaviour
 {
 
+    [SerializeField] public Inventario inventario;
     [SerializeField] public List<ItemArmadura> slotsItemArmadura;
     [SerializeField] [HideInInspector] public ItemArmadura slotItemArmaduraSelecionada;
     [SerializeField] public ItemArmadura slotAljava;

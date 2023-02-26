@@ -258,11 +258,22 @@ public class Item : MonoBehaviourPunCallbacks
         if (quantidade <= 0)
         {
             quantidade = 0;
+            if (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<TipoFlechaNoArco>() != null)
+            {
+                inventario.itemNaMao.itemObjMao.GetComponent<TipoFlechaNoArco>().DesativarTipoFlechaNoArco();
+            }
             inventario.setarQtdItensAtual(inventario.qtdItensAtual - 1);
             desativarOuAtivarUsoItemDaHotbar(true);
-            if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
-            inventario.itemNaMao = null;
+            if(inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
+            {
+                if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
+                inventario.itemNaMao = null;
+            }
             gameObject.SetActive(false);
+        }
+        if (armaduras.slotAljava.item != null && nomeItem.Equals(armaduras.slotAljava.item.nomeItem))
+        {
+            armaduras.slotAljava.SetupItemNoSlot(this);
         }
         txQuantidade.text = quantidade + "";
         inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null));

@@ -49,7 +49,7 @@ public class ItemArmadura : MonoBehaviour
 
     }
 
-    private void SetupItemNoSlot(Item itemResponse)
+    public void SetupItemNoSlot(Item itemResponse)
     {
         item = itemResponse;
         if(itemResponse == null)
