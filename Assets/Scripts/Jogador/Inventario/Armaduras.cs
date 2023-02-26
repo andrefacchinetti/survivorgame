@@ -1,0 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Armaduras : MonoBehaviour
+{
+
+    [SerializeField] public List<ItemArmadura> slotsItemArmadura;
+    [SerializeField] public ItemArmadura slotItemArmaduraSelecionada;
+    [SerializeField] public bool estaSelecionandoSlotArmadura;
+
+    public void SelecionouItemParaSlotArmadura(Item item)
+    {
+        if (!slotItemArmaduraSelecionada.ColocarItemNoSlot(item))
+        {
+            Debug.Log("O item não pertence a essa categoria de slot");
+        }
+        estaSelecionandoSlotArmadura = false;
+    }
+
+}

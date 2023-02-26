@@ -13,18 +13,35 @@ public class ItemArmadura : MonoBehaviour
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public Texture texturaInvisivel;
+    [SerializeField] public GameObject bordaSelecionado;
+    [SerializeField] public Armaduras armaduras;
 
 
-    public void ColocarItemNoSlot(Item itemResponse)
+    public void SelecionarSlotArmadura()
     {
-        foreach(Item.NomeItem nomeItem in itensPermitidosNoSlot)
+        foreach (ItemArmadura slot in armaduras.slotsItemArmadura)
         {
-            if (nomeItem.Equals(item.nomeItem))
+            slot.bordaSelecionado.SetActive(false);
+        }
+        armaduras.slotItemArmaduraSelecionada = this;
+        armaduras.estaSelecionandoSlotArmadura = true;
+        bordaSelecionado.SetActive(true);
+    }
+
+    public bool ColocarItemNoSlot(Item itemResponse)
+    {
+        bordaSelecionado.SetActive(false);
+        armaduras.slotItemArmaduraSelecionada = null;
+        armaduras.estaSelecionandoSlotArmadura = false;
+        foreach (Item.NomeItem nomeItem in itensPermitidosNoSlot)
+        {
+            if (nomeItem.Equals(itemResponse.nomeItem))
             {
                 SetupItemNoSlot(itemResponse);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public void RetirarItemDoSlot()

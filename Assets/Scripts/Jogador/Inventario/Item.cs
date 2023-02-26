@@ -15,6 +15,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public ItemObjMao itemObjMao;
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
+    [SerializeField] public Armaduras armaduras;
 
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
@@ -178,6 +179,11 @@ public class Item : MonoBehaviourPunCallbacks
         if (hotbar.estaSelecionandoSlotHotbar)
         {
             hotbar.SelecionouItemParaSlotHotbar(this);
+            return;
+        }
+        if (armaduras.estaSelecionandoSlotArmadura)
+        {
+            armaduras.SelecionouItemParaSlotArmadura(this);
             return;
         }
 
