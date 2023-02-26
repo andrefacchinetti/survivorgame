@@ -74,6 +74,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		bool acendendo = animator.GetCurrentAnimatorStateInfo(0).IsName("AcendendoFogueira");
 		if (!acendendo) acendedorFogueira.SetActive(false);
 		else acendedorFogueira.SetActive(true);
+
+		if(inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.ArcoSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.ArcoAvancado)))
+        {
+			animator.SetBool("segurandoArcoFlecha", true);
+        }
+        else
+        {
+			animator.SetBool("segurandoArcoFlecha", false);
+		}
 	}
 
 	private void ativarAnimacaoPorTipoItem(Item itemResponse)
