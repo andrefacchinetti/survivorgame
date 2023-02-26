@@ -15,15 +15,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	//stats
 	[SerializeField] public bool isMorto = false, isAttacking = false;
 	[SerializeField] public Inventario inventario;
+	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
 	[SerializeField] public Animator animator, animatorVaraDePesca;
-	private GameController gameController;
-	private PlayerMovement playerMovement;
+	
 	[SerializeField][HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando;
-	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;
+	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
+	private GameController gameController;
+	private PlayerMovement playerMovement;
+
 	PhotonView PV;
 
 	void Awake()
@@ -252,12 +255,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			Vector3 direction = hit.point - playerMovement.pivotTiroBase.transform.position;
 			direction.Normalize();
 
-			string nomePrefab = inventario.itemNaMao.nomeItem.GetTipoItemEnum() + "/" + inventario.itemNaMao.nomeItem.ToString();
+			Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
+			if (flechaNaAljava == null || flechaNaAljava.quantidade <= 0) return; // NAO TEM FLECHA
+			string nomePrefab = flechaNaAljava.nomeItem.GetTipoItemEnum() + "/" + flechaNaAljava.nomeItem.ToString();
 			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
 			// Aplica a força na direção calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
-			//REMOVER ITEM DA MAO
-			inventario.RemoverItemDaMao();
+			//REMOVER ITEM DO INVENTARIO
+			inventario.RemoverItemDoInventario(flechaNaAljava, 1);
 		}
 	}
 

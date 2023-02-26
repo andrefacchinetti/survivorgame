@@ -121,17 +121,9 @@ public class Inventario : MonoBehaviour
         return false;
     }
 
-    public bool RemoverItemDoInventario(Item itemResponse, int quantidadeResponse)
+    public void RemoverItemDoInventario(Item itemResponse, int quantidadeResponse)
     {
-        foreach (Item item in itens)
-        {
-            if (item.nomeItem.Equals(itemResponse.nomeItem))
-            {
-                item.diminuirQuantidade(quantidadeResponse);
-                return true;
-            }
-        }
-        return false;
+        itemResponse.diminuirQuantidade(quantidadeResponse);
     }
 
     public void RemoverItemDaMao()
