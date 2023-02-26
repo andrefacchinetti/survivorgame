@@ -226,14 +226,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		Debug.Log("pegando peixe");
 		peixeDaVara.SetActive(true);
 		animatorVaraDePesca.SetTrigger("pegandoPeixe");
-    }
+		pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
+	}
 	public void EventPescou()
 	{
 		Debug.Log("event pescou");
 		if (pescaPescando == null) return;
 		peixeDaVara.SetActive(false);
 		inventario.AdicionarItemAoInventario(Item.NomeItem.PeixeCru, 1);
-		pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
 	}
 
 	void AnimEventTiroArcoFlecha()

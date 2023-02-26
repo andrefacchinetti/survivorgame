@@ -171,7 +171,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
-        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null));
+        inventario.playerMovement.anim.SetBool("isPlayerArmado", false);
     }
 
     public void SelecionarItem()
@@ -202,13 +202,20 @@ public class Item : MonoBehaviourPunCallbacks
 
         if(quantidade > 0)
         {
-            inventario.itemNaMao = this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum) ? null : this;
-            if (itemObjMao != null) itemObjMao.gameObject.SetActive(true);
-            if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
-            inventario.FecharInventario();
+            if (itemObjMao != null)
+            {
+                inventario.itemNaMao = this;
+                itemObjMao.gameObject.SetActive(true);
+                if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
+                inventario.FecharInventario();
+            }
+            else
+            {
+                if (nomeItem.Equals(NomeItem.Nenhum)) inventario.FecharInventario();
+            }
         }
 
-        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null &&  inventario.itemNaMao.itemObjMao != null));
+        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null));
     }
 
     public void DroparItem()
