@@ -236,8 +236,30 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void AnimEventTiroArcoFlecha()
     {
 		Debug.Log("tiro flecha");
-    }
+		TiroArcoFlecha();
+	}
 
+	private void TiroArcoFlecha() // Função que arremessa o objeto na direção da câmera
+	{
+		if (inventario.itemNaMao == null) return;
+		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
+		Ray ray = new Ray(playerMovement.pivotTiroBase.transform.position, playerMovement.pivotTiroBase.transform.forward);
+		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
+		RaycastHit hit;
+		// Se o ray atingir alguma superfície, calcula a direção do arremesso
+		if (Physics.Raycast(ray, out hit))
+		{
+			Vector3 direction = hit.point - playerMovement.pivotTiroBase.transform.position;
+			direction.Normalize();
+
+			string nomePrefab = inventario.itemNaMao.nomeItem.GetTipoItemEnum() + "/" + inventario.itemNaMao.nomeItem.ToString();
+			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
+			// Aplica a força na direção calculada
+			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
+			//REMOVER ITEM DA MAO
+			inventario.RemoverItemDaMao();
+		}
+	}
 
 	//Fim Acoes Animacoes
 
