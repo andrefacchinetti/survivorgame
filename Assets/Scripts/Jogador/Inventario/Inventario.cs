@@ -121,6 +121,18 @@ public class Inventario : MonoBehaviour
         return false;
     }
 
+    public void RemoverItemDoInventarioPorNome(Item.NomeItem nomeItemResponse, int quantidadeResponse)
+    {
+        foreach (Item item in itens)
+        {
+            if (item.nomeItem.Equals(nomeItemResponse))
+            {
+                item.diminuirQuantidade(quantidadeResponse);
+                return;
+            }
+        }
+    }
+
     public void RemoverItemDoInventario(Item itemResponse, int quantidadeResponse)
     {
         itemResponse.diminuirQuantidade(quantidadeResponse);
@@ -139,9 +151,9 @@ public class Inventario : MonoBehaviour
         }
     }
 
-    public bool VerificarQtdItem(Item itemResponse, int quantidade){
+    public bool VerificarQtdItem(Item.NomeItem nomeItemResponse, int quantidade){
         foreach(Item item in itens){
-            if(item == itemResponse && item.quantidade>= quantidade){
+            if(item.nomeItem == nomeItemResponse && item.quantidade >= quantidade){
                 return true;
             }
         }

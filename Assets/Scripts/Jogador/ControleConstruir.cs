@@ -56,7 +56,7 @@ public class ControleConstruir : MonoBehaviour
             if(Input.GetButtonDown("Fire1")){
                 if(inventario.VerificarQtdItem(construcao.material,construcao.custo)){
                     Instantiate(construcao.gameObject, objeto.transform.position, objeto.transform.rotation);
-                    inventario.RemoverItemDoInventario(construcao.material,construcao.custo);
+                    inventario.RemoverItemDoInventarioPorNome(construcao.material, construcao.custo);
                 }
                 
             }
