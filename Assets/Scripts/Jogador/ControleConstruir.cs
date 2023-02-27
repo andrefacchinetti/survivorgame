@@ -133,8 +133,8 @@ public class ControleConstruir : MonoBehaviour
         
     }
 
-    public bool VerificarSePodeConstruir(){
+    /* public bool VerificarSePodeConstruir(){
         
-    }
+    } */
 
 }

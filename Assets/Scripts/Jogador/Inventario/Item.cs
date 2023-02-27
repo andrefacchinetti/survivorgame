@@ -223,7 +223,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum)) return;
         string nomePrefab = this.nomeItem.GetTipoItemEnum() + "/"+ this.nomeItem.ToString();
         ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
-        inventario.RemoverItemDoInventario(this.nomeItem, 1); //TODO: implementar opcao de dropar itens em quantidade
+        inventario.RemoverItemDoInventario(this, 1); //TODO: implementar opcao de dropar itens em quantidade
     }
 
     public void UsarItem() //Usa item qdo aperta o botoa do mouse com o item na mao
