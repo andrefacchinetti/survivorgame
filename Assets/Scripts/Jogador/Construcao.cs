@@ -9,6 +9,7 @@ public class Construcao : MonoBehaviour
     public float altura;
     public bool podeJuntar;
     public LayerMask layerMask;
+    public Item.NomeItem material;
     [Serializable]
     public struct conStruct{
         public Construcao c1;

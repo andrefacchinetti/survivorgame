@@ -13,12 +13,16 @@ public class ControleConstruir : MonoBehaviour
     public Mesh meshObjeto;
     [SerializeField]
     public List<Construcao.conStruct> conStructs;
+    public Inventario inventario;
+    public Material materialPermitido, materialNegado;
+    
  
     
     void Update(){
-        if (Input.GetKeyDown(KeyCode.C))
+        if(Input.GetButtonDown("Cancel")) ToggleModoConstrucao(false);
+        if (Input.GetButtonDown("Construir"))
         {
-            ToggleModoConstrucao();
+            ToggleModoConstrucao(!isAtivo);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -27,6 +31,7 @@ public class ControleConstruir : MonoBehaviour
         }
         if (isAtivo)
         {
+            objeto.SetActive(true);
             Debug.DrawRay(transform.position, transform.forward * distanciaMax, Color.red);
             if(construcao == null || construcao.tipoConstrucaoEnum != tipoConstrucao){
                 foreach(Construcao.conStruct c in conStructs){
@@ -49,22 +54,29 @@ public class ControleConstruir : MonoBehaviour
                 rotacao = rotacao%360;
             }
             if(Input.GetButtonDown("Fire1")){
+                if(inventario.VerificarQtdItem(construcao.material,construcao.custo)){
+                    Instantiate(construcao.gameObject, objeto.transform.position, objeto.transform.rotation);
+                    inventario.RemoverItemDoInventario(construcao.material,construcao.custo);
+                }
                 
-                Instantiate(construcao.gameObject,objeto.transform.position,objeto.transform.rotation);
             }
+        }
+        else{
+            objeto.SetActive(false);
         }
     }
 
-    private void ToggleModoConstrucao()
+    private void ToggleModoConstrucao(bool toggle)
     {
-        constructionUI.SetActive(!constructionUI.activeSelf);
-        isAtivo = !isAtivo;
+        constructionUI.SetActive(toggle);
+        isAtivo = toggle;
     }
 
     public void LocalConstrucao()
     {
         Ray r = new Ray(transform.position, transform.forward);
         RaycastHit hit;
+        RaycastHit[] hits;
         isConectado = false;
         if (Physics.Raycast(r, out hit, distanciaMax, construcao.layerMask))
         {
@@ -97,10 +109,10 @@ public class ControleConstruir : MonoBehaviour
 
             Ray r2 = new Ray(new Vector3(r.GetPoint(distanciaMax).x, r.GetPoint(distanciaMax).y + 100f, r.GetPoint(distanciaMax).z),new Vector3(0f,-1f,0f));
             Debug.DrawRay(r2.origin,r2.direction,Color.blue);
-            if(Physics.Raycast(r2, out hit, Mathf.Infinity,construcao.layerMask)){
+            hits = Physics.RaycastAll(r2,Mathf.Infinity,construcao.layerMask);
+            if(hits.Length>0){
                 //Ray secundario, vindo do ceu, tocou algo
-                
-                objeto.transform.position = new Vector3(hit.point.x,hit.point.y + construcao.altura + (meshObjeto.bounds.size.y * objeto.transform.localScale.y / 2),hit.point.z);
+                objeto.transform.position = new Vector3(hits[0].point.x,hit.point.y + construcao.altura + (meshObjeto.bounds.size.y * objeto.transform.localScale.y / 2),hits[0].point.z);
                 objeto.transform.LookAt(new Vector3(transform.position.x,   objeto.transform.position.y, transform.position.z));
                 objeto.transform.Rotate(new Vector3(0f, rotacao, 0f));
             }
@@ -108,6 +120,21 @@ public class ControleConstruir : MonoBehaviour
                 Debug.Log("Sem chão");
             }
         }
+    }
+
+    public void AlterarCor(bool podeConstruir){
+        if(podeConstruir){
+            objeto.GetComponent<MeshRenderer>().material = materialPermitido;
+        }
+        else{
+            objeto.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.red);
+            objeto.GetComponent<MeshRenderer>().material.SetColor("_EmissiveColor", (Vector4)Color.red);
+        }
+        
+    }
+
+    public bool VerificarSePodeConstruir(){
+        
     }
 
 }
