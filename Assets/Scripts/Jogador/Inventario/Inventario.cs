@@ -139,6 +139,15 @@ public class Inventario : MonoBehaviour
         }
     }
 
+    public bool VerificarQtdItem(Item.NomeItem nomeResponse, int quantidade){
+        foreach(Item item in itens){
+            if(item.nomeItem.Equals(nomeResponse)&& item.quantidade>= quantidade){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
 }
