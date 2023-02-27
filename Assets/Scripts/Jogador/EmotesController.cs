@@ -5,8 +5,8 @@ using UnityEngine;
 public class EmotesController : MonoBehaviour
 {
 
-    [SerializeField] Animator animator;
-    [SerializeField] PlayerMovement playerMoviment;
+    [SerializeField] [HideInInspector] Animator animator;
+    [SerializeField] [HideInInspector] PlayerMovement playerMoviment;
 
     private void Awake()
     {
@@ -21,6 +21,8 @@ public class EmotesController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1)) animator.SetTrigger("animationF1");
         else if (Input.GetKeyDown(KeyCode.F2)) animator.SetTrigger("animationF2");
         else if (Input.GetKeyDown(KeyCode.F3)) animator.SetTrigger("animationF3");
+        else if (Input.GetKeyDown(KeyCode.F4)) animator.SetTrigger("animationF4");
+        else if (Input.GetKeyDown(KeyCode.F5)) animator.SetTrigger("animationF5");
     }
 
 }
