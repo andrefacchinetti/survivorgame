@@ -125,6 +125,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		{
 			playerController.statsJogador.setarEnergiaAtual(playerController.statsJogador.energiaAtual + recuperacaoEnergiaPorSegundo * Time.deltaTime);
 		}
+		Debug.Log(playerController.statsJogador.energiaAtual);
 		float velocidade = (isRunning ? runningSpeed : walkingSpeed);
 		velocidade = velocidade - ((pesoGrab * velocidade *10) / 100);
 		if (velocidade < 0.6f) velocidade = 0.6f;

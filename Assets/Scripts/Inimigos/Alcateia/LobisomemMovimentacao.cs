@@ -7,6 +7,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 {
 
     LobisomemController lobisomemController;
+    LobisomemStats lobisomemStats;
     Animator animator;
 
     public float wanderRadius = 20f;
@@ -21,15 +22,23 @@ public class LobisomemMovimentacao : MonoBehaviour
         lobisomemController = GetComponent<LobisomemController>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-
+        lobisomemStats = GetComponent<LobisomemStats>();
         timer = wanderTimer;
     }
 
     private void Update()
     {
         if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
-        if(target == null) agent.speed = 0.15f;
-        else agent.speed = 0.25f;
+        if (target == null || lobisomemStats.energiaAtual <= 0)
+        {
+            agent.speed = 0.15f;
+            lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual + lobisomemStats.recuperacaoEnergiaPorSegundo * Time.deltaTime);
+        }
+        else
+        {
+            agent.speed = 0.25f;
+            lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual - lobisomemStats.consumoEnergiaPorSegundo * Time.deltaTime);
+        }
 
         if (agent.velocity.magnitude > 0.2f)
         {
