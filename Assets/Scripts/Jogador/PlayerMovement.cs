@@ -112,7 +112,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	}
 
 	bool recarregandoEnergia = false;
-
 	void Move()
 	{
 		// We are grounded, so recalculate move direction based on axes
@@ -135,7 +134,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			recarregandoEnergia = true;
         }
 
-		Debug.Log(playerController.statsJogador.energiaAtual);
 		float velocidade = (isRunning ? runningSpeed : walkingSpeed);
 		velocidade = velocidade - ((pesoGrab * velocidade *10) / 100);
 		if (velocidade < 0.6f) velocidade = 0.6f;

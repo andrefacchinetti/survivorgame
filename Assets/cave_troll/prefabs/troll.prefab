@@ -154,6 +154,8 @@ GameObject:
   - component: {fileID: 4882914989025602}
   - component: {fileID: 33407584003241822}
   - component: {fileID: 23221504225770740}
+  - component: {fileID: 2875635828863027436}
+  - component: {fileID: 396368491420984388}
   m_Layer: 0
   m_Name: mace_low
   m_TagString: Untagged
@@ -170,7 +172,7 @@ Transform:
   m_GameObject: {fileID: 1077419662316846}
   m_LocalRotation: {x: 0.3742098, y: 0.58836854, z: 0.65063626, w: 0.300769}
   m_LocalPosition: {x: -38.72548, y: -13.166069, z: 1.9133606}
-  m_LocalScale: {x: 0.9999871, y: 1.000006, z: 1.0000027}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4499735716923542}
@@ -226,6 +228,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &2875635828863027436
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077419662316846}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 65.7
+  m_Height: 162.1
+  m_Direction: 1
+  m_Center: {x: 15.797443, y: -202.4, z: -39.26207}
+--- !u!114 &396368491420984388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077419662316846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 768496126}
+  lobisomemStats: {fileID: 3859470035884540657}
 --- !u!1 &1097627651781724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,6 +1379,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4417447774662772}
+  - component: {fileID: 8870397721598563594}
+  - component: {fileID: 2209137503711922752}
   m_Layer: 0
   m_Name: cave_troll_Spine1
   m_TagString: Untagged
@@ -1372,6 +1404,34 @@ Transform:
   m_Father: {fileID: 4813823808717618}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &8870397721598563594
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431145603400902}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 63.1
+  m_Height: 257.5
+  m_Direction: 0
+  m_Center: {x: -42.4, y: 0, z: 0}
+--- !u!114 &2209137503711922752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431145603400902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 768496126}
+  lobisomemStats: {fileID: 3859470035884540657}
 --- !u!1 &1447038164802700
 GameObject:
   m_ObjectHideFlags: 0
@@ -3269,8 +3329,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pontoBaseTerritorio: {fileID: 0}
   distanciaMaximaPontoBase: 20
-  wanderRadius: 10
-  wanderTimer: 6
+  raioDeDistanciaParaAndarAleatoriamente: 20
+  timerParaAndarAleatoriamente: 5
+  agent: {fileID: 0}
+  minimumDistance: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!114 &768496127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3289,6 +3356,13 @@ MonoBehaviour:
   nivelSelvageriaMax: 100
   alfa: {fileID: 0}
   betas: []
+  dropsItems:
+  - nomeItemEnum: 5
+    qtdMinDrops: 5
+    qtdMaxDrops: 15
+  - nomeItemEnum: 14
+    qtdMinDrops: 3
+    qtdMaxDrops: 5
 --- !u!195 &768496129
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3338,10 +3412,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vidaMaxima: 100
   energiaMaxima: 100
+  damage: 20
   vidaAtual: 0
   energiaAtual: 0
   consumoEnergiaPorSegundo: 8
   recuperacaoEnergiaPorSegundo: 2
+  isDead: 0
 --- !u!1 &1868828153997032
 GameObject:
   m_ObjectHideFlags: 0

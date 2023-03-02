@@ -109,9 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteDoCorpoCausaDano: 0
-  enemySelvagemController: {fileID: 5364348848589273802}
-  enemyStats: {fileID: 0}
+  lobisomemMovimentacao: {fileID: 0}
+  lobisomemStats: {fileID: 0}
 --- !u!1 &1038003111770074
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,9 +604,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteDoCorpoCausaDano: 0
-  enemySelvagemController: {fileID: 5364348848589273802}
-  enemyStats: {fileID: 0}
+  lobisomemMovimentacao: {fileID: 0}
+  lobisomemStats: {fileID: 0}
 --- !u!1 &1188442823913820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,8 +1050,6 @@ GameObject:
   - component: {fileID: 4467757482891228}
   - component: {fileID: 4256749824004993838}
   - component: {fileID: 3932000806894509783}
-  - component: {fileID: 5364348848589273802}
-  - component: {fileID: 1893872188218282947}
   - component: {fileID: 4722451812487245910}
   - component: {fileID: 308336394780681304}
   - component: {fileID: 6021777375702466533}
@@ -1128,45 +1124,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5364348848589273802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1309486516299566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6096bba76ca5fa641a14716714b3ef4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minimumDistance: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  animator: {fileID: 3932000806894509783}
-  isAttacking: 0
-  navMeshAgent: {fileID: 4722451812487245910}
-  enemyStats: {fileID: 0}
-  PV: {fileID: 4256749824004993838}
---- !u!114 &1893872188218282947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1309486516299566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f076841fdda6254abec4c6b149b5347, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vida: 100
-  damage: 20
-  isDead: 0
-  dropsItems: []
-  animator: {fileID: 0}
-  navMeshAgent: {fileID: 0}
 --- !u!195 &4722451812487245910
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1234,7 +1191,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PV: {fileID: 0}
-  posAlturaInicial: 0
 --- !u!1 &1312574273513674
 GameObject:
   m_ObjectHideFlags: 0
@@ -1581,9 +1537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteDoCorpoCausaDano: 0
-  enemySelvagemController: {fileID: 5364348848589273802}
-  enemyStats: {fileID: 0}
+  lobisomemMovimentacao: {fileID: 0}
+  lobisomemStats: {fileID: 0}
 --- !u!1 &1529114576630656
 GameObject:
   m_ObjectHideFlags: 0

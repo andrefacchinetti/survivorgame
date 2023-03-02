@@ -11,16 +11,24 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     [SerializeField] public GameObject pontoBaseTerritorio;
     [SerializeField] public float distanciaMaximaPontoBase = 50;
-    [SerializeField] public float wanderRadius = 20f;
-    [SerializeField] public float wanderTimer = 5f;
+    [SerializeField] public float raioDeDistanciaParaAndarAleatoriamente = 20f;
+    [SerializeField] public float timerParaAndarAleatoriamente = 5f;
 
+
+    //MOVIMENTACAO
     private Transform target;
-    private NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
     private float timer;
+
+    //ATAQUE
+    public float minimumDistance = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
+    public float attackInterval = 1f; // Intervalo de tempo entre ataques
+    private float lastAttackTime; // Tempo do último ataque
+    [HideInInspector] public bool isAttacking; // Flag para controlar se a IA está atacando
 
     LobisomemController lobisomemController;
     LobisomemStats lobisomemStats;
-    Animator animator;
+    [HideInInspector] public Animator animator;
 
     private void Start()
     {
@@ -28,13 +36,37 @@ public class LobisomemMovimentacao : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         lobisomemStats = GetComponent<LobisomemStats>();
-        timer = wanderTimer;
+        timer = timerParaAndarAleatoriamente;
     }
 
     private void Update()
     {
         if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
         verificarCorrerAndar();
+        verificarAtaque();
+    }
+
+    private void verificarAtaque()
+    {
+        if (target == null) return;
+        float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+        if (target.GetComponent<PlayerController>().isMorto || distanceToTarget > minimumDistance)
+        {
+            target = null;
+        }
+        else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
+        {
+            transform.LookAt(target.transform.position);
+            if (!isAttacking && Time.time > lastAttackTime + attackInterval)
+            {
+                lastAttackTime = Time.time;
+                animator.SetTrigger("attack"+Random.Range(1,3));
+            }
+        }
+        else // Persegue o alvo
+        {
+            agent.SetDestination(target.transform.position);
+        }
     }
 
     bool recarregandoEnergia = false;
@@ -82,6 +114,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         float distance = Vector3.Distance(transform.position, pontoBaseTerritorio.transform.position);  // Calcula a distância entre o inimigo e a posicao do territorio base
         if (distance > distanciaMaximaPontoBase)
         {
+            target = null;
             agent.SetDestination(pontoBaseTerritorio.transform.position);
         }
         else
@@ -101,9 +134,9 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (timer >= wanderTimer)
+        if (timer >= timerParaAndarAleatoriamente)
         {
-            Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+            Vector3 newPos = RandomNavSphere(transform.position, raioDeDistanciaParaAndarAleatoriamente, -1);
             agent.SetDestination(newPos);
             timer = 0;
         }
@@ -145,6 +178,16 @@ public class LobisomemMovimentacao : MonoBehaviour
         NavMeshHit navHit;
         NavMesh.SamplePosition(randDirection, out navHit, distance, layermask);
         return navHit.position;
+    }
+
+    void GoAtk()
+    {
+        isAttacking = true;
+    }
+
+    void NotAtk()
+    {
+        isAttacking = false;
     }
 
 }

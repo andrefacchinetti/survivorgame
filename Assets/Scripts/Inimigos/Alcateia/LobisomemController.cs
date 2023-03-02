@@ -10,6 +10,7 @@ public class LobisomemController : MonoBehaviour
     [SerializeField] public float nivelSelvageria = 50, nivelSelvageriaMax = 100;
     [SerializeField] public LobisomemController alfa;
     [SerializeField] public List<LobisomemController> betas;
+    [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
     public enum Forma
     {
