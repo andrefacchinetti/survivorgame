@@ -110,13 +110,17 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	{
 		Cursor.SetCursor(null, Vector2.zero, cursorMode);
 	}
+
+	bool recarregandoEnergia = false;
+
 	void Move()
 	{
 		// We are grounded, so recalculate move direction based on axes
 		Vector3 forward = transform.TransformDirection(Vector3.forward);
 		Vector3 right = transform.TransformDirection(Vector3.right);
+
 		// Press Left Shift to run
-		bool isRunning = Input.GetKey(KeyCode.LeftShift) && pesoGrab == 0 && playerController.statsJogador.energiaAtual > 0;
+		bool isRunning = Input.GetKey(KeyCode.LeftShift) && pesoGrab == 0 && !recarregandoEnergia;
         if (isRunning)
         {
 			playerController.statsJogador.setarEnergiaAtual(playerController.statsJogador.energiaAtual - consumoEnergiaPorSegundo * Time.deltaTime);
@@ -124,7 +128,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		else
 		{
 			playerController.statsJogador.setarEnergiaAtual(playerController.statsJogador.energiaAtual + recuperacaoEnergiaPorSegundo * Time.deltaTime);
+			if (playerController.statsJogador.energiaAtual > 10) recarregandoEnergia = false;
 		}
+		if(playerController.statsJogador.energiaAtual <= 0 && !recarregandoEnergia)
+        {
+			recarregandoEnergia = true;
+        }
+
 		Debug.Log(playerController.statsJogador.energiaAtual);
 		float velocidade = (isRunning ? runningSpeed : walkingSpeed);
 		velocidade = velocidade - ((pesoGrab * velocidade *10) / 100);
