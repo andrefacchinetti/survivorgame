@@ -10,9 +10,9 @@ public class LobisomemMovimentacao : MonoBehaviour
    
 
     [SerializeField] public GameObject pontoBaseTerritorio;
-    [SerializeField] public float distanciaMaximaPontoBase = 50;
+    [SerializeField] public float distanciaMaximaPontoBase = 50, distanciaMaximaDoSeuAlfa = 10;
     [SerializeField] public float raioDeDistanciaParaAndarAleatoriamente = 20f;
-    [SerializeField] public float timerParaAndarAleatoriamente = 5f;
+    [SerializeField] public float timerParaAndarAleatoriamente = 5f, timerParaAlfaDecidirComandosParaSeusBetas = 10;
 
 
     //MOVIMENTACAO
@@ -37,13 +37,26 @@ public class LobisomemMovimentacao : MonoBehaviour
         animator = GetComponent<Animator>();
         lobisomemStats = GetComponent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
+        
+        if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Alfa)) InvokeRepeating("ComandosAlfaParaBetas", 0, timerParaAlfaDecidirComandosParaSeusBetas);
     }
 
     private void Update()
     {
         if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
+        else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
+        else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
         verificarCorrerAndar();
         verificarAtaque();
+    }
+
+    public void setarEstadoAgressividade()
+    {
+        if (!LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria))
+        {
+            if (lobisomemStats.nivelSelvageriaAtual > 50) lobisomemStats.isEstadoAgressivo = true;
+            else lobisomemStats.isEstadoAgressivo = false;
+        }
     }
 
     private void verificarAtaque()
@@ -56,9 +69,9 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
         {
-            transform.LookAt(target.transform.position);
             if (!isAttacking && Time.time > lastAttackTime + attackInterval)
             {
+                transform.LookAt(target.transform.position);
                 lastAttackTime = Time.time;
                 animator.SetTrigger("attack"+Random.Range(1,3));
             }
@@ -109,10 +122,34 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private void movimentacaoOmega()
+    private bool estaDistanteDoPontoBaseTerritorio()
     {
         float distance = Vector3.Distance(transform.position, pontoBaseTerritorio.transform.position);  // Calcula a distância entre o inimigo e a posicao do territorio base
         if (distance > distanciaMaximaPontoBase)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool estaDistanteDoAlfa()
+    {
+        float distance = Vector3.Distance(transform.position, lobisomemController.alfa.transform.position);  // Calcula a distância entre o inimigo e a posicao do territorio base
+        if (distance > distanciaMaximaDoSeuAlfa)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void movimentacaoOmega()
+    {
+        movimentarAleatoriamentePeloMapa();
+    }
+
+    private void movimentarAleatoriamentePeloMapa()
+    {
+        if (estaDistanteDoPontoBaseTerritorio())
         {
             target = null;
             agent.SetDestination(pontoBaseTerritorio.transform.position);
@@ -129,6 +166,59 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
         }
     }
+
+    private void movimentacaoAlfa()
+    {
+        movimentarAleatoriamentePeloMapa();
+    }
+
+    public void ComandosAlfaParaBetas()
+    {
+        if (!LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) return;
+        setarEstadoAgressividade();
+        foreach (LobisomemController beta in lobisomemController.betas)
+        {
+            if (lobisomemStats.isEstadoAgressivo)
+            {
+                beta.lobisomemStats.isEstadoAgressivo = true;
+                if (target != null) beta.lobisomemMovimentacao.target = target;
+            }
+            else
+            {
+                beta.lobisomemStats.isEstadoAgressivo = false;
+                beta.lobisomemMovimentacao.target = null;
+            }
+        }
+    }
+
+    private void movimentacaoBeta()
+    {
+        if (lobisomemController.alfa == null || lobisomemController.alfa.lobisomemStats.isDead)
+        {
+            lobisomemStats.isEstadoAgressivo = true;
+            movimentarAleatoriamentePeloMapa();
+        }
+        else
+        {
+            if (estaDistanteDoAlfa())
+            {
+                target = null;
+                agent.SetDestination(lobisomemController.alfa.transform.position);
+            }
+            else
+            {
+                if(target != null)
+                {
+                    perseguirJogador();
+                }
+                else
+                {
+                    andarAleatoriamente();
+                }
+            }
+        }
+    }
+
 
     private void andarAleatoriamente()
     {
@@ -149,23 +239,15 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && target == null)
+        if (other.tag == "Player" && target == null && lobisomemStats.isEstadoAgressivo)
         {
             target = other.transform;
         }
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player" && target.gameObject.GetComponent<PhotonView>().Owner.UserId == other.gameObject.GetComponent<PhotonView>().Owner.UserId)
-        {
-            target = null;
-        }
-    }
-
     void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player" && target == null)
+        if (other.tag == "Player" && target == null && lobisomemStats.isEstadoAgressivo)
         {
             target = other.transform;
         }

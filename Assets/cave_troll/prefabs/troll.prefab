@@ -3264,6 +3264,9 @@ GameObject:
   - component: {fileID: 768496129}
   - component: {fileID: 1125995984}
   - component: {fileID: 3859470035884540657}
+  - component: {fileID: 6909820456579177462}
+  - component: {fileID: 6350795218241182097}
+  - component: {fileID: 1912875066298640834}
   m_Layer: 0
   m_Name: troll
   m_TagString: Untagged
@@ -3329,8 +3332,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pontoBaseTerritorio: {fileID: 0}
   distanciaMaximaPontoBase: 20
+  distanciaMaximaDoSeuAlfa: 10
   raioDeDistanciaParaAndarAleatoriamente: 20
   timerParaAndarAleatoriamente: 5
+  timerParaAlfaDecidirComandosParaSeusBetas: 10
   agent: {fileID: 0}
   minimumDistance: 5
   distanciaDePerseguicao: 10
@@ -3352,8 +3357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   categoria: 2
   forma: 0
-  nivelSelvageria: 50
-  nivelSelvageriaMax: 100
   alfa: {fileID: 0}
   betas: []
   dropsItems:
@@ -3363,6 +3366,8 @@ MonoBehaviour:
   - nomeItemEnum: 14
     qtdMinDrops: 3
     qtdMaxDrops: 5
+  lobisomemStats: {fileID: 0}
+  lobisomemMovimentacao: {fileID: 0}
 --- !u!195 &768496129
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3413,11 +3418,93 @@ MonoBehaviour:
   vidaMaxima: 100
   energiaMaxima: 100
   damage: 20
+  nivelSelvageriaMax: 100
+  nivelSelvageriaAtual: 50
   vidaAtual: 0
   energiaAtual: 0
   consumoEnergiaPorSegundo: 8
   recuperacaoEnergiaPorSegundo: 2
   isDead: 0
+  isEstadoAgressivo: 0
+--- !u!114 &6909820456579177462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862107410815556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 6350795218241182097}
+  - {fileID: 1912875066298640834}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &6350795218241182097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862107410815556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &1912875066298640834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862107410815556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 0
+    Name: idle_break
+  - Type: 9
+    SynchronizeType: 0
+    Name: attack1
+  - Type: 9
+    SynchronizeType: 0
+    Name: attack2
+  - Type: 9
+    SynchronizeType: 0
+    Name: hit
+  - Type: 4
+    SynchronizeType: 0
+    Name: walk
+  - Type: 4
+    SynchronizeType: 0
+    Name: run
+  - Type: 4
+    SynchronizeType: 0
+    Name: isDead
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &1868828153997032
 GameObject:
   m_ObjectHideFlags: 0

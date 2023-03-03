@@ -5,20 +5,21 @@ using UnityEngine;
 public class LobisomemStats : MonoBehaviour
 {
     // STATS MAXIMO
-    [SerializeField] public float vidaMaxima = 100, energiaMaxima = 100, damage = 20;
+    [SerializeField] public float vidaMaxima = 100, energiaMaxima = 100, damage = 20, nivelSelvageriaMax = 100, nivelSelvageriaAtual = 50;
 
     //STATS CURRENT
     [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual;
 
     public float consumoEnergiaPorSegundo = 5.0f;
     public float recuperacaoEnergiaPorSegundo = 2.0f;
-    public bool isDead = false;
+    public bool isDead = false, isEstadoAgressivo = false;
 
     LobisomemMovimentacao lobisomemMovimentacao;
 
 
     private void Awake()
     {
+        vidaAtual = vidaMaxima;
         lobisomemMovimentacao = GetComponent<LobisomemMovimentacao>();
     }
 
@@ -37,7 +38,10 @@ public class LobisomemStats : MonoBehaviour
 	public void TakeDamage(float damage)
 	{
         vidaAtual -= damage;
-        Debug.Log("Vida enemy: " + vidaAtual);
+        nivelSelvageriaAtual += 20;
+        lobisomemMovimentacao.setarEstadoAgressividade();
+        lobisomemMovimentacao.ComandosAlfaParaBetas();
+        Debug.Log("Vida enemy: " + vidaAtual + " Selvageria: "+nivelSelvageriaAtual);
         if(vidaAtual <= 0)
         {
             lobisomemMovimentacao.animator.SetBool("isDead", true);

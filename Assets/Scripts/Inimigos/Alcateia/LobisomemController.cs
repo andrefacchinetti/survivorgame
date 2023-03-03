@@ -7,19 +7,29 @@ public class LobisomemController : MonoBehaviour
 
     [SerializeField] public Categoria categoria;
     [SerializeField] public Forma forma;
-    [SerializeField] public float nivelSelvageria = 50, nivelSelvageriaMax = 100;
     [SerializeField] public LobisomemController alfa;
     [SerializeField] public List<LobisomemController> betas;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
-    public enum Forma
+    [SerializeField][HideInInspector] public LobisomemStats lobisomemStats;
+    [SerializeField] [HideInInspector] public LobisomemMovimentacao lobisomemMovimentacao;
+
+    private void Awake()
     {
-        Humano, Lobisomem
+        lobisomemStats = GetComponent<LobisomemStats>();
+        lobisomemMovimentacao = GetComponent<LobisomemMovimentacao>();
     }
 
     public enum Categoria
     {
         Alfa, Beta, Omega
     }
+
+    public enum Forma
+    {
+        Humano, Lobisomem
+    }
+
+   
 
 }

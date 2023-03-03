@@ -63,7 +63,7 @@ public class Item : MonoBehaviourPunCallbacks
         Folha,
         //Consumivel
         [EnumMember(Value = "Consumivel")]
-        FrutaLimao,
+        Laranja,
         [EnumMember(Value = "Consumivel")]
         CogumeloCru,
         [EnumMember(Value = "Consumivel")]
@@ -140,7 +140,12 @@ public class Item : MonoBehaviourPunCallbacks
         Fogueira,
         [EnumMember(Value = "Ferramenta")]
         VaraDePesca,
-
+        [EnumMember(Value = "Consumivel")]
+        Manga,
+        [EnumMember(Value = "Consumivel")]
+        Maca,
+        [EnumMember(Value = "Consumivel")]
+        Banana
     }
 
     [System.Serializable]

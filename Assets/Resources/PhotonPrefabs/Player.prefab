@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 1891374409}
   - component: {fileID: 8161358483394143973}
   m_Layer: 0
-  m_Name: FrutaLimao
+  m_Name: Laranja
   m_TagString: Consumivel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5964,9 +5964,9 @@ GameObject:
   - component: {fileID: 5816772010474465203}
   - component: {fileID: 559095038972906338}
   - component: {fileID: 6021377366341624177}
-  - component: {fileID: 8531670813463786003}
   - component: {fileID: 7863524567681096886}
   - component: {fileID: 6347669931186041140}
+  - component: {fileID: 5826587472943600826}
   m_Layer: 0
   m_Name: CarneCrua
   m_TagString: Consumivel
@@ -5981,14 +5981,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4485355719261670364}
-  m_LocalRotation: {x: 0.000000029802312, y: 0.00000014181157, z: -0.6595646, w: 0.7516479}
-  m_LocalPosition: {x: 0.0223, y: 0.0243, z: -0.0073}
-  m_LocalScale: {x: 0.16884118, y: 0.097438365, z: 0.097438365}
+  m_LocalRotation: {x: 0.07963737, y: -0.5150498, z: -0.84343004, w: 0.1304123}
+  m_LocalPosition: {x: 0.0422, y: 0.0269, z: -0.0173}
+  m_LocalScale: {x: 0.019506, y: 0.019506, z: 0.019506}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2573245028307524292}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -82.533}
+  m_LocalEulerAnglesHint: {x: -58, y: -30.465, z: -145.254}
 --- !u!33 &5816772010474465203
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5996,7 +5996,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4485355719261670364}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 2743561120687491830, guid: 2053d077853205a468d85ca71ce0b1e9, type: 3}
 --- !u!114 &559095038972906338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6030,10 +6030,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 479cbf10a2ba803449168e0148bcdbb5, type: 2}
+  - {fileID: 2100000, guid: 830040a418ad6ff4e8ade21a36f0d5c6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6055,19 +6055,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &8531670813463786003
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4485355719261670364}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.50000024
-  m_Center: {x: -0.000011444092, y: 0.00000071525574, z: -0.0000076293945}
 --- !u!54 &7863524567681096886
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6102,6 +6089,19 @@ MonoBehaviour:
   temperatureLevel: 0
   maxTemperatureLevel: 100
   consumivelCozido: {fileID: 0}
+--- !u!65 &5826587472943600826
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4485355719261670364}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.885124, y: 1.175969, z: 12.821618}
+  m_Center: {x: -0.0036089134, y: 0.040376328, z: 0.2497653}
 --- !u!1 &4532772120571054747
 GameObject:
   m_ObjectHideFlags: 0
@@ -8928,6 +8928,9 @@ MonoBehaviour:
     mesh: {fileID: 5220182562183553561, guid: dfd8907928761ed44af9e3c8ea8f6f32, type: 3}
   - c1: {fileID: 8209611615463068615, guid: f435e8a3fd756b34d88f1b0eeddab067, type: 3}
     mesh: {fileID: 1952307752855211114, guid: 3c331b9473017804ab413fa6da44923d, type: 3}
+  inventario: {fileID: 0}
+  materialPermitido: {fileID: 0}
+  materialNegado: {fileID: 0}
 --- !u!1 &6737041257332721727
 GameObject:
   m_ObjectHideFlags: 0
@@ -12074,7 +12077,7 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 32f25fd44c295474483ad5f89d5863fb, type: 3}
     - target: {fileID: 3071235083761473255, guid: 26d6281e8eca02e42b8ab4e35d303320, type: 3}
       propertyPath: m_Name
-      value: FrutaLimao
+      value: Laranja
       objectReference: {fileID: 0}
     - target: {fileID: 4384358393523676442, guid: 26d6281e8eca02e42b8ab4e35d303320, type: 3}
       propertyPath: m_Pivot.x
@@ -12214,7 +12217,7 @@ PrefabInstance:
       objectReference: {fileID: 2292969264035410888}
     - target: {fileID: 4441807796317145619, guid: 26d6281e8eca02e42b8ab4e35d303320, type: 3}
       propertyPath: nomeIngles
-      value: Lemon
+      value: Laranja
       objectReference: {fileID: 0}
     - target: {fileID: 4441807796317145619, guid: 26d6281e8eca02e42b8ab4e35d303320, type: 3}
       propertyPath: quantidade
@@ -12226,7 +12229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4441807796317145619, guid: 26d6281e8eca02e42b8ab4e35d303320, type: 3}
       propertyPath: nomePortugues
-      value: "Lim\xE3o"
+      value: Laranja
       objectReference: {fileID: 0}
     - target: {fileID: 4441807796317145619, guid: 26d6281e8eca02e42b8ab4e35d303320, type: 3}
       propertyPath: nomeConsumivel
