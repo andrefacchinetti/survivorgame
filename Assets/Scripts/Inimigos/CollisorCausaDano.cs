@@ -12,7 +12,6 @@ public class CollisorCausaDano : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player")) //Dar dano no player qdo collide
         {
-            Debug.Log("acertou player");
             if (lobisomemMovimentacao.isAttacking)
             {
                 other.gameObject.GetComponent<PlayerController>().TakeDamage(lobisomemStats.damage);

@@ -19,6 +19,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     private Transform target;
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
+    [SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
 
     //ATAQUE
     public float minimumDistance = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
@@ -87,12 +88,12 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (target != null && !recarregandoEnergia)
         {
-            agent.speed = 0.25f;
+            agent.speed = velocidadeRun;
             lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual - lobisomemStats.consumoEnergiaPorSegundo * Time.deltaTime);
         }
         else
         {
-            agent.speed = 0.15f;
+            agent.speed = velocidadeWalk;
             lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual + lobisomemStats.recuperacaoEnergiaPorSegundo * Time.deltaTime);
             if (lobisomemStats.energiaAtual > 10) recarregandoEnergia = false;
         }
@@ -110,7 +111,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             animator.SetBool("run", true);
             animator.SetBool("walk", false);
         }
-        else if (agent.velocity.magnitude > 0.1f)
+        else if (agent.velocity.magnitude > 0.05f)
         {
             animator.SetBool("walk", true);
             animator.SetBool("run", false);

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4318034607819137376}
   - component: {fileID: 2019946693930767786}
   - component: {fileID: 287053909585207052}
-  - component: {fileID: 9067785398980403076}
   m_Layer: 0
   m_Name: "Ch\xE3o"
   m_TagString: Untagged
@@ -76,7 +75,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b2f4936ccdb32b34baa6332f780cc82d, type: 2}
+  - {fileID: -4973326175947506207, guid: bba5f8fb8342ea94ea2ca8073975cf3f, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -119,20 +118,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 192
---- !u!64 &9067785398980403076
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 506855759919215743}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 5220182562183553561, guid: dfd8907928761ed44af9e3c8ea8f6f32, type: 3}
+  material: 1
+  boxCollider: {fileID: 1742207225380590037}
 --- !u!1 &836107619178252792
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +131,8 @@ GameObject:
   - component: {fileID: 8225528638291708999}
   - component: {fileID: 3820338117328961812}
   - component: {fileID: 8544074245033576926}
-  m_Layer: 0
+  - component: {fileID: 1742207225380590037}
+  m_Layer: 9
   m_Name: Colision_Florl_Wood_1.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,6 +204,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1742207225380590037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836107619178252792}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.6999998, y: 0.07354874, z: 2.6999996}
+  m_Center: {x: -0.00000017881393, y: 0, z: 0}
 --- !u!1 &8317911043092248905
 GameObject:
   m_ObjectHideFlags: 0
