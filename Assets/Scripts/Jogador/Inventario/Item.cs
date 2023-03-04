@@ -145,7 +145,11 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Consumivel")]
         Maca,
         [EnumMember(Value = "Consumivel")]
-        Banana
+        Banana,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloVenenosoCru,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloVenenosoCozido,
     }
 
     [System.Serializable]
