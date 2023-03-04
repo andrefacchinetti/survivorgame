@@ -16,7 +16,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
 
     //MOVIMENTACAO
-    private Transform target;
+    [HideInInspector] public Transform target;
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
     [SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
@@ -49,15 +49,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
         verificarCorrerAndar();
         verificarAtaque();
-    }
-
-    public void setarEstadoAgressividade()
-    {
-        if (!LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria))
-        {
-            if (lobisomemStats.nivelSelvageriaAtual > 50) lobisomemStats.isEstadoAgressivo = true;
-            else lobisomemStats.isEstadoAgressivo = false;
-        }
     }
 
     private void verificarAtaque()
@@ -176,13 +167,12 @@ public class LobisomemMovimentacao : MonoBehaviour
     public void ComandosAlfaParaBetas()
     {
         if (!LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) return;
-        setarEstadoAgressividade();
         foreach (LobisomemController beta in lobisomemController.betas)
         {
             if (lobisomemStats.isEstadoAgressivo)
             {
                 beta.lobisomemStats.isEstadoAgressivo = true;
-                if (target != null) beta.lobisomemMovimentacao.target = target;
+                beta.lobisomemMovimentacao.target = target;
             }
             else
             {
@@ -190,6 +180,11 @@ public class LobisomemMovimentacao : MonoBehaviour
                 beta.lobisomemMovimentacao.target = null;
             }
         }
+    }
+
+    public void ComandosBetasParaAlfa()
+    {
+        lobisomemController.alfa.lobisomemStats.AumentarNivelAgressividade(15);
     }
 
     private void movimentacaoBeta()

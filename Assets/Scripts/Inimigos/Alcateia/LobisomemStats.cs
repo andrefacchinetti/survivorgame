@@ -5,21 +5,23 @@ using UnityEngine;
 public class LobisomemStats : MonoBehaviour
 {
     // STATS MAXIMO
-    [SerializeField] public float vidaMaxima = 100, energiaMaxima = 100, damage = 20, nivelSelvageriaMax = 100, nivelSelvageriaAtual = 50;
+    [SerializeField] public float vidaMaxima = 100, energiaMaxima = 100, damage = 20, nivelAgressividadeMax = 100;
 
     //STATS CURRENT
-    [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual;
+    [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual, nivelAgressividadeAtual = 50;
 
     public float consumoEnergiaPorSegundo = 5.0f;
     public float recuperacaoEnergiaPorSegundo = 2.0f;
     public bool isDead = false, isEstadoAgressivo = false;
 
     LobisomemMovimentacao lobisomemMovimentacao;
+    LobisomemController lobisomemController;
 
 
     private void Awake()
     {
         lobisomemMovimentacao = GetComponent<LobisomemMovimentacao>();
+        lobisomemController = GetComponent<LobisomemController>();
     }
 
     private void Start()
@@ -38,10 +40,11 @@ public class LobisomemStats : MonoBehaviour
 	public void TakeDamage(float damage)
 	{
         vidaAtual -= damage;
-        nivelSelvageriaAtual += 20;
-        lobisomemMovimentacao.setarEstadoAgressividade();
-        lobisomemMovimentacao.ComandosAlfaParaBetas();
-        Debug.Log("Vida enemy: " + vidaAtual + " Selvageria: "+nivelSelvageriaAtual);
+        AumentarNivelAgressividade(20);
+        if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Alfa)) lobisomemMovimentacao.ComandosAlfaParaBetas();
+        else if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
+        
+        Debug.Log("Vida enemy: " + vidaAtual + " Selvageria: " + nivelAgressividadeAtual);
         if(vidaAtual <= 0)
         {
             lobisomemMovimentacao.animator.SetBool("isDead", true);
@@ -53,5 +56,39 @@ public class LobisomemStats : MonoBehaviour
             lobisomemMovimentacao.animator.SetTrigger("hit");
         }
 	}
+
+    public void AumentarNivelAgressividade(float valor)
+    {
+        nivelAgressividadeAtual += valor;
+        if (nivelAgressividadeAtual > nivelAgressividadeMax) nivelAgressividadeAtual = nivelAgressividadeMax;
+        if (nivelAgressividadeAtual < 0) nivelAgressividadeAtual = 0;
+        Debug.Log("Lobisomem ficou mais agressivo: " + nivelAgressividadeAtual);
+        setarEstadoAgressividade();
+    }
+
+    public void DiminuirNivelAgressividade(float valor)
+    {
+        nivelAgressividadeAtual -= valor;
+        if (nivelAgressividadeAtual > nivelAgressividadeMax) nivelAgressividadeAtual = nivelAgressividadeMax;
+        if (nivelAgressividadeAtual < 0) nivelAgressividadeAtual = 0;
+        Debug.Log("Lobisomem ficou menos agressivo: " + nivelAgressividadeAtual);
+        setarEstadoAgressividade();
+    }
+
+    private void setarEstadoAgressividade()
+    {
+        if (!LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria))
+        {
+            if (nivelAgressividadeAtual > 50)
+            {
+                isEstadoAgressivo = true;
+            }
+            else
+            {
+                isEstadoAgressivo = false;
+                lobisomemMovimentacao.target = null;
+            }
+        }
+    }
 
 }
