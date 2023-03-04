@@ -95,7 +95,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             agent.speed = velocidadeWalk;
             lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual + lobisomemStats.recuperacaoEnergiaPorSegundo * Time.deltaTime);
-            if (lobisomemStats.energiaAtual > 10) recarregandoEnergia = false;
+            if (lobisomemStats.energiaAtual > 80) recarregandoEnergia = false;
         }
         if (lobisomemStats.energiaAtual <= 0 && !recarregandoEnergia)
         {

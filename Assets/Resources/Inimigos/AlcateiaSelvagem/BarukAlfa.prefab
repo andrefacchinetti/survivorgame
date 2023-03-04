@@ -346,10 +346,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.29
-  m_Height: 0.58
+  m_Radius: 0.28
+  m_Height: 0
   m_Direction: 0
-  m_Center: {x: -0.24, y: 0, z: 0}
+  m_Center: {x: -0.15, y: 0, z: 0}
 --- !u!114 &8995932095154575979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +373,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802985884975834}
+  - component: {fileID: 8176750841151550026}
+  - component: {fileID: 2708454846694536561}
   m_Layer: 20
   m_Name: L Calf
   m_TagString: Untagged
@@ -396,6 +398,34 @@ Transform:
   m_Father: {fileID: 2397802987431824954}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &8176750841151550026
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802985884975835}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.12
+  m_Height: 0.51
+  m_Direction: 0
+  m_Center: {x: -0.2, y: 0, z: 0}
+--- !u!114 &2708454846694536561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802985884975835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
 --- !u!1 &2397802985892330162
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +605,7 @@ GameObject:
   - component: {fileID: 4514661982663428164}
   m_Layer: 20
   m_Name: BarukAlfa
-  m_TagString: Animal
+  m_TagString: Inimigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -906,6 +936,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802986064253195}
+  - component: {fileID: 4856387259614750168}
+  - component: {fileID: 5056808984072029301}
   m_Layer: 20
   m_Name: R UpperArm
   m_TagString: Untagged
@@ -929,6 +961,34 @@ Transform:
   m_Father: {fileID: 2397802987622156233}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4856387259614750168
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802986064253192}
+  m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 0.56
+  m_Direction: 0
+  m_Center: {x: -0.06, y: 0, z: 0}
+--- !u!114 &5056808984072029301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802986064253192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
 --- !u!1 &2397802986066625060
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,7 +1103,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2397802986137651719}
   - component: {fileID: 6763631111789536989}
-  - component: {fileID: 8760107016935937998}
   m_Layer: 20
   m_Name: Spine1
   m_TagString: Untagged
@@ -1075,26 +1134,12 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2397802986137651716}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.45
   m_Height: 1.7
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8760107016935937998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2397802986137651716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lobisomemMovimentacao: {fileID: 259249256}
-  lobisomemStats: {fileID: 259249254}
 --- !u!1 &2397802986141092217
 GameObject:
   m_ObjectHideFlags: 0
@@ -2149,6 +2194,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802986763072710}
+  - component: {fileID: 7656003174977457617}
+  - component: {fileID: 3403724273622479632}
   m_Layer: 20
   m_Name: L Forearm
   m_TagString: Untagged
@@ -2172,6 +2219,34 @@ Transform:
   m_Father: {fileID: 2397802987569600906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7656003174977457617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802986763072711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
+--- !u!136 &3403724273622479632
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802986763072711}
+  m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.14
+  m_Height: 0.46
+  m_Direction: 0
+  m_Center: {x: -0.25, y: 0, z: 0}
 --- !u!1 &2397802986774714941
 GameObject:
   m_ObjectHideFlags: 0
@@ -2403,6 +2478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802986908894498}
+  - component: {fileID: 5099776513693739004}
   m_Layer: 20
   m_Name: R Thigh
   m_TagString: Untagged
@@ -2426,6 +2502,20 @@ Transform:
   m_Father: {fileID: 2397802986298507077}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5099776513693739004
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802986908894499}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 0.75
+  m_Direction: 0
+  m_Center: {x: -0.35, y: 0, z: 0}
 --- !u!1 &2397802986931320017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2733,10 +2823,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.29
-  m_Height: 0.58
+  m_Radius: 0.28
+  m_Height: 0
   m_Direction: 0
-  m_Center: {x: -0.24, y: 0, z: 0}
+  m_Center: {x: -0.15, y: 0, z: 0}
 --- !u!114 &6972937657415964209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3169,6 +3259,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802987358595342}
+  - component: {fileID: 4385059082779360379}
+  - component: {fileID: 3823407486004888432}
   m_Layer: 20
   m_Name: R Calf
   m_TagString: Untagged
@@ -3192,6 +3284,34 @@ Transform:
   m_Father: {fileID: 2397802986908894498}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4385059082779360379
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987358595343}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.12
+  m_Height: 0.51
+  m_Direction: 0
+  m_Center: {x: -0.2, y: 0, z: 0}
+--- !u!114 &3823407486004888432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987358595343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
 --- !u!1 &2397802987370966892
 GameObject:
   m_ObjectHideFlags: 0
@@ -3326,6 +3446,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802987431824954}
+  - component: {fileID: 7451434753708852767}
+  - component: {fileID: 2765820340707180818}
   m_Layer: 20
   m_Name: L Thigh
   m_TagString: Untagged
@@ -3349,6 +3471,34 @@ Transform:
   m_Father: {fileID: 2397802986298507077}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7451434753708852767
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987431824955}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 0.75
+  m_Direction: 0
+  m_Center: {x: -0.35, y: 0, z: 0}
+--- !u!114 &2765820340707180818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987431824955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
 --- !u!1 &2397802987451966867
 GameObject:
   m_ObjectHideFlags: 0
@@ -3389,6 +3539,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802987458216705}
+  - component: {fileID: 5987232938383190193}
+  - component: {fileID: 4572237376448654458}
   m_Layer: 20
   m_Name: R Forearm
   m_TagString: Untagged
@@ -3412,6 +3564,34 @@ Transform:
   m_Father: {fileID: 2397802986064253195}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5987232938383190193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987458216710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
+--- !u!136 &4572237376448654458
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987458216710}
+  m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.14
+  m_Height: 0.46
+  m_Direction: 0
+  m_Center: {x: -0.25, y: 0, z: 0}
 --- !u!1 &2397802987482549167
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,6 +3634,7 @@ GameObject:
   - component: {fileID: 2397802987484779748}
   - component: {fileID: 2397802987484779751}
   - component: {fileID: 5786359193279237999}
+  - component: {fileID: 14421137260644279}
   m_Layer: 20
   m_Name: Head
   m_TagString: Untagged
@@ -3519,6 +3700,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
+--- !u!114 &14421137260644279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987484779749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lobisomemMovimentacao: {fileID: 259249256}
@@ -3784,6 +3979,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397802987569600906}
+  - component: {fileID: 7369411295423646612}
+  - component: {fileID: 8493696722562131296}
   m_Layer: 20
   m_Name: L UpperArm
   m_TagString: Untagged
@@ -3807,6 +4004,34 @@ Transform:
   m_Father: {fileID: 2397802986785805813}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7369411295423646612
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987569600907}
+  m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 0.56
+  m_Direction: 0
+  m_Center: {x: -0.06, y: 0, z: 0}
+--- !u!114 &8493696722562131296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802987569600907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 259249256}
+  lobisomemStats: {fileID: 259249254}
 --- !u!1 &2397802987622156238
 GameObject:
   m_ObjectHideFlags: 0
@@ -4042,7 +4267,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.21397425
+  m_Radius: 0.28
   m_Height: 0.5291578
   m_Direction: 0
   m_Center: {x: -0.05259894, y: 0.000000009408264, z: 0.000000005168915}
