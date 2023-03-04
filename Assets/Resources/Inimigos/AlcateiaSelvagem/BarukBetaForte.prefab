@@ -1107,8 +1107,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.54
-  m_Speed: 1
-  m_Acceleration: 1
+  m_Speed: 0.5
+  m_Acceleration: 0.8
   avoidancePriority: 50
   m_AngularSpeed: 999
   m_StoppingDistance: 0
@@ -1265,6 +1265,8 @@ MonoBehaviour:
   timerParaAndarAleatoriamente: 5
   timerParaAlfaDecidirComandosParaSeusBetas: 10
   agent: {fileID: 0}
+  velocidadeWalk: 0.1
+  velocidadeRun: 0.23
   minimumDistance: 5
   distanciaDePerseguicao: 10
   distanciaDeAtaque: 2
@@ -1459,6 +1461,7 @@ GameObject:
   - component: {fileID: 4613647014814085619}
   - component: {fileID: 4613647014814085618}
   - component: {fileID: 4367783766247939369}
+  - component: {fileID: 1444738194211834662}
   m_Layer: 20
   m_Name: Spine1
   m_TagString: Untagged
@@ -1490,8 +1493,8 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4613647014814085616}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   m_Radius: 0.21397425
   m_Height: 0.5228634
   m_Direction: 0
@@ -1510,6 +1513,20 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1444738194211834662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647014814085616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 267380535}
+  lobisomemStats: {fileID: 267380533}
 --- !u!1 &4613647014819558029
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,6 +1918,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4613647015093122598}
+  - component: {fileID: 6779626549266410693}
+  - component: {fileID: 326408633438469758}
   m_Layer: 20
   m_Name: R Hand
   m_TagString: Untagged
@@ -1928,6 +1947,33 @@ Transform:
   m_Father: {fileID: 4613647016738863349}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &6779626549266410693
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647015093122599}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.29
+  m_Center: {x: -0.21, y: 0, z: 0}
+--- !u!114 &326408633438469758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647015093122599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 267380535}
+  lobisomemStats: {fileID: 267380533}
 --- !u!1 &4613647015111776577
 GameObject:
   m_ObjectHideFlags: 0
@@ -2987,6 +3033,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4613647015772285362}
+  - component: {fileID: 7125435240183190444}
+  - component: {fileID: 289651711822997412}
   m_Layer: 20
   m_Name: L Hand
   m_TagString: Untagged
@@ -3014,6 +3062,33 @@ Transform:
   m_Father: {fileID: 4613647015945031474}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7125435240183190444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647015772285363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 267380535}
+  lobisomemStats: {fileID: 267380533}
+--- !u!135 &289651711822997412
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647015772285363}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.29
+  m_Center: {x: -0.21, y: 0, z: 0}
 --- !u!1 &4613647015828386686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4227,6 +4302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4613647016473856173}
   - component: {fileID: 4613647016473856172}
+  - component: {fileID: 3248888895270825608}
   m_Layer: 20
   m_Name: Spine
   m_TagString: Untagged
@@ -4258,12 +4334,26 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4613647016473856170}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.21397425
   m_Height: 0.5291578
   m_Direction: 0
   m_Center: {x: -0.05259894, y: 0.000000009408264, z: 0.000000005168915}
+--- !u!114 &3248888895270825608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647016473856170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 267380535}
+  lobisomemStats: {fileID: 267380533}
 --- !u!1 &4613647016475024649
 GameObject:
   m_ObjectHideFlags: 0
@@ -4651,6 +4741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4613647016700243728}
   - component: {fileID: 4613647016700243731}
+  - component: {fileID: 5299163597428648835}
   m_Layer: 20
   m_Name: Head
   m_TagString: Untagged
@@ -4700,12 +4791,26 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4613647016700243729}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.11132817
   m_Height: 0.38685596
   m_Direction: 1
   m_Center: {x: -0.0661137, y: 0.09732558, z: 0.0000000046556115}
+--- !u!114 &5299163597428648835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647016700243729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 267380535}
+  lobisomemStats: {fileID: 267380533}
 --- !u!1 &4613647016704827056
 GameObject:
   m_ObjectHideFlags: 0
@@ -4716,6 +4821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4613647016704827059}
   - component: {fileID: 4613647016704827058}
+  - component: {fileID: 5031191380640421229}
   m_Layer: 20
   m_Name: Spine2
   m_TagString: Untagged
@@ -4749,12 +4855,26 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4613647016704827056}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.25822195
   m_Height: 0.59416145
   m_Direction: 0
   m_Center: {x: -0.2208477, y: 0.00000002359972, z: -0.000000008431351}
+--- !u!114 &5031191380640421229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647016704827056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 267380535}
+  lobisomemStats: {fileID: 267380533}
 --- !u!1 &4613647016732532327
 GameObject:
   m_ObjectHideFlags: 0

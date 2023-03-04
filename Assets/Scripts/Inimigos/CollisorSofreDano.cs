@@ -14,6 +14,7 @@ public class CollisorSofreDano : MonoBehaviour
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
             lobisomemStats.TakeDamage(damage);
+            other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking = false;
         }
 
         if (other.transform.tag == "ItemDrop") //Qdo toca em objeto que causa dano em velocidade (lança ou flecha)

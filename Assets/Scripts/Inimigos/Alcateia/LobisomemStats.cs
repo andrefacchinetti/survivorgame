@@ -19,12 +19,12 @@ public class LobisomemStats : MonoBehaviour
 
     private void Awake()
     {
-        vidaAtual = vidaMaxima;
         lobisomemMovimentacao = GetComponent<LobisomemMovimentacao>();
     }
 
     private void Start()
     {
+        vidaAtual = vidaMaxima;
         setarEnergiaAtual(energiaMaxima);
     }
 
