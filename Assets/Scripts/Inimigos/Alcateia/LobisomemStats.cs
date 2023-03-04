@@ -5,10 +5,10 @@ using UnityEngine;
 public class LobisomemStats : MonoBehaviour
 {
     // STATS MAXIMO
-    [SerializeField] public float vidaMaxima = 100, energiaMaxima = 100, damage = 20, nivelAgressividadeMax = 100;
+    [SerializeField] public float vidaMaxima = 100, energiaMaxima = 100, damage = 20, nivelAgressividadeMax = 100, nivelAgressividadeAtual = 50;
 
     //STATS CURRENT
-    [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual, nivelAgressividadeAtual = 50;
+    [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual;
 
     public float consumoEnergiaPorSegundo = 5.0f;
     public float recuperacaoEnergiaPorSegundo = 2.0f;
@@ -47,6 +47,7 @@ public class LobisomemStats : MonoBehaviour
         Debug.Log("Vida enemy: " + vidaAtual + " Selvageria: " + nivelAgressividadeAtual);
         if(vidaAtual <= 0)
         {
+            if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
             lobisomemMovimentacao.animator.SetBool("isDead", true);
             lobisomemMovimentacao.agent.isStopped = true;
             isDead = true;
@@ -88,6 +89,14 @@ public class LobisomemStats : MonoBehaviour
                 isEstadoAgressivo = false;
                 lobisomemMovimentacao.target = null;
             }
+        }
+    }
+
+    public void VerificarSePlayerEstaArmado(GameObject playerObj)
+    {
+        if(playerObj.GetComponent<PlayerController>().inventario.itemNaMao != null && playerObj.GetComponent<PlayerController>().inventario.itemNaMao.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Arma.ToString()))
+        {
+            AumentarNivelAgressividade(10);
         }
     }
 

@@ -77,7 +77,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     bool recarregandoEnergia = false;
     private void verificarCorrerAndar()
     {
-        if (target != null && !recarregandoEnergia)
+        if (!recarregandoEnergia && (target != null || estaDistanteDoPontoBaseTerritorio()))
         {
             agent.speed = velocidadeRun;
             lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual - lobisomemStats.consumoEnergiaPorSegundo * Time.deltaTime);
@@ -235,9 +235,13 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && target == null && lobisomemStats.isEstadoAgressivo)
+        if (other.tag == "Player")
         {
-            target = other.transform;
+            lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
+            if(target == null && lobisomemStats.isEstadoAgressivo)
+            {
+                target = other.transform;
+            }
         }
     }
 
