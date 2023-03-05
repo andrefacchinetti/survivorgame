@@ -22,7 +22,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     [SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
 
     //ATAQUE
-    public float minimumDistance = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
+    public float minimumDistanceAtaque = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
     public float attackInterval = 1f; // Intervalo de tempo entre ataques
     private float lastAttackTime; // Tempo do último ataque
     [HideInInspector] public bool isAttacking; // Flag para controlar se a IA está atacando
@@ -56,11 +56,24 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if(targetComida != null)
         {
-            float distanceToTarget = Vector3.Distance(transform.position, targetComida.transform.position);
-            if (distanceToTarget < 1)
+            if (targetComida.GetComponent<ItemDrop>() !=null && !targetComida.GetComponent<ItemDrop>().estaSendoComido)
             {
-                transform.LookAt(targetComida);
-                animator.SetTrigger("comendo");
+                float distanceToTarget = Vector3.Distance(transform.position, targetComida.transform.position);
+                if (distanceToTarget < 1)
+                {
+                    transform.LookAt(targetComida);
+                    animator.SetTrigger("comendo");
+                    targetComida.GetComponent<ItemDrop>().estaSendoComido = true;
+                }
+                else
+                {
+                    transform.LookAt(targetComida);
+                    agent.SetDestination(targetComida.position);
+                }
+            }
+            else
+            {
+                targetComida = null;
             }
         }
     }
@@ -69,7 +82,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (target == null) return;
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
-        if (target.GetComponent<PlayerController>().isMorto || distanceToTarget > minimumDistance)
+        if (target.GetComponent<PlayerController>().isMorto || distanceToTarget > minimumDistanceAtaque)
         {
             targetComida = target;
             target = null;
@@ -164,6 +177,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (estaDistanteDoPontoBaseTerritorio())
         {
             target = null;
+            targetComida = null;
             agent.SetDestination(pontoBaseTerritorio.transform.position);
         }
         else
@@ -264,7 +278,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 if (other.GetComponent<PlayerController>().isMorto)
                 {
-                    targetComida = other.transform;
+                    //targetComida = other.transform; //REMOVIDO OPACAO DE PLAYER MORTO VIRAR COMIDA, POIS É NECESSARIO INSTANCIAR UM CORPO MORTO QDO UM PLAYER MORRER PARA SER DESTRUIDO AO SER COMIDO
                 }
                 else
                 {
@@ -288,35 +302,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "Player" && target == null && lobisomemStats.isEstadoAgressivo)
-        {
-            if (other.GetComponent<PlayerController>().isMorto)
-            {
-                targetComida = other.transform;
-            }
-            else
-            {
-                targetComida = null;
-                target = other.transform;
-            }
-        }
-        if (other.tag == "ItemDrop" && other.GetComponent<ItemDrop>().nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
-        {
-            if (other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCrua) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCozida)
-                || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCru) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCozido))
-            {
-                //gostou da comida
-                targetComida = other.transform;
-                Debug.Log("achou comida");
-            }
-            else
-            {
-                //nao gosta da comida
-            }
-        }
-    }
+   
 
     Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask) //Posicao aleatoria no mapa
     {
@@ -339,7 +325,9 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     void AnimEventComeu()
     {
-        if(targetComida != null) Destroy(targetComida.gameObject);
+        if (targetComida != null && targetComida.tag != "Player") { 
+            Destroy(targetComida.gameObject); 
+        }
     }
 
     private void Uivar()

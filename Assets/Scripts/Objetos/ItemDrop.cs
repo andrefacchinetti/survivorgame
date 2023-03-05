@@ -11,6 +11,7 @@ public class ItemDrop : MonoBehaviourPunCallbacks
     [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField][HideInInspector] public string nomeId;
     [SerializeField] public float damageQuandoColide;
+    public bool estaSendoComido = false;
 
     private void Awake()
     {
