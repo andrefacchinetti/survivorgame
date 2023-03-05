@@ -16,7 +16,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
 
     //MOVIMENTACAO
-    [HideInInspector] public Transform target;
+    [HideInInspector] public Transform target, targetComida;
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
     [SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
@@ -49,6 +49,20 @@ public class LobisomemMovimentacao : MonoBehaviour
         else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
         verificarCorrerAndar();
         verificarAtaque();
+        verificarProximoComida();
+    }
+
+    private void verificarProximoComida()
+    {
+        if(targetComida != null)
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, targetComida.transform.position);
+            if (distanceToTarget < 1)
+            {
+                transform.LookAt(targetComida);
+                animator.SetTrigger("comendo");
+            }
+        }
     }
 
     private void verificarAtaque()
@@ -57,6 +71,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
         if (target.GetComponent<PlayerController>().isMorto || distanceToTarget > minimumDistance)
         {
+            targetComida = target;
             target = null;
         }
         else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
@@ -77,7 +92,11 @@ public class LobisomemMovimentacao : MonoBehaviour
     bool recarregandoEnergia = false;
     private void verificarCorrerAndar()
     {
-        if (!recarregandoEnergia && (target != null || estaDistanteDoPontoBaseTerritorio()))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar") || animator.GetCurrentAnimatorStateInfo(0).IsName("Comendo"))
+        {
+            agent.speed = 0;
+        }
+        else if (!recarregandoEnergia && (target != null || estaDistanteDoPontoBaseTerritorio()))
         {
             agent.speed = velocidadeRun;
             lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual - lobisomemStats.consumoEnergiaPorSegundo * Time.deltaTime);
@@ -141,6 +160,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void movimentarAleatoriamentePeloMapa()
     {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("Comendo")) return;
         if (estaDistanteDoPontoBaseTerritorio())
         {
             target = null;
@@ -198,6 +218,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if (estaDistanteDoAlfa())
             {
+                lobisomemController.alfa.lobisomemMovimentacao.Uivar();
                 target = null;
                 agent.SetDestination(lobisomemController.alfa.transform.position);
             }
@@ -222,6 +243,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
         if (timer >= timerParaAndarAleatoriamente)
         {
+
             Vector3 newPos = RandomNavSphere(transform.position, raioDeDistanciaParaAndarAleatoriamente, -1);
             agent.SetDestination(newPos);
             timer = 0;
@@ -240,7 +262,28 @@ public class LobisomemMovimentacao : MonoBehaviour
             lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
             if(target == null && lobisomemStats.isEstadoAgressivo)
             {
-                target = other.transform;
+                if (other.GetComponent<PlayerController>().isMorto)
+                {
+                    targetComida = other.transform;
+                }
+                else
+                {
+                    target = other.transform;
+                }
+            }
+        }
+        if (other.tag == "ItemDrop" && other.GetComponent<ItemDrop>().nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+        {
+            if (other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCrua) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCozida)
+                || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCru) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCozido))
+            {
+                //gostou da comida
+                targetComida = other.transform;
+                Debug.Log("achou comida");
+            }
+            else
+            {
+                //nao gosta da comida
             }
         }
     }
@@ -249,7 +292,29 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (other.tag == "Player" && target == null && lobisomemStats.isEstadoAgressivo)
         {
-            target = other.transform;
+            if (other.GetComponent<PlayerController>().isMorto)
+            {
+                targetComida = other.transform;
+            }
+            else
+            {
+                targetComida = null;
+                target = other.transform;
+            }
+        }
+        if (other.tag == "ItemDrop" && other.GetComponent<ItemDrop>().nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+        {
+            if (other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCrua) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCozida)
+                || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCru) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCozido))
+            {
+                //gostou da comida
+                targetComida = other.transform;
+                Debug.Log("achou comida");
+            }
+            else
+            {
+                //nao gosta da comida
+            }
         }
     }
 
@@ -270,6 +335,17 @@ public class LobisomemMovimentacao : MonoBehaviour
     void NotAtk()
     {
         isAttacking = false;
+    }
+
+    void AnimEventComeu()
+    {
+        if(targetComida != null) Destroy(targetComida.gameObject);
+    }
+
+    private void Uivar()
+    {
+        if (target != null || animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar")) return;
+        animator.SetTrigger("uivar");
     }
 
 }

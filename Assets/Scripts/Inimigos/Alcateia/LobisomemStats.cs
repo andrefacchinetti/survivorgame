@@ -64,6 +64,7 @@ public class LobisomemStats : MonoBehaviour
         if (nivelAgressividadeAtual > nivelAgressividadeMax) nivelAgressividadeAtual = nivelAgressividadeMax;
         if (nivelAgressividadeAtual < 0) nivelAgressividadeAtual = 0;
         Debug.Log("Lobisomem ficou mais agressivo: " + nivelAgressividadeAtual);
+        //TODO: Incluir som de rosnado
         setarEstadoAgressividade();
     }
 
