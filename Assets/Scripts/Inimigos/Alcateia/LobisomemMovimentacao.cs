@@ -24,8 +24,8 @@ public class LobisomemMovimentacao : MonoBehaviour
     //ATAQUE
     public float minimumDistanceAtaque = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
     public float attackInterval = 1f; // Intervalo de tempo entre ataques
-    private float lastAttackTime; // Tempo do último ataque
-    [HideInInspector] public bool isAttacking; // Flag para controlar se a IA está atacando
+    private float lastAttackTime; // Tempo do ï¿½ltimo ataque
+    [HideInInspector] public bool isAttacking; // Flag para controlar se a IA estï¿½ atacando
 
     LobisomemController lobisomemController;
     LobisomemStats lobisomemStats;
@@ -76,13 +76,17 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    private float destinationOffset = 1f;
+    private float speedVariation = 0.1f;
+    [SerializeField] float leadTime = 1.2f, leadDistance = 2;
+
     private void verificarAtaque()
     {
         if (target == null) return;
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
         if (target.GetComponent<PlayerController>().isMorto || distanceToTarget > minimumDistanceAtaque)
         {
-            targetComida = target;
+            //targetComida = target;
             target = null;
         }
         else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
@@ -91,16 +95,30 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 transform.LookAt(target.transform.position);
                 lastAttackTime = Time.time;
-                animator.SetTrigger("attack"+Random.Range(1,3));
+                animator.SetTrigger("attack" + Random.Range(1, 3));
             }
         }
         else // Persegue o alvo
         {
-            agent.SetDestination(target.transform.position);
+            Vector3 targetOffset = Random.insideUnitSphere * destinationOffset;
+            // Calcula a posiï¿½ï¿½o futura do jogador com base na sua velocidade atual
+            Vector3 leadTarget = target.transform.position + (target.GetComponent<CharacterController>().velocity.normalized * leadTime);
+            // Calcula o offset da posiï¿½ï¿½o futura do jogador
+            Vector3 leadTargetOffset = (leadTarget - target.transform.position).normalized * leadDistance;
+            // Soma o offset da posiï¿½ï¿½o futura do jogador com o offset aleatï¿½rio do destino
+            Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
+            // Define a posiï¿½ï¿½o de destino para o inimigo
+            agent.SetDestination(destination);
+           
+            // Aplica uma variaï¿½ï¿½o de velocidade aleatï¿½ria
+            agent.speed += Random.Range(-speedVariation, speedVariation);
         }
     }
 
     bool recarregandoEnergia = false;
+    private float tempoEspera = 4f;
+    private bool deveCorrer = false;
+
     private void verificarCorrerAndar()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar") || animator.GetCurrentAnimatorStateInfo(0).IsName("Comendo"))
@@ -109,8 +127,15 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else if (!recarregandoEnergia && (target != null || estaDistanteDoPontoBaseTerritorio()))
         {
-            agent.speed = velocidadeRun;
-            lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual - lobisomemStats.consumoEnergiaPorSegundo * Time.deltaTime);
+            if (deveCorrer)
+            {
+                agent.speed = velocidadeRun;
+                lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual - lobisomemStats.consumoEnergiaPorSegundo * Time.deltaTime);
+            }
+            else
+            {
+                agent.speed = velocidadeWalk;
+            }
         }
         else
         {
@@ -118,10 +143,22 @@ public class LobisomemMovimentacao : MonoBehaviour
             lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual + lobisomemStats.recuperacaoEnergiaPorSegundo * Time.deltaTime);
             if (lobisomemStats.energiaAtual > 80) recarregandoEnergia = false;
         }
+
         if (lobisomemStats.energiaAtual <= 0 && !recarregandoEnergia)
         {
             recarregandoEnergia = true;
+            tempoEspera = Random.Range(5f, 10f); // tempo de espera aleatï¿½rio entre 5 e 10 segundos
         }
+
+        if (tempoEspera > 0f)
+        {
+            tempoEspera -= Time.deltaTime;
+            if (tempoEspera <= 0f)
+            {
+                deveCorrer = Random.Range(0, 2) == 1; // 50% de chance de decidir correr novamente
+            }
+        }
+
         setarAnimacaoPorVelocidade();
     }
 
@@ -146,7 +183,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private bool estaDistanteDoPontoBaseTerritorio()
     {
-        float distance = Vector3.Distance(transform.position, pontoBaseTerritorio.transform.position);  // Calcula a distância entre o inimigo e a posicao do territorio base
+        float distance = Vector3.Distance(transform.position, pontoBaseTerritorio.transform.position);  // Calcula a distï¿½ncia entre o inimigo e a posicao do territorio base
         if (distance > distanciaMaximaPontoBase)
         {
             return true;
@@ -156,7 +193,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private bool estaDistanteDoAlfa()
     {
-        float distance = Vector3.Distance(transform.position, lobisomemController.alfa.transform.position);  // Calcula a distância entre o inimigo e a posicao do territorio base
+        float distance = Vector3.Distance(transform.position, lobisomemController.alfa.transform.position);  // Calcula a distï¿½ncia entre o inimigo e a posicao do territorio base
         if (distance > distanciaMaximaDoSeuAlfa)
         {
             return true;
@@ -276,7 +313,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 if (other.GetComponent<PlayerController>().isMorto)
                 {
-                    //targetComida = other.transform; //REMOVIDO OPACAO DE PLAYER MORTO VIRAR COMIDA, POIS É NECESSARIO INSTANCIAR UM CORPO MORTO QDO UM PLAYER MORRER PARA SER DESTRUIDO AO SER COMIDO
+                    //targetComida = other.transform; //REMOVIDO OPACAO DE PLAYER MORTO VIRAR COMIDA, POIS ï¿½ NECESSARIO INSTANCIAR UM CORPO MORTO QDO UM PLAYER MORRER PARA SER DESTRUIDO AO SER COMIDO
                 }
                 else
                 {
