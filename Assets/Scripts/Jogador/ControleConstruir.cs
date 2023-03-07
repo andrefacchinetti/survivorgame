@@ -1,42 +1,108 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
 
 public class ControleConstruir : MonoBehaviour
 {
-    public bool isAtivo = false, podeJuntar, isConectado, podeConstruir;
+    public bool isAtivo = false, podeJuntar, isConectado, podeConstruir, isMadeira;
     public float distanciaMax, rotacao, velRotacao;
     public GameObject objeto;
-    public GameObject constructionUI;
-    public Construcao construcao;
-    public Construcao.TipoConstrucao tipoConstrucao;
+    public GameObject constructionUI, menuPrebfab, abaPrefab, butConsPrefab;
+    //public Construcao construcao;
+    //public Construcao.TipoConstrucao tipoConstrucao;
     public Mesh meshObjeto;
-    [SerializeField]
-    public List<Construcao.conStruct> conStructs;
+   /*  [SerializeField]
+    public List<Construcao.conStruct> conStructs; */
     public Inventario inventario;
     public LayerMask lMaskProibidos;
     private Vector3 objPosition;
     private Quaternion objRotation;
     private RaycastHit hit;
+    public Vector2 abaPosInicial;
+    public int indexAbas, indexConstrucoes;
+    private Construcoes construcao;
+
+
+    public enum IdsConstrucoes{chao,parede};
+
+    public List<Aba> abas;
+    [System.Serializable]
+    public struct Aba{
+        public string name;
+        public Texture icone;
+        public List<Construcoes> construcoes;
+    }
+    [System.Serializable]
+    public struct Construcoes{
+        [Tooltip("O nome so deixa mais facil de identificar")]
+        public string nome;
+        public IdsConstrucoes id;
+        public int custo;
+        public float altura;
+        public bool podeJuntar;
+        public LayerMask layerMask;
+        public Texture icone;
+        [Header("Madeira")]
+        [Tooltip("Mesh da estrutura de <b>madeira</b>")]
+        public Mesh meshMad;
+        [Tooltip("Prefab da estrutura de <b>madeira</b>" )]
+        public GameObject madPrefab;
+        [Header("Pedra")]
+        [Tooltip("Mesh da estrutura de <b>pedra</b>")]
+        public Mesh meshPed;
+        [Tooltip("Prefab da estrutura de <b>pedra</b>")]
+        public GameObject pedPrefab;
+        
+    }
     
- 
+    private void Start() {
+        int i = 0;
+        construcao = abas[indexAbas].construcoes[indexConstrucoes];
+        foreach(Aba aba in abas){
+            GameObject abaGO = Instantiate(abaPrefab, constructionUI.transform);
+            abaGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(abaPosInicial.x +(45*i),abaPosInicial.y);
+            abaGO.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = aba.name;
+            abaGO.transform.Find("Icone").GetComponent<RawImage>().texture = aba.icone;
+            abaGO.transform.SetAsFirstSibling();
+            GameObject layout = Instantiate(menuPrebfab, constructionUI.transform).transform.Find("Layout").gameObject;
+            foreach(Construcoes construcoes in aba.construcoes){
+                Instantiate(butConsPrefab, layout.transform).GetComponent<RawImage>().texture = construcoes.icone;
+            }
+            i++;
+        }
+    
+    }
     
     void Update(){
         if(Input.GetButtonDown("Cancel")) ToggleModoConstrucao(false);
-        if (Input.GetButtonDown("Construir"))
+        if (Input.GetButtonDown("MenuConstruir_Abrir"))
         {
             ToggleModoConstrucao(!isAtivo);
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetButtonDown("MenuConstruir_Direita"))
         {
-            if (tipoConstrucao.Equals(Construcao.TipoConstrucao.chao)) tipoConstrucao = Construcao.TipoConstrucao.parede;
-            else if (tipoConstrucao.Equals(Construcao.TipoConstrucao.parede)) tipoConstrucao = Construcao.TipoConstrucao.chao;
+            if(indexConstrucoes+1 < abas[indexAbas].construcoes.Count){
+                indexConstrucoes++;
+                construcao = abas[indexAbas].construcoes[indexConstrucoes];
+                //ADICIONAR AQUI MUDANÇAS NO UI
+            }
+        }
+        if(Input.GetButtonDown("MenuConstruir_Esquerda")){
+            if(indexConstrucoes-1>=0){
+                indexConstrucoes--;
+                construcao = abas[indexAbas].construcoes[indexConstrucoes];
+                //ADICIONAR AQUI MUDANÇAS NO UI
+            }
         }
         if (isAtivo)
         {
             objeto.SetActive(true);
-            Debug.DrawRay(transform.position, transform.forward * distanciaMax, Color.red);
-            if(construcao == null || construcao.tipoConstrucaoEnum != tipoConstrucao){
+            podeJuntar = construcao.podeJuntar;
+            objeto.GetComponent<MeshFilter>().mesh = meshObjeto = isMadeira ? construcao.meshMad : construcao.meshPed;
+
+            /* if(construcao == null || construcao.tipoConstrucaoEnum != tipoConstrucao){
                 foreach(Construcao.conStruct c in conStructs){
                     if(c.c1.tipoConstrucaoEnum == tipoConstrucao){
                         construcao = c.c1;
@@ -45,7 +111,7 @@ public class ControleConstruir : MonoBehaviour
                         Debug.Log(objeto.GetComponent<MeshFilter>().mesh);
                     }
                 }
-            }
+            } */
             LocalConstrucao();
             if(Input.GetButton("Rotacionar")){
                 if(isConectado && Input.GetButtonDown("Rotacionar")){
@@ -57,9 +123,9 @@ public class ControleConstruir : MonoBehaviour
                 rotacao = rotacao%360;
             }
             if(Input.GetButtonDown("Fire1")){
-                if(inventario.VerificarQtdItem(construcao.material,construcao.custo) && podeConstruir){
-                    Instantiate(construcao.gameObject, objeto.transform.position, objeto.transform.rotation);
-                    inventario.RemoverItemDoInventarioPorNome(construcao.material, construcao.custo);
+                if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo) && podeConstruir){
+                    Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
+                    inventario.RemoverItemDoInventarioPorNome(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra, construcao.custo);
                 }
                 
             }
@@ -164,12 +230,8 @@ public class ControleConstruir : MonoBehaviour
         AlterarCor(podeConstruir);
     }
 
-    void OnDrawGizmos(){
-        Gizmos.DrawWireCube(objeto.transform.position + objeto.transform.up * -1, new Vector3(objeto.transform.localScale.x * meshObjeto.bounds.size.x, objeto.transform.lossyScale.y * meshObjeto.bounds.size.y, objeto.transform.localScale.z * meshObjeto.bounds.size.z));
-    }
-
     void VerificarSePodeConstruir(){
-        Collider[] colliders = Physics.OverlapBox(objeto.transform.position, new Vector3(objeto.transform.localScale.x * meshObjeto.bounds.size.x / 2 * 0.95f, objeto.transform.localScale.y * meshObjeto.bounds.size.y / 2 * 0.95f, objeto.transform.localScale.z * meshObjeto.bounds.size.z / 2 * 0.95f), objeto.transform.rotation, lMaskProibidos);
+        Collider[] colliders = Physics.OverlapBox(objeto.transform.position, new Vector3(objeto.transform.localScale.x * meshObjeto.bounds.size.x / 2 * 0.90f, objeto.transform.localScale.y * meshObjeto.bounds.size.y / 2 * 0.90f, objeto.transform.localScale.z * meshObjeto.bounds.size.z / 2 * 0.90f), objeto.transform.rotation, lMaskProibidos);
         if (colliders.Length > 0)
         {
             foreach (Collider col in colliders)
