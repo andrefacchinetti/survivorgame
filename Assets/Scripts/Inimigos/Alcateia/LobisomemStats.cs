@@ -41,9 +41,6 @@ public class LobisomemStats : MonoBehaviour
 	{
         vidaAtual -= damage;
         AumentarNivelAgressividade(20);
-        if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Alfa)) lobisomemMovimentacao.ComandosAlfaParaBetas();
-        else if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
-        
         Debug.Log("Vida enemy: " + vidaAtual + " Selvageria: " + nivelAgressividadeAtual);
         if(vidaAtual <= 0)
         {
@@ -64,8 +61,9 @@ public class LobisomemStats : MonoBehaviour
         if (nivelAgressividadeAtual > nivelAgressividadeMax) nivelAgressividadeAtual = nivelAgressividadeMax;
         if (nivelAgressividadeAtual < 0) nivelAgressividadeAtual = 0;
         Debug.Log("Lobisomem ficou mais agressivo: " + nivelAgressividadeAtual);
-        //TODO: Incluir som de rosnado
         setarEstadoAgressividade();
+        if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Alfa)) lobisomemMovimentacao.ComandosAlfaParaBetas();
+        else if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
     }
 
     public void DiminuirNivelAgressividade(float valor)

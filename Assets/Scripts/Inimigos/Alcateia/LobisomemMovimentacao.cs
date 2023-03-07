@@ -16,7 +16,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
 
     //MOVIMENTACAO
-    [HideInInspector] public Transform target, targetComida;
+    [SerializeField] public Transform target, targetComida;
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
     [SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
@@ -38,8 +38,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         animator = GetComponent<Animator>();
         lobisomemStats = GetComponent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
-        
-        if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Alfa)) InvokeRepeating("ComandosAlfaParaBetas", 0, timerParaAlfaDecidirComandosParaSeusBetas);
     }
 
     private void Update()
@@ -201,6 +199,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     public void ComandosAlfaParaBetas()
     {
         if (!LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) return;
+        Uivar();
         foreach (LobisomemController beta in lobisomemController.betas)
         {
             if (lobisomemStats.isEstadoAgressivo)
@@ -232,7 +231,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if (estaDistanteDoAlfa())
             {
-                lobisomemController.alfa.lobisomemMovimentacao.Uivar();
                 target = null;
                 agent.SetDestination(lobisomemController.alfa.transform.position);
             }
@@ -283,10 +281,11 @@ public class LobisomemMovimentacao : MonoBehaviour
                 else
                 {
                     target = other.transform;
+                    targetComida = null;
                 }
             }
         }
-        if (other.tag == "ItemDrop" && other.GetComponent<ItemDrop>().nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+        if (target == null && other.tag == "ItemDrop" && other.GetComponent<ItemDrop>().nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
         {
             if (other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCrua) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCozida)
                 || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCru) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCozido))
@@ -302,7 +301,17 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-   
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (target == null && lobisomemStats.isEstadoAgressivo)
+            {
+                target = other.transform;
+                targetComida = null;
+            }
+        }
+    }
 
     Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask) //Posicao aleatoria no mapa
     {
