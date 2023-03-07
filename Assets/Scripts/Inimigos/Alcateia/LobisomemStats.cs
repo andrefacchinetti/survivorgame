@@ -10,8 +10,6 @@ public class LobisomemStats : MonoBehaviour
     //STATS CURRENT
     [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual;
 
-    public float consumoEnergiaPorSegundo = 5.0f;
-    public float recuperacaoEnergiaPorSegundo = 2.0f;
     public bool isDead = false, isEstadoAgressivo = false;
 
     LobisomemMovimentacao lobisomemMovimentacao;
@@ -27,14 +25,6 @@ public class LobisomemStats : MonoBehaviour
     private void Start()
     {
         vidaAtual = vidaMaxima;
-        setarEnergiaAtual(energiaMaxima);
-    }
-
-    public void setarEnergiaAtual(float valor)
-    {
-        if (valor > energiaMaxima) valor = energiaMaxima;
-        if (valor < 0) valor = 0;
-        energiaAtual = valor;
     }
 
 	public void TakeDamage(float damage)

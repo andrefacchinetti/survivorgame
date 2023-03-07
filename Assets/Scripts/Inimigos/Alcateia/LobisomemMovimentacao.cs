@@ -16,10 +16,10 @@ public class LobisomemMovimentacao : MonoBehaviour
 
 
     //MOVIMENTACAO
-    [SerializeField] public Transform target, targetComida;
+    public Transform target, targetComida;
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
-    [SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
+    //[SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
 
     //ATAQUE
     public float minimumDistanceAtaque = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
@@ -77,7 +77,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     }
 
     private float destinationOffset = 1f;
-    private float speedVariation = 0.1f;
+    [SerializeField] float speedVariation = 0.05f;
     [SerializeField] float leadTime = 1.2f, leadDistance = 2;
 
     private void verificarAtaque()
@@ -115,50 +115,19 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    bool recarregandoEnergia = false;
-    private float tempoEspera = 4f;
-    private bool deveCorrer = false;
-
     private void verificarCorrerAndar()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar") || animator.GetCurrentAnimatorStateInfo(0).IsName("Comendo"))
         {
             agent.speed = 0;
         }
-        else if (!recarregandoEnergia && (target != null || estaDistanteDoPontoBaseTerritorio()))
-        {
-            if (deveCorrer)
-            {
-                agent.speed = velocidadeRun;
-                lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual - lobisomemStats.consumoEnergiaPorSegundo * Time.deltaTime);
-            }
-            else
-            {
-                agent.speed = velocidadeWalk;
-            }
-        }
         else
         {
-            agent.speed = velocidadeWalk;
-            lobisomemStats.setarEnergiaAtual(lobisomemStats.energiaAtual + lobisomemStats.recuperacaoEnergiaPorSegundo * Time.deltaTime);
-            if (lobisomemStats.energiaAtual > 80) recarregandoEnergia = false;
-        }
-
-        if (lobisomemStats.energiaAtual <= 0 && !recarregandoEnergia)
-        {
-            recarregandoEnergia = true;
-            tempoEspera = Random.Range(5f, 10f); // tempo de espera aleat�rio entre 5 e 10 segundos
-        }
-
-        if (tempoEspera > 0f)
-        {
-            tempoEspera -= Time.deltaTime;
-            if (tempoEspera <= 0f)
+            if(target == null)
             {
-                deveCorrer = Random.Range(0, 2) == 1; // 50% de chance de decidir correr novamente
+                agent.speed = 0.1f;
             }
         }
-
         setarAnimacaoPorVelocidade();
     }
 
@@ -169,7 +138,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             animator.SetBool("run", true);
             animator.SetBool("walk", false);
         }
-        else if (agent.velocity.magnitude > 0.05f)
+        else if (agent.velocity.magnitude > 0.02f)
         {
             animator.SetBool("walk", true);
             animator.SetBool("run", false);
@@ -183,6 +152,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private bool estaDistanteDoPontoBaseTerritorio()
     {
+        if (pontoBaseTerritorio == null) return false;
         float distance = Vector3.Distance(transform.position, pontoBaseTerritorio.transform.position);  // Calcula a dist�ncia entre o inimigo e a posicao do territorio base
         if (distance > distanciaMaximaPontoBase)
         {
