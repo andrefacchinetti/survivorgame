@@ -153,7 +153,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		}
         else
         {
-			anim.SetBool("isPlayerParado", false);
+			anim.SetBool("isPlayerParado", true);
 			anim.SetBool("correndo", false);
 		}
 
@@ -194,24 +194,46 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		{
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-			
-			
-			if(rotationX > 0)
+
+			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") || anim.GetCurrentAnimatorStateInfo(0).IsName("IdleDesarmado") || anim.GetCurrentAnimatorStateInfo(0).IsName("IdleArmado"))
             {
-				pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
-				cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
-			}
+				if (rotationX > 0)
+				{
+					pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
+					cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+				}
+				else
+				{
+					cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
+					pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+				}
+            }
             else
             {
-				cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
+				cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
 				pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
 			}
-			
-			transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sensivity, 0);
-		}
 
-		playerCamera.transform.position = pivotCameraInHead.transform.position + offset;
-		playerCamera.transform.localRotation = Quaternion.Euler(rotationX, playerCamera.transform.rotation.y, playerCamera.transform.rotation.z);
+			transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sensivity, 0);
+
+			// Definir a posição da câmera
+			Vector3 desiredPosition = pivotCameraInHead.transform.position + offset;
+
+			// Verificar se há colisões entre a posição atual da câmera e o ponto desejado
+			RaycastHit hit;
+			if (Physics.Linecast(pivotCameraInHead.transform.position, desiredPosition, out hit))
+			{
+				// Se houver colisão, ajustar a posição da câmera
+				playerCamera.transform.position = hit.point - offset.normalized * 0.2f;
+			}
+			else
+			{
+				// Se não houver colisão, posicionar a câmera normalmente
+				playerCamera.transform.position = desiredPosition;
+			}
+
+			playerCamera.transform.localRotation = Quaternion.Euler(rotationX, playerCamera.transform.rotation.y, playerCamera.transform.rotation.z);
+		}
 	}
 
 	void FixedUpdate() //testar update ao inves de fixed
