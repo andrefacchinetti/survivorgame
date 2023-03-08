@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			Die();
 		}
 
-		if (!inventario.canvasInventario.activeSelf && inventario.itemNaMao != null)
+		if (!inventario.canvasInventario.activeSelf && inventario.itemNaMao != null && playerMovement.canMove)
 		{
             if (Input.GetMouseButtonDown(0))
             {

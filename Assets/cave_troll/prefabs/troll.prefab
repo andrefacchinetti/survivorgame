@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobisomemMovimentacao: {fileID: 768496126}
+  lobisomemMovimentacao: {fileID: 0}
   lobisomemStats: {fileID: 3859470035884540657}
 --- !u!1 &1097627651781724
 GameObject:
@@ -1430,7 +1430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobisomemMovimentacao: {fileID: 768496126}
+  lobisomemMovimentacao: {fileID: 0}
   lobisomemStats: {fileID: 3859470035884540657}
 --- !u!1 &1447038164802700
 GameObject:
@@ -3259,7 +3259,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4876443625621520}
   - component: {fileID: 95309135661054092}
-  - component: {fileID: 768496126}
   - component: {fileID: 768496127}
   - component: {fileID: 768496129}
   - component: {fileID: 1125995984}
@@ -3267,6 +3266,7 @@ GameObject:
   - component: {fileID: 6909820456579177462}
   - component: {fileID: 6350795218241182097}
   - component: {fileID: 1912875066298640834}
+  - component: {fileID: 9144800119177154205}
   m_Layer: 0
   m_Name: troll
   m_TagString: Untagged
@@ -3308,7 +3308,7 @@ Animator:
   m_GameObject: {fileID: 1862107410815556}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 34bf333920b9886469ea633c17e22d4d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 50e102f778e6d854bb51845cca9dbe04, type: 2}
+  m_Controller: {fileID: 9100000, guid: 582c72dae89ff1348b8b011e393db10b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -3318,31 +3318,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &768496126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862107410815556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 213f51c1714e92b4888f7fd266217d62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pontoBaseTerritorio: {fileID: 0}
-  distanciaMaximaPontoBase: 20
-  distanciaMaximaDoSeuAlfa: 10
-  raioDeDistanciaParaAndarAleatoriamente: 20
-  timerParaAndarAleatoriamente: 5
-  timerParaAlfaDecidirComandosParaSeusBetas: 10
-  agent: {fileID: 0}
-  minimumDistance: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  isAttacking: 0
-  animator: {fileID: 0}
 --- !u!114 &768496127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3355,8 +3330,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 904ee8dc07d5808488c41690d38d604d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  categoria: 2
+  categoria: 3
   forma: 0
+  objFormaHumano: {fileID: 0}
+  objFormaLobo: {fileID: 0}
   alfa: {fileID: 0}
   betas: []
   dropsItems:
@@ -3368,6 +3345,7 @@ MonoBehaviour:
     qtdMaxDrops: 5
   lobisomemStats: {fileID: 0}
   lobisomemMovimentacao: {fileID: 0}
+  lobisomemHumanoMovimentacao: {fileID: 9144800119177154205}
 --- !u!195 &768496129
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3416,16 +3394,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vidaMaxima: 100
-  energiaMaxima: 100
   damage: 20
-  nivelSelvageriaMax: 100
-  nivelSelvageriaAtual: 50
+  nivelAgressividadeMax: 100
+  nivelAgressividadeAtual: 50
   vidaAtual: 0
   energiaAtual: 0
-  consumoEnergiaPorSegundo: 8
-  recuperacaoEnergiaPorSegundo: 2
   isDead: 0
   isEstadoAgressivo: 0
+  lobisomemMovimentacao: {fileID: 0}
+  lobisomemHumanoMovimentacao: {fileID: 9144800119177154205}
 --- !u!114 &6909820456579177462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3502,9 +3479,53 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: isDead
+  - Type: 9
+    SynchronizeType: 0
+    Name: startJump
+  - Type: 4
+    SynchronizeType: 0
+    Name: isClimb
+  - Type: 9
+    SynchronizeType: 0
+    Name: uivar
+  - Type: 9
+    SynchronizeType: 0
+    Name: comendo
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!114 &9144800119177154205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862107410815556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9445b63c76a96b45bf503f9e6f8f46c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pontoBaseTerritorio: {fileID: 0}
+  distanciaMaximaPontoBase: 50
+  distanciaMaximaDoSeuAlfa: 10
+  raioDeDistanciaParaAndarAleatoriamente: 20
+  timerParaAndarAleatoriamente: 5
+  timerParaAlfaDecidirComandosParaSeusBetas: 10
+  target: {fileID: 0}
+  targetComida: {fileID: 0}
+  agent: {fileID: 0}
+  minimumDistanceAtaque: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  isAttacking: 0
+  lobisomemController: {fileID: 768496127}
+  lobisomemStats: {fileID: 3859470035884540657}
+  animator: {fileID: 0}
+  speedVariation: 0.05
+  leadTime: 1.2
+  leadDistance: 2
 --- !u!1 &1868828153997032
 GameObject:
   m_ObjectHideFlags: 0

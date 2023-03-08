@@ -26,7 +26,7 @@ public class LobisomemController : MonoBehaviour
 
     public enum Categoria
     {
-        Alfa, Beta, Omega
+        Alfa, Beta, Omega, Outro
     }
 
     public enum Forma
@@ -46,8 +46,9 @@ public class LobisomemController : MonoBehaviour
 
     private void setarFormaLobisomem()
     {
-        objFormaHumano.SetActive(!gameController.isNoite && !categoria.Equals(Categoria.Omega));
-        objFormaLobo.SetActive(gameController.isNoite || categoria.Equals(Categoria.Omega));
+        if (Categoria.Outro.Equals(categoria)) return;
+        objFormaHumano.SetActive(!gameController.isNoite);
+        objFormaLobo.SetActive(gameController.isNoite);
     }
 
 }
