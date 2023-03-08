@@ -5,7 +5,7 @@ using UnityEngine;
 public class LobisomemStats : MonoBehaviour
 {
     // STATS MAXIMO
-    [SerializeField] public float vidaMaxima = 100, energiaMaxima = 100, damage = 20, nivelAgressividadeMax = 100, nivelAgressividadeAtual = 50;
+    [SerializeField] public float vidaMaxima = 100, damage = 20, nivelAgressividadeMax = 100, nivelAgressividadeAtual = 50;
 
     //STATS CURRENT
     [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual;
