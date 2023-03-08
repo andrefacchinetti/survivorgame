@@ -8,8 +8,9 @@ public class GameController : MonoBehaviour
     public float gameHour = 12f;  // Define a hora atual do jogo
     public int gameDay = 1;  // Define o dia atual do jogo
     public float gameSpeed = 60f;  // Define a velocidade do tempo do jogo (em segundos do mundo real)
-
     private float elapsedTime = 0f;  // Tempo que passou desde o início do jogo
+
+    public bool isNoite = false;
 
     // Update is called once per frame
     void Update()
@@ -32,9 +33,13 @@ public class GameController : MonoBehaviour
                 gameDay++;
             }
 
+            isNoite = gameHour >= 18;
+
             // Exibe o horário fictício atual do jogo
-            //Debug.Log("Dia " + gameDay + " - Hora " + Mathf.FloorToInt(gameHour) + ":00");
+            Debug.Log("Dia " + gameDay + " - Hora " + Mathf.FloorToInt(gameHour) + ":00");
         }
     }
+
+   
 
 }

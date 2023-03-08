@@ -7,18 +7,22 @@ public class LobisomemController : MonoBehaviour
 
     [SerializeField] public Categoria categoria;
     [SerializeField] public Forma forma;
+    [SerializeField] public GameObject objFormaHumano, objFormaLobo;
     [SerializeField] public LobisomemController alfa;
     [SerializeField] public List<LobisomemController> betas;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
     [SerializeField][HideInInspector] public LobisomemStats lobisomemStats;
-    [SerializeField] [HideInInspector] public LobisomemMovimentacao lobisomemMovimentacao;
+    [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao;
+    [SerializeField] public LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;
+    GameController gameController;
 
     private void Awake()
     {
         lobisomemStats = GetComponent<LobisomemStats>();
-        lobisomemMovimentacao = GetComponent<LobisomemMovimentacao>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
+
 
     public enum Categoria
     {
@@ -27,9 +31,23 @@ public class LobisomemController : MonoBehaviour
 
     public enum Forma
     {
-        Humano, Lobisomem
+        Humano, Lobo
     }
 
-   
+    private void Start()
+    {
+        setarFormaLobisomem();
+    }
+
+    private void LateUpdate()
+    {
+        setarFormaLobisomem();
+    }
+
+    private void setarFormaLobisomem()
+    {
+        objFormaHumano.SetActive(!gameController.isNoite && !categoria.Equals(Categoria.Omega));
+        objFormaLobo.SetActive(gameController.isNoite || categoria.Equals(Categoria.Omega));
+    }
 
 }

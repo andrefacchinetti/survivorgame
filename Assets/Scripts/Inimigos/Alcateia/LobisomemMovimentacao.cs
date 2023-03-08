@@ -7,8 +7,6 @@ using Photon.Pun;
 public class LobisomemMovimentacao : MonoBehaviour
 {
 
-   
-
     [SerializeField] public GameObject pontoBaseTerritorio;
     [SerializeField] public float distanciaMaximaPontoBase = 50, distanciaMaximaDoSeuAlfa = 10;
     [SerializeField] public float raioDeDistanciaParaAndarAleatoriamente = 20f;
@@ -27,16 +25,14 @@ public class LobisomemMovimentacao : MonoBehaviour
     private float lastAttackTime; // Tempo do �ltimo ataque
     [HideInInspector] public bool isAttacking; // Flag para controlar se a IA est� atacando
 
-    LobisomemController lobisomemController;
-    LobisomemStats lobisomemStats;
+    [SerializeField] LobisomemController lobisomemController;
+    [SerializeField] LobisomemStats lobisomemStats;
     [HideInInspector] public Animator animator;
 
     private void Start()
     {
-        lobisomemController = GetComponent<LobisomemController>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        lobisomemStats = GetComponent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
     }
 

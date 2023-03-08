@@ -12,13 +12,13 @@ public class LobisomemStats : MonoBehaviour
 
     public bool isDead = false, isEstadoAgressivo = false;
 
-    LobisomemMovimentacao lobisomemMovimentacao;
+    [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
+    [SerializeField] LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;
     LobisomemController lobisomemController;
 
 
     private void Awake()
     {
-        lobisomemMovimentacao = GetComponent<LobisomemMovimentacao>();
         lobisomemController = GetComponent<LobisomemController>();
     }
 
@@ -34,14 +34,30 @@ public class LobisomemStats : MonoBehaviour
         Debug.Log("Vida enemy: " + vidaAtual + " Selvageria: " + nivelAgressividadeAtual);
         if(vidaAtual <= 0)
         {
-            if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
-            lobisomemMovimentacao.animator.SetBool("isDead", true);
-            lobisomemMovimentacao.agent.isStopped = true;
+            if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
+            {
+                if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
+                lobisomemMovimentacao.animator.SetBool("isDead", true);
+                lobisomemMovimentacao.agent.isStopped = true;
+            }
+            else
+            {
+                if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemHumanoMovimentacao.ComandosBetasParaAlfa();
+                lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
+                lobisomemHumanoMovimentacao.agent.isStopped = true;
+            }
             isDead = true;
         }
         else
         {
-            lobisomemMovimentacao.animator.SetTrigger("hit");
+            if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
+            {
+                lobisomemMovimentacao.animator.SetTrigger("hit");
+            }
+            else
+            {
+                lobisomemHumanoMovimentacao.animator.SetTrigger("hit");
+            }
         }
 	}
 
