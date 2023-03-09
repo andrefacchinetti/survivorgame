@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,7 @@ public class LobisomemStats : MonoBehaviour
     [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual;
 
     public bool isDead = false, isEstadoAgressivo = false;
+    [HideInInspector] public bool isAttacking; // Flag para controlar se a IA est� atacando
 
     [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
     [SerializeField] LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;

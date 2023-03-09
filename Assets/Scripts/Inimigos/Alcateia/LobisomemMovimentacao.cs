@@ -23,7 +23,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     public float minimumDistanceAtaque = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
     public float attackInterval = 1f; // Intervalo de tempo entre ataques
     private float lastAttackTime; // Tempo do �ltimo ataque
-    [HideInInspector] public bool isAttacking; // Flag para controlar se a IA est� atacando
+    
 
     [SerializeField] LobisomemController lobisomemController;
     [SerializeField] LobisomemStats lobisomemStats;
@@ -38,12 +38,12 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Update()
     {
-        if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
+       /* if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
         else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
         else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
         verificarCorrerAndar();
         verificarAtaque();
-        verificarProximoComida();
+        verificarProximoComida();*/
     }
 
     private void verificarProximoComida()
@@ -87,7 +87,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
         {
-            if (!isAttacking && Time.time > lastAttackTime + attackInterval)
+            if (!lobisomemStats.isAttacking && Time.time > lastAttackTime + attackInterval)
             {
                 transform.LookAt(target.transform.position);
                 lastAttackTime = Time.time;
@@ -327,12 +327,12 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     void GoAtk()
     {
-        isAttacking = true;
+        lobisomemStats.isAttacking = true;
     }
 
     void NotAtk()
     {
-        isAttacking = false;
+        lobisomemStats.isAttacking = false;
     }
 
     void AnimEventComeu()

@@ -5,17 +5,21 @@ using UnityEngine;
 public class CollisorCausaDano : MonoBehaviour
 {
 
-    [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
-    [SerializeField] LobisomemStats lobisomemStats;
+    LobisomemStats lobisomemStats;
+
+    private void Awake()
+    {
+        lobisomemStats = GetComponentInParent<LobisomemStats>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) //Dar dano no player qdo collide
         {
-            if (lobisomemMovimentacao.isAttacking)
+            if (lobisomemStats.isAttacking)
             {
                 other.gameObject.GetComponent<PlayerController>().TakeDamage(lobisomemStats.damage);
-                lobisomemMovimentacao.isAttacking = false;
+                lobisomemStats.isAttacking = false;
             }
         }
     }

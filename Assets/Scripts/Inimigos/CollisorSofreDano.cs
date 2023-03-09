@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class CollisorSofreDano : MonoBehaviour
 {
-    [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
-    [SerializeField] LobisomemStats lobisomemStats;
 
-    void OnTriggerEnter(Collider other)
+    LobisomemStats lobisomemStats;
+
+    private void Awake()
     {
+        lobisomemStats = GetComponentInParent<LobisomemStats>();
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("colidiu com: " + other.transform.tag);
         if (other.transform.tag == "Ferramenta" || other.transform.tag == "Arma") //recebe dano qdo player ataca com ferramenta ou arma da mao
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
             lobisomemStats.TakeDamage(damage);
             other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking = false;
+            other.transform.root.gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
         }
 
         if (other.transform.tag == "ItemDrop") //Qdo toca em objeto que causa dano em velocidade (lança ou flecha)
