@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using UnityEngine.Audio;
-using Cinemachine;
 using System.IO;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		}
 
 		if (playerController.isMorto) canMove = false;
-
+	
 	}
 
 	void OnMouseEnter()
