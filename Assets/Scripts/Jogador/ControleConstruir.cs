@@ -10,6 +10,7 @@ public class ControleConstruir : MonoBehaviour
     public float distanciaMax, rotacao, velRotacao;
     public GameObject objeto;
     public GameObject constructionUI, menuPrebfab, abaPrefab, butConsPrefab;
+    public RectTransform indicadorHud;
     //public Construcao construcao;
     //public Construcao.TipoConstrucao tipoConstrucao;
     public Mesh meshObjeto;
@@ -38,6 +39,7 @@ public class ControleConstruir : MonoBehaviour
     public struct Construcoes{
         [Tooltip("O nome so deixa mais facil de identificar")]
         public string nome;
+        [Tooltip("Se precisar adicionar mais ids: Scripts>Jogador>ControleConstruir.cs e procura por IdsConstrucoes")]
         public IdsConstrucoes id;
         public int custo;
         public float altura;
@@ -45,14 +47,14 @@ public class ControleConstruir : MonoBehaviour
         public LayerMask layerMask;
         public Texture icone;
         [Header("Madeira")]
-        [Tooltip("Mesh da estrutura de <b>madeira</b>")]
+        [Tooltip("Mesh da estrutura de madeira")]
         public Mesh meshMad;
-        [Tooltip("Prefab da estrutura de <b>madeira</b>" )]
+        [Tooltip("Prefab da estrutura de madeira" )]
         public GameObject madPrefab;
         [Header("Pedra")]
-        [Tooltip("Mesh da estrutura de <b>pedra</b>")]
+        [Tooltip("Mesh da estrutura de pedra")]
         public Mesh meshPed;
-        [Tooltip("Prefab da estrutura de <b>pedra</b>")]
+        [Tooltip("Prefab da estrutura de pedra")]
         public GameObject pedPrefab;
         
     }
@@ -66,13 +68,19 @@ public class ControleConstruir : MonoBehaviour
             abaGO.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = aba.name;
             abaGO.transform.Find("Icone").GetComponent<RawImage>().texture = aba.icone;
             abaGO.transform.SetAsFirstSibling();
-            GameObject layout = Instantiate(menuPrebfab, constructionUI.transform).transform.Find("Layout").gameObject;
+            GameObject menu = Instantiate(menuPrebfab, constructionUI.transform);
+            abaGO.name = "aba" + i;
+            menu.name = "menu" + i;
+            GameObject layout = menu.transform.Find("Layout").gameObject;
             foreach(Construcoes construcoes in aba.construcoes){
                 Instantiate(butConsPrefab, layout.transform).GetComponent<RawImage>().texture = construcoes.icone;
             }
+            menu.transform.SetAsFirstSibling();
+            menu.SetActive(i==0);
             i++;
         }
-    
+        constructionUI.transform.Find("menu"+indexAbas).gameObject.SetActive(true);
+        constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(true);
     }
     
     void Update(){
@@ -81,26 +89,52 @@ public class ControleConstruir : MonoBehaviour
         {
             ToggleModoConstrucao(!isAtivo);
         }
-        if (Input.GetButtonDown("MenuConstruir_Direita"))
-        {
-            if(indexConstrucoes+1 < abas[indexAbas].construcoes.Count){
-                indexConstrucoes++;
-                construcao = abas[indexAbas].construcoes[indexConstrucoes];
-                //ADICIONAR AQUI MUDANÇAS NO UI
-            }
-        }
-        if(Input.GetButtonDown("MenuConstruir_Esquerda")){
-            if(indexConstrucoes-1>=0){
-                indexConstrucoes--;
-                construcao = abas[indexAbas].construcoes[indexConstrucoes];
-                //ADICIONAR AQUI MUDANÇAS NO UI
-            }
-        }
         if (isAtivo)
         {
+            if (Input.GetButtonDown("MenuConstruir_Direita"))
+            {
+                if (indexConstrucoes + 1 < abas[indexAbas].construcoes.Count)
+                {
+                    indexConstrucoes++;
+                    construcao = abas[indexAbas].construcoes[indexConstrucoes];
+                }
+            }
+            if (Input.GetButtonDown("MenuConstruir_Esquerda"))
+            {
+                if (indexConstrucoes - 1 >= 0)
+                {
+                    indexConstrucoes--;
+                    construcao = abas[indexAbas].construcoes[indexConstrucoes];
+                }
+            }
+            if(Input.GetButtonDown("MenuConstruir_Material")){
+                isMadeira=!isMadeira;
+                //ATUALIZAR HUD
+            }
+            if(Input.GetButtonDown("MenuConstruir_AvançarAba")){
+                if(indexAbas + 1 < abas.Count){
+                    constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(false);
+                    constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(false);
+                    indexAbas++;
+                    constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(true);
+                    constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(true);
+
+                }
+            }
+            if (Input.GetButtonDown("MenuConstruir_VoltarAba"))
+            {
+                if(indexAbas - 1 >= 0){
+                    constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(false);
+                    //constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(false);
+                    indexAbas--;
+                    constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(true);
+                    constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(true);
+                }
+            }
             objeto.SetActive(true);
             podeJuntar = construcao.podeJuntar;
             objeto.GetComponent<MeshFilter>().mesh = meshObjeto = isMadeira ? construcao.meshMad : construcao.meshPed;
+            indicadorHud.anchoredPosition = new Vector2(Mathf.Clamp(-180+(140*indexConstrucoes), -180f, 240f),indicadorHud.anchoredPosition.y);
 
             /* if(construcao == null || construcao.tipoConstrucaoEnum != tipoConstrucao){
                 foreach(Construcao.conStruct c in conStructs){
@@ -113,8 +147,8 @@ public class ControleConstruir : MonoBehaviour
                 }
             } */
             LocalConstrucao();
-            if(Input.GetButton("Rotacionar")){
-                if(isConectado && Input.GetButtonDown("Rotacionar")){
+            if(Input.GetButton("MenuConstruir_Rotacionar")){
+                if(isConectado && Input.GetButtonDown("MenuConstruir_Rotacionar")){
                     rotacao+=90f;
                 }
                 else{
@@ -256,9 +290,7 @@ public class ControleConstruir : MonoBehaviour
         if(hits.Length > 0){
             hitMaisProx = hits[0];
             foreach(RaycastHit h in hits){
-                Debug.Log(h.collider.tag);
                 if(h.collider.tag == "construcao"){
-                    Debug.Log("oi");
                     if(Vector3.Distance(h.collider.transform.position, h.point) < menorDistancia){
                         menorDistancia = Vector3.Distance(h.collider.transform.position, h.point);
                         hitMaisProx = h;
