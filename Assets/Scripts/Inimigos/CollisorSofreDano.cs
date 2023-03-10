@@ -6,20 +6,21 @@ public class CollisorSofreDano : MonoBehaviour
 {
 
     LobisomemStats lobisomemStats;
+    AnimalPassivo animalPassivo;
 
     private void Awake()
     {
         lobisomemStats = GetComponentInParent<LobisomemStats>();
+        animalPassivo = GetComponentInParent<AnimalPassivo>();
     }
 
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log("colidiu com: " + other.transform.tag);
         if (other.transform.tag == "Ferramenta" || other.transform.tag == "Arma") //recebe dano qdo player ataca com ferramenta ou arma da mao
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
-            lobisomemStats.TakeDamage(damage);
+            TakeDamage(damage);
             other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking = false;
             other.transform.root.gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
         }
@@ -35,10 +36,17 @@ public class CollisorSofreDano : MonoBehaviour
                 if (other.transform.GetComponent<Rigidbody>().velocity.magnitude > 1f)
                 {
                     float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
-                    lobisomemStats.TakeDamage(damage);
+                    TakeDamage(damage);
                 }
             }
         }
-
     }
+
+    private void TakeDamage(float damage)
+    {
+        Debug.Log("tomou dano");
+        if(lobisomemStats != null) lobisomemStats.TakeDamage(damage);
+        if (animalPassivo != null) animalPassivo.TakeDamage(damage);
+    }
+
 }
