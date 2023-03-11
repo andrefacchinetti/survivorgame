@@ -38,12 +38,12 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Update()
     {
-       /* if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
+        if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
         else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
         else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
         verificarCorrerAndar();
         verificarAtaque();
-        verificarProximoComida();*/
+        verificarProximoComida();
     }
 
     private void verificarProximoComida()
@@ -258,10 +258,14 @@ public class LobisomemMovimentacao : MonoBehaviour
 
         if (timer >= timerParaAndarAleatoriamente)
         {
-
-            Vector3 newPos = RandomNavSphere(transform.position, raioDeDistanciaParaAndarAleatoriamente, -1);
-            agent.SetDestination(newPos);
             timer = 0;
+            Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaParaAndarAleatoriamente;
+            randomDirection += transform.position;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, raioDeDistanciaParaAndarAleatoriamente, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+            }
         }
     }
 
@@ -308,15 +312,6 @@ public class LobisomemMovimentacao : MonoBehaviour
                 targetComida = null;
             }
         }
-    }
-
-    Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask) //Posicao aleatoria no mapa
-    {
-        Vector3 randDirection = Random.insideUnitSphere * distance;
-        randDirection += origin;
-        NavMeshHit navHit;
-        NavMesh.SamplePosition(randDirection, out navHit, distance, layermask);
-        return navHit.position;
     }
 
     void GoAtk()

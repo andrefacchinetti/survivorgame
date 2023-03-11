@@ -256,10 +256,14 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
 
         if (timer >= timerParaAndarAleatoriamente)
         {
-
-            Vector3 newPos = RandomNavSphere(transform.position, raioDeDistanciaParaAndarAleatoriamente, -1);
-            agent.SetDestination(newPos);
             timer = 0;
+            Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaParaAndarAleatoriamente;
+            randomDirection += transform.position;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, raioDeDistanciaParaAndarAleatoriamente, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+            }
         }
     }
 
