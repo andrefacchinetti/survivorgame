@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
+[RequireComponent(typeof(PhotonView), typeof(NavMeshAgent))]
 public class AnimalPassivo : MonoBehaviourPunCallbacks
 {
 
