@@ -288,18 +288,12 @@ public class LobisomemMovimentacao : MonoBehaviour
                 }
             }
         }
-        if (target == null && other.tag == "ItemDrop" && other.GetComponent<ItemDrop>().nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+        if (target == null && other.tag == "ItemDrop")
         {
-            if (other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCrua) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.CarneCozida)
-                || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCru) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCozido))
+            if (other.GetComponent<Consumivel>() != null && other.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
             {
                 //gostou da comida
                 targetComida = other.transform;
-                Debug.Log("achou comida");
-            }
-            else
-            {
-                //nao gosta da comida
             }
         }
     }

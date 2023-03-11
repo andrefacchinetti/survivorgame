@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
-public class AnimalPassivo : MonoBehaviour
+public class AnimalPassivo : MonoBehaviourPunCallbacks
 {
+
+    [SerializeField] public List<Item.ItemDropStruct> dropsItems;
+
     public float walkSpeed = 5f, runSpeed = 10f; // velocidade de corrida
     public float eatTime = 5f; // tempo de alimentação
     public float hitPoints = 100f; // pontos de vida
@@ -21,6 +25,12 @@ public class AnimalPassivo : MonoBehaviour
     private GameObject foodTarget;
     private float lastDamageTime = 0f;
     private float lastRunTime = 0f;
+    PhotonView PV;
+
+    private void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
 
     void Start()
     {
@@ -114,6 +124,21 @@ public class AnimalPassivo : MonoBehaviour
             MoveToRandomPosition();
             Invoke("StopRunning", runTime);
         }
+        else
+        {
+            //MORREU
+            foreach (Item.ItemDropStruct drop in dropsItems)
+            {
+                if (!Item.TiposItems.Nenhum.ToString().Equals(drop.nomeItemEnum.GetTipoItemEnum()))
+                {
+                    int quantidade = UnityEngine.Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
+                    string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
+                    ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, transform.position, transform.rotation, PV.ViewID);
+                }
+            }
+            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(this.gameObject);
+            else GameObject.Destroy(this.gameObject);
+        }
         Debug.Log("vida animal: " + hitPoints);
         // definir o tempo do último dano
         lastDamageTime = Time.time;
@@ -163,7 +188,7 @@ public class AnimalPassivo : MonoBehaviour
         float closestDistance = Mathf.Infinity;
         foreach (GameObject food in foodObjects)
         {
-            if (food.GetComponent<ItemDrop>().nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+            if (food.GetComponent<Consumivel>() != null && (food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Fruta) || food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Vegetal)))
             {
                 float distance = Vector3.Distance(transform.position, food.transform.position);
                 if (distance < closestDistance)
