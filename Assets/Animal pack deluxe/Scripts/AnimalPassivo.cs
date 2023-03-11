@@ -37,72 +37,59 @@ public class AnimalPassivo : MonoBehaviour
             {
                 // o animal chegou ao seu destino, pare de se mover
                 navAgent.ResetPath();
-                anim.SetBool("isMoving", false);
                 navAgent.speed = 0;
             }
 
-            if (lastDamageTime + restTime < Time.time)
+            if (foodTarget == null)
             {
-                // verificar se há comida no chão
-                if (foodTarget == null)
+                foodTarget = FindFood();
+                if (foodTarget != null && !isRunning)
                 {
-                    foodTarget = FindFood();
-                    if (foodTarget != null && !isRunning)
-                    {
-                        // se encontrarmos comida, defina o destino do NavMeshAgent para a posição da comida
-                        MoveToPosition(foodTarget.transform.position);
-                    }
-                    else if (!navAgent.hasPath)
-                    {
-                        // Não há comida e não há destino definido, mover-se para uma posição aleatória
-                        MoveToRandomPosition();
-                    }
+                    // se encontrarmos comida, defina o destino do NavMeshAgent para a posição da comida
+                    MoveToPosition(foodTarget.transform.position);
                 }
-                else
+                else if (!navAgent.hasPath)
                 {
-                    // se já temos um alvo de comida, verifique se estamos perto o suficiente para comer
-                    if (Vector3.Distance(transform.position, foodTarget.transform.position) <= eatDistance)
-                    {
-                        if (!isEating)
-                        {
-                            isEating = true;
-                            anim.SetBool("isEating", true);
-                            Invoke("FinishEating", eatTime);
-                        }
-                    }
-                    else
-                    {
-                        // ainda estamos longe demais, continue se movendo para o alvo de comida
-                        MoveToPosition(foodTarget.transform.position);
-                    }
+                    // Não há comida e não há destino definido, mover-se para uma posição aleatória
+                    MoveToRandomPosition();
                 }
             }
             else
             {
-                // animal está descansando, não faça nada
-                anim.SetBool("isMoving", false);
-                navAgent.speed = 0;
+                // se já temos um alvo de comida, verifique se estamos perto o suficiente para comer
+                if (Vector3.Distance(transform.position, foodTarget.transform.position) <= eatDistance)
+                {
+                    if (!isEating)
+                    {
+                        isEating = true;
+                        anim.SetBool("isEating", true);
+                        Invoke("FinishEating", eatTime);
+                    }
+                }
+                else
+                {
+                    // ainda estamos longe demais, continue se movendo para o alvo de comida
+                    MoveToPosition(foodTarget.transform.position);
+                }
             }
 
-            // verificar pontos de vida do animal
-            if (hitPoints <= 0)
+            if (navAgent.speed > 2)
             {
-                isDead = true;
-                anim.SetBool("isDead", true);
-                navAgent.speed = 0;
+                anim.SetBool("run", true);
+                anim.SetBool("isMoving", true);
             }
-        }
+            else if (navAgent.speed > 0.1f)
+            {
+                anim.SetBool("run", false);
+                anim.SetBool("isMoving", true);
+            }
+            else
+            {
+                anim.SetBool("run", false);
+                anim.SetBool("isMoving", false);
+            }
 
-        Debug.Log("velocidade: " + navAgent.velocity.magnitude);
-        if (isRunning)
-        {
-            anim.SetBool("run", true);
         }
-        else
-        {
-            anim.SetBool("run", false);
-        }
-        
     }
 
     void FinishEating()
@@ -120,11 +107,11 @@ public class AnimalPassivo : MonoBehaviour
 
         if (hitPoints > 0)
         {
-            // o animal tomou dano, então ele deve correr por um tempo
-            MoveToRandomPosition();
             foodTarget = null;
             isRunning = true;
             lastRunTime = Time.time;
+            // o animal tomou dano, então ele deve correr por um tempo
+            MoveToRandomPosition();
             Invoke("StopRunning", runTime);
         }
         Debug.Log("vida animal: " + hitPoints);
@@ -135,25 +122,24 @@ public class AnimalPassivo : MonoBehaviour
     void StopRunning()
     {
         isRunning = false;
+        Debug.Log("parotu de correr");
     }
 
     public void MoveToPosition(Vector3 position)
     {
+       
         transform.LookAt(position);
         // Definir destino para o NavMeshAgent
         navAgent.SetDestination(position);
         if (isRunning)
         {
             navAgent.speed = runSpeed;
+            Debug.Log("movendo para position correndo");
         }
         else
         {
             navAgent.speed = walkSpeed;
-        }
-        // O agente só deve se mover se ele estiver em uma superfície caminhável
-        if (navAgent.isOnNavMesh)
-        {
-            anim.SetBool("isMoving", true);
+            Debug.Log("movendo para position andando");
         }
     }
 
