@@ -7,12 +7,16 @@ public class GrudarEmSuperficie : MonoBehaviour
 
     [SerializeField] GameObject gameObjectPai;
 
-    private void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter(Collider collision)
     {
-        if (!collision.isTrigger && gameObjectPai.GetComponent<Rigidbody>().velocity.magnitude > 1f)
+        if (collision.gameObject.GetComponent<SofreDanoAndDropaItem>() != null || collision.gameObject.GetComponent<CollisorSofreDano>() != null || collision.gameObject.tag == "Terreno")
         {
-            gameObjectPai.GetComponent<Rigidbody>().isKinematic = true;
-            gameObjectPai.transform.SetParent(collision.gameObject.transform);
+            // A colisão ocorreu com um objeto da camada "Construcao"
+            if (gameObjectPai.GetComponent<Rigidbody>().velocity.magnitude > 1f)
+            {
+                gameObjectPai.GetComponent<Rigidbody>().isKinematic = true;
+                gameObjectPai.transform.SetParent(collision.gameObject.transform);
+            }
         }
     }
 

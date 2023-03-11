@@ -83,7 +83,7 @@ public class AnimalPassivo : MonoBehaviourPunCallbacks
                 }
             }
 
-            if (navAgent.speed > 2)
+            if (navAgent.speed > (walkSpeed + 0.5f))
             {
                 anim.SetBool("run", true);
                 anim.SetBool("isMoving", true);
@@ -170,9 +170,10 @@ public class AnimalPassivo : MonoBehaviourPunCallbacks
 
     private void MoveToRandomPosition()
     {
-        Vector3 randomPosition = transform.position + Random.insideUnitSphere * raioDeDistanciaParaAndarAleatoriamente;
+        Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaParaAndarAleatoriamente;
+        randomDirection += transform.position;
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPosition, out hit, raioDeDistanciaParaAndarAleatoriamente, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDirection, out hit, raioDeDistanciaParaAndarAleatoriamente, NavMesh.AllAreas))
         {
             MoveToPosition(hit.position);
         }
