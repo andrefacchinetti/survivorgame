@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
-[RequireComponent(typeof(PhotonView), typeof(NavMeshAgent))]
+[RequireComponent(typeof(PhotonView), typeof(NavMeshAgent), typeof(StatsGeral))]
+[RequireComponent(typeof(AnimalPassivoStats))]
 public class AnimalPassivoController : MonoBehaviourPunCallbacks
 {
 
     public float walkSpeed = 5f, runSpeed = 10f; // velocidade de corrida
     public float eatTime = 5f; // tempo de alimentação
+    public bool isProcuraComida = true;
     
     public float eatDistance = 2f; // distância para detectar comida
     public float runTime = 5f; // tempo que o animal corre após tomar dano
@@ -159,6 +161,7 @@ public class AnimalPassivoController : MonoBehaviourPunCallbacks
 
     GameObject FindFood()
     {
+        if (!isProcuraComida) return null;
         // encontrar todos os objetos com a tag "Food"
         GameObject[] foodObjects = GameObject.FindGameObjectsWithTag("ItemDrop");
 
