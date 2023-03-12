@@ -26,7 +26,7 @@ public class ControleConstruir : MonoBehaviour
     private Construcoes construcao;
 
 
-    public enum IdsConstrucoes{chao,parede};
+    public enum IdsConstrucoes{chao,parede,fundacao,parede_porta,porta,telhado,escada};
 
     public List<Aba> abas;
     [System.Serializable]
@@ -187,6 +187,7 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = hit.transform.rotation;
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.eulerAngles.y + rotacao - (rotacao % 90), objRotation.eulerAngles.z));
                 objPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + construcao.altura, hit.transform.position.z);
+                Debug.Log(construcao.altura);
                 isConectado = true;
                 /* if(System.Array.IndexOf(construcao.nomeTerreno, hit.transform.name) != -1){
                     //se o objeto tocado tiver o nome do encaixe certo

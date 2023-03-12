@@ -10,7 +10,7 @@ using System.IO;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
-{// lembrete: nome de usuarios iguais buga a mudança de cena
+{// lembrete: nome de usuarios iguais buga a mudanï¿½a de cena
 
 	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, pescocoPivot, pivotTiroBase;
 	public Vector3 offset;
@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	PhotonView PV;
 	public Animator anim;
 	PlayerManager playerManager;
+	[HideInInspector]
+	public float alturaPlayer;
 
 	//cursor
 	public Texture2D cursorTexture;
@@ -59,6 +61,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		playerController = GetComponent<PlayerController>();
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+		alturaPlayer = characterController.height;
 	}
 
 	void Start()
@@ -165,12 +168,16 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		if (Input.GetKey(KeyCode.LeftControl) && canMove && characterController.isGrounded)
 		{
 			anim.SetBool("agachando", true);
+			characterController.height = alturaPlayer/2;
+			characterController.center = new Vector3(0,alturaPlayer/4,0);
 			curSpeedX = 1.0f;
 			curSpeedY = 1.0f;
 		}
 		else
 		{
 			anim.SetBool("agachando", false);
+            characterController.height = alturaPlayer;
+            characterController.center = new Vector3(0, alturaPlayer / 2, 0);
 		}
 		if (Input.GetButtonDown("Jump") && canMove && characterController.isGrounded)
 		{
@@ -216,19 +223,19 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 			transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sensivity, 0);
 
-			// Definir a posição da câmera
+			// Definir a posiï¿½ï¿½o da cï¿½mera
 			Vector3 desiredPosition = pivotCameraInHead.transform.position + offset;
 
-			// Verificar se há colisões entre a posição atual da câmera e o ponto desejado
+			// Verificar se hï¿½ colisï¿½es entre a posiï¿½ï¿½o atual da cï¿½mera e o ponto desejado
 			RaycastHit hit;
 			if (Physics.Linecast(pivotCameraInHead.transform.position, desiredPosition, out hit))
 			{
-				// Se houver colisão, ajustar a posição da câmera
+				// Se houver colisï¿½o, ajustar a posiï¿½ï¿½o da cï¿½mera
 				playerCamera.transform.position = hit.point - offset.normalized * 0.2f;
 			}
 			else
 			{
-				// Se não houver colisão, posicionar a câmera normalmente
+				// Se nï¿½o houver colisï¿½o, posicionar a cï¿½mera normalmente
 				playerCamera.transform.position = desiredPosition;
 			}
 
