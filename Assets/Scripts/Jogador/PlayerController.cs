@@ -83,6 +83,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
 			animator.SetBool("segurandoArcoFlecha", false);
 		}
+		if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Besta))
+		{
+			animator.SetBool("segurandoCrossbow", true);
+		}
+		else
+		{
+			animator.SetBool("segurandoCrossbow", false);
+		}
 	}
 
 	private void ativarAnimacaoPorTipoItem(Item itemResponse)
@@ -116,7 +124,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Arma.ToString()))
 		{
-			if (itemResponse.nomeItem == Item.NomeItem.ArcoSimples || itemResponse.nomeItem == Item.NomeItem.ArcoAvancado)
+			if (itemResponse.nomeItem == Item.NomeItem.Besta)
+			{
+				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoBesta"))
+				{
+					Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
+					if (flechaNaAljava != null)
+					{
+						itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco(flechaNaAljava);
+					}
+					animator.SetTrigger("usandoBesta");
+				}
+			}
+			else if (itemResponse.nomeItem == Item.NomeItem.ArcoSimples || itemResponse.nomeItem == Item.NomeItem.ArcoAvancado)
 			{
 				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha"))
 				{

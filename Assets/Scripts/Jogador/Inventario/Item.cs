@@ -150,6 +150,8 @@ public class Item : MonoBehaviourPunCallbacks
         CogumeloVenenosoCru,
         [EnumMember(Value = "Consumivel")]
         CogumeloVenenosoCozido,
+        [EnumMember(Value = "Arma")]
+        Besta,
     }
 
     [System.Serializable]
