@@ -950,6 +950,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &334608350761124789
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1027,6 +1029,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &4354517010406044413
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1419,6 +1423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &2826950485979508525
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1592,6 +1598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &7318189716716079760
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1857,6 +1865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &6809162051395436261
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2089,6 +2099,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &8513565422519143236
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2185,6 +2197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!114 &319982172497044730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2307,6 +2321,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &8766516152376409489
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2510,6 +2526,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &6512096553913079131
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2537,6 +2555,8 @@ GameObject:
   - component: {fileID: 3480488334938978825}
   - component: {fileID: 5136368655001136268}
   - component: {fileID: 8094014223833661833}
+  - component: {fileID: 8817566113519457645}
+  - component: {fileID: 6943174582465703776}
   m_Layer: 0
   m_Name: BarukBetaFraco
   m_TagString: Inimigo
@@ -2587,6 +2607,7 @@ MonoBehaviour:
     qtdMinDrops: 3
     qtdMaxDrops: 5
   lobisomemStats: {fileID: 0}
+  statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 5395484721726252598}
   lobisomemHumanoMovimentacao: {fileID: 258108203577469782}
 --- !u!114 &8094014223833661833
@@ -2601,17 +2622,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3329b2a60b01e0040a176022ef11628a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 200
-  damage: 20
   nivelAgressividadeMax: 100
   nivelAgressividadeAtual: 50
-  vidaAtual: 0
   energiaAtual: 0
-  isDead: 0
   isEstadoAgressivo: 0
-  isAttacking: 0
   lobisomemMovimentacao: {fileID: 5395484721726252598}
   lobisomemHumanoMovimentacao: {fileID: 258108203577469782}
+--- !u!114 &8817566113519457645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480488334938978821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 200
+  damage: 20
+  vidaAtual: 100
+  isDead: 0
+  isAttacking: 0
+  dropsItems:
+  - nomeItemEnum: 4
+    qtdMinDrops: 5
+    qtdMaxDrops: 10
+  - nomeItemEnum: 5
+    qtdMinDrops: 8
+    qtdMaxDrops: 18
+  - nomeItemEnum: 14
+    qtdMinDrops: 3
+    qtdMaxDrops: 6
+--- !u!114 &6943174582465703776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480488334938978821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3480488334964649477
 GameObject:
   m_ObjectHideFlags: 0
@@ -2896,6 +2961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &4114118383951102095
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3073,6 +3140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &2386744715965376145
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3498,6 +3567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &7592032886492881188
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4468,6 +4539,7 @@ MonoBehaviour:
   attackInterval: 1
   lobisomemController: {fileID: 5136368655001136268}
   lobisomemStats: {fileID: 8094014223833661833}
+  statsGeral: {fileID: 8817566113519457645}
   animator: {fileID: 0}
   speedVariation: 0.05
   leadTime: 1.2
@@ -5697,9 +5769,9 @@ MonoBehaviour:
   distanciaDePerseguicao: 10
   distanciaDeAtaque: 2
   attackInterval: 1
-  isAttacking: 0
   lobisomemController: {fileID: 5136368655001136268}
   lobisomemStats: {fileID: 8094014223833661833}
+  statsGeral: {fileID: 8817566113519457645}
   animator: {fileID: 0}
   speedVariation: 0.05
   leadTime: 1.2

@@ -5,62 +5,56 @@ using UnityEngine;
 public class LobisomemStats : MonoBehaviour
 {
     // STATS MAXIMO
-    [SerializeField] public float vidaMaxima = 100, damage = 20, nivelAgressividadeMax = 100, nivelAgressividadeAtual = 50;
+    [SerializeField] public float nivelAgressividadeMax = 100, nivelAgressividadeAtual = 50;
 
     //STATS CURRENT
-    [SerializeField] [HideInInspector] public float vidaAtual, energiaAtual;
+    [SerializeField] [HideInInspector] public float energiaAtual;
 
-    public bool isDead = false, isEstadoAgressivo = false;
-    [HideInInspector] public bool isAttacking; // Flag para controlar se a IA est� atacando
+    public bool isEstadoAgressivo = false;
 
     [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
     [SerializeField] LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;
     LobisomemController lobisomemController;
+    StatsGeral statsGeral;
 
 
     private void Awake()
     {
         lobisomemController = GetComponent<LobisomemController>();
+        statsGeral = GetComponent<StatsGeral>();
     }
 
-    private void Start()
-    {
-        vidaAtual = vidaMaxima;
-    }
-
-	public void TakeDamage(float damage)
+	public void AcoesTomouDano()
 	{
-        vidaAtual -= damage;
         AumentarNivelAgressividade(20);
-        Debug.Log("Vida enemy: " + vidaAtual + " Selvageria: " + nivelAgressividadeAtual);
-        if(vidaAtual <= 0)
+        if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
         {
-            if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
-            {
-                if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
-                lobisomemMovimentacao.animator.SetBool("isDead", true);
-                lobisomemMovimentacao.agent.isStopped = true;
-            }
-            else
-            {
-                if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemHumanoMovimentacao.ComandosBetasParaAlfa();
-                lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
-                lobisomemHumanoMovimentacao.agent.isStopped = true;
-            }
-            isDead = true;
+            lobisomemMovimentacao.animator.SetTrigger("hit");
         }
         else
         {
-            if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
-            {
-                lobisomemMovimentacao.animator.SetTrigger("hit");
-            }
-            else
-            {
-                lobisomemHumanoMovimentacao.animator.SetTrigger("hit");
-            }
+            lobisomemHumanoMovimentacao.animator.SetTrigger("hit");
         }
-	}
+        Debug.Log("Vida enemy: " + statsGeral.vidaAtual + " Selvageria: " + nivelAgressividadeAtual);
+    }
+
+    public void AcoesMorreu()
+    {
+        AumentarNivelAgressividade(20);
+        if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
+        {
+            if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
+            lobisomemMovimentacao.animator.SetBool("isDead", true);
+            lobisomemMovimentacao.agent.isStopped = true;
+        }
+        else
+        {
+            if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemHumanoMovimentacao.ComandosBetasParaAlfa();
+            lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
+            lobisomemHumanoMovimentacao.agent.isStopped = true;
+        }
+        statsGeral.isDead = true;
+    }
 
     public void AumentarNivelAgressividade(float valor)
     {

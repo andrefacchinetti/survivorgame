@@ -150,14 +150,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     }
                 }
             }
-            else if (hit.transform.tag == tagEnemy && hit.transform.GetComponent<LobisomemStats>().isDead && inventario.itemNaMao != null 
+            else if (hit.transform.GetComponent<StatsGeral>() != null && hit.transform.GetComponent<StatsGeral>().isDead && inventario.itemNaMao != null 
                 && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
             {
                 if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     animator.SetTrigger("dissecando");
-                    playerController.itemsDropsPosDissecar = hit.transform.gameObject.GetComponent<LobisomemController>().dropsItems;
+                    playerController.itemsDropsPosDissecar = hit.transform.gameObject.GetComponent<StatsGeral>().dropsItems;
                     playerController.corpoDissecando = hit.transform.gameObject;
                 }
                 possibleInteraction = true;

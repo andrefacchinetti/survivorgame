@@ -5,13 +5,13 @@ using UnityEngine;
 public class CollisorSofreDano : MonoBehaviour
 {
 
-    LobisomemStats lobisomemStats;
-    AnimalPassivo animalPassivo;
+    [SerializeField] List<Item.NomeItem> nomeItemFerramentasRecomendadas;
+    [SerializeField] bool isApenasFerramentaRecomendadaCausaDano = false;
+    StatsGeral statsGeral;
 
     private void Awake()
     {
-        lobisomemStats = GetComponentInParent<LobisomemStats>();
-        animalPassivo = GetComponentInParent<AnimalPassivo>();
+        statsGeral = GetComponentInParent<StatsGeral>();
     }
 
     void OnCollisionEnter(Collision other)
@@ -20,7 +20,15 @@ public class CollisorSofreDano : MonoBehaviour
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
-            TakeDamage(damage);
+            if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))
+            {
+                statsGeral.TakeDamage(damage);
+            }
+            else
+            {
+                if (!isApenasFerramentaRecomendadaCausaDano) statsGeral.TakeDamage(damage / 2);
+            }
+           
             other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking = false;
             other.transform.root.gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
         }
@@ -36,17 +44,10 @@ public class CollisorSofreDano : MonoBehaviour
                 if (other.transform.GetComponent<Rigidbody>().velocity.magnitude > 1f)
                 {
                     float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
-                    TakeDamage(damage);
+                    statsGeral.TakeDamage(damage);
                 }
             }
         }
-    }
-
-    private void TakeDamage(float damage)
-    {
-        Debug.Log("tomou dano");
-        if(lobisomemStats != null) lobisomemStats.TakeDamage(damage);
-        if (animalPassivo != null) animalPassivo.TakeDamage(damage);
     }
 
 }

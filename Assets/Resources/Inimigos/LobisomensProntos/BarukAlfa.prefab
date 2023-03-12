@@ -423,6 +423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &1858380309679547092
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -608,6 +610,8 @@ GameObject:
   - component: {fileID: 2397802985976868211}
   - component: {fileID: 259249254}
   - component: {fileID: 259249255}
+  - component: {fileID: 3779143584047925500}
+  - component: {fileID: 7805630275410688563}
   m_Layer: 0
   m_Name: BarukAlfa
   m_TagString: Inimigo
@@ -644,15 +648,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3329b2a60b01e0040a176022ef11628a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 1000
-  damage: 20
   nivelAgressividadeMax: 100
   nivelAgressividadeAtual: 50
-  vidaAtual: 0
   energiaAtual: 0
-  isDead: 0
   isEstadoAgressivo: 0
-  isAttacking: 0
   lobisomemMovimentacao: {fileID: 6794255505814172601}
   lobisomemHumanoMovimentacao: {fileID: 790056968067542003}
 --- !u!114 &259249255
@@ -683,8 +682,58 @@ MonoBehaviour:
     qtdMinDrops: 3
     qtdMaxDrops: 5
   lobisomemStats: {fileID: 0}
+  statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 6794255505814172601}
   lobisomemHumanoMovimentacao: {fileID: 790056968067542003}
+--- !u!114 &3779143584047925500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802985976868223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 500
+  damage: 35
+  vidaAtual: 100
+  isDead: 0
+  isAttacking: 0
+  dropsItems:
+  - nomeItemEnum: 4
+    qtdMinDrops: 10
+    qtdMaxDrops: 15
+  - nomeItemEnum: 5
+    qtdMinDrops: 15
+    qtdMaxDrops: 25
+  - nomeItemEnum: 14
+    qtdMinDrops: 5
+    qtdMaxDrops: 10
+--- !u!114 &7805630275410688563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397802985976868223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2397802986003593599
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,6 +889,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &721660522702227704
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2099,6 +2150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!136 &3403724273622479632
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3191,6 +3244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &5056573876643570348
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3393,6 +3448,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &210971057346484797
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3487,6 +3544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!136 &4572237376448654458
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3628,6 +3687,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!114 &14421137260644279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3719,6 +3780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &2158988319696870432
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3984,6 +4047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &1927947252185844479
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4252,6 +4317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &3028019356404660505
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5272,6 +5339,7 @@ MonoBehaviour:
   attackInterval: 1
   lobisomemController: {fileID: 259249255}
   lobisomemStats: {fileID: 259249254}
+  statsGeral: {fileID: 3779143584047925500}
   animator: {fileID: 0}
   speedVariation: 0.05
   leadTime: 1
@@ -5641,9 +5709,9 @@ MonoBehaviour:
   distanciaDePerseguicao: 10
   distanciaDeAtaque: 2
   attackInterval: 1
-  isAttacking: 0
   lobisomemController: {fileID: 259249255}
   lobisomemStats: {fileID: 259249254}
+  statsGeral: {fileID: 3779143584047925500}
   animator: {fileID: 0}
   speedVariation: 0.05
   leadTime: 1.2

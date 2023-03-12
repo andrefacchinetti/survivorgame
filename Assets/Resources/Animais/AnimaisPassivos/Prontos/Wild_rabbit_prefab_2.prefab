@@ -940,6 +940,8 @@ GameObject:
   - component: {fileID: 628554629}
   - component: {fileID: 628554630}
   - component: {fileID: 3982692115888721746}
+  - component: {fileID: -4407130754299807305}
+  - component: {fileID: -3664240122092799819}
   m_Layer: 0
   m_Name: Wild_rabbit_prefab_2
   m_TagString: Untagged
@@ -1018,24 +1020,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6a60a2bbe8c3340ac33efebcb97619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropsItems:
-  - nomeItemEnum: 4
-    qtdMinDrops: 1
-    qtdMaxDrops: 5
-  - nomeItemEnum: 5
-    qtdMinDrops: 5
-    qtdMaxDrops: 10
-  - nomeItemEnum: 14
-    qtdMinDrops: 2
-    qtdMaxDrops: 5
   walkSpeed: 1
   runSpeed: 4
   eatTime: 10
-  hitPoints: 100
   eatDistance: 2
   runTime: 10
   restTime: 10
   raioDeDistanciaParaAndarAleatoriamente: 20
+  anim: {fileID: 0}
 --- !u!114 &3982692115888721746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1058,6 +1050,45 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-4407130754299807305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502059054957796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3664240122092799819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502059054957796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 10
+  damage: 0
+  vidaAtual: 100
+  isDead: 0
+  isAttacking: 0
+  dropsItems:
+  - nomeItemEnum: 4
+    qtdMinDrops: 1
+    qtdMaxDrops: 1
+  - nomeItemEnum: 5
+    qtdMinDrops: 1
+    qtdMaxDrops: 2
+  - nomeItemEnum: 14
+    qtdMinDrops: 1
+    qtdMaxDrops: 1
 --- !u!1 &1542613413889116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,6 +1633,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nomeItemFerramentasRecomendadas: 
+  isApenasFerramentaRecomendadaCausaDano: 0
 --- !u!54 &7209764090478549620
 Rigidbody:
   m_ObjectHideFlags: 0

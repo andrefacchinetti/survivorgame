@@ -5,24 +5,22 @@ using UnityEngine.AI;
 using Photon.Pun;
 
 [RequireComponent(typeof(PhotonView), typeof(NavMeshAgent))]
-public class AnimalPassivo : MonoBehaviourPunCallbacks
+public class AnimalPassivoController : MonoBehaviourPunCallbacks
 {
-
-    [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
     public float walkSpeed = 5f, runSpeed = 10f; // velocidade de corrida
     public float eatTime = 5f; // tempo de alimentação
-    public float hitPoints = 100f; // pontos de vida
+    
     public float eatDistance = 2f; // distância para detectar comida
     public float runTime = 5f; // tempo que o animal corre após tomar dano
     public float restTime = 20f; // tempo que o animal descansa após tomar dano
     public float raioDeDistanciaParaAndarAleatoriamente = 20f;
 
-    private Animator anim;
+    StatsGeral statsGeral;
+    [HideInInspector] public Animator anim;
     private NavMeshAgent navAgent;
     private bool isRunning = false;
     private bool isEating = false;
-    private bool isDead = false;
     private GameObject foodTarget;
     private float lastDamageTime = 0f;
     private float lastRunTime = 0f;
@@ -31,6 +29,7 @@ public class AnimalPassivo : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        statsGeral = GetComponent<StatsGeral>();
     }
 
     void Start()
@@ -41,7 +40,7 @@ public class AnimalPassivo : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (!isDead)
+        if (!statsGeral.isDead)
         {
             // verificar se o animal está atualmente em uma rota definida pelo NavMeshAgent
             if (!navAgent.pathPending && navAgent.remainingDistance < 0.1f)
@@ -103,6 +102,16 @@ public class AnimalPassivo : MonoBehaviourPunCallbacks
         }
     }
 
+    public void AcoesTomouDano()
+    {
+        foodTarget = null;
+        isRunning = true;
+        lastRunTime = Time.time;
+        lastDamageTime = Time.time;
+        MoveToRandomPosition();
+        Invoke("StopRunning", runTime);
+    }
+
     void FinishEating()
     {
         isEating = false;
@@ -111,39 +120,7 @@ public class AnimalPassivo : MonoBehaviourPunCallbacks
         foodTarget = null;
     }
 
-    public void TakeDamage(float damageAmount)
-    {
-        hitPoints -= damageAmount;
-        anim.SetTrigger("isHit");
-
-        if (hitPoints > 0)
-        {
-            foodTarget = null;
-            isRunning = true;
-            lastRunTime = Time.time;
-            // o animal tomou dano, então ele deve correr por um tempo
-            MoveToRandomPosition();
-            Invoke("StopRunning", runTime);
-        }
-        else
-        {
-            //MORREU
-            foreach (Item.ItemDropStruct drop in dropsItems)
-            {
-                if (!Item.TiposItems.Nenhum.ToString().Equals(drop.nomeItemEnum.GetTipoItemEnum()))
-                {
-                    int quantidade = UnityEngine.Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-                    string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
-                    ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, transform.position, transform.rotation, PV.ViewID);
-                }
-            }
-            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(this.gameObject);
-            else GameObject.Destroy(this.gameObject);
-        }
-        Debug.Log("vida animal: " + hitPoints);
-        // definir o tempo do último dano
-        lastDamageTime = Time.time;
-    }
+   
 
     void StopRunning()
     {

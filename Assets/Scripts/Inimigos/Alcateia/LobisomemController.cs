@@ -13,6 +13,7 @@ public class LobisomemController : MonoBehaviour
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
     [SerializeField][HideInInspector] public LobisomemStats lobisomemStats;
+    [SerializeField] [HideInInspector] public StatsGeral statsGeral;
     [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao;
     [SerializeField] public LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;
     GameController gameController;
@@ -20,9 +21,9 @@ public class LobisomemController : MonoBehaviour
     private void Awake()
     {
         lobisomemStats = GetComponent<LobisomemStats>();
+        statsGeral = GetComponent<StatsGeral>();
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
-
 
     public enum Categoria
     {
@@ -47,6 +48,14 @@ public class LobisomemController : MonoBehaviour
     private void setarFormaLobisomem()
     {
         if (Categoria.Outro.Equals(categoria)) return;
+        if (gameController.isNoite)
+        {
+            forma = Forma.Lobo;
+        }
+        else
+        {
+            forma = Forma.Humano;
+        }
         objFormaHumano.SetActive(!gameController.isNoite);
         objFormaLobo.SetActive(gameController.isNoite);
     }

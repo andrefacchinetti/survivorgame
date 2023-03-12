@@ -27,6 +27,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     [SerializeField] LobisomemController lobisomemController;
     [SerializeField] LobisomemStats lobisomemStats;
+    [SerializeField] StatsGeral statsGeral;
     [HideInInspector] public Animator animator;
 
     private void Start()
@@ -87,7 +88,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
         {
-            if (!lobisomemStats.isAttacking && Time.time > lastAttackTime + attackInterval)
+            if (!statsGeral.isAttacking && Time.time > lastAttackTime + attackInterval)
             {
                 transform.LookAt(target.transform.position);
                 lastAttackTime = Time.time;
@@ -225,7 +226,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void movimentacaoBeta()
     {
-        if (lobisomemController.alfa == null || lobisomemController.alfa.lobisomemStats.isDead)
+        if (lobisomemController.alfa == null || lobisomemController.alfa.statsGeral.isDead)
         {
             lobisomemStats.isEstadoAgressivo = true;
             movimentarAleatoriamentePeloMapa();
@@ -316,12 +317,12 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     void GoAtk()
     {
-        lobisomemStats.isAttacking = true;
+        statsGeral.isAttacking = true;
     }
 
     void NotAtk()
     {
-        lobisomemStats.isAttacking = false;
+        statsGeral.isAttacking = false;
     }
 
     void AnimEventComeu()

@@ -21,10 +21,10 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
     public float minimumDistanceAtaque = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
     public float attackInterval = 1f; // Intervalo de tempo entre ataques
     private float lastAttackTime; // Tempo do �ltimo ataque
-    [HideInInspector] public bool isAttacking; // Flag para controlar se a IA est� atacando
 
     [SerializeField] LobisomemController lobisomemController;
     [SerializeField] LobisomemStats lobisomemStats;
+    [SerializeField] StatsGeral statsGeral;
     [HideInInspector] public Animator animator;
 
     private void Start()
@@ -85,7 +85,7 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
         }
         else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
         {
-            if (!isAttacking && Time.time > lastAttackTime + attackInterval)
+            if (!statsGeral.isAttacking && Time.time > lastAttackTime + attackInterval)
             {
                 transform.LookAt(target.transform.position);
                 lastAttackTime = Time.time;
@@ -223,7 +223,7 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
 
     private void movimentacaoBeta()
     {
-        if (lobisomemController.alfa == null || lobisomemController.alfa.lobisomemStats.isDead)
+        if (lobisomemController.alfa == null || lobisomemController.alfa.statsGeral.isDead)
         {
             lobisomemStats.isEstadoAgressivo = true;
             movimentarAleatoriamentePeloMapa();
@@ -329,12 +329,12 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
 
     void GoAtk()
     {
-        isAttacking = true;
+        statsGeral.isAttacking = true;
     }
 
     void NotAtk()
     {
-        isAttacking = false;
+        statsGeral.isAttacking = false;
     }
 
     void AnimEventComeu()

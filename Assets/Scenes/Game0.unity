@@ -2979,6 +2979,10 @@ PrefabInstance:
       propertyPath: m_ScaleInLightmap
       value: 0.24386726
       objectReference: {fileID: 0}
+    - target: {fileID: 1502856077056368789, guid: 3f191d5636f112d44ad26170f1af794b, type: 3}
+      propertyPath: sceneViewId
+      value: 287
+      objectReference: {fileID: 0}
     - target: {fileID: 1826307796884395708, guid: 3f191d5636f112d44ad26170f1af794b, type: 3}
       propertyPath: m_ScaleInLightmap
       value: 0.060966816
@@ -2986,6 +2990,10 @@ PrefabInstance:
     - target: {fileID: 2020333368779898899, guid: 3f191d5636f112d44ad26170f1af794b, type: 3}
       propertyPath: m_ScaleInLightmap
       value: 0.12193363
+      objectReference: {fileID: 0}
+    - target: {fileID: 3599316581974227416, guid: 3f191d5636f112d44ad26170f1af794b, type: 3}
+      propertyPath: sceneViewId
+      value: 287
       objectReference: {fileID: 0}
     - target: {fileID: 5370291803942355569, guid: 3f191d5636f112d44ad26170f1af794b, type: 3}
       propertyPath: m_Size
@@ -3058,9 +3066,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1179535064}
     m_Modifications:
+    - target: {fileID: 2103658524, guid: 1845ecffba2c59748bbc041d4bff657e, type: 3}
+      propertyPath: sceneViewId
+      value: 281
+      objectReference: {fileID: 0}
     - target: {fileID: 1982655410548092, guid: 1845ecffba2c59748bbc041d4bff657e, type: 3}
       propertyPath: m_Name
       value: Common_frog_prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 1982655410548092, guid: 1845ecffba2c59748bbc041d4bff657e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4575325168938060, guid: 1845ecffba2c59748bbc041d4bff657e, type: 3}
       propertyPath: m_RootOrder
@@ -3118,7 +3134,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1982655410548092, guid: 1845ecffba2c59748bbc041d4bff657e, type: 3}
   m_PrefabInstance: {fileID: 2103658521}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2103658524
+--- !u!114 &2103658527
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3127,71 +3143,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 2103658523}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 281
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!195 &2103658525
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2103658523}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 1
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.99
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!114 &2103658526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2103658523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc6a60a2bbe8c3340ac33efebcb97619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  vidaMaxima: 10
+  damage: 0
+  vidaAtual: 100
+  isDead: 0
+  isAttacking: 0
   dropsItems:
-  - nomeItemEnum: 4
-    qtdMinDrops: 1
-    qtdMaxDrops: 5
-  - nomeItemEnum: 5
-    qtdMinDrops: 5
-    qtdMaxDrops: 10
   - nomeItemEnum: 14
-    qtdMinDrops: 2
-    qtdMaxDrops: 5
-  walkSpeed: 1
-  runSpeed: 1
-  eatTime: 10
-  hitPoints: 100
-  eatDistance: 2
-  runTime: 10
-  restTime: 10
-  raioDeDistanciaParaAndarAleatoriamente: 20
+    qtdMinDrops: 1
+    qtdMaxDrops: 1
+--- !u!114 &2103658528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103658523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2128420743 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6439455315941920091, guid: 20159265741fdb8419e5596d4c6021c8, type: 3}
@@ -3689,6 +3664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75152add43de5f644af292ea69a194f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   vida: 100
   nomeItemFerramentasRecomendadas: 1200000015000000
   isApenasFerramentaRecomendadaCausaDano: 1
@@ -3699,6 +3675,7 @@ MonoBehaviour:
   - nomeItemEnum: 3
     qtdMinDrops: 0
     qtdMaxDrops: 3
+  PV: {fileID: 0}
 --- !u!4 &33127255101741358
 Transform:
   m_ObjectHideFlags: 0
@@ -11612,6 +11589,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4100640030064496455, guid: 17b267053ca425745812207959137a91, type: 3}
+      propertyPath: sceneViewId
+      value: 288
+      objectReference: {fileID: 0}
     - target: {fileID: 5684303698645696225, guid: 17b267053ca425745812207959137a91, type: 3}
       propertyPath: sceneViewId
       value: 254
@@ -11628,9 +11609,17 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8448576093575732041, guid: 17b267053ca425745812207959137a91, type: 3}
+      propertyPath: sceneViewId
+      value: 289
+      objectReference: {fileID: 0}
     - target: {fileID: 8945175014636372955, guid: 17b267053ca425745812207959137a91, type: 3}
       propertyPath: sceneViewId
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9070322077390992367, guid: 17b267053ca425745812207959137a91, type: 3}
+      propertyPath: sceneViewId
+      value: 287
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17b267053ca425745812207959137a91, type: 3}
@@ -43165,6 +43154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75152add43de5f644af292ea69a194f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   vida: 30
   nomeItemFerramentasRecomendadas: 1000000012000000130000001500000016000000170000001e0000001f000000
   isApenasFerramentaRecomendadaCausaDano: 0
@@ -43175,6 +43165,7 @@ MonoBehaviour:
   - nomeItemEnum: 9
     qtdMinDrops: 5
     qtdMaxDrops: 10
+  PV: {fileID: 0}
 --- !u!4 &6768926383580786582
 Transform:
   m_ObjectHideFlags: 0
