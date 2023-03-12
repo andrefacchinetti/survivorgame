@@ -89,32 +89,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Ferramenta.ToString()))
 		{
-			string atkName;
+			string atkName = "atkFerramenta";
+			if (itemResponse.nomeItem == Item.NomeItem.MarteloSimples)
+			{
+				atkName = "atkFerramentaMartelo";
+			}
+
 			if (grabObjects.isPlayerEstaOlhandoPraBaixo())
 			{
-                if (itemResponse.nomeItem.Equals(Item.NomeItem.MarteloSimples))
-                {
-					atkName = "atkFerramentaMarteloBaixo";
-                }
-                else
-                {
-					atkName = "atkFerramentaBaixo";
-				}
-				
+				atkName += "Baixo";
 			}
 			else
 			{
-				if (itemResponse.nomeItem.Equals(Item.NomeItem.MarteloSimples))
-				{
-					atkName = "atkFerramentaMarteloFrente";
-				}
-				else
-				{
-					atkName = "atkFerramentaFrente";
-				}
+				atkName += "Frente";
 			}
-			bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName(atkName);
-			if (!atk) animator.SetTrigger(atkName);
+
+			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
+			{
+				animator.SetTrigger(atkName);
+			}
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
         {
@@ -123,23 +116,39 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Arma.ToString()))
 		{
-			if(itemResponse.nomeItem.Equals(Item.NomeItem.LancaSimples) || itemResponse.nomeItem.Equals(Item.NomeItem.LancaAvancada))
-            {
-				bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("arremessandoLanca");
-				if (!atk) animator.SetTrigger("arremessandoLanca");
-			}
-			else if (itemResponse.nomeItem.Equals(Item.NomeItem.ArcoSimples) || itemResponse.nomeItem.Equals(Item.NomeItem.ArcoAvancado))
+			if (itemResponse.nomeItem == Item.NomeItem.ArcoSimples || itemResponse.nomeItem == Item.NomeItem.ArcoAvancado)
 			{
-				bool atk = animator.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha");
-				
-				if (!atk)
+				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha"))
 				{
 					Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
 					if (flechaNaAljava != null)
-                    {
+					{
 						itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco(flechaNaAljava);
 					}
 					animator.SetTrigger("usandoArcoFlecha");
+				}
+			}
+			else if (itemResponse.nomeItem == Item.NomeItem.LancaSimples || itemResponse.nomeItem == Item.NomeItem.LancaAvancada)
+			{
+				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("arremessandoLanca"))
+				{
+					animator.SetTrigger("arremessandoLanca");
+				}
+			}
+			else
+			{
+				string atkName = "atkArma";
+				if (grabObjects.isPlayerEstaOlhandoPraBaixo())
+				{
+					atkName += "Baixo";
+				}
+				else
+				{
+					atkName += "Frente";
+				}
+				if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
+				{
+					animator.SetTrigger(atkName);
 				}
 			}
 		}

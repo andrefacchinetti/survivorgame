@@ -21,13 +21,16 @@ public class CollisorSofreDano : MonoBehaviour
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
-            if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))
+            if (isApenasFerramentaRecomendadaCausaDano)
             {
-                statsGeral.TakeDamage(damage);
+                if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))
+                {
+                    statsGeral.TakeDamage(damage / 2);
+                }
             }
             else
             {
-                if (!isApenasFerramentaRecomendadaCausaDano) statsGeral.TakeDamage(damage / 2);
+                statsGeral.TakeDamage(damage);
             }
            
             other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking = false;
