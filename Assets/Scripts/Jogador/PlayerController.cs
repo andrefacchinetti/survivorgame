@@ -105,20 +105,20 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Ferramenta.ToString()))
 		{
-			string atkName = "atkFerramenta";
+			string atkName = "atkFerramentaFrente";
 			if (itemResponse.nomeItem == Item.NomeItem.MarteloSimples)
 			{
 				atkName = "atkFerramentaMartelo";
+				if (grabObjects.isPlayerEstaOlhandoPraBaixo())
+				{
+					atkName += "Baixo";
+				}
+				else
+				{
+					atkName += "Frente";
+				}
 			}
-
-			if (grabObjects.isPlayerEstaOlhandoPraBaixo())
-			{
-				atkName += "Baixo";
-			}
-			else
-			{
-				atkName += "Frente";
-			}
+			
 
 			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
 			{
@@ -165,15 +165,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			}
 			else
 			{
-				string atkName = "atkArma";
-				if (grabObjects.isPlayerEstaOlhandoPraBaixo())
-				{
-					atkName += "Baixo";
-				}
-				else
-				{
-					atkName += "Frente";
-				}
+				string atkName = "atkArmaFrente";
 				if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
 				{
 					animator.SetTrigger(atkName);

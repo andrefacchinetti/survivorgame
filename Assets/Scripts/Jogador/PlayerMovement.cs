@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	public bool isPulando = false;
 	public float gravity = 20.0f;
 	public float sensivity = 2.0f;
-	public float lookXLimit = 75.0f;
+	public float lookXLimit = 90f, lookYLimit = -40f;
 	public float intensityFlashlight = 3.0f;
 	public CharacterController characterController;
 	Vector3 moveDirection = Vector3.zero;
@@ -201,9 +201,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 
-			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoMelee") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoArco") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoCrossbow"))
+			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") 
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoMelee") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoArco")
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoCrossbow") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente")
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaMarteloFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkArmaFrente"))
             {
-				if (rotationX > 0)
+				if (rotationX > lookYLimit)
 				{
 					pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
 					cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
@@ -211,7 +214,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 				else
 				{
 					cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
-					pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+					pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, lookYLimit);
 				}
             }
             else
