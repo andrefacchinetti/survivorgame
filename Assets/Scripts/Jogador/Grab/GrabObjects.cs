@@ -105,10 +105,9 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                             transferOwnerPV(hit.transform.gameObject);
                             grabedObj = hit.transform.gameObject;
                         }
-                        else if (Input.GetMouseButtonDown(0)) //Pega item do chao
+                        else if (Input.GetKeyDown(KeyCode.E)) //Pega item do chao
                         {
                             transferOwnerPV(hit.transform.gameObject);
-                            animator.SetTrigger("pegandoItemChao");
                             ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
                             bool destruirObjetoDaCena = true;
                             if((itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null)
