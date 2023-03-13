@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudan�a de cena
 
-	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, pescocoPivot, pivotTiroBase;
+	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase;
 	public Vector3 offset;
 	public Camera playerCamera;
 
@@ -201,26 +201,42 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 
-			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") 
-				|| anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoMelee") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoArco")
-				|| anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoCrossbow") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente")
+			bool usandoArco = anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoArco") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoCrossbow") || anim.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha");
+			if (usandoArco || anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") 
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoMelee") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente")
 				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaMarteloFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkArmaFrente"))
             {
-				if (rotationX > lookYLimit)
-				{
-					pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
-					cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+				if(usandoArco)
+                {
+					if (rotationX > lookYLimit)
+					{
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX-10, 0);
+						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+					}
+					else
+					{
+						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, -lookYLimit, 0);
+					}
 				}
-				else
-				{
-					cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
-					pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, lookYLimit);
+                else
+                {
+					if (rotationX > lookYLimit)
+					{
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
+						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+					}
+					else
+					{
+						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, lookYLimit);
+					}
 				}
             }
             else
             {
 				cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
-				pescocoPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+				colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
 			}
 
 			transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sensivity, 0);
