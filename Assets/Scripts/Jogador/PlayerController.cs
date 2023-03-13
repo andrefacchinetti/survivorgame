@@ -66,10 +66,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				inventario.itemNaMao.DroparItem();
 			}
 		}
-		verificarAnimacoes();
+		verificarAnimacoesSegurandoItem();
 	}
 
-    private void verificarAnimacoes()
+    private void verificarAnimacoesSegurandoItem()
     {
 		bool acendendo = animator.GetCurrentAnimatorStateInfo(0).IsName("AcendendoFogueira");
 		if (!acendendo) acendedorFogueira.SetActive(false);
@@ -90,6 +90,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		else
 		{
 			animator.SetBool("segurandoCrossbow", false);
+		}
+		if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Tocha))
+		{
+			animator.SetBool("segurandoTocha", true);
+		}
+		else
+		{
+			animator.SetBool("segurandoTocha", false);
 		}
 	}
 

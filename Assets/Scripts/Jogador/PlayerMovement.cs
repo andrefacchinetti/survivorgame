@@ -101,7 +101,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		}
 
 		if (playerController.isMorto) canMove = false;
-	
 	}
 
 	void OnMouseEnter()
@@ -202,7 +201,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 
-			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") || anim.GetCurrentAnimatorStateInfo(0).IsName("IdleDesarmado") || anim.GetCurrentAnimatorStateInfo(0).IsName("IdleArmado"))
+			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoMelee") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoArco") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoCrossbow"))
             {
 				if (rotationX > 0)
 				{
