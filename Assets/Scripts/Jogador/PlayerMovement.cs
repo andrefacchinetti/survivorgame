@@ -210,7 +210,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
                 {
 					if (rotationX > lookYLimit)
 					{
-						colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX-10, 0);
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX, 0);
 						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
 					}
 					else

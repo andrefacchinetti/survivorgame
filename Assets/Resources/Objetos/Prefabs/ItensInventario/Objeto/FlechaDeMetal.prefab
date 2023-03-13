@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 482242383785524713}
   - component: {fileID: 6285686137343759969}
   - component: {fileID: 4236582786131573064}
-  - component: {fileID: 3668923430132588405}
   - component: {fileID: 370283263206869411}
   - component: {fileID: 2014924775}
+  - component: {fileID: 7227128947473150866}
   m_Layer: 0
   m_Name: FlechaDeMetal
   m_TagString: ItemDrop
@@ -129,19 +129,6 @@ MonoBehaviour:
   nomeId: Madeira
   damageQuandoColide: 40
   estaSendoComido: 0
---- !u!65 &3668923430132588405
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2444314942964740145}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.02, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0.03}
 --- !u!114 &370283263206869411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +158,20 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.007}
   m_TimeToStationary: 0.5
+--- !u!136 &7227128947473150866
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2444314942964740145}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.015
+  m_Height: 1
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4874549541006900901
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,8 +229,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.01, y: 0.01, z: 0.02}
-  m_Center: {x: 0, y: 0, z: -0.07}
+  m_Size: {x: 0.02, y: 0.02, z: 0.07}
+  m_Center: {x: 0.006, y: 0, z: -0.46}
 --- !u!1001 &4402541450985102550
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -259,23 +260,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6470318111125030088, guid: 9d8b4f5d82ae26c46823fbbef6daf7c0, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6470318111125030088, guid: 9d8b4f5d82ae26c46823fbbef6daf7c0, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6470318111125030088, guid: 9d8b4f5d82ae26c46823fbbef6daf7c0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6470318111125030088, guid: 9d8b4f5d82ae26c46823fbbef6daf7c0, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6470318111125030088, guid: 9d8b4f5d82ae26c46823fbbef6daf7c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 6470318111125030088, guid: 9d8b4f5d82ae26c46823fbbef6daf7c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
