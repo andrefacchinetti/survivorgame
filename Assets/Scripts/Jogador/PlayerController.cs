@@ -108,18 +108,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			string atkName = "atkFerramentaFrente";
 			if (itemResponse.nomeItem == Item.NomeItem.MarteloSimples)
 			{
-				atkName = "atkFerramentaMartelo";
-				if (grabObjects.isPlayerEstaOlhandoPraBaixo())
-				{
-					atkName += "Baixo";
-				}
-				else
-				{
-					atkName += "Frente";
-				}
+				atkName = "atkFerramentaMarteloFrente";
 			}
-			
-
 			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
 			{
 				animator.SetTrigger(atkName);

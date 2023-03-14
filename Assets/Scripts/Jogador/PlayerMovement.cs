@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudan�a de cena
 
-	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase;
+	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase, pelvisPivot;
 	public Vector3 offset;
 	public Camera playerCamera;
 
@@ -201,13 +201,17 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 
-			bool usandoArco = anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoArco") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoCrossbow") || anim.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha");
-			if (usandoArco || anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") 
-				|| anim.GetCurrentAnimatorStateInfo(0).IsName("BlendWalkArmadoMelee") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente")
+			bool segurandoArco = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoArco") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoArcoFlecha");
+			bool segurandoCrossbow = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoCrossbow") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoCrossbow");
+			if (segurandoArco || segurandoCrossbow || anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") 
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente")
 				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaMarteloFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkArmaFrente"))
             {
-				if(usandoArco)
+				if(segurandoArco || segurandoCrossbow)
                 {
+					if(segurandoArco) pelvisPivot.transform.localRotation = Quaternion.Euler(-90, 90, 0);
+					else if (segurandoCrossbow) pelvisPivot.transform.localRotation = Quaternion.Euler(-45, 90, 0);
+
 					if (rotationX > lookYLimit)
 					{
 						colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX, 0);
