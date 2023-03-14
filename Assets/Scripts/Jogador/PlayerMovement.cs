@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			bool segurandoCrossbow = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoCrossbow") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoCrossbow");
 			bool podeVirarColuna = anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendCrouched")
 				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkArmaFrente")
-				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaMarteloFrente");
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaMarteloFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("jump");
 
 			if (segurandoArco || segurandoCrossbow || podeVirarColuna)
             {

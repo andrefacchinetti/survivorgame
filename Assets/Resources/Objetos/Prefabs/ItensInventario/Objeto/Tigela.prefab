@@ -17,7 +17,9 @@ GameObject:
   - component: {fileID: 370283263206869411}
   - component: {fileID: 2014924775}
   - component: {fileID: 377631803736074947}
-  - component: {fileID: 973452596106534088}
+  - component: {fileID: 4425737520920625868}
+  - component: {fileID: 2885925869164714158}
+  - component: {fileID: 6684109966759506559}
   m_Layer: 0
   m_Name: Tigela
   m_TagString: ItemDrop
@@ -36,8 +38,7 @@ Transform:
   m_LocalPosition: {x: -12.093, y: -0.993, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6692570869285250822}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -172,8 +173,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogueira: {fileID: 0}
   slotsConsumiveis: []
---- !u!65 &973452596106534088
-BoxCollider:
+--- !u!23 &4425737520920625868
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2444314942964740145}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 461908aed863bd042ac094532010cd08, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2885925869164714158
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2444314942964740145}
+  m_Mesh: {fileID: -462981019419857548, guid: 6886022b9f584a54d8c85815be73ca6a, type: 3}
+--- !u!64 &6684109966759506559
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -182,68 +233,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.34, y: 0.14, z: 0.36}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1001 &3793575678321048618
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 6245547607071768354}
-    m_Modifications:
-    - target: {fileID: 7137754511997436310, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_Name
-      value: Tigela
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e7808656897781a42b7a032a02656119, type: 3}
---- !u!4 &6692570869285250822 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7513610865040218924, guid: e7808656897781a42b7a032a02656119, type: 3}
-  m_PrefabInstance: {fileID: 3793575678321048618}
-  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 6886022b9f584a54d8c85815be73ca6a, type: 3}
