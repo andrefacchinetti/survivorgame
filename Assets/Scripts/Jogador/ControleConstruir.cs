@@ -26,7 +26,7 @@ public class ControleConstruir : MonoBehaviour
     private Construcoes construcao;
 
 
-    public enum IdsConstrucoes{chao,parede,fundacao,parede_porta,porta,telhado,escada};
+    public enum IdsConstrucoes{chao,parede,fundacao,parede_porta,porta,telhado,escada, janela};
 
     public List<Aba> abas;
     [System.Serializable]
@@ -84,6 +84,7 @@ public class ControleConstruir : MonoBehaviour
     }
     
     void Update(){
+        podeConstruir = true;
         if(Input.GetButtonDown("Cancel")) ToggleModoConstrucao(false);
         if (Input.GetButtonDown("MenuConstruir_Abrir"))
         {
@@ -237,6 +238,7 @@ public class ControleConstruir : MonoBehaviour
                 //-objeto.transform.Rotate(new Vector3(0f, rotacao, 0f));
             }
             else{
+                podeConstruir = false;
                 Debug.Log("Sem chão");
             }
         }
@@ -261,11 +263,10 @@ public class ControleConstruir : MonoBehaviour
     void LateUpdate(){
         objeto.transform.position = objPosition;
         objeto.transform.rotation = objRotation;
-        VerificarSePodeConstruir();
-        AlterarCor(podeConstruir);
+        AlterarCor(VerificarSePodeConstruir() && podeConstruir);
     }
 
-    void VerificarSePodeConstruir(){
+    bool VerificarSePodeConstruir(){
         Collider[] colliders = Physics.OverlapBox(objeto.transform.position, new Vector3(objeto.transform.localScale.x * meshObjeto.bounds.size.x / 2 * 0.90f, objeto.transform.localScale.y * meshObjeto.bounds.size.y / 2 * 0.90f, objeto.transform.localScale.z * meshObjeto.bounds.size.z / 2 * 0.90f), objeto.transform.rotation, lMaskProibidos);
         if (colliders.Length > 0)
         {
@@ -273,14 +274,11 @@ public class ControleConstruir : MonoBehaviour
             {
                 if (col.gameObject != objeto)
                 {
-                    podeConstruir = false;
+                    return false;
                 }
             }
         }
-        else
-        {
-            podeConstruir = true;
-        }
+        return true;
     }
 
     bool PegarHitMaisProx(){
