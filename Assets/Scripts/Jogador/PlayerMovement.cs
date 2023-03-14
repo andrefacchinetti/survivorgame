@@ -169,8 +169,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			anim.SetBool("agachando", true);
 			characterController.height = alturaPlayer/2;
 			characterController.center = new Vector3(0,alturaPlayer/4,0);
-			curSpeedX = 1.0f;
-			curSpeedY = 1.0f;
 		}
 		else
 		{
@@ -203,9 +201,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 			bool segurandoArco = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoArco") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoArcoFlecha");
 			bool segurandoCrossbow = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoCrossbow") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoCrossbow");
-			if (segurandoArco || segurandoCrossbow || anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") 
-				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente")
-				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaMarteloFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkArmaFrente"))
+			bool podeVirarColuna = anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendCrouched")
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkArmaFrente")
+				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaMarteloFrente");
+
+			if (segurandoArco || segurandoCrossbow || podeVirarColuna)
             {
 				if(segurandoArco || segurandoCrossbow)
                 {
