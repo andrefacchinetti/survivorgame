@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudan�a de cena
 
-	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase, pelvisPivot;
+	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase, pelvisPivot, coluna2Pivot;
 	public Vector3 offset;
 	public Camera playerCamera;
 
@@ -159,11 +159,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			anim.SetBool("correndo", false);
 		}
 
-		if ((Input.GetButton("Horizontal") || Input.GetButton("Vertical")) && canMove)
-		{
-			anim.SetBool("pegandoItemChao", false);
-		}
-
 		if (Input.GetKey(KeyCode.LeftControl) && canMove && characterController.isGrounded)
 		{
 			anim.SetBool("agachando", true);
@@ -198,6 +193,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		{
 			rotationX += -Input.GetAxis("Mouse Y") * sensivity;
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+			float rotationY = Input.GetAxis("Mouse X") * sensivity;
 
 			bool segurandoArco = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoArco") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoArcoFlecha");
 			bool segurandoCrossbow = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoCrossbow") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoCrossbow");
@@ -209,19 +205,20 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             {
 				if(segurandoArco || segurandoCrossbow)
                 {
-					/*if(segurandoArco) pelvisPivot.transform.localRotation = Quaternion.Euler(-90, 90, 0);
+					if(segurandoArco) pelvisPivot.transform.localRotation = Quaternion.Euler(-90, 90, 0);
 					else if (segurandoCrossbow) pelvisPivot.transform.localRotation = Quaternion.Euler(-45, 90, 0);
 
 					if (rotationX > lookYLimit)
 					{
+						cabecaPivot.transform.localRotation = Quaternion.Euler(90, 0, 0);
 						colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX, 0);
-						cabecaPivot.transform.localRotation = Quaternion.Euler(80, 0, 0);
+						//colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX, 0);
 					}
 					else
 					{
-						cabecaPivot.transform.localRotation = Quaternion.Euler(80, 0, 0);
-						colunaPivot.transform.localRotation = Quaternion.Euler(0, -lookYLimit, 0);
-					}*/
+						//cabecaPivot.transform.localRotation = Quaternion.Euler(80, 0, 0);
+						//colunaPivot.transform.localRotation = Quaternion.Euler(0, -lookYLimit, 0);
+					}
 				}
                 else
                 {
@@ -264,6 +261,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			playerCamera.transform.localRotation = Quaternion.Euler(rotationX, playerCamera.transform.rotation.y, playerCamera.transform.rotation.z);
 		}
 	}
+	public float colunaX = 25 , colunaY= 0, colunaZ= 0;
 
 	void FixedUpdate() //testar update ao inves de fixed
 	{
