@@ -205,26 +205,23 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             {
 				if(segurandoArco || segurandoCrossbow)
                 {
-					/*if(segurandoArco) pelvisPivot.transform.localRotation = Quaternion.Euler(-90, 90, 0);
-					else if (segurandoCrossbow) pelvisPivot.transform.localRotation = Quaternion.Euler(-45, 90, 0);*/
-
 					if (rotationX > lookYLimit)
 					{
-						cabecaPivot.transform.localRotation = Quaternion.Euler(90, 0, 0);
+						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
 						colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
 					}
 					else
 					{
-						cabecaPivot.transform.localRotation = Quaternion.Euler(90, 0, 0);
-						colunaPivot.transform.localRotation = Quaternion.Euler(0, -lookYLimit, 0);
+						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, lookYLimit);
 					}
 				}
                 else
                 {
 					if (rotationX > lookYLimit)
 					{
-						colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
 						cabecaPivot.transform.localRotation = Quaternion.Euler(0, 0, 0);
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
 					}
 					else
 					{
@@ -260,7 +257,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			playerCamera.transform.localRotation = Quaternion.Euler(rotationX, playerCamera.transform.rotation.y, playerCamera.transform.rotation.z);
 		}
 	}
-	public float colunaX = 25 , colunaY= 0, colunaZ= 0;
 
 	void FixedUpdate() //testar update ao inves de fixed
 	{
