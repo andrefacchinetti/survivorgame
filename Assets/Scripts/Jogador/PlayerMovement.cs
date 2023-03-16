@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudan�a de cena
 
-	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase, pelvisPivot, coluna2Pivot;
+	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase, pelvisPivot;
 	public Vector3 offset;
 	public Camera playerCamera;
 
@@ -205,19 +205,18 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             {
 				if(segurandoArco || segurandoCrossbow)
                 {
-					if(segurandoArco) pelvisPivot.transform.localRotation = Quaternion.Euler(-90, 90, 0);
-					else if (segurandoCrossbow) pelvisPivot.transform.localRotation = Quaternion.Euler(-45, 90, 0);
+					/*if(segurandoArco) pelvisPivot.transform.localRotation = Quaternion.Euler(-90, 90, 0);
+					else if (segurandoCrossbow) pelvisPivot.transform.localRotation = Quaternion.Euler(-45, 90, 0);*/
 
 					if (rotationX > lookYLimit)
 					{
 						cabecaPivot.transform.localRotation = Quaternion.Euler(90, 0, 0);
-						colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX, 0);
-						//colunaPivot.transform.localRotation = Quaternion.Euler(0, -rotationX, 0);
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, 0, rotationX);
 					}
 					else
 					{
-						//cabecaPivot.transform.localRotation = Quaternion.Euler(80, 0, 0);
-						//colunaPivot.transform.localRotation = Quaternion.Euler(0, -lookYLimit, 0);
+						cabecaPivot.transform.localRotation = Quaternion.Euler(90, 0, 0);
+						colunaPivot.transform.localRotation = Quaternion.Euler(0, -lookYLimit, 0);
 					}
 				}
                 else
