@@ -12,7 +12,7 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
     LobisomemStats lobisomemStats;
-    AnimalPassivoStats animalPassivoStats;
+    AnimalStats animalStats;
     DropaRecursosStats dropaRecursosStats;
     PhotonView PV;
 
@@ -20,7 +20,7 @@ public class StatsGeral : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
-        animalPassivoStats = GetComponentInParent<AnimalPassivoStats>();
+        animalStats = GetComponentInParent<AnimalStats>();
         dropaRecursosStats = GetComponentInParent<DropaRecursosStats>();
     }
 
@@ -35,13 +35,13 @@ public class StatsGeral : MonoBehaviour
 
         if (vidaAtual > 0)
         {
-            if (animalPassivoStats != null) animalPassivoStats.AcoesTomouDano();
+            if (animalStats != null) animalStats.AcoesTomouDano();
             else if (lobisomemStats != null) lobisomemStats.AcoesTomouDano();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesTomouDano();
         }
         else
         {
-            if (animalPassivoStats != null) animalPassivoStats.AcoesMorreu();
+            if (animalStats != null) animalStats.AcoesMorreu();
             else if (lobisomemStats != null) lobisomemStats.AcoesMorreu();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesMorreu();
             DroparItensAoMorrer();

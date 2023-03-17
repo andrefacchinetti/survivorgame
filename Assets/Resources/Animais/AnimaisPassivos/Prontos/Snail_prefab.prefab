@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 7329909579558428709}
   - component: {fileID: 2113424319200131403}
   - component: {fileID: 2306730783056230977}
+  - component: {fileID: 2705273078307313478}
   m_Layer: 0
   m_Name: Snail_prefab
   m_TagString: Untagged
@@ -451,6 +452,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6a60a2bbe8c3340ac33efebcb97619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAnimalAgressivo: 0
+  isAnimalCarnivoro: 0
+  isAnimalHerbivoro: 1
   walkSpeed: 0.1
   runSpeed: 0.1
   eatTime: 5
@@ -460,6 +464,19 @@ MonoBehaviour:
   restTime: 20
   raioDeDistanciaParaAndarAleatoriamente: 20
   anim: {fileID: 0}
+--- !u!65 &2705273078307313478
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412101087193200}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.54, y: 7.8, z: 15.93}
+  m_Center: {x: 0, y: 0, z: 1.5}
 --- !u!1 &1513080113303876
 GameObject:
   m_ObjectHideFlags: 0
