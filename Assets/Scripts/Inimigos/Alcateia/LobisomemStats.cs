@@ -46,12 +46,14 @@ public class LobisomemStats : MonoBehaviour
             if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
             lobisomemMovimentacao.animator.SetBool("isDead", true);
             lobisomemMovimentacao.agent.isStopped = true;
+            lobisomemMovimentacao.agent.speed = 0;
         }
         else
         {
             if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemHumanoMovimentacao.ComandosBetasParaAlfa();
             lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
             lobisomemHumanoMovimentacao.agent.isStopped = true;
+            lobisomemHumanoMovimentacao.agent.speed = 0;
         }
         statsGeral.isDead = true;
     }

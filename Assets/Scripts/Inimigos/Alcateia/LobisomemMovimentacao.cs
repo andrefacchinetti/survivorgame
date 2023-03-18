@@ -17,12 +17,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     public Transform target, targetComida;
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
-    //[SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
-
-    //ATAQUE
-    public float minimumDistanceAtaque = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
-    public float attackInterval = 1f; // Intervalo de tempo entre ataques
-    private float lastAttackTime; // Tempo do �ltimo ataque
     
 
     [SerializeField] LobisomemController lobisomemController;
@@ -73,42 +67,38 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private float destinationOffset = 1f;
-    [SerializeField] float speedVariation = 0.05f;
-    [SerializeField] float leadTime = 1.2f, leadDistance = 2;
-
     private void verificarAtaque()
     {
         if (target == null) return;
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
-        if (target.GetComponent<PlayerController>().isMorto || distanceToTarget > minimumDistanceAtaque)
+        if (target.GetComponent<PlayerController>().isMorto || distanceToTarget > statsGeral.minimumDistanceAtaque)
         {
             //targetComida = target;
             target = null;
         }
-        else if (distanceToTarget < distanciaDeAtaque) // Ataca o alvo
+        else if (distanceToTarget < statsGeral.distanciaDeAtaque) // Ataca o alvo
         {
-            if (!statsGeral.isAttacking && Time.time > lastAttackTime + attackInterval)
+            if (!statsGeral.isAttacking && Time.time > statsGeral.lastAttackTime + statsGeral.attackInterval)
             {
                 transform.LookAt(target.transform.position);
-                lastAttackTime = Time.time;
+                statsGeral.lastAttackTime = Time.time;
                 animator.SetTrigger("attack" + Random.Range(1, 3));
             }
         }
         else // Persegue o alvo
         {
-            Vector3 targetOffset = Random.insideUnitSphere * destinationOffset;
+            Vector3 targetOffset = Random.insideUnitSphere * statsGeral.destinationOffset;
             // Calcula a posi��o futura do jogador com base na sua velocidade atual
-            Vector3 leadTarget = target.transform.position + (target.GetComponent<CharacterController>().velocity.normalized * leadTime);
+            Vector3 leadTarget = target.transform.position + (target.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
             // Calcula o offset da posi��o futura do jogador
-            Vector3 leadTargetOffset = (leadTarget - target.transform.position).normalized * leadDistance;
+            Vector3 leadTargetOffset = (leadTarget - target.transform.position).normalized * statsGeral.leadDistance;
             // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
             Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
             // Define a posi��o de destino para o inimigo
             agent.SetDestination(destination);
            
             // Aplica uma varia��o de velocidade aleat�ria
-            agent.speed += Random.Range(-speedVariation, speedVariation);
+            agent.speed += Random.Range(-statsGeral.speedVariation, statsGeral.speedVariation);
         }
     }
 

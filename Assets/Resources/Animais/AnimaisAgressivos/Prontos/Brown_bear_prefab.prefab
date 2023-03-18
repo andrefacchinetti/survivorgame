@@ -264,6 +264,15 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
+  minimumDistanceAtaque: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 2
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.05
+  leadTime: 1.2
+  leadDistance: 2
   dropsItems: []
 --- !u!114 &8964762350233604053
 MonoBehaviour:
@@ -300,7 +309,9 @@ MonoBehaviour:
   runTime: 5
   restTime: 20
   raioDeDistanciaParaAndarAleatoriamente: 20
-  anim: {fileID: 0}
+  animator: {fileID: 0}
+  targetComida: {fileID: 0}
+  targetInimigo: {fileID: 0}
 --- !u!65 &5159579367979320288
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -979,7 +990,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &1325086856999383138
 MonoBehaviour:
@@ -1572,7 +1583,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &2652253541625903980
 MonoBehaviour:

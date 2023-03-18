@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,21 +10,20 @@ public class AnimalController : MonoBehaviourPunCallbacks
 {
 
     public bool isAnimalAgressivo, isAnimalCarnivoro, isAnimalHerbivoro;
-    public float walkSpeed = 5f, runSpeed = 10f; // velocidade de corrida
-    public float eatTime = 5f; // tempo de alimentação
+    public float eatTime = 5f; // tempo de alimentaÃ§Ã£o
+    public float walkSpeed = 1, runSpeed = 2;
     public bool isProcuraComida = true;
     
-    public float eatDistance = 2f; // distância para detectar comida
-    public float runTime = 5f; // tempo que o animal corre após tomar dano
-    public float restTime = 20f; // tempo que o animal descansa após tomar dano
+    public float eatDistance = 2f; // distÃ¢ncia para detectar comida
+    public float tempoCorridaFugindo = 5f; // tempo que o animal corre apÃ³s tomar dano
+    public float restTime = 20f; // tempo que o animal descansa apÃ³s tomar dano
     public float raioDeDistanciaParaAndarAleatoriamente = 20f;
 
     StatsGeral statsGeral;
-    [HideInInspector] public Animator anim;
-    private NavMeshAgent navAgent;
-    private bool isRunning = false;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public NavMeshAgent agent;
     private bool isEating = false;
-    private GameObject foodTarget, enemyTarget;
+    [SerializeField] private GameObject targetComida, targetInimigo;
     private float lastDamageTime = 0f;
     private float lastRunTime = 0f;
     PhotonView PV;
@@ -37,109 +36,135 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        anim = GetComponent<Animator>();
-        navAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        InvokeRepeating("CorrerOuAndarEmPerseguicao", 0f, tempoCorridaFugindo);
     }
 
     void Update()
     {
         if (!statsGeral.isDead)
         {
-            // verificar se o animal está atualmente em uma rota definida pelo NavMeshAgent
-            if (!navAgent.pathPending && navAgent.remainingDistance < 0.1f)
+            // verificar se o animal estÃ¡ atualmente em uma rota definida pelo NavMeshAgent
+            if (!agent.pathPending && agent.remainingDistance < 0.1f)
             {
                 // o animal chegou ao seu destino, pare de se mover
-                navAgent.ResetPath();
-                navAgent.speed = 0;
+                agent.ResetPath();
             }
 
-            if (foodTarget == null)
+            if (targetInimigo != null)
             {
-               if (!navAgent.hasPath)
-                {
-                    MoveToRandomPosition(); // Não há comida e não há destino definido, mover-se para uma posição aleatória
-                }
+                perseguirInimigo(); 
+            }
+            else if(targetComida != null)
+            {
+                perseguirComida();
             }
             else
             {
-                // se já temos um alvo de comida, verifique se estamos perto o suficiente para comer
-                if (Vector3.Distance(transform.position, foodTarget.transform.position) <= eatDistance)
-                {
-                    if (!isEating)
-                    {
-                        isEating = true;
-                        anim.SetBool("isEating", true);
-                        Invoke("FinishEating", eatTime);
-                    }
-                }
-                else
-                {
-                    if (!navAgent.hasPath)
-                    {
-                        MoveToPosition(foodTarget.transform.position);
-                    }
-                }
+                andarAleatoriamentePeloMapa();
             }
+            verificarCorrerAndar();
+        }
+        else
+        {
+            targetInimigo = null;
+            targetComida = null;
+            agent.ResetPath();
+        }
+    }
 
-            if (navAgent.speed > (walkSpeed + 0.5f))
+    private void perseguirComida()
+    {
+        if (targetComida == null) return;
+        // se jÃ¡ temos um alvo de comida, verifique se estamos perto o suficiente para comer
+        if (Vector3.Distance(transform.position, targetComida.transform.position) <= eatDistance)
+        {
+            if (!isEating)
             {
-                anim.SetBool("run", true);
-                anim.SetBool("isMoving", true);
+                isEating = true;
+                animator.SetBool("isEating", true);
+                Invoke("FinishEating", eatTime);
             }
-            else if (navAgent.speed > 0.1f)
+        }
+        else
+        {
+            if (!agent.hasPath)
             {
-                anim.SetBool("run", false);
-                anim.SetBool("isMoving", true);
+                MoveToPosition(targetComida.transform.position);
             }
-            else
-            {
-                anim.SetBool("run", false);
-                anim.SetBool("isMoving", false);
-            }
+        }
+    }
 
+    private void andarAleatoriamentePeloMapa()
+    {
+        if (!agent.hasPath)
+        {
+            agent.speed = walkSpeed;
+            MoveToRandomPosition(); // NÃ£o hÃ¡ comida e nÃ£o hÃ¡ destino definido, mover-se para uma posiÃ§Ã£o aleatÃ³ria
+        }
+    }
+
+    private void verificarCorrerAndar()
+    {
+        /*if (animator.GetCurrentAnimatorStateInfo(0).IsName("isEating") || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            agent.speed = 0;
+        }*/
+        setarAnimacaoPorVelocidade();
+    }
+
+    private void setarAnimacaoPorVelocidade()
+    {
+        if (agent.velocity.magnitude > runSpeed - statsGeral.speedVariation)
+        {
+            animator.SetBool("isMoving", false);
+            animator.SetBool("run", true);
+        }
+        else if (agent.velocity.magnitude > 0.05f)
+        {
+            animator.SetBool("isMoving", true);
+            animator.SetBool("run", false);
+        }
+        else
+        {
+            animator.SetBool("isMoving", false);
+            animator.SetBool("run", false);
         }
     }
 
     public void AcoesTomouDano()
     {
-        foodTarget = null;
-        isRunning = true;
+        targetComida = null;
         lastRunTime = Time.time;
         lastDamageTime = Time.time;
-        MoveToRandomPosition();
-        Invoke("StopRunning", runTime);
+        if (!isAnimalAgressivo)
+        {
+            Invoke("StopRunning", tempoCorridaFugindo);
+            Debug.Log("tomou dano e setou corrida");
+            agent.speed = runSpeed;
+            MoveToRandomPosition();
+        }
+    }
+
+    void StopRunning()
+    {
+        agent.speed = walkSpeed;
+        Debug.Log("walk 2");
     }
 
     void FinishEating()
     {
         isEating = false;
-        anim.SetBool("isEating", false);
-        Destroy(foodTarget);
-        foodTarget = null;
-    }
-
-    void StopRunning()
-    {
-        isRunning = false;
-        Debug.Log("parotu de correr");
+        animator.SetBool("isEating", false);
+        Destroy(targetComida);
+        targetComida = null;
     }
 
     public void MoveToPosition(Vector3 position)
     {
-       
         transform.LookAt(position);
-        // Definir destino para o NavMeshAgent
-        navAgent.SetDestination(position);
-        if (isRunning)
-        {
-            navAgent.speed = runSpeed;
-            Debug.Log("movendo para position correndo");
-        }
-        else
-        {
-            navAgent.speed = walkSpeed;
-            Debug.Log("movendo para position andando");
-        }
+        agent.SetDestination(position);
     }
 
     private void MoveToRandomPosition()
@@ -155,22 +180,24 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private void FindFood(GameObject food)
     {
-        if (!isProcuraComida || enemyTarget != null) return;
+        if (!isProcuraComida || targetInimigo != null) return;
         if (isAnimalCarnivoro)
         {
             if ((food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne)))
             {
-                foodTarget = food;
+                targetComida = food;
             }
         }
         if (isAnimalHerbivoro)
         {
             if ((food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Fruta) || food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Vegetal)))
             {
-                foodTarget = food;
+                targetComida = food;
             }
         }
     }
+
+    //AGRESSIVOS
 
     void OnTriggerStay(Collider other)
     {
@@ -181,8 +208,66 @@ public class AnimalController : MonoBehaviourPunCallbacks
         if (!isAnimalAgressivo) return;
         if (other.gameObject.tag == "Player" || other.gameObject.tag == "Lobisomem")
         {
-            //atacar
+            targetInimigo = other.gameObject;
+            targetComida = null;
         }
+    }
+
+    private void perseguirInimigo()
+    {
+        if (targetInimigo == null || !isAnimalAgressivo) return;
+        float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.transform.position);
+        if (targetInimigo.GetComponent<PlayerController>().isMorto || distanceToTarget > statsGeral.minimumDistanceAtaque)
+        {
+            //targetComida = target;
+            targetInimigo = null;
+        }
+        else if (distanceToTarget < statsGeral.distanciaDeAtaque) // Ataca o alvo
+        {
+            if (!statsGeral.isAttacking && Time.time > statsGeral.lastAttackTime + statsGeral.attackInterval)
+            {
+                transform.LookAt(targetInimigo.transform.position);
+                statsGeral.lastAttackTime = Time.time;
+                animator.SetTrigger("isAttacking");
+            }
+        }
+        else // Persegue o alvo
+        {
+            Vector3 targetOffset = Random.insideUnitSphere * statsGeral.destinationOffset;
+            // Calcula a posiï¿½ï¿½o futura do jogador com base na sua velocidade atual
+            Vector3 leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
+            // Calcula o offset da posiï¿½ï¿½o futura do jogador
+            Vector3 leadTargetOffset = (leadTarget - targetInimigo.transform.position).normalized * statsGeral.leadDistance;
+            // Soma o offset da posiï¿½ï¿½o futura do jogador com o offset aleatï¿½rio do destino
+            Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
+            // Define a posiï¿½ï¿½o de destino para o inimigo
+            agent.SetDestination(destination);
+        }
+    }
+
+    void CorrerOuAndarEmPerseguicao()
+    {
+        if (targetInimigo == null) return;
+
+        if (animator.GetBool("run") == true)
+        {
+            agent.speed = walkSpeed;
+            Debug.Log("walk 3");
+        }
+        else
+        {
+            agent.speed = runSpeed;
+        }
+    }
+
+    void GoAtk()
+    {
+        statsGeral.isAttacking = true;
+    }
+
+    void NotAtk()
+    {
+        statsGeral.isAttacking = false;
     }
 
 }

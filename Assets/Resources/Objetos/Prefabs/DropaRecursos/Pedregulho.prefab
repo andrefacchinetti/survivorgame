@@ -100,6 +100,15 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
+  minimumDistanceAtaque: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.05
+  leadTime: 1.2
+  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 2
     qtdMinDrops: 5
@@ -198,7 +207,6 @@ GameObject:
   - component: {fileID: 9100773091621516288}
   - component: {fileID: 9094870189553755276}
   - component: {fileID: 9084872562243851910}
-  - component: {fileID: 1216560411049853007}
   m_Layer: 0
   m_Name: Rock_03_LOD0
   m_TagString: Untagged
@@ -271,20 +279,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1216560411049853007
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9097773261560778558}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300006, guid: 48320e7576ce0664eb501ebbd6c815da, type: 3}
 --- !u!1 &9097773263290383454
 GameObject:
   m_ObjectHideFlags: 0

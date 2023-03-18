@@ -17,6 +17,7 @@ public class CollisorSofreDano : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
+        if (statsGeral.vidaAtual <= 0) return;
         if (other.transform.tag == "Ferramenta" || other.transform.tag == "Arma") //recebe dano qdo player ataca com ferramenta ou arma da mao
         {
             if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
