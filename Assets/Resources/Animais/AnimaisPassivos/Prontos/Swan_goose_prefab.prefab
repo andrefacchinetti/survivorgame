@@ -985,15 +985,18 @@ MonoBehaviour:
   isAnimalAgressivo: 0
   isAnimalCarnivoro: 0
   isAnimalHerbivoro: 1
+  eatTime: 10
   walkSpeed: 0.5
   runSpeed: 1
-  eatTime: 10
   isProcuraComida: 1
   eatDistance: 2
-  runTime: 10
+  tempoCorridaFugindo: 5
   restTime: 10
   raioDeDistanciaParaAndarAleatoriamente: 20
-  anim: {fileID: 0}
+  animator: {fileID: 0}
+  agent: {fileID: 0}
+  targetComida: {fileID: 0}
+  targetInimigo: {fileID: 0}
 --- !u!195 &4610918906125125285
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1067,6 +1070,15 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
+  minimumDistanceAtaque: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 5
     qtdMinDrops: 1

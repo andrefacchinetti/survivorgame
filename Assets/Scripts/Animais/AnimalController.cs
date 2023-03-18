@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 
 [RequireComponent(typeof(PhotonView), typeof(NavMeshAgent), typeof(StatsGeral))]
-[RequireComponent(typeof(AnimalStats))]
+[RequireComponent(typeof(AnimalStats), typeof(BoxCollider))]
 public class AnimalController : MonoBehaviourPunCallbacks
 {
 
@@ -68,6 +68,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
         else
         {
+            animator.SetBool("isDead", true);
             targetInimigo = null;
             targetComida = null;
             agent.ResetPath();

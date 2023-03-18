@@ -25,7 +25,7 @@ public class AnimalStats : MonoBehaviourPunCallbacks
     public void AcoesMorreu()
     {
         Debug.Log("animal morreu");
-        animalController.animator.SetBool("isDead", true);
+        statsGeral.isDead = true;
         animalController.agent.speed = 0;
         animalController.agent.isStopped = true;
     }

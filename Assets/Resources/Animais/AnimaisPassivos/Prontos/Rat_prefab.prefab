@@ -1964,6 +1964,15 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
+  minimumDistanceAtaque: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 14
     qtdMinDrops: 1
@@ -1995,15 +2004,18 @@ MonoBehaviour:
   isAnimalAgressivo: 0
   isAnimalCarnivoro: 1
   isAnimalHerbivoro: 1
+  eatTime: 5
   walkSpeed: 1
   runSpeed: 1
-  eatTime: 5
   isProcuraComida: 0
   eatDistance: 2
-  runTime: 5
+  tempoCorridaFugindo: 5
   restTime: 20
   raioDeDistanciaParaAndarAleatoriamente: 20
-  anim: {fileID: 0}
+  animator: {fileID: 0}
+  agent: {fileID: 0}
+  targetComida: {fileID: 0}
+  targetInimigo: {fileID: 0}
 --- !u!65 &-6474653531746010929
 BoxCollider:
   m_ObjectHideFlags: 0
