@@ -952,6 +952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &334608350761124789
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1031,6 +1032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &4354517010406044413
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1425,6 +1427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &2826950485979508525
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1600,6 +1603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &7318189716716079760
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1867,6 +1871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &6809162051395436261
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2101,6 +2106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &8513565422519143236
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2200,6 +2206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!114 &319982172497044730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2338,6 +2345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &8766516152376409489
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2543,6 +2551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &6512096553913079131
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2660,6 +2669,14 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
+  distanciaDePerseguicao: 20
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 5
@@ -2978,6 +2995,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &4114118383951102095
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3157,6 +3175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &2386744715965376145
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3584,6 +3603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
 --- !u!54 &7592032886492881188
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4545,20 +4565,13 @@ MonoBehaviour:
   raioDeDistanciaParaAndarAleatoriamente: 20
   timerParaAndarAleatoriamente: 5
   timerParaAlfaDecidirComandosParaSeusBetas: 10
-  target: {fileID: 0}
+  targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
   agent: {fileID: 0}
-  minimumDistanceAtaque: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
   lobisomemController: {fileID: 5136368655001136268}
   lobisomemStats: {fileID: 8094014223833661833}
   statsGeral: {fileID: 8817566113519457645}
   animator: {fileID: 0}
-  speedVariation: 0.05
-  leadTime: 1.2
-  leadDistance: 2
 --- !u!195 &2233054291421786745
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5777,20 +5790,13 @@ MonoBehaviour:
   raioDeDistanciaParaAndarAleatoriamente: 20
   timerParaAndarAleatoriamente: 5
   timerParaAlfaDecidirComandosParaSeusBetas: 10
-  target: {fileID: 0}
+  targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
   agent: {fileID: 0}
-  minimumDistanceAtaque: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
   lobisomemController: {fileID: 5136368655001136268}
   lobisomemStats: {fileID: 8094014223833661833}
   statsGeral: {fileID: 8817566113519457645}
   animator: {fileID: 0}
-  speedVariation: 0.05
-  leadTime: 1.2
-  leadDistance: 2
 --- !u!136 &1898620298837042626
 CapsuleCollider:
   m_ObjectHideFlags: 0
