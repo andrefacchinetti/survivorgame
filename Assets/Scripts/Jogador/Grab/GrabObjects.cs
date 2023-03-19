@@ -8,7 +8,7 @@ using Photon.Realtime;
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
     
-    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca";
+    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -46,7 +46,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             possibleGrab = false;
             possibleInteraction = false;
             
-            if ((hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop)) 
+            if ((hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela)) 
             {
 
                 if (hit.transform.tag == tagItemDrop && hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Fogueira) )
@@ -84,7 +84,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     }
                 }
                 else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
-                    && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>())
+                    && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>() != null)
                 {
                     if (Input.GetKeyDown(KeyCode.E))
                     {
@@ -110,7 +110,20 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                             transferOwnerPV(hit.transform.gameObject);
                             ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
                             bool destruirObjetoDaCena = true;
-                            if((itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null)
+                            if (hit.transform.tag == tagConsumivelNaPanela) {
+                                Item.NomeItem itemNaPanela = hit.transform.gameObject.GetComponent<ConsumivelCozinha>().slotConsumivelPanela.nomeItemNoSlot;
+                                if (inventario.AdicionarItemAoInventario(itemNaPanela, 1))
+                                {
+                                    hit.transform.gameObject.GetComponent<ConsumivelCozinha>().panela.RetirarConsumivelDoSlot(hit.transform.gameObject.GetComponent<ConsumivelCozinha>().slotConsumivelPanela);
+                                }
+                                else
+                                {
+                                    Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                                }
+                                destruirObjetoDaCena = false;
+                                return;
+                            }
+                            if (hit.transform.tag == tagItemDrop && (itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
                             {
                                 Panela panela = itemDrop.gameObject.GetComponent<Panela>();
                                 Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
@@ -132,6 +145,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                                 }
                                 destruirObjetoDaCena = false;
                             }
+
                             if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
                             {
                                 if (destruirObjetoDaCena)

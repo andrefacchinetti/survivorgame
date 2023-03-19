@@ -6,6 +6,7 @@ public class ConsumivelCozinha : MonoBehaviour
 {
 
     [SerializeField] public Fogo fogo;
+    [SerializeField] public Panela panela;
     [SerializeField] public SlotConsumivelPanela slotConsumivelPanela;
     [SerializeField] public ItemDrop itemDropConsumivel;
 

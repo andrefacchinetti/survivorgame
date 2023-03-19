@@ -36,6 +36,12 @@ public class Panela : MonoBehaviour
         return false;
     }
 
+    public void RetirarConsumivelDoSlot(SlotConsumivelPanela slot)
+    {
+        slot.DesativarSlots();
+        slot.gameObject.SetActive(false);
+    }
+
     public Item.NomeItem ObterConsumivelDaPanela()
     {
         foreach (SlotConsumivelPanela slot in slotsConsumiveis)

@@ -11,25 +11,30 @@ public class Fogueira : MonoBehaviour
 
     public bool ColocarPanelaTigela(Item item)
     {
-        if (panela != null) return false;
-        if (item.nomeItem.Equals(Item.NomeItem.Panela))
-        {
-            slotPanela.SetActive(true);
-            panela = slotPanela.GetComponent<Panela>();
+        if (panela != null) { 
+            return false;
         }
-        if (item.nomeItem.Equals(Item.NomeItem.Tigela))
+        else
         {
-            slotTigela.SetActive(true);
-            panela = slotTigela.GetComponent<Panela>();
+            if (item.nomeItem.Equals(Item.NomeItem.Panela))
+            {
+                slotPanela.SetActive(true);
+                panela = slotPanela.GetComponent<Panela>();
+            }
+            if (item.nomeItem.Equals(Item.NomeItem.Tigela))
+            {
+                slotTigela.SetActive(true);
+                panela = slotTigela.GetComponent<Panela>();
+            }
+            return true;
         }
-        return true;
     }
 
     public void RetirarPanelaTigela()
     {
         panela = null;
         slotPanela.SetActive(false);
-        slotPanela.SetActive(false);
+        slotTigela.SetActive(false);
     }
 
     public void AcenderFogueira()

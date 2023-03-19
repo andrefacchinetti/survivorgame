@@ -26,13 +26,13 @@ public class SlotConsumivelPanela : MonoBehaviour
 
     public void DesativarSlots()
     {
+        nomeItemNoSlot = Item.NomeItem.Nenhum;
         slotCarneCrua.SetActive(false);
         slotCarneCozida.SetActive(false);
         slotCogumeloCru.SetActive(false);
         slotCogumeloCozido.SetActive(false);
         slotPeixeCru.SetActive(false);
         slotPeixeCozido.SetActive(false);
-        nomeItemNoSlot = Item.NomeItem.Nenhum;
     }
 
 }
