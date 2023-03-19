@@ -149,17 +149,21 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     }
                 }
             }
-            else if (hit.transform.GetComponent<StatsGeral>() != null && hit.transform.GetComponent<StatsGeral>().isDead && inventario.itemNaMao != null 
+            else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null 
                 && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
             {
-                if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+                StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
+                if (objPai != null && objPai.isDead)
                 {
-                    transferOwnerPV(hit.transform.gameObject);
-                    animator.SetTrigger("dissecando");
-                    playerController.itemsDropsPosDissecar = hit.transform.gameObject.GetComponent<StatsGeral>().dropsItems;
-                    playerController.corpoDissecando = hit.transform.gameObject;
+                    if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+                    {
+                        transferOwnerPV(objPai.gameObject);
+                        animator.SetTrigger("dissecando");
+                        playerController.itemsDropsPosDissecar = objPai.dropsItems;
+                        playerController.corpoDissecando = objPai.gameObject;
+                    }
+                    possibleInteraction = true;
                 }
-                possibleInteraction = true;
             }
             else if(hit.transform.tag == tagAgua && inventario.itemNaMao == null)
             {

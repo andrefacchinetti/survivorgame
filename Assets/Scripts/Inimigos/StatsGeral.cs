@@ -6,11 +6,13 @@ using Photon.Pun;
 public class StatsGeral : MonoBehaviour
 {
     [SerializeField] public float vidaMaxima = 100, damage = 20;
-    [HideInInspector] public float vidaAtual = 100f; // pontos de vida
-    [HideInInspector] public bool isDead = false, isAttacking;
+    [SerializeField] public float vidaAtual = 100f; // pontos de vida
+
+    [SerializeField] public bool isDead = false;
+    [HideInInspector] public bool isAttacking;
 
     //ATAQUE
-    [SerializeField] public float minimumDistanceAtaque = 5f, distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
+    [SerializeField] public float distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
     [SerializeField] public float attackInterval = 1f; // Intervalo de tempo entre ataques
     [HideInInspector] public float lastAttackTime; // Tempo do �ltimo ataque
     [SerializeField] public float destinationOffset = 1f;
@@ -53,7 +55,6 @@ public class StatsGeral : MonoBehaviour
         }
         else
         {
-            DroparItensAoMorrer();
             if (animalStats != null) animalStats.AcoesMorreu();
             else if (lobisomemStats != null) lobisomemStats.AcoesMorreu();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesMorreu();
@@ -78,6 +79,18 @@ public class StatsGeral : MonoBehaviour
     {
         if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(this.gameObject);
         else GameObject.Destroy(this.gameObject);
+    }
+
+    public Transform obterTransformPositionDoCollider()
+    {
+        if(lobisomemStats != null)
+        {
+            return GetComponent<LobisomemController>().obterGameObjectFormaAtiva().transform;
+        }
+        else
+        {
+            return transform;
+        }
     }
 
 }

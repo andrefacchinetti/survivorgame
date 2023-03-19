@@ -20,7 +20,7 @@ public class LobisomemStats : MonoBehaviour
 
     private void Awake()
     {
-        lobisomemController = GetComponent<LobisomemController>();
+        lobisomemController = GetComponentInParent<LobisomemController>();
         statsGeral = GetComponent<StatsGeral>();
     }
 

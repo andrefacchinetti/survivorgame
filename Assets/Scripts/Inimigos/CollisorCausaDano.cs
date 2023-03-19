@@ -12,17 +12,11 @@ public class CollisorCausaDano : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        GameObject objPai = null;
-        if (other.gameObject.CompareTag("Player")) //Dar dano no player qdo collide
+        if (!statsGeral.isAttacking) return;
+        CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
+        if (collisorSofreDano != null)
         {
-            objPai = other.gameObject;
-        }
-        if(other.gameObject.GetComponent<CollisorSofreDano>() != null)
-        {
-            objPai = other.gameObject.GetComponent<CollisorSofreDano>().statsGeral.gameObject;
-        }
-        if (objPai != null && statsGeral.isAttacking)
-        {
+            GameObject objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>().gameObject;
             objPai.GetComponent<StatsGeral>().TakeDamage(statsGeral.damage);
             statsGeral.isAttacking = false;
         }

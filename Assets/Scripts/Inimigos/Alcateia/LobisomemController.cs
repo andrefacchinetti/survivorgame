@@ -50,10 +50,14 @@ public class LobisomemController : MonoBehaviour
         if (Categoria.Outro.Equals(categoria)) return;
         if (gameController.isNoite)
         {
+            objFormaHumano.transform.position = objFormaLobo.transform.position;
+            objFormaHumano.transform.rotation = objFormaLobo.transform.rotation;
             forma = Forma.Lobo;
         }
         else
         {
+            objFormaLobo.transform.position = objFormaHumano.transform.position;
+            objFormaLobo.transform.rotation = objFormaHumano.transform.rotation;
             forma = Forma.Humano;
         }
         objFormaHumano.SetActive(!gameController.isNoite);

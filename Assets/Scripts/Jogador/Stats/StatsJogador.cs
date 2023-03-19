@@ -85,6 +85,7 @@ public class StatsJogador : MonoBehaviour
 
     public void AcoesMorreu()
     {
+        //TODO: DROPAR MOCHILA
         playerController.animator.SetBool("isDead", true);
         statsGeral.isDead = true;
         playerController.playerMovement.canMove = false;

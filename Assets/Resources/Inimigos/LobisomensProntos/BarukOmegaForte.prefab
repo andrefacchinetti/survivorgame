@@ -3368,6 +3368,8 @@ GameObject:
   - component: {fileID: 209136431069282619}
   - component: {fileID: 4819405745802178698}
   - component: {fileID: 9159999217009756276}
+  - component: {fileID: 1261355147216508628}
+  - component: {fileID: 9089510650732018569}
   m_Layer: 0
   m_Name: BarukOmegaForte
   m_TagString: Inimigo
@@ -3443,6 +3445,60 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1261355147216508628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209136431069282615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 150
+  damage: 20
+  vidaAtual: 100
+  isDead: 0
+  isAttacking: 0
+  minimumDistanceAtaque: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
+  dropsItems:
+  - nomeItemEnum: 4
+    qtdMinDrops: 8
+    qtdMaxDrops: 13
+  - nomeItemEnum: 5
+    qtdMinDrops: 13
+    qtdMaxDrops: 23
+  - nomeItemEnum: 14
+    qtdMinDrops: 4
+    qtdMaxDrops: 8
+--- !u!114 &9089510650732018569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209136431069282615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3329b2a60b01e0040a176022ef11628a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nivelAgressividadeMax: 100
+  nivelAgressividadeAtual: 100
+  energiaAtual: 0
+  isEstadoAgressivo: 1
+  lobisomemMovimentacao: {fileID: 8199317177307660030}
+  lobisomemHumanoMovimentacao: {fileID: 6106045561050803767}
 --- !u!1 &209136431104670796
 GameObject:
   m_ObjectHideFlags: 0
@@ -4422,8 +4478,6 @@ GameObject:
   - component: {fileID: 5678317884178859495}
   - component: {fileID: 6359573134698509051}
   - component: {fileID: 1306392900690268489}
-  - component: {fileID: 2279965468784247480}
-  - component: {fileID: 2606403999327880690}
   m_Layer: 0
   m_Name: FormaLobo
   m_TagString: Untagged
@@ -4613,60 +4667,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2279965468784247480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3128501391971407670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3329b2a60b01e0040a176022ef11628a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nivelAgressividadeMax: 100
-  nivelAgressividadeAtual: 100
-  energiaAtual: 0
-  isEstadoAgressivo: 1
-  lobisomemMovimentacao: {fileID: 8199317177307660030}
-  lobisomemHumanoMovimentacao: {fileID: 6106045561050803767}
---- !u!114 &2606403999327880690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3128501391971407670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vidaMaxima: 150
-  damage: 20
-  vidaAtual: 100
-  isDead: 0
-  isAttacking: 0
-  minimumDistanceAtaque: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
-  dropsItems:
-  - nomeItemEnum: 4
-    qtdMinDrops: 8
-    qtdMaxDrops: 13
-  - nomeItemEnum: 5
-    qtdMinDrops: 13
-    qtdMaxDrops: 23
-  - nomeItemEnum: 14
-    qtdMinDrops: 4
-    qtdMaxDrops: 8
 --- !u!1 &3558612088417831599
 GameObject:
   m_ObjectHideFlags: 0
@@ -4728,8 +4728,6 @@ GameObject:
   - component: {fileID: 734083893592348392}
   - component: {fileID: 8572093041245066305}
   - component: {fileID: 6106045561050803767}
-  - component: {fileID: 1532762894855818933}
-  - component: {fileID: 4200569178273708049}
   m_Layer: 0
   m_Name: FormaHumano
   m_TagString: Untagged
@@ -4918,60 +4916,6 @@ MonoBehaviour:
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
   animator: {fileID: 0}
---- !u!114 &1532762894855818933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3896854903909817699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3329b2a60b01e0040a176022ef11628a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nivelAgressividadeMax: 100
-  nivelAgressividadeAtual: 100
-  energiaAtual: 0
-  isEstadoAgressivo: 1
-  lobisomemMovimentacao: {fileID: 8199317177307660030}
-  lobisomemHumanoMovimentacao: {fileID: 6106045561050803767}
---- !u!114 &4200569178273708049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3896854903909817699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vidaMaxima: 150
-  damage: 20
-  vidaAtual: 100
-  isDead: 0
-  isAttacking: 0
-  minimumDistanceAtaque: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
-  dropsItems:
-  - nomeItemEnum: 4
-    qtdMinDrops: 8
-    qtdMaxDrops: 13
-  - nomeItemEnum: 5
-    qtdMinDrops: 13
-    qtdMaxDrops: 23
-  - nomeItemEnum: 14
-    qtdMinDrops: 4
-    qtdMaxDrops: 8
 --- !u!1 &7574212169377105673
 GameObject:
   m_ObjectHideFlags: 0

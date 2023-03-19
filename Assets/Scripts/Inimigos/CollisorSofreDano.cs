@@ -7,7 +7,7 @@ public class CollisorSofreDano : MonoBehaviour
 {
 
     [SerializeField] List<Item.NomeItem> nomeItemFerramentasRecomendadas;
-    [SerializeField] bool isApenasFerramentaRecomendadaCausaDano = false;
+    [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false;
     [HideInInspector] public StatsGeral statsGeral;
 
     private void Awake()
@@ -34,8 +34,8 @@ public class CollisorSofreDano : MonoBehaviour
                 statsGeral.TakeDamage(damage);
             }
            
-            other.transform.root.gameObject.GetComponent<StatsGeral>().isAttacking = false;
-            other.transform.root.gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
+            other.transform.gameObject.GetComponentInParent<StatsGeral>().isAttacking = false;
+            other.transform.gameObject.GetComponentInParent<StatsGeral>().gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
         }
 
         if (other.transform.tag == "ItemDrop") //Qdo toca em objeto que causa dano em velocidade (lança ou flecha)

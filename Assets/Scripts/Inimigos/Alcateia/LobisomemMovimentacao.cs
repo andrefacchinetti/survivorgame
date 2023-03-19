@@ -14,7 +14,9 @@ public class LobisomemMovimentacao : MonoBehaviour
 
 
     //MOVIMENTACAO
-    public GameObject targetInimigo, targetComida;
+    public StatsGeral targetInimigo;
+    public GameObject targetComida;
+
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
     
@@ -28,7 +30,8 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        statsGeral = GetComponent<StatsGeral>();
+        statsGeral = GetComponentInParent<StatsGeral>();
+        lobisomemStats = GetComponentInParent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
     }
 
@@ -75,8 +78,8 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void verificarAtaque()
     {
         if (targetInimigo == null) return;
-        float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.transform.position);
-        if (targetInimigo.GetComponent<StatsGeral>().isDead || distanceToTarget > statsGeral.minimumDistanceAtaque)
+        float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.obterTransformPositionDoCollider().position);
+        if (targetInimigo.isDead || distanceToTarget > statsGeral.distanciaDePerseguicao)
         {
             //targetComida = target;
             targetInimigo = null;
@@ -85,7 +88,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if (!statsGeral.isAttacking && Time.time > statsGeral.lastAttackTime + statsGeral.attackInterval)
             {
-                transform.LookAt(targetInimigo.transform.position);
+                transform.LookAt(targetInimigo.obterTransformPositionDoCollider().position);
                 statsGeral.lastAttackTime = Time.time;
                 animator.SetTrigger("attack" + Random.Range(1, 3));
             }
@@ -97,14 +100,14 @@ public class LobisomemMovimentacao : MonoBehaviour
             // Calcula a posi��o futura do jogador com base na sua velocidade atual
             if (targetInimigo.GetComponent<CharacterController>() != null)
             {
-                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
+                leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
             }
             else
             {
-                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<NavMeshAgent>().velocity.normalized * statsGeral.leadTime);
+                leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized * statsGeral.leadTime);
             }
             // Calcula o offset da posi��o futura do jogador
-            Vector3 leadTargetOffset = (leadTarget - targetInimigo.transform.position).normalized * statsGeral.leadDistance;
+            Vector3 leadTargetOffset = (leadTarget - targetInimigo.obterTransformPositionDoCollider().position).normalized * statsGeral.leadDistance;
             // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
             Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
             // Define a posi��o de destino para o inimigo
@@ -275,7 +278,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void perseguirJogador()
     {
-        agent.SetDestination(targetInimigo.transform.position);
+        agent.SetDestination(targetInimigo.obterTransformPositionDoCollider().position);
     }
 
     void OnTriggerEnter(Collider other)
@@ -283,47 +286,36 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (other.tag == "Player")
         {
             lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
-            if(targetInimigo == null && lobisomemStats.isEstadoAgressivo)
+        }
+        
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (targetInimigo != null || statsGeral.isDead) return;
+        if (other.gameObject.tag == "Player")
+        {
+            if (targetInimigo == null && lobisomemStats.isEstadoAgressivo && !other.GetComponent<StatsGeral>().isDead)
             {
-                if (other.GetComponent<StatsGeral>().isDead)
-                {
-                    //targetComida = other.transform; //REMOVIDO OPACAO DE PLAYER MORTO VIRAR COMIDA, POIS � NECESSARIO INSTANCIAR UM CORPO MORTO QDO UM PLAYER MORRER PARA SER DESTRUIDO AO SER COMIDO
-                }
-                else
-                {
-                    targetInimigo = other.gameObject;
-                    targetComida = null;
-                }
+                targetInimigo = other.GetComponent<StatsGeral>();
+                targetComida = null;
+            }
+        }
+        if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
+        {
+            StatsGeral objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>();
+            if (objPai.gameObject.GetComponent<AnimalController>() != null && !objPai.isDead)
+            {
+                Debug.Log("LOBISOMEM ACHOU ANIMAL");
+                targetInimigo = objPai;
+                targetComida = null;
             }
         }
         if (targetInimigo == null && other.tag == "ItemDrop")
         {
             if (other.GetComponent<Consumivel>() != null && other.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
             {
-                //gostou da comida
-                targetComida = other.gameObject;
-            }
-        }
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            if (targetInimigo == null && lobisomemStats.isEstadoAgressivo)
-            {
-                targetInimigo = other.gameObject;
-                targetComida = null;
-            }
-        }
-        if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
-        {
-            GameObject objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>().gameObject;
-            if (objPai.GetComponent<AnimalController>() != null)
-            {
-                Debug.Log("LOBISOMEM ACHOU ANIMAL");
-                targetInimigo = objPai;
-                targetComida = null;
+                targetComida = other.gameObject; //gostou da comida
             }
         }
     }

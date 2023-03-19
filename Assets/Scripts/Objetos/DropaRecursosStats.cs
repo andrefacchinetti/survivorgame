@@ -21,6 +21,7 @@ public class DropaRecursosStats : MonoBehaviour
     public void AcoesMorreu()
     {
         Debug.Log("dropa recursos morreu");
+        statsGeral.DroparItensAoMorrer();
         statsGeral.DestruirGameObject();
     }
 
