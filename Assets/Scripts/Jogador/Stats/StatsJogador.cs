@@ -6,21 +6,27 @@ public class StatsJogador : MonoBehaviour
 {
 
     [SerializeField][HideInInspector] PlayerController playerController;
+    [SerializeField] [HideInInspector] StatsGeral statsGeral;
     [SerializeField] HudJogador hudJogador;
 
     // STATS MAXIMO
-    [SerializeField] public float vidaMaxima = 100, fomeMaxima = 100, sedeMaxima = 100, energiaMaxima = 100;
+    [SerializeField] public float fomeMaxima = 100, sedeMaxima = 100, energiaMaxima = 100;
 
     //STATS CURRENT
-    [SerializeField] [HideInInspector] public float vidaAtual, fomeAtual, sedeAtual, energiaAtual;
+    [SerializeField] [HideInInspector] public float fomeAtual, sedeAtual, energiaAtual;
 
     [SerializeField] float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
 
+    private void Awake()
+    {
+        playerController = GetComponent<PlayerController>();
+        statsGeral = GetComponent<StatsGeral>();
+    }
 
     private void Start()
     {
-        playerController = GetComponent<PlayerController>();
-        setarVidaAtual(vidaMaxima);
+        
+        setarVidaAtual(statsGeral.vidaMaxima);
         setarFomeAtual(fomeMaxima);
         setarSedeAtual(sedeMaxima);
         setarEnergiaAtual(energiaMaxima);
@@ -34,17 +40,17 @@ public class StatsJogador : MonoBehaviour
         setarSedeAtual(sedeAtual - valorDiminuiSedePorTempo);
         if(sedeAtual <= 0 || fomeAtual <= 0)
         {
-            playerController.TakeDamage(10);
+            statsGeral.TakeDamage(10);
         }
     }
 
 
     public void setarVidaAtual(float valor)
     {
-        if (valor > vidaMaxima) valor = vidaMaxima;
+        if (valor > statsGeral.vidaMaxima) valor = statsGeral.vidaMaxima;
         if (valor < 0) valor = 0;
-        vidaAtual = valor;
-        hudJogador.atualizarImgVida(vidaAtual, vidaMaxima);
+        statsGeral.vidaAtual = valor;
+        hudJogador.atualizarImgVida(statsGeral.vidaAtual, statsGeral.vidaMaxima);
     }
 
     public void setarFomeAtual(float valor)
@@ -69,6 +75,19 @@ public class StatsJogador : MonoBehaviour
         if (valor < 0) valor = 0;
         energiaAtual = valor;
         hudJogador.atualizarImgEnergia(energiaAtual, energiaMaxima);
+    }
+
+    public void AcoesTomouDano()
+    {
+        playerController.animator.SetTrigger("Hit");
+        Debug.Log("player tomou hit. Vida: " + statsGeral.vidaAtual);
+    }
+
+    public void AcoesMorreu()
+    {
+        playerController.animator.SetBool("isDead", true);
+        statsGeral.isDead = true;
+        playerController.playerMovement.canMove = false;
     }
 
 }

@@ -9,7 +9,7 @@ public class DropaRecursosStats : MonoBehaviour
 
     private void Awake()
     {
-        statsGeral.GetComponent<StatsGeral>();
+        statsGeral = GetComponent<StatsGeral>();
     }
 
     public void AcoesTomouDano()

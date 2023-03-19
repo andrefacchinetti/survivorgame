@@ -16,7 +16,7 @@ public class EmotesController : MonoBehaviour
 
     private void Update()
     {
-        if (!playerMoviment.canMove || playerMoviment.playerController.isMorto) return;
+        if (!playerMoviment.canMove || playerMoviment.playerController.statsGeral.isDead) return;
 
         if (Input.GetKeyDown(KeyCode.F1)) animator.SetTrigger("animationF1");
         else if (Input.GetKeyDown(KeyCode.F2)) animator.SetTrigger("animationF2");

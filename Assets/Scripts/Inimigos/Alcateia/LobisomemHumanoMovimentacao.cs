@@ -12,7 +12,7 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
     [SerializeField] public float timerParaAndarAleatoriamente = 5f, timerParaAlfaDecidirComandosParaSeusBetas = 10;
 
     //MOVIMENTACAO
-    public Transform targetInimigo, targetComida;
+    public GameObject targetInimigo, targetComida;
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
     //[SerializeField] public float velocidadeWalk = 0.8f, velocidadeRun = 0.12f;
@@ -50,14 +50,14 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
                 float distanceToTarget = Vector3.Distance(transform.position, targetComida.transform.position);
                 if (distanceToTarget < 1)
                 {
-                    transform.LookAt(targetComida);
+                    transform.LookAt(targetComida.transform);
                     animator.SetTrigger("comendo");
                     targetComida.GetComponent<ItemDrop>().estaSendoComido = true;
                 }
                 else
                 {
-                    transform.LookAt(targetComida);
-                    agent.SetDestination(targetComida.position);
+                    transform.LookAt(targetComida.transform);
+                    agent.SetDestination(targetComida.transform.position);
                 }
             }
             else
@@ -71,7 +71,7 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
     {
         if (targetInimigo == null) return;
         float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.transform.position);
-        if (targetInimigo.GetComponent<PlayerController>().isMorto || distanceToTarget > statsGeral.minimumDistanceAtaque)
+        if (targetInimigo.GetComponent<StatsGeral>().isDead || distanceToTarget > statsGeral.minimumDistanceAtaque)
         {
             //targetComida = target;
             targetInimigo = null;
@@ -88,8 +88,16 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
         else // Persegue o alvo
         {
             Vector3 targetOffset = Random.insideUnitSphere * statsGeral.destinationOffset;
+            Vector3 leadTarget;
             // Calcula a posi��o futura do jogador com base na sua velocidade atual
-            Vector3 leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
+            if (targetInimigo.GetComponent<CharacterController>() != null)
+            {
+                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
+            }
+            else
+            {
+                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<NavMeshAgent>().velocity.normalized * statsGeral.leadTime);
+            }
             // Calcula o offset da posi��o futura do jogador
             Vector3 leadTargetOffset = (leadTarget - targetInimigo.transform.position).normalized * statsGeral.leadDistance;
             // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
@@ -199,12 +207,12 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
             if (lobisomemStats.isEstadoAgressivo)
             {
                 beta.lobisomemStats.isEstadoAgressivo = true;
-                beta.lobisomemMovimentacao.target = targetInimigo;
+                beta.lobisomemMovimentacao.targetInimigo = targetInimigo;
             }
             else
             {
                 beta.lobisomemStats.isEstadoAgressivo = false;
-                beta.lobisomemMovimentacao.target = null;
+                beta.lobisomemMovimentacao.targetInimigo = null;
             }
         }
     }
@@ -262,7 +270,7 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
 
     private void perseguirJogador()
     {
-        agent.SetDestination(targetInimigo.position);
+        agent.SetDestination(targetInimigo.transform.position);
     }
 
     void OnTriggerEnter(Collider other)
@@ -272,13 +280,13 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
             lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
             if (targetInimigo == null && lobisomemStats.isEstadoAgressivo)
             {
-                if (other.GetComponent<PlayerController>().isMorto)
+                if (other.GetComponent<StatsGeral>().isDead)
                 {
                     //targetComida = other.transform; //REMOVIDO OPACAO DE PLAYER MORTO VIRAR COMIDA, POIS � NECESSARIO INSTANCIAR UM CORPO MORTO QDO UM PLAYER MORRER PARA SER DESTRUIDO AO SER COMIDO
                 }
                 else
                 {
-                    targetInimigo = other.transform;
+                    targetInimigo = other.gameObject;
                     targetComida = null;
                 }
             }
@@ -289,7 +297,7 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
                 || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCru) || other.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.PeixeCozido))
             {
                 //gostou da comida
-                targetComida = other.transform;
+                targetComida = other.gameObject;
                 Debug.Log("achou comida");
             }
             else
@@ -305,7 +313,17 @@ public class LobisomemHumanoMovimentacao : MonoBehaviour
         {
             if (targetInimigo == null && lobisomemStats.isEstadoAgressivo)
             {
-                targetInimigo = other.transform;
+                targetInimigo = other.gameObject;
+                targetComida = null;
+            }
+        }
+        if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
+        {
+            GameObject objPai = other.gameObject.GetComponent<CollisorSofreDano>().statsGeral.gameObject;
+            if (objPai.GetComponent<AnimalController>() != null)
+            {
+                Debug.Log("LOBISOMEM ACHOU ANIMAL");
+                targetInimigo = objPai;
                 targetComida = null;
             }
         }

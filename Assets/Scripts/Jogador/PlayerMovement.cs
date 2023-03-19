@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			isPulando = false;
 		}
 
-		if (playerController.isMorto) canMove = false;
+		if (playerController.statsGeral.isDead) canMove = false;
 	}
 
 	void OnMouseEnter()

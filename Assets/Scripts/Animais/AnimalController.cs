@@ -9,7 +9,7 @@ using Photon.Pun;
 public class AnimalController : MonoBehaviourPunCallbacks
 {
 
-    public bool isAnimalAgressivo, isAnimalCarnivoro, isAnimalHerbivoro;
+    public bool isAnimalAgressivo, isAnimalCarnivoro, isAnimalHerbivoro, isPredador;
     public float eatTime = 5f; // tempo de alimentação
     public float walkSpeed = 1, runSpeed = 2;
     public bool isProcuraComida = true;
@@ -202,15 +202,27 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     void OnTriggerStay(Collider other)
     {
+        if (targetInimigo != null) return;
         if (other.gameObject.tag == "ItemDrop" && other.gameObject.GetComponent<Consumivel>() != null)
         {
             FindFood(other.gameObject);
         }
         if (!isAnimalAgressivo) return;
-        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Lobisomem")
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Inimigo")
         {
             targetInimigo = other.gameObject;
             targetComida = null;
+        }
+        if (!isPredador) return;
+        if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
+        {
+            GameObject objPai = other.gameObject.GetComponent<CollisorSofreDano>().statsGeral.gameObject;
+            if(objPai.GetComponent<AnimalController>() != null && !objPai.GetComponent<AnimalController>().isPredador)
+            {
+                Debug.Log("PREDADOR ACHOU PRESA");
+                targetInimigo = objPai;
+                targetComida = null;
+            }
         }
     }
 
@@ -218,7 +230,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         if (targetInimigo == null || !isAnimalAgressivo) return;
         float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.transform.position);
-        if (targetInimigo.GetComponent<PlayerController>().isMorto || distanceToTarget > statsGeral.minimumDistanceAtaque)
+        if (targetInimigo.GetComponent<StatsGeral>().isDead || distanceToTarget > statsGeral.minimumDistanceAtaque)
         {
             //targetComida = target;
             targetInimigo = null;
@@ -235,8 +247,17 @@ public class AnimalController : MonoBehaviourPunCallbacks
         else // Persegue o alvo
         {
             Vector3 targetOffset = Random.insideUnitSphere * statsGeral.destinationOffset;
+            Vector3 leadTarget;
             // Calcula a posi��o futura do jogador com base na sua velocidade atual
-            Vector3 leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
+            if (targetInimigo.GetComponent<CharacterController>() != null)
+            {
+                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
+            }
+            else
+            {
+                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<NavMeshAgent>().velocity.normalized * statsGeral.leadTime);
+            }
+            
             // Calcula o offset da posi��o futura do jogador
             Vector3 leadTargetOffset = (leadTarget - targetInimigo.transform.position).normalized * statsGeral.leadDistance;
             // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino

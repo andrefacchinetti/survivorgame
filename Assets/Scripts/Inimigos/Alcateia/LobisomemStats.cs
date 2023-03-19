@@ -89,7 +89,7 @@ public class LobisomemStats : MonoBehaviour
             else
             {
                 isEstadoAgressivo = false;
-                lobisomemMovimentacao.target = null;
+                lobisomemMovimentacao.targetInimigo = null;
             }
         }
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CollisorCausaDano : MonoBehaviour
@@ -14,13 +12,19 @@ public class CollisorCausaDano : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        GameObject objPai = null;
         if (other.gameObject.CompareTag("Player")) //Dar dano no player qdo collide
         {
-            if (statsGeral.isAttacking)
-            {
-                other.gameObject.GetComponent<PlayerController>().TakeDamage(statsGeral.damage);
-                statsGeral.isAttacking = false;
-            }
+            objPai = other.gameObject;
+        }
+        if(other.gameObject.GetComponent<CollisorSofreDano>() != null)
+        {
+            objPai = other.gameObject.GetComponent<CollisorSofreDano>().statsGeral.gameObject;
+        }
+        if (objPai != null && statsGeral.isAttacking)
+        {
+            objPai.GetComponent<StatsGeral>().TakeDamage(statsGeral.damage);
+            statsGeral.isAttacking = false;
         }
     }
 

@@ -13,19 +13,20 @@ public class PlayerController : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudança de cena
 
 	//stats
-	[SerializeField] public bool isMorto = false, isAttacking = false;
 	[SerializeField] public Inventario inventario;
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
 	[SerializeField] public Animator animator, animatorVaraDePesca;
 	
-	[SerializeField][HideInInspector] public StatsJogador statsJogador;
+	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
+	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
+	[SerializeField] [HideInInspector] public PlayerMovement playerMovement;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
 	private GameController gameController;
-	private PlayerMovement playerMovement;
+	
 
 	PhotonView PV;
 
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (gc != null) gameController = gc.GetComponent<GameController>();
 		playerMovement = GetComponent<PlayerMovement>();
 		statsJogador = GetComponent<StatsJogador>();
+		statsGeral = GetComponent<StatsGeral>();
 	}
 
 	void Start()
@@ -52,7 +54,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 		if (transform.position.y < -40f) // Die if you fall out of the world
 		{
-			Die();
+			statsGeral.TakeDamage(9999);
 		}
 
 		if (!inventario.canvasInventario.activeSelf && inventario.itemNaMao != null && playerMovement.canMove)
@@ -166,12 +168,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	void GoAtk()
 	{
-		isAttacking = true;
+		statsGeral.isAttacking = true;
 	}
 
 	void NotAtk()
 	{
-		isAttacking = false;
+		statsGeral.isAttacking = false;
 	}
 
 	void AnimEventComeu()
@@ -303,57 +305,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 	}
 
-	//Fim Acoes Animacoes
-
-	public void TakeDamage(float damage)
-	{
-		if (PhotonNetwork.IsConnected) PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
-		else acoesTakeDamage(damage);
-	}
-
-	[PunRPC]
-	void RPC_TakeDamage(float damage)
-	{
-		if (!PV.IsMine)
-			return;
-		acoesTakeDamage(damage);
-	}
-
-	private void acoesTakeDamage(float damage)
-    {
-		statsJogador.setarVidaAtual(statsJogador.vidaAtual - damage);
-		animator.SetTrigger("Hit");
-		Debug.Log("player tomou " + damage + " de hit. Vida: " + statsJogador.vidaAtual);
-		if (statsJogador.vidaAtual <= 0)
-		{
-			Die();
-		}
-	}
-
-	void Die()
-	{
-		if (isMorto) return;
-		if (PhotonNetwork.IsConnected) PV.RPC("RPC_ExecutarAcoesDie", RpcTarget.All);
-		else acoesExecutarAcoesDie();
-	}
-
-	[PunRPC]
-	void RPC_ExecutarAcoesDie()
-	{
-		acoesExecutarAcoesDie();
-	}
-
-	private void acoesExecutarAcoesDie()
-    {
-		animator.SetBool("isDead", true);
-		isMorto = true;
-		playerMovement.canMove = false;
-	}
-
 	[PunRPC]
 	void RPC_ExecutarAcoesRessurgimento()
 	{
-		isMorto = false;
+		statsGeral.isDead = false;
 	}
 
 	[PunRPC]

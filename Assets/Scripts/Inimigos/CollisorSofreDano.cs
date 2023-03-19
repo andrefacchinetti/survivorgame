@@ -8,7 +8,7 @@ public class CollisorSofreDano : MonoBehaviour
 
     [SerializeField] List<Item.NomeItem> nomeItemFerramentasRecomendadas;
     [SerializeField] bool isApenasFerramentaRecomendadaCausaDano = false;
-    StatsGeral statsGeral;
+    [HideInInspector] public StatsGeral statsGeral;
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class CollisorSofreDano : MonoBehaviour
         if (statsGeral.vidaAtual <= 0) return;
         if (other.transform.tag == "Ferramenta" || other.transform.tag == "Arma") //recebe dano qdo player ataca com ferramenta ou arma da mao
         {
-            if (!other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking) return;
+            if (!other.transform.root.gameObject.GetComponent<StatsGeral>().isAttacking) return;
             float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
             if (isApenasFerramentaRecomendadaCausaDano)
             {
@@ -34,7 +34,7 @@ public class CollisorSofreDano : MonoBehaviour
                 statsGeral.TakeDamage(damage);
             }
            
-            other.transform.root.gameObject.GetComponent<PlayerController>().isAttacking = false;
+            other.transform.root.gameObject.GetComponent<StatsGeral>().isAttacking = false;
             other.transform.root.gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
         }
 

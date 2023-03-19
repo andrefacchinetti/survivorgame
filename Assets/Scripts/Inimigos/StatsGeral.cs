@@ -19,6 +19,7 @@ public class StatsGeral : MonoBehaviour
 
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
+    StatsJogador jogadorStats;
     LobisomemStats lobisomemStats;
     AnimalStats animalStats;
     DropaRecursosStats dropaRecursosStats;
@@ -30,6 +31,7 @@ public class StatsGeral : MonoBehaviour
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         animalStats = GetComponentInParent<AnimalStats>();
         dropaRecursosStats = GetComponentInParent<DropaRecursosStats>();
+        jogadorStats = GetComponentInParent<StatsJogador>();
     }
 
     private void Start()
@@ -39,13 +41,15 @@ public class StatsGeral : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        vidaAtual -= damage;
+        if(jogadorStats != null) jogadorStats.setarVidaAtual(vidaAtual - damage);
+        else vidaAtual -= damage;
 
         if (vidaAtual > 0)
         {
             if (animalStats != null) animalStats.AcoesTomouDano();
             else if (lobisomemStats != null) lobisomemStats.AcoesTomouDano();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesTomouDano();
+            else if (jogadorStats != null) jogadorStats.AcoesTomouDano();
         }
         else
         {
@@ -53,6 +57,7 @@ public class StatsGeral : MonoBehaviour
             if (animalStats != null) animalStats.AcoesMorreu();
             else if (lobisomemStats != null) lobisomemStats.AcoesMorreu();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesMorreu();
+            else if (jogadorStats != null) jogadorStats.AcoesMorreu();
         }
     }
 

@@ -9280,6 +9280,7 @@ GameObject:
   - component: {fileID: 1711120086}
   - component: {fileID: 5517328462173305464}
   - component: {fileID: 1706290814019287593}
+  - component: {fileID: 7899718623606053494}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -9342,14 +9343,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30bf392b187a8a74dacdec5f02a53a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMorto: 0
-  isAttacking: 0
   inventario: {fileID: 1778224454}
   armaduras: {fileID: 2978406032827318288}
   grabObjects: {fileID: 6737041256933510498}
   animator: {fileID: 6737041257339993087}
   animatorVaraDePesca: {fileID: 162749581640212520}
   statsJogador: {fileID: 0}
+  statsGeral: {fileID: 0}
   itemsDropsPosDissecar: []
   corpoDissecando: {fileID: 0}
   fogueiraAcendendo: {fileID: 0}
@@ -9605,6 +9605,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6737041257339993087}
   playerMoviment: {fileID: 1061016265}
+--- !u!114 &7899718623606053494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6737041257332721727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 100
+  damage: 20
+  vidaAtual: 100
+  isDead: 0
+  isAttacking: 0
+  minimumDistanceAtaque: 5
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
+  dropsItems: []
 --- !u!1 &6743359062283788228
 GameObject:
   m_ObjectHideFlags: 0
