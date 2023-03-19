@@ -208,7 +208,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
             FindFood(other.gameObject);
         }
         if (!isAnimalAgressivo) return;
-        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Inimigo")
+        if (other.gameObject.tag == "Player")
         {
             targetInimigo = other.gameObject;
             targetComida = null;
@@ -216,8 +216,8 @@ public class AnimalController : MonoBehaviourPunCallbacks
         if (!isPredador) return;
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
         {
-            GameObject objPai = other.gameObject.GetComponent<CollisorSofreDano>().statsGeral.gameObject;
-            if(objPai.GetComponent<AnimalController>() != null && !objPai.GetComponent<AnimalController>().isPredador)
+            GameObject objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>().gameObject;
+            if ((objPai.GetComponent<AnimalController>() != null && !objPai.GetComponent<AnimalController>().isPredador) || objPai.GetComponent<LobisomemStats>() != null)
             {
                 Debug.Log("PREDADOR ACHOU PRESA");
                 targetInimigo = objPai;

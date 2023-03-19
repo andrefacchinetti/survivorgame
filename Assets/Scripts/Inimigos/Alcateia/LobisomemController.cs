@@ -60,4 +60,10 @@ public class LobisomemController : MonoBehaviour
         objFormaLobo.SetActive(gameController.isNoite);
     }
 
+    public GameObject obterGameObjectFormaAtiva()
+    {
+        if (forma.Equals(Forma.Humano)) return objFormaHumano;
+        else return objFormaLobo;
+    }
+
 }

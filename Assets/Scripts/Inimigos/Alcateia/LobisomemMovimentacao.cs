@@ -28,6 +28,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        statsGeral = GetComponent<StatsGeral>();
         timer = timerParaAndarAleatoriamente;
     }
 
@@ -36,6 +37,10 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
         else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
         else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
+        if (!agent.pathPending && agent.remainingDistance < 0.1f)
+        {
+            agent.ResetPath(); // o animal chegou ao seu destino, pare de se mover
+        }
         verificarCorrerAndar();
         verificarAtaque();
         verificarProximoComida();
@@ -313,7 +318,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
         {
-            GameObject objPai = other.gameObject.GetComponent<CollisorSofreDano>().statsGeral.gameObject;
+            GameObject objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>().gameObject;
             if (objPai.GetComponent<AnimalController>() != null)
             {
                 Debug.Log("LOBISOMEM ACHOU ANIMAL");
