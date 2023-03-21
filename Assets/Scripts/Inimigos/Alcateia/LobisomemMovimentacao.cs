@@ -35,9 +35,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         timer = timerParaAndarAleatoriamente;
     }
 
+    public Transform treeDestination;
     private void Update()
     {
-        if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
+        agent.SetDestination(treeDestination.position);
+        /*if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
         else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
         else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
         if (!agent.pathPending && agent.remainingDistance < 0.1f)
@@ -46,7 +48,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         verificarCorrerAndar();
         verificarAtaque();
-        verificarProximoComida();
+        verificarProximoComida();*/
     }
 
     private void verificarProximoComida()
