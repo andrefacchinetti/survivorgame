@@ -16,6 +16,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     //MOVIMENTACAO
     public StatsGeral targetInimigo;
     public GameObject targetComida;
+    public Transform targetArvore;
 
     [HideInInspector] public NavMeshAgent agent;
     private float timer;
@@ -37,9 +38,10 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Update()
     {
-        if (lobisomemStats.isSubindoNaArvore || lobisomemStats.isIndoAteArvore)
+        if (targetArvore != null)
         {
             agent.speed = 2;
+            agent.SetDestination(targetArvore.position);
             if (lobisomemStats.isSubindoNaArvore)
             {
                 if(agent.velocity.magnitude <= 0.001)
@@ -317,7 +319,8 @@ public class LobisomemMovimentacao : MonoBehaviour
             Debug.Log("jump to tree");
             lobisomemStats.isIndoAteArvore = true;
             agent.speed = 1.5f;
-            agent.SetDestination(other.GetComponent<JumpToTree>().treeDestination.position);
+            targetArvore = other.GetComponent<JumpToTree>().treeDestination;
+            agent.SetDestination(targetArvore.position);
         }
     }
 

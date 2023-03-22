@@ -25,12 +25,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15351100}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -2.014, y: 1.2700024, z: 4.78}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.05866925, y: -0.41333318, z: 1.0199996}
+  m_LocalScale: {x: 0.33333334, y: 0.33333334, z: 0.06666666}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 365875561385255263}
-  m_RootOrder: 7
+  m_Father: {fileID: 1999211246}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &15351101
 MonoBehaviour:
@@ -45,13 +45,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_StartPoint: {x: -0.13769531, y: -1.5223539, z: -0.7953792}
-  m_EndPoint: {x: -0.13374329, y: -0.20954871, z: 0.18210714}
+  m_StartPoint: {x: -0.13769531, y: -1.5055689, z: 0.6594986}
+  m_EndPoint: {x: -0.13374329, y: -0.17713882, z: 1.243457}
   m_Width: 1.7593826
   m_CostModifier: -1
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
-  m_Area: 0
+  m_Area: 2
 --- !u!1 &341367278
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 365875561385255263}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &341367281
 MeshFilter:
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.18
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: b27ed2634ccfddf4a92d36d59f183e16, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 779aef9fcb357e548b7acccca9cfeee8, type: 2}
 --- !u!1 &1999211245
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,10 +238,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999211245}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.19, y: 7.47, z: 1.72}
+  m_LocalPosition: {x: -2.19, y: 7.47, z: 0.88}
   m_LocalScale: {x: 3, y: 15, z: 3}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 15351102}
   m_Father: {fileID: 365875561385255263}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -364,7 +365,6 @@ Transform:
   - {fileID: 3622263744404294391}
   - {fileID: 1999211246}
   - {fileID: 935328732}
-  - {fileID: 15351102}
   - {fileID: 341367282}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -377,25 +377,25 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365875561385255256}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.8102608, y: 14.057407, z: -0.48114562}
-  m_Size: 29.018337
+  m_LocalReferencePoint: {x: 0.81016636, y: 53.270416, z: -0.4811144}
+  m_Size: 106.45546
   m_FadeMode: 2
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 1
   m_LODs:
-  - screenRelativeHeight: 0.5
+  - screenRelativeHeight: 0.0046968
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6826252290530910886}
-  - screenRelativeHeight: 0.25
+  - screenRelativeHeight: 0.0023484
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1826307796884395708}
-  - screenRelativeHeight: 0.125
+  - screenRelativeHeight: 0.0011742
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2020333368779898899}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.000093935996
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 409195920099280283}
@@ -599,7 +599,7 @@ MeshRenderer:
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
+  m_ScaleInLightmap: 0.0093936
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
@@ -787,7 +787,7 @@ MeshRenderer:
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
+  m_ScaleInLightmap: 0.0093936
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
@@ -911,7 +911,7 @@ MeshRenderer:
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
+  m_ScaleInLightmap: 0.0093936
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0

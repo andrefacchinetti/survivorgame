@@ -1120,6 +1120,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 209136430047998860}
+  - component: {fileID: 168798199}
+  - component: {fileID: 168798198}
   m_Layer: 0
   m_Name: R Foot
   m_TagString: Untagged
@@ -1148,6 +1150,32 @@ Transform:
   m_Father: {fileID: 209136430727491188}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &168798199
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209136430047998861}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.68
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: -0.37}
+--- !u!114 &168798198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209136430047998861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd1eff01ba161fb4e89e0e09cc0c6ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &209136430081751261
 GameObject:
   m_ObjectHideFlags: 0
@@ -3493,9 +3521,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nivelAgressividadeMax: 100
-  nivelAgressividadeAtual: 100
+  nivelAgressividadeAtual: 20
   energiaAtual: 0
-  isEstadoAgressivo: 1
+  isEstadoAgressivo: 0
+  isSubindoNaArvore: 0
+  isIndoAteArvore: 0
   lobisomemMovimentacao: {fileID: 8199317177307660030}
   lobisomemHumanoMovimentacao: {fileID: 6106045561050803767}
 --- !u!1 &209136431104670796
@@ -4479,7 +4509,7 @@ GameObject:
   - component: {fileID: 1306392900690268489}
   m_Layer: 0
   m_Name: FormaLobo
-  m_TagString: Untagged
+  m_TagString: Lobisomem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4492,7 +4522,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3128501391971407670}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.27, y: 0, z: -0.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4729,7 +4759,7 @@ GameObject:
   - component: {fileID: 6106045561050803767}
   m_Layer: 0
   m_Name: FormaHumano
-  m_TagString: Untagged
+  m_TagString: Lobisomem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
