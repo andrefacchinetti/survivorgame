@@ -25,9 +25,6 @@ public class ControleConstruir : MonoBehaviour
     public int indexAbas, indexConstrucoes;
     private Construcoes construcao;
 
-
-    public enum IdsConstrucoes{chao,parede,fundacao,parede_porta,porta,telhado,escada, janela};
-
     public List<Aba> abas;
     [System.Serializable]
     public struct Aba{
@@ -39,8 +36,6 @@ public class ControleConstruir : MonoBehaviour
     public struct Construcoes{
         [Tooltip("O nome so deixa mais facil de identificar")]
         public string nome;
-        [Tooltip("Se precisar adicionar mais ids: Scripts>Jogador>ControleConstruir.cs e procura por IdsConstrucoes")]
-        public IdsConstrucoes id;
         public int custo;
         public float altura;
         public bool podeJuntar;
@@ -117,6 +112,7 @@ public class ControleConstruir : MonoBehaviour
                     constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(false);
                     constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(false);
                     indexAbas++;
+                    indexConstrucoes = 0;
                     constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(true);
                     constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(true);
 
@@ -128,6 +124,7 @@ public class ControleConstruir : MonoBehaviour
                     constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(false);
                     //constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(false);
                     indexAbas--;
+                    indexConstrucoes = 0;
                     constructionUI.transform.Find("menu" + indexAbas).gameObject.SetActive(true);
                     constructionUI.transform.Find("aba" + indexAbas).gameObject.SetActive(true);
                 }
@@ -136,6 +133,13 @@ public class ControleConstruir : MonoBehaviour
             podeJuntar = construcao.podeJuntar;
             objeto.GetComponent<MeshFilter>().mesh = meshObjeto = isMadeira ? construcao.meshMad : construcao.meshPed;
             indicadorHud.anchoredPosition = new Vector2(Mathf.Clamp(-180+(140*indexConstrucoes), -180f, 240f),indicadorHud.anchoredPosition.y);
+            if(-180f+(140*indexConstrucoes)>240f){
+                constructionUI.transform.Find("menu" + indexAbas).Find("Layout").GetComponent<RectTransform>().anchoredPosition = new Vector2(-(indexConstrucoes*140)+420,0);
+                Debug.Log(indexConstrucoes);
+            }
+            else{
+                constructionUI.transform.Find("menu" + indexAbas).Find("Layout").GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
+            }
 
             /* if(construcao == null || construcao.tipoConstrucaoEnum != tipoConstrucao){
                 foreach(Construcao.conStruct c in conStructs){
@@ -159,8 +163,12 @@ public class ControleConstruir : MonoBehaviour
             }
             if(Input.GetButtonDown("Fire1")){
                 if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo) && podeConstruir){
-                    Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
+                    GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     inventario.RemoverItemDoInventarioPorNome(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra, construcao.custo);
+                    try{
+                        instanciado.GetComponent<Construcao>().disativarPlaceHolder(hit.collider.gameObject);
+                    }
+                    catch{}
                 }
                 
             }
@@ -190,24 +198,7 @@ public class ControleConstruir : MonoBehaviour
                 objPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + construcao.altura, hit.transform.position.z);
                 Debug.Log(construcao.altura);
                 isConectado = true;
-                /* if(System.Array.IndexOf(construcao.nomeTerreno, hit.transform.name) != -1){
-                    //se o objeto tocado tiver o nome do encaixe certo
-                    objRotation = hit.transform.rotation;
-                    objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x,objRotation.eulerAngles.y + rotacao-(rotacao%90),objRotation.eulerAngles.z));
-                    //objRotation.(new Vector3(0f,rotacao-(rotacao%90),0f));
-                    objPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + construcao.altura, hit.transform.position.z);
-                    isConectado = true;
-                }
-                else
-                {
-                    objPosition = new Vector3(hit.point.x, hit.point.y + construcao.altura + (meshObjeto.bounds.size.y * objeto.transform.localScale.y / 2), hit.point.z);
-                    Vector3 direction = transform.position - objPosition;
-                    direction.y = 0f;
-                    objRotation.SetLookRotation(direction);
-                    //-objRotation(new Vector3(transform.position.x, objeto.transform.position.y, transform.position.z));
-                    objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x,rotacao, objRotation.eulerAngles.z));
-                    //-objeto.transform.Rotate(new Vector3(0f,rotacao,0f));
-                } */
+                
             }
             else{
                 objPosition = new Vector3(hit.point.x, hit.point.y + construcao.altura + (meshObjeto.bounds.size.y * objeto.transform.localScale.y / 2), hit.point.z);
@@ -215,10 +206,6 @@ public class ControleConstruir : MonoBehaviour
                 direction.y = 0f;
                 objRotation = Quaternion.LookRotation(direction);
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x,objRotation.eulerAngles.y + rotacao, objRotation.eulerAngles.z));
-
-                
-                //-objeto.transform.LookAt(new Vector3(transform.position.x, objeto.transform.position.y,transform.position.z));
-                //-objeto.transform.Rotate(new Vector3(0f, rotacao, 0f));
             }
         }
         else{
