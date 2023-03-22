@@ -10,7 +10,7 @@ public class LobisomemStats : MonoBehaviour
     //STATS CURRENT
     [SerializeField] [HideInInspector] public float energiaAtual;
 
-    public bool isEstadoAgressivo = false;
+    public bool isEstadoAgressivo = false, isSubindoNaArvore = false, isIndoAteArvore = false;
 
     [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
     [SerializeField] LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;

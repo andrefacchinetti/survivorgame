@@ -35,20 +35,39 @@ public class LobisomemMovimentacao : MonoBehaviour
         timer = timerParaAndarAleatoriamente;
     }
 
-    public Transform treeDestination;
     private void Update()
     {
-        agent.SetDestination(treeDestination.position);
-        /*if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
-        else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
-        else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
-        if (!agent.pathPending && agent.remainingDistance < 0.1f)
+        if (lobisomemStats.isSubindoNaArvore || lobisomemStats.isIndoAteArvore)
         {
-            agent.ResetPath(); // o animal chegou ao seu destino, pare de se mover
+            agent.speed = 2;
+            if (lobisomemStats.isSubindoNaArvore)
+            {
+                if(agent.velocity.magnitude <= 0.001)
+                {
+                    animator.SetBool("paradoArvore", true);
+                }
+                else
+                {
+                    animator.SetBool("paradoArvore", false);
+                }
+            }
+            animator.SetBool("subindoArvore", lobisomemStats.isSubindoNaArvore);
+        }
+        else
+        {
+            animator.SetBool("subindoArvore", false);
+            animator.SetBool("paradoArvore", false);
+            if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
+            else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
+            else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
+            if (!agent.pathPending && agent.remainingDistance < 0.1f)
+            {
+                agent.ResetPath(); // o animal chegou ao seu destino, pare de se mover
+            }
+            verificarProximoComida();
         }
         verificarCorrerAndar();
         verificarAtaque();
-        verificarProximoComida();*/
     }
 
     private void verificarProximoComida()
@@ -128,7 +147,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else
         {
-            if(targetInimigo == null)
+            if(lobisomemStats.isIndoAteArvore || lobisomemStats.isSubindoNaArvore)
+            {
+                agent.speed = 1.5f;
+            }
+            else if(targetInimigo == null)
             {
                 agent.speed = 0.1f;
             }
@@ -289,7 +312,13 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
         }
-        
+        if (other.gameObject.tag == "NavMeshVertical" && targetInimigo == null && targetComida == null && !lobisomemStats.isSubindoNaArvore && !lobisomemStats.isIndoAteArvore)
+        {
+            Debug.Log("jump to tree");
+            lobisomemStats.isIndoAteArvore = true;
+            agent.speed = 1.5f;
+            agent.SetDestination(other.GetComponent<JumpToTree>().treeDestination.position);
+        }
     }
 
     void OnTriggerStay(Collider other)
