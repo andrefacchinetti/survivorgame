@@ -3521,9 +3521,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nivelAgressividadeMax: 100
-  nivelAgressividadeAtual: 20
+  nivelAgressividadeAtual: 50
   energiaAtual: 0
-  isEstadoAgressivo: 0
+  isEstadoAgressivo: 1
   isSubindoNaArvore: 0
   isIndoAteArvore: 0
   lobisomemMovimentacao: {fileID: 8199317177307660030}
@@ -4618,8 +4618,10 @@ MonoBehaviour:
   raioDeDistanciaParaAndarAleatoriamente: 20
   timerParaAndarAleatoriamente: 5
   timerParaAlfaDecidirComandosParaSeusBetas: 10
+  tempoParadoNaArvore: 10
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
+  targetArvore: {fileID: 0}
   agent: {fileID: 0}
   lobisomemController: {fileID: 4819405745802178698}
   lobisomemStats: {fileID: 9089510650732018569}
@@ -4636,7 +4638,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 15.6, y: 5.9, z: 24.03}
+  m_Size: {x: 15.6, y: 26.92, z: 40}
   m_Center: {x: 0, y: 1.96, z: 9.57}
 --- !u!114 &5678317884178859495
 MonoBehaviour:
@@ -4663,7 +4665,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3128501391971407670}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.54
+  m_Radius: 0.8
   m_Speed: 0.5
   m_Acceleration: 0.8
   avoidancePriority: 50
@@ -4672,7 +4674,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2.45
+  m_Height: 2.5
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
