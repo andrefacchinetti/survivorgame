@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class SlotHotbar : MonoBehaviour
 {
@@ -13,11 +14,17 @@ public class SlotHotbar : MonoBehaviour
     [SerializeField] public TMP_Text txTeclaAtalho, txNomeItem ,txQuantidade;
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public GameObject objEmbacarImg, bordaSelecionado;
+    public ArrastarItensInventario arrastarItensInventario;
 
 
     private void Start()
     {
         SetupSlotHotbar(null);
+        EventTrigger trigger = GetComponent<EventTrigger>();
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drop;
+        entry.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
+        trigger.triggers.Add(entry);
     }
 
     public void SetupSlotHotbar(Item itemResponse)
@@ -50,6 +57,10 @@ public class SlotHotbar : MonoBehaviour
         hotbar.slotHotbarSelecionada = this;
         hotbar.estaSelecionandoSlotHotbar = true;
         bordaSelecionado.SetActive(true);
+    }
+
+    public void OnDropDelegate(PointerEventData data){
+        arrastarItensInventario.DragEndItemInventario(this);
     }
 
 }

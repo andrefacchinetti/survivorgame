@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Runtime.Serialization;
 using Photon.Pun;
+using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviourPunCallbacks
 {
@@ -20,6 +21,8 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
     PhotonView PV;
+
+    public ArrastarItensInventario arrastarItensInventario;
 
 
     public enum TiposItems
@@ -176,6 +179,19 @@ public class Item : MonoBehaviourPunCallbacks
     {
         txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles;
         txQuantidade.text = quantidade + "";
+        EventTrigger trigger = GetComponent<EventTrigger>();
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.BeginDrag;
+        entry.callback.AddListener((data) => { OnBeginDragDelegate((PointerEventData)data); });
+        trigger.triggers.Add(entry);
+        EventTrigger.Entry entry2 = new EventTrigger.Entry();
+        entry2.eventID = EventTriggerType.EndDrag;
+        entry2.callback.AddListener((data) => { OnEndDragDelegate((PointerEventData)data); });
+        trigger.triggers.Add(entry2);
+        EventTrigger.Entry entry3 = new EventTrigger.Entry();
+        entry3.eventID = EventTriggerType.Drop;
+        entry3.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
+        trigger.triggers.Add(entry3);
     }
 
     public void DeselecionarItem()
@@ -302,6 +318,7 @@ public class Item : MonoBehaviourPunCallbacks
             if(quantidade <= 0)
             {
                 desativarOuAtivarUsoItemDaHotbar(false);
+                gameObject.transform.SetAsLastSibling();
             }
             inventario.setarPesoAtual(inventario.pesoAtual + peso);
             inventario.setarQtdItensAtual(inventario.qtdItensAtual + quantidadeResponse);
@@ -322,5 +339,19 @@ public class Item : MonoBehaviourPunCallbacks
             }
         }
     }
+
+    public void OnBeginDragDelegate(PointerEventData data){
+        arrastarItensInventario.DragStartItemInventario(this, gameObject);
+    }
+
+    public void OnEndDragDelegate(PointerEventData data){
+        arrastarItensInventario.StopDrag();
+    }
+
+    public void OnDropDelegate(PointerEventData data)
+    {
+        arrastarItensInventario.TrocarLugarInventario(gameObject);
+    }
+    
 
 }

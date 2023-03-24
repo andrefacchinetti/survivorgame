@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 4384358393523676442}
   - component: {fileID: 4441807796317145619}
   - component: {fileID: 6560363361700526673}
+  - component: {fileID: 101429484216673162}
   m_Layer: 0
   m_Name: ItemPrefab
   m_TagString: Untagged
@@ -139,9 +140,11 @@ MonoBehaviour:
   itemObjMao: {fileID: 0}
   inventario: {fileID: 0}
   hotbar: {fileID: 0}
+  armaduras: {fileID: 0}
   txQuantidade: {fileID: 1923810431759224591}
   txNomeItem: {fileID: 3798112122752178640}
   imagemItem: {fileID: 532327667208118354}
+  arrastarItensInventario: {fileID: 0}
 --- !u!114 &6560363361700526673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,6 +167,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &101429484216673162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3071235083761473255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &4514156416500410117
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +191,6 @@ GameObject:
   - component: {fileID: 8548124483856101447}
   - component: {fileID: 1058924118007850371}
   - component: {fileID: 532327667208118354}
-  - component: {fileID: 6949540886209845182}
   - component: {fileID: 2385909155263832618}
   m_Layer: 0
   m_Name: Imagem
@@ -239,50 +254,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &6949540886209845182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4514156416500410117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 532327667208118354}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2385909155263832618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b27f9ae085887ae46a4c2652e74849ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Delegates: []
   item: {fileID: 4441807796317145619}
+  arrastarItensInventario: {fileID: 0}
 --- !u!1 &6781487072998220258
 GameObject:
   m_ObjectHideFlags: 0

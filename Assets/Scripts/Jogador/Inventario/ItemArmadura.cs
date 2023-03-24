@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 
 public class ItemArmadura : MonoBehaviour
@@ -15,6 +16,15 @@ public class ItemArmadura : MonoBehaviour
     [SerializeField] public Texture texturaInvisivel;
     [SerializeField] public GameObject bordaSelecionado;
     [SerializeField] public Armaduras armaduras;
+    [SerializeField] public ArrastarItensInventario arrastarItensInventario;
+
+    private void Start() {
+        EventTrigger trigger = GetComponent<EventTrigger>();
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drop;
+        entry.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
+        trigger.triggers.Add(entry);
+    }
 
 
     public void SelecionarSlotArmadura()
@@ -64,6 +74,10 @@ public class ItemArmadura : MonoBehaviour
             txQuantidade.text = itemResponse.quantidade + "";
             imagemItem.texture = itemResponse.imagemItem.texture;
         }
+    }
+
+    public void OnDropDelegate(PointerEventData data){
+        arrastarItensInventario.DragEndItemInventario(this);
     }
 
 }
