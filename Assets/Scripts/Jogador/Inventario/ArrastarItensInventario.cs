@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ArrastarItensInventario : MonoBehaviour
 {
     private Item item;
-    private GameObject placeHolder, slot1;
+    public GameObject placeHolder, slot1;
     private int slot2;
     // Start is called before the first frame update
     void Start()
@@ -20,8 +21,9 @@ public class ArrastarItensInventario : MonoBehaviour
     }
 
     public void DragStartItemInventario(Item itemDrag, GameObject go1){
-        Debug.Log("Pegou item " + go1.name);
         item = itemDrag;
+        placeHolder.GetComponent<RawImage>().texture = itemDrag.imagemItem.texture;
+        placeHolder.SetActive(true);
         slot1 = go1;
     }
 
@@ -45,6 +47,7 @@ public class ArrastarItensInventario : MonoBehaviour
 
     public void StopDrag(){
         Debug.Log("Soltou item");
+        placeHolder.SetActive(false);
         item = null;
     }
 }
