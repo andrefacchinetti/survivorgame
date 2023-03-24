@@ -10,7 +10,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     [SerializeField] public GameObject pontoBaseTerritorio;
     [SerializeField] public float distanciaMaximaPontoBase = 50, distanciaMaximaDoSeuAlfa = 10;
     [SerializeField] public float raioDeDistanciaParaAndarAleatoriamente = 20f;
-    [SerializeField] public float timerParaAndarAleatoriamente = 5f, timerParaAlfaDecidirComandosParaSeusBetas = 10;
+    [SerializeField] public float timerParaAndarAleatoriamente = 5f, timerParaAlfaDecidirComandosParaSeusBetas = 10, tempoParadoNaArvore = 10;
 
 
     //MOVIMENTACAO
@@ -40,8 +40,17 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (targetArvore != null)
         {
-            agent.speed = 2;
-            agent.SetDestination(targetArvore.position);
+            float distanceToTarget = Vector3.Distance(transform.position, targetArvore.position);
+            if (distanceToTarget <= 0.5f)//pousou na arvore
+            {
+                agent.ResetPath();
+                Invoke("SairDaArvore", tempoParadoNaArvore);
+            }
+            else
+            {
+                agent.speed = 2;
+                agent.SetDestination(targetArvore.position);
+            }
             if (lobisomemStats.isSubindoNaArvore)
             {
                 if(agent.velocity.magnitude <= 0.001)
@@ -70,6 +79,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         verificarCorrerAndar();
         verificarAtaque();
+    }
+
+    void SairDaArvore()
+    {
+        targetArvore = null;
     }
 
     private void verificarProximoComida()
@@ -329,10 +343,13 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (targetInimigo != null || statsGeral.isDead) return;
         if (other.gameObject.tag == "Player")
         {
+            Debug.Log("LOBISOMEM ACHOU player");
             if (targetInimigo == null && lobisomemStats.isEstadoAgressivo && !other.GetComponent<StatsGeral>().isDead)
             {
                 targetInimigo = other.GetComponent<StatsGeral>();
                 targetComida = null;
+                targetArvore = null;
+                Debug.Log("LOBISOMEM indo atrasd do player");
             }
         }
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
