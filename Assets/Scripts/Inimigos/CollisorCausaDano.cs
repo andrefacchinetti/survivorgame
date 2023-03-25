@@ -17,7 +17,7 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
     {
         if (!statsGeral.isAttacking) return;
         CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
-        if (collisorSofreDano != null) //collisorSofreDano.PV.Owner.UserId != PV.Owner.UserId
+        if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID)
         {
             float damage = statsGeral.damage;
             ItemObjMao itemObjMao = GetComponent<ItemObjMao>();

@@ -15,9 +15,9 @@ public class TriggerArvoreLobisomem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "NavMeshVertical")
+        if (other.tag == "Arvore" || other.tag == "NavMeshVertical")
         {
-            Debug.Log("subindo na arvore");
+            Debug.Log("subindo NavMeshVertical");
             lobisomemStats.isIndoAteArvore = false;
             lobisomemStats.isSubindoNaArvore = true;
         }
@@ -25,9 +25,9 @@ public class TriggerArvoreLobisomem : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "NavMeshVertical")
+        if (other.tag == "Arvore" || other.tag == "NavMeshVertical")
         {
-            Debug.Log("desceu da arvore");
+            Debug.Log("desceu da NavMeshVertical ");
             lobisomemStats.isSubindoNaArvore = false;
             lobisomemStats.isIndoAteArvore = false;
         }

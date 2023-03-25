@@ -35,6 +35,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
     }
+    [SerializeField] float speedMove = 0.1f;
 
     private void Update()
     {
@@ -48,21 +49,10 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else
             {
-                agent.speed = 2;
+                agent.speed = speedMove;
                 agent.SetDestination(targetArvore.position);
             }
-            if (lobisomemStats.isSubindoNaArvore)
-            {
-                if(agent.velocity.magnitude <= 0.001)
-                {
-                    animator.SetBool("paradoArvore", true);
-                }
-                else
-                {
-                    animator.SetBool("paradoArvore", false);
-                }
-            }
-            animator.SetBool("subindoArvore", lobisomemStats.isSubindoNaArvore);
+           
         }
         else
         {
@@ -149,9 +139,11 @@ public class LobisomemMovimentacao : MonoBehaviour
             Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
             // Define a posi��o de destino para o inimigo
             agent.SetDestination(destination);
-           
+
             // Aplica uma varia��o de velocidade aleat�ria
-            agent.speed += Random.Range(-statsGeral.speedVariation, statsGeral.speedVariation);
+            /*agent.speed += Random.Range(-statsGeral.speedVariation, statsGeral.speedVariation);
+            if (agent.speed > 1.5f) agent.speed = 1.5f;*/
+            agent.speed = speedMove;
         }
     }
 
@@ -165,11 +157,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if(lobisomemStats.isIndoAteArvore || lobisomemStats.isSubindoNaArvore)
             {
-                agent.speed = 1.5f;
+                agent.speed = speedMove;
             }
             else if(targetInimigo == null)
             {
-                agent.speed = 0.1f;
+                agent.speed = speedMove;
             }
         }
         setarAnimacaoPorVelocidade();
@@ -177,20 +169,35 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void setarAnimacaoPorVelocidade()
     {
-        if (agent.velocity.magnitude > 0.2f)
+        animator.SetBool("subindoArvore", lobisomemStats.isSubindoNaArvore);
+        if (lobisomemStats.isSubindoNaArvore)
         {
-            animator.SetBool("run", true);
-            animator.SetBool("walk", false);
-        }
-        else if (agent.velocity.magnitude > 0.02f)
-        {
-            animator.SetBool("walk", true);
-            animator.SetBool("run", false);
+            if (agent.velocity.magnitude <= 0.001)
+            {
+                animator.SetBool("paradoArvore", true);
+            }
+            else
+            {
+                animator.SetBool("paradoArvore", false);
+            }
         }
         else
         {
-            animator.SetBool("walk", false);
-            animator.SetBool("run", false);
+            if (agent.velocity.magnitude > 0.2f)
+            {
+                animator.SetBool("run", true);
+                animator.SetBool("walk", false);
+            }
+            else if (agent.velocity.magnitude > 0.02f)
+            {
+                animator.SetBool("walk", true);
+                animator.SetBool("run", false);
+            }
+            else
+            {
+                animator.SetBool("walk", false);
+                animator.SetBool("run", false);
+            }
         }
     }
 
@@ -332,7 +339,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             Debug.Log("jump to tree");
             lobisomemStats.isIndoAteArvore = true;
-            agent.speed = 1.5f;
+            agent.speed = speedMove;
             targetArvore = other.GetComponent<JumpToTree>().treeDestination;
             agent.SetDestination(targetArvore.position);
         }
