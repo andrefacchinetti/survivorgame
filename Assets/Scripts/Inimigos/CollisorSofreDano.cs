@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [RequireComponent(typeof(Rigidbody))]
-public class CollisorSofreDano : MonoBehaviour
+public class CollisorSofreDano : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] List<Item.NomeItem> nomeItemFerramentasRecomendadas;
     [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false;
     [HideInInspector] public StatsGeral statsGeral;
+    public PhotonView PV;
 
     private void Awake()
     {
         statsGeral = GetComponentInParent<StatsGeral>();
+        PV = GetComponentInParent<PhotonView>();
     }
 
     public float CalcularDanoPorArmaCausandoDano(ItemObjMao itemNaMao, float damage)

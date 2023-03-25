@@ -1,20 +1,23 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class CollisorCausaDano : MonoBehaviour
+public class CollisorCausaDano : MonoBehaviourPunCallbacks
 {
 
     StatsGeral statsGeral;
+    PhotonView PV;
 
     private void Awake()
     {
         statsGeral = GetComponentInParent<StatsGeral>();
+        PV = GetComponentInParent<PhotonView>();
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (!statsGeral.isAttacking) return;
         CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
-        if (collisorSofreDano != null)
+        if (collisorSofreDano != null) //collisorSofreDano.PV.Owner.UserId != PV.Owner.UserId
         {
             float damage = statsGeral.damage;
             ItemObjMao itemObjMao = GetComponent<ItemObjMao>();
