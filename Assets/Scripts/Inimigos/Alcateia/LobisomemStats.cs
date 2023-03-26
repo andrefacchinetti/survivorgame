@@ -12,6 +12,14 @@ public class LobisomemStats : MonoBehaviour
 
     public bool isEstadoAgressivo = false, isSubindoNaArvore = false, isIndoAteArvore = false;
 
+    //ATAQUE
+    [SerializeField] public float distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
+    [SerializeField] public float attackInterval = 1f; // Intervalo de tempo entre ataques
+    [HideInInspector] public float lastAttackTime; // Tempo do �ltimo ataque
+    [SerializeField] public float destinationOffset = 1f;
+    [SerializeField] public float speedVariation = 0.5f;
+    [SerializeField] public float leadTime = 1.2f, leadDistance = 2;
+
     [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
     [SerializeField] LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;
     LobisomemController lobisomemController;

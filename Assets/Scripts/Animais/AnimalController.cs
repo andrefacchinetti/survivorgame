@@ -9,7 +9,7 @@ using Photon.Pun;
 public class AnimalController : MonoBehaviourPunCallbacks
 {
 
-    public bool isAnimalAgressivo, isAnimalCarnivoro, isAnimalHerbivoro, isPredador;
+    public bool isAnimalAgressivo, isAnimalCarnivoro, isAnimalHerbivoro, isPredador, isPequenoPorte;
     public float eatTime = 5f; // tempo de alimentação
     public float walkSpeed = 1, runSpeed = 2;
     public bool isProcuraComida = true;
@@ -20,6 +20,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float raioDeDistanciaParaAndarAleatoriamente = 20f;
 
     StatsGeral statsGeral;
+    AnimalStats animalStats;
     [HideInInspector] public Animator animator;
     [HideInInspector] public NavMeshAgent agent;
     private bool isEating = false;
@@ -31,6 +32,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         PV = GetComponent<PhotonView>();
         statsGeral = GetComponent<StatsGeral>();
+        animalStats = GetComponent<AnimalStats>();
     }
 
     void Start()
@@ -116,7 +118,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private void setarAnimacaoPorVelocidade()
     {
-        if (agent.velocity.magnitude > runSpeed - statsGeral.speedVariation)
+        if (agent.velocity.magnitude > runSpeed - animalStats.speedVariation)
         {
             animator.SetBool("isMoving", false);
             animator.SetBool("run", true);
@@ -215,10 +217,13 @@ public class AnimalController : MonoBehaviourPunCallbacks
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
         {
             StatsGeral objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>();
-            if ((objPai.gameObject.GetComponent<AnimalController>() != null && !objPai.gameObject.GetComponent<AnimalController>().isPredador) || objPai.gameObject.GetComponent<LobisomemController>() != null)
+            if ((objPai.gameObject.GetComponent<AnimalController>() != null && (!objPai.gameObject.GetComponent<AnimalController>().isPredador && !objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)) || objPai.gameObject.GetComponent<LobisomemController>() != null)
             {
-                targetInimigo = objPai;
-                targetComida = null;
+                if (!objPai.isDead)
+                {
+                    targetInimigo = objPai;
+                    targetComida = null;
+                }
             }
         }
     }
@@ -227,36 +232,36 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         if (targetInimigo == null || !isAnimalAgressivo) return;
         float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.obterTransformPositionDoCollider().position);
-        if (targetInimigo.isDead || distanceToTarget > statsGeral.distanciaDePerseguicao)
+        if (targetInimigo.isDead || distanceToTarget > animalStats.distanciaDePerseguicao)
         {
             //targetComida = target;
             targetInimigo = null;
         }
-        else if (distanceToTarget < statsGeral.distanciaDeAtaque) // Ataca o alvo
+        else if (distanceToTarget < animalStats.distanciaDeAtaque) // Ataca o alvo
         {
-            if (!statsGeral.isAttacking && Time.time > statsGeral.lastAttackTime + statsGeral.attackInterval)
+            if (!statsGeral.isAttacking && Time.time > animalStats.lastAttackTime + animalStats.attackInterval)
             {
                 transform.LookAt(targetInimigo.obterTransformPositionDoCollider().position);
-                statsGeral.lastAttackTime = Time.time;
+                animalStats.lastAttackTime = Time.time;
                 animator.SetTrigger("isAttacking");
             }
         }
         else // Persegue o alvo
         {
-            Vector3 targetOffset = Random.insideUnitSphere * statsGeral.destinationOffset;
+            Vector3 targetOffset = Random.insideUnitSphere * animalStats.destinationOffset;
             Vector3 leadTarget;
             // Calcula a posi��o futura do jogador com base na sua velocidade atual
             if (targetInimigo.GetComponent<CharacterController>() != null)
             {
-                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * statsGeral.leadTime);
+                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * animalStats.leadTime);
             }
             else
             {
-                leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized * statsGeral.leadTime);
+                leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized * animalStats.leadTime);
             }
             
             // Calcula o offset da posi��o futura do jogador
-            Vector3 leadTargetOffset = (leadTarget - targetInimigo.obterTransformPositionDoCollider().position).normalized * statsGeral.leadDistance;
+            Vector3 leadTargetOffset = (leadTarget - targetInimigo.obterTransformPositionDoCollider().position).normalized * animalStats.leadDistance;
             // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
             Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
             // Define a posi��o de destino para o inimigo

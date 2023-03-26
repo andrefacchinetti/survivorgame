@@ -21,7 +21,7 @@ public class ItemDrop : MonoBehaviourPunCallbacks
     public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, int viewID)
     {
         GameObject objInstanciado = null;
-        string prefabPath = Path.Combine("Objetos/Prefabs/ItensInventario/", nomePrefab);
+        string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
         Debug.Log(prefabPath);
         for(int i=0; i < quantidade; i++)
         {

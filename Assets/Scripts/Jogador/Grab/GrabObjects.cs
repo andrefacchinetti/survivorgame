@@ -8,11 +8,11 @@ using Photon.Realtime;
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
     
-    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela";
+    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
-    [SerializeField] public float maxDistPlayer, maxDistanceObjeto;
+    [SerializeField] public float maxDistPlayer, distanciaMaxParaPegarObj = 3;
     float anguloLimiteOlhandoPraBaixo = 140.0f;
 
     [HideInInspector] public GameObject grabedObj;
@@ -41,15 +41,15 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDistanceObjeto))
+        if (Physics.Raycast(ray, out RaycastHit hit, distanciaMaxParaPegarObj))
         {
             possibleGrab = false;
             possibleInteraction = false;
             
-            if ((hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela)) 
+            if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela || hit.transform.tag == tagIncendiavel) 
             {
 
-                if (hit.transform.tag == tagItemDrop && hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Fogueira) )
+                if (hit.transform.tag == tagIncendiavel && hit.transform.GetComponent<Fogueira>() != null )
                 { 
                     if(inventario.itemNaMao != null)
                     {

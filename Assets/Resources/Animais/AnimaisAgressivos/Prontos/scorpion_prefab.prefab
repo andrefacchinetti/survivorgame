@@ -256,6 +256,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!136 &647724719413985768
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2133,14 +2134,6 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
-  distanciaDePerseguicao: 20
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 14
     qtdMinDrops: 1
@@ -2157,6 +2150,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
 --- !u!65 &4908854846534548579
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2186,6 +2187,7 @@ MonoBehaviour:
   isAnimalCarnivoro: 1
   isAnimalHerbivoro: 1
   isPredador: 0
+  isPequenoPorte: 1
   eatTime: 5
   walkSpeed: 1
   runSpeed: 3

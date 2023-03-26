@@ -131,7 +131,7 @@ public class Item : MonoBehaviourPunCallbacks
         Tigela,
         [EnumMember(Value = "Objeto")]
         Panela,
-        [EnumMember(Value = "Objeto")]
+        [EnumMember(Value = "Ferramenta")]
         Cantil,
         [EnumMember(Value = "Objeto")]
         FlechaDeMadeira,
@@ -139,8 +139,6 @@ public class Item : MonoBehaviourPunCallbacks
         FlechaDeOsso,
         [EnumMember(Value = "Objeto")]
         FlechaDeMetal,
-        [EnumMember(Value = "Objeto")]
-        Fogueira,
         [EnumMember(Value = "Ferramenta")]
         VaraDePesca,
         [EnumMember(Value = "Consumivel")]
@@ -175,6 +173,22 @@ public class Item : MonoBehaviourPunCallbacks
         SementeCogumelo,
         [EnumMember(Value = "Recurso")]
         SementeCogumeloVenenoso,
+        [EnumMember(Value = "Consumivel")]
+        CarneEstragada,
+        [EnumMember(Value = "Consumivel")]
+        PeixeEstragado,
+        [EnumMember(Value = "Consumivel")]
+        BananaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        LaranjaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        MangaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        MacaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloEstragado,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloVenenosoEstragado,
     }
 
     [System.Serializable]

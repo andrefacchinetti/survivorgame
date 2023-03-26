@@ -1540,6 +1540,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!54 &8189266046927731775
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2161,6 +2163,7 @@ MonoBehaviour:
   isAnimalCarnivoro: 0
   isAnimalHerbivoro: 1
   isPredador: 0
+  isPequenoPorte: 1
   eatTime: 10
   walkSpeed: 0.2
   runSpeed: 0.5
@@ -2171,8 +2174,8 @@ MonoBehaviour:
   raioDeDistanciaParaAndarAleatoriamente: 20
   animator: {fileID: 0}
   agent: {fileID: 0}
-  targetComida: {fileID: 0}
   targetInimigo: {fileID: 0}
+  targetComida: {fileID: 0}
 --- !u!114 &2103658527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2190,15 +2193,6 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
-  minimumDistanceAtaque: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 14
     qtdMinDrops: 1
@@ -2215,6 +2209,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
 --- !u!65 &-7957250531331855962
 BoxCollider:
   m_ObjectHideFlags: 0
