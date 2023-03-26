@@ -17,7 +17,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float eatDistance = 2f; // distância para detectar comida
     public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
     public float restTime = 20f; // tempo que o animal descansa após tomar dano
-    public float raioDeDistanciaParaAndarAleatoriamente = 20f;
+    public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
 
     StatsGeral statsGeral;
     AnimalStats animalStats;
@@ -103,7 +103,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
         if (!agent.hasPath)
         {
             agent.speed = walkSpeed;
-            MoveToRandomPosition(); // Não há comida e não há destino definido, mover-se para uma posição aleatória
+            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente); // Não há comida e não há destino definido, mover-se para uma posição aleatória
         }
     }
 
@@ -140,17 +140,14 @@ public class AnimalController : MonoBehaviourPunCallbacks
         targetComida = null;
         if (!isAnimalAgressivo)
         {
-            Invoke("StopRunning", tempoCorridaFugindo);
             Debug.Log("tomou dano e setou corrida");
-            agent.speed = runSpeed;
-            MoveToRandomPosition();
+            Fugir();
         }
     }
 
     void StopRunning()
     {
         agent.speed = walkSpeed;
-        Debug.Log("walk 2");
     }
 
     void FinishEating()
@@ -167,15 +164,24 @@ public class AnimalController : MonoBehaviourPunCallbacks
         agent.SetDestination(position);
     }
 
-    private void MoveToRandomPosition()
+    private void MoveToRandomPosition(float minDistance, float maxDistance)
     {
         Debug.Log("animal andando aleatoriamente");
-        Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaParaAndarAleatoriamente;
+        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
         randomDirection += transform.position;
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, raioDeDistanciaParaAndarAleatoriamente, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
         {
-            MoveToPosition(hit.position);
+            float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
+            if (distanceToNewPosition >= minDistance)
+            {
+                MoveToPosition(hit.position);
+            }
+            else
+            {
+                // Se a nova posição estiver muito próxima, gere uma nova posição aleatória
+                MoveToRandomPosition(minDistance, maxDistance);
+            }
         }
     }
 
@@ -199,7 +205,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
     }
 
     //AGRESSIVOS
-
     void OnTriggerStay(Collider other)
     {
         if (targetInimigo != null || statsGeral.isDead) return;
@@ -243,6 +248,11 @@ public class AnimalController : MonoBehaviourPunCallbacks
     private void Fugir()
     {
         Debug.Log("animal fugindo");
+        targetInimigo = null;
+        targetComida = null;
+        Invoke("StopRunning", tempoCorridaFugindo);
+        agent.speed = runSpeed;
+        MoveToRandomPosition(raioDeDistanciaMaxParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
     }
 
     private void perseguirInimigo()

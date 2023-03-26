@@ -9,7 +9,8 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     [SerializeField] public GameObject pontoBaseTerritorio;
     [SerializeField] public float distanciaMaximaPontoBase = 50, distanciaMaximaDoSeuAlfa = 10;
-    [SerializeField] public float raioDeDistanciaParaAndarAleatoriamente = 20f;
+    [SerializeField] public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
+    [SerializeField] public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
     [SerializeField] public float timerParaAndarAleatoriamente = 5f, timerParaAlfaDecidirComandosParaSeusBetas = 10, tempoParadoNaArvore = 10;
 
 
@@ -35,7 +36,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
     }
-    [SerializeField] float speedMove = 0.1f;
 
     private void Update()
     {
@@ -49,8 +49,8 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else
             {
-                agent.speed = speedMove;
-                agent.SetDestination(targetArvore.position);
+                agent.speed = lobisomemStats.walkSpeed;
+                MoveToPosition(targetArvore.position);
             }
            
         }
@@ -91,8 +91,7 @@ public class LobisomemMovimentacao : MonoBehaviour
                 }
                 else
                 {
-                    transform.LookAt(targetComida.transform);
-                    agent.SetDestination(targetComida.transform.position);
+                    MoveToPosition(targetComida.transform.position);
                 }
             }
             else
@@ -138,12 +137,12 @@ public class LobisomemMovimentacao : MonoBehaviour
             // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
             Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
             // Define a posi��o de destino para o inimigo
-            agent.SetDestination(destination);
+            MoveToPosition(destination);
 
             // Aplica uma varia��o de velocidade aleat�ria
             /*agent.speed += Random.Range(-statsGeral.speedVariation, statsGeral.speedVariation);
             if (agent.speed > 1.5f) agent.speed = 1.5f;*/
-            agent.speed = speedMove;
+            agent.speed = lobisomemStats.walkSpeed;
         }
     }
 
@@ -157,11 +156,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if(lobisomemStats.isIndoAteArvore || lobisomemStats.isSubindoNaArvore)
             {
-                agent.speed = speedMove;
+                agent.speed = lobisomemStats.walkSpeed;
             }
             else if(targetInimigo == null)
             {
-                agent.speed = speedMove;
+                agent.speed = lobisomemStats.walkSpeed;
             }
         }
         setarAnimacaoPorVelocidade();
@@ -234,13 +233,13 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             targetInimigo = null;
             targetComida = null;
-            agent.SetDestination(pontoBaseTerritorio.transform.position);
+            MoveToPosition(pontoBaseTerritorio.transform.position);
         }
         else
         {
             if (targetInimigo == null)
             {
-                andarAleatoriamente();
+                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
             }
             else
             {
@@ -290,7 +289,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             if (estaDistanteDoAlfa())
             {
                 targetInimigo = null;
-                agent.SetDestination(lobisomemController.alfa.transform.position);
+                MoveToPosition(lobisomemController.alfa.transform.position);
             }
             else
             {
@@ -300,33 +299,72 @@ public class LobisomemMovimentacao : MonoBehaviour
                 }
                 else
                 {
-                    andarAleatoriamente();
+                    MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
                 }
             }
         }
     }
 
+    private void MoveToPosition(Vector3 position)
+    {
+        NavMeshHit hit;
+        bool hasValidPath = NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas);
+        if (hasValidPath)
+        {
+            NavMeshPath path = new NavMeshPath();
+            agent.CalculatePath(position, path);
+            if (path.status == NavMeshPathStatus.PathInvalid || path.status == NavMeshPathStatus.PathPartial)
+            {
+                // Se o caminho não for válido, encontrar uma nova posição
+                Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaMaxParaAndarAleatoriamente;
+                randomDirection += transform.position;
+                NavMesh.Raycast(transform.position, randomDirection, out hit, NavMesh.AllAreas);
+                MoveToPosition(hit.position);
+            }
+            else
+            {
+                agent.SetDestination(position);
+            }
+        }
+        else
+        {
+            // Se não há posição válida, encontrar uma nova posição
+            Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaMaxParaAndarAleatoriamente;
+            randomDirection += transform.position;
+            NavMesh.Raycast(transform.position, randomDirection, out hit, NavMesh.AllAreas);
+            MoveToPosition(hit.position);
+        }
+    }
 
-    private void andarAleatoriamente()
+    private void MoveToRandomPosition(float minDistance, float maxDistance)
     {
         timer += Time.deltaTime;
 
         if (timer >= timerParaAndarAleatoriamente)
         {
             timer = 0;
-            Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaParaAndarAleatoriamente;
+            Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
             randomDirection += transform.position;
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomDirection, out hit, raioDeDistanciaParaAndarAleatoriamente, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
             {
-                agent.SetDestination(hit.position);
+                float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
+                if (distanceToNewPosition >= minDistance)
+                {
+                    MoveToPosition(hit.position);
+                }
+                else
+                {
+                    // Se a nova posição estiver muito próxima, gere uma nova posição aleatória
+                    MoveToRandomPosition(minDistance, maxDistance);
+                }
             }
         }
     }
 
     private void perseguirJogador()
     {
-        agent.SetDestination(targetInimigo.obterTransformPositionDoCollider().position);
+        MoveToPosition(targetInimigo.obterTransformPositionDoCollider().position);
     }
 
     void OnTriggerEnter(Collider other)
@@ -339,9 +377,9 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             Debug.Log("jump to tree");
             lobisomemStats.isIndoAteArvore = true;
-            agent.speed = speedMove;
+            agent.speed = lobisomemStats.walkSpeed;
             targetArvore = other.GetComponent<JumpToTree>().treeDestination;
-            agent.SetDestination(targetArvore.position);
+            MoveToPosition(targetArvore.position);
         }
     }
 
@@ -390,7 +428,12 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Fugir()
     {
-        Debug.Log("fugindo");
+        Debug.Log("lobisomem fugindo");
+        targetInimigo = null;
+        targetComida = null;
+        Invoke("StopRunning", tempoCorridaFugindo);
+        agent.speed = lobisomemStats.runSpeed;
+        MoveToRandomPosition(raioDeDistanciaMaxParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
     }
 
     void GoAtk()
