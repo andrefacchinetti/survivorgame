@@ -155,6 +155,26 @@ public class Item : MonoBehaviourPunCallbacks
         CogumeloVenenosoCozido,
         [EnumMember(Value = "Arma")]
         Besta,
+        [EnumMember(Value = "Recurso")]
+        Carvao,
+        [EnumMember(Value = "Recurso")]
+        Argila,
+        [EnumMember(Value = "Recurso")]
+        Graveto,
+        [EnumMember(Value = "Recurso")]
+        Veneno,
+        [EnumMember(Value = "Recurso")]
+        SementeMaca,
+        [EnumMember(Value = "Recurso")]
+        SementeBanana,
+        [EnumMember(Value = "Recurso")]
+        SementeLaranja,
+        [EnumMember(Value = "Recurso")]
+        SementeManga,
+        [EnumMember(Value = "Recurso")]
+        SementeCogumelo,
+        [EnumMember(Value = "Recurso")]
+        SementeCogumeloVenenoso,
     }
 
     [System.Serializable]
