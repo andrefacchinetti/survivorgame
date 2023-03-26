@@ -57,7 +57,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         {
                             if (Input.GetKeyDown(KeyCode.E))
                             {
-                                Fogueira fogueira = hit.transform.GetComponent<ItemDrop>().GetComponent<Fogueira>();
+                                Fogueira fogueira = hit.transform.GetComponent<Fogueira>();
                                 if (fogueira.ColocarPanelaTigela(inventario.itemNaMao))
                                 {
                                     inventario.RemoverItemDaMao();

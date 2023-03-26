@@ -10,7 +10,7 @@ using System.IO;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerController : MonoBehaviourPunCallbacks
-{// lembrete: nome de usuarios iguais buga a mudança de cena
+{
 
 	//stats
 	[SerializeField] public Inventario inventario;
@@ -128,11 +128,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			{
 				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoBesta"))
 				{
-					Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
-					if (flechaNaAljava != null)
-					{
-						itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco(flechaNaAljava);
-					}
+					itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
 					animator.SetTrigger("usandoBesta");
 				}
 			}
@@ -140,11 +136,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			{
 				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha"))
 				{
-					Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
-					if (flechaNaAljava != null)
-					{
-						itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco(flechaNaAljava);
-					}
+					itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
 					animator.SetTrigger("usandoArcoFlecha");
 				}
 			}

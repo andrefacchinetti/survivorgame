@@ -214,18 +214,35 @@ public class AnimalController : MonoBehaviourPunCallbacks
             targetComida = null;
         }
         if (!isPredador) return;
-        if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
+        CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
+        if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID)
         {
-            StatsGeral objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>();
-            if ((objPai.gameObject.GetComponent<AnimalController>() != null && (!objPai.gameObject.GetComponent<AnimalController>().isPredador && !objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)) || objPai.gameObject.GetComponent<LobisomemController>() != null)
+            StatsGeral objPai = collisorSofreDano.statsGeral;
+            if ((objPai.gameObject.GetComponent<AnimalController>() != null || objPai.gameObject.GetComponent<LobisomemController>() != null) && !objPai.isDead)
             {
-                if (!objPai.isDead)
+                if(objPai.gameObject.GetComponent<AnimalController>() != null)
                 {
-                    targetInimigo = objPai;
-                    targetComida = null;
+                    if (!objPai.gameObject.GetComponent<AnimalController>().isPredador && (isPequenoPorte || (!isPequenoPorte && !objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)))
+                    {
+                        targetInimigo = objPai;
+                        targetComida = null;
+                    }
+                    else if (objPai.gameObject.GetComponent<AnimalController>().isPredador)
+                    {
+                        Fugir();
+                    }
+                }
+                else if(objPai.gameObject.GetComponent<LobisomemController>() != null)
+                {
+                    Fugir();
                 }
             }
         }
+    }
+
+    private void Fugir()
+    {
+        Debug.Log("animal fugindo");
     }
 
     private void perseguirInimigo()

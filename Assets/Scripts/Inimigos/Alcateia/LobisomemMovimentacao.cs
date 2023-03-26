@@ -362,11 +362,21 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
         {
             StatsGeral objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>();
-            if (objPai.gameObject.GetComponent<AnimalController>() != null && !objPai.isDead && !objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)
+            if (objPai.gameObject.GetComponent<AnimalController>() != null && !objPai.isDead)
             {
                 Debug.Log("LOBISOMEM ACHOU ANIMAL");
-                targetInimigo = objPai;
                 targetComida = null;
+                if (objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)
+                {
+                    if (objPai.gameObject.GetComponent<AnimalController>().isAnimalAgressivo)
+                    {
+                        Fugir();
+                    }
+                }
+                else
+                {
+                    targetInimigo = objPai;
+                }
             }
         }
         if (targetInimigo == null && other.tag == "ItemDrop")
@@ -376,6 +386,11 @@ public class LobisomemMovimentacao : MonoBehaviour
                 targetComida = other.gameObject; //gostou da comida
             }
         }
+    }
+
+    private void Fugir()
+    {
+        Debug.Log("fugindo");
     }
 
     void GoAtk()

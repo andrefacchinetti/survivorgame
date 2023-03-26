@@ -10,7 +10,8 @@ public class Inventario : MonoBehaviour
     [SerializeField] public TMP_Text txPesoInventario, txQtdItensInventario;
     [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
     [SerializeField] public GameObject canvasInventario;
-    [SerializeField] public List<Item> itens = new List<Item>();
+    [SerializeField] GameObject contentItensMochila;
+    [HideInInspector] public List<Item> itens;
     [SerializeField][HideInInspector] public Item itemNaMao;
     [SerializeField] public Hotbar hotbar;
     [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
@@ -19,7 +20,8 @@ public class Inventario : MonoBehaviour
 
     private void Awake()
     {
-        //TODO: obterItensDoPlayfab() //cada player preserva seus itens independente do servidor que estiver jogando
+        itens = new List<Item>();
+        itens.AddRange(contentItensMochila.GetComponentsInChildren<Item>());
     }
 
     public void setarPesoAtual(int valor)

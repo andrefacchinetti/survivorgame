@@ -6,15 +6,17 @@ public class TipoFlechaNoArco : MonoBehaviour
 {
 
     [SerializeField] GameObject objFlechaDeMadeira, objFlechaDeOsso, objFlechaDeMetal;
+    [SerializeField] Armaduras armaduras;
 
-    public void AtivarTipoFlechaNoArco(Item itemResponse)
+    public void AtivarTipoFlechaNoArco()
     {
         DesativarTipoFlechaNoArco();
-        if (itemResponse != null && itemResponse.quantidade > 0)
+        Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
+        if (flechaNaAljava != null && flechaNaAljava.quantidade > 0)
         {
-            if (Item.NomeItem.FlechaDeMadeira.Equals(itemResponse.nomeItem)) objFlechaDeMadeira.SetActive(true);
-            if (Item.NomeItem.FlechaDeOsso.Equals(itemResponse.nomeItem)) objFlechaDeOsso.SetActive(true);
-            if (Item.NomeItem.FlechaDeMetal.Equals(itemResponse.nomeItem)) objFlechaDeMetal.SetActive(true);
+            if (Item.NomeItem.FlechaDeMadeira.Equals(flechaNaAljava.nomeItem)) objFlechaDeMadeira.SetActive(true);
+            if (Item.NomeItem.FlechaDeOsso.Equals(flechaNaAljava.nomeItem)) objFlechaDeOsso.SetActive(true);
+            if (Item.NomeItem.FlechaDeMetal.Equals(flechaNaAljava.nomeItem)) objFlechaDeMetal.SetActive(true);
         }
     }
 

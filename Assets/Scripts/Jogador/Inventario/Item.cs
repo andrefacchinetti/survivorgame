@@ -267,6 +267,7 @@ public class Item : MonoBehaviourPunCallbacks
             {
                 inventario.itemNaMao = this;
                 itemObjMao.gameObject.SetActive(true);
+                if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
                 if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
                 inventario.FecharInventario();
             }
