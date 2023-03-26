@@ -161,6 +161,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!136 &6327313541144719006
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -472,6 +473,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!136 &8038158791754854770
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -597,6 +599,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!1 &1172695079403958
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,7 +691,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1172695079403958}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.38
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -697,7 +700,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 0.95
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -718,14 +721,6 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
-  distanciaDePerseguicao: 20
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 1
@@ -748,6 +743,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
 --- !u!65 &1057861395316736845
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -777,6 +780,7 @@ MonoBehaviour:
   isAnimalCarnivoro: 0
   isAnimalHerbivoro: 1
   isPredador: 0
+  isPequenoPorte: 0
   eatTime: 5
   walkSpeed: 1
   runSpeed: 3
@@ -784,7 +788,9 @@ MonoBehaviour:
   eatDistance: 2
   tempoCorridaFugindo: 5
   restTime: 20
-  raioDeDistanciaParaAndarAleatoriamente: 20
+  raioDeDistanciaMinParaAndarAleatoriamente: 10
+  raioDeDistanciaMaxParaAndarAleatoriamente: 40
+  timerParaAndarAleatoriamente: 5
   animator: {fileID: 0}
   agent: {fileID: 0}
   targetInimigo: {fileID: 0}
@@ -951,6 +957,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!136 &4299110649047047583
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1353,6 +1360,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!136 &1512344487866451369
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1797,6 +1805,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!1 &1770444510488084
 GameObject:
   m_ObjectHideFlags: 0
@@ -2165,6 +2174,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!114 &8682907260175988548
 MonoBehaviour:
   m_ObjectHideFlags: 0

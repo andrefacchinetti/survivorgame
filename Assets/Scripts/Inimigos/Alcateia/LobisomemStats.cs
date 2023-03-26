@@ -21,7 +21,6 @@ public class LobisomemStats : MonoBehaviour
     [SerializeField] public float leadTime = 1.2f, leadDistance = 2;
 
     [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
-    [SerializeField] LobisomemHumanoMovimentacao lobisomemHumanoMovimentacao;
     LobisomemController lobisomemController;
     StatsGeral statsGeral;
 
@@ -35,34 +34,17 @@ public class LobisomemStats : MonoBehaviour
 	public void AcoesTomouDano()
 	{
         AumentarNivelAgressividade(20);
-        if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
-        {
-            lobisomemMovimentacao.animator.SetTrigger("hit");
-        }
-        else
-        {
-            lobisomemHumanoMovimentacao.animator.SetTrigger("hit");
-        }
+        lobisomemMovimentacao.animator.SetTrigger("hit");
         Debug.Log("Vida enemy: " + statsGeral.vidaAtual + " Selvageria: " + nivelAgressividadeAtual);
     }
 
     public void AcoesMorreu()
     {
         AumentarNivelAgressividade(20);
-        if (lobisomemController.forma.Equals(LobisomemController.Forma.Lobo))
-        {
-            if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
-            lobisomemMovimentacao.animator.SetBool("isDead", true);
-            lobisomemMovimentacao.agent.isStopped = true;
-            lobisomemMovimentacao.agent.speed = 0;
-        }
-        else
-        {
-            if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemHumanoMovimentacao.ComandosBetasParaAlfa();
-            lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
-            lobisomemHumanoMovimentacao.agent.isStopped = true;
-            lobisomemHumanoMovimentacao.agent.speed = 0;
-        }
+        if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta)) lobisomemMovimentacao.ComandosBetasParaAlfa();
+        lobisomemMovimentacao.animator.SetBool("isDead", true);
+        lobisomemMovimentacao.agent.isStopped = true;
+        lobisomemMovimentacao.agent.speed = 0;
         statsGeral.isDead = true;
     }
 

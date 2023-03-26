@@ -417,6 +417,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!54 &8654491507030793560
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -541,6 +543,7 @@ MonoBehaviour:
   isAnimalCarnivoro: 0
   isAnimalHerbivoro: 1
   isPredador: 0
+  isPequenoPorte: 0
   eatTime: 10
   walkSpeed: 1
   runSpeed: 4
@@ -548,11 +551,13 @@ MonoBehaviour:
   eatDistance: 2
   tempoCorridaFugindo: 5
   restTime: 10
-  raioDeDistanciaParaAndarAleatoriamente: 20
+  raioDeDistanciaMinParaAndarAleatoriamente: 10
+  raioDeDistanciaMaxParaAndarAleatoriamente: 40
+  timerParaAndarAleatoriamente: 5
   animator: {fileID: 0}
   agent: {fileID: 0}
-  targetComida: {fileID: 0}
   targetInimigo: {fileID: 0}
+  targetComida: {fileID: 0}
 --- !u!195 &6566972720892510888
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -562,7 +567,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1284065736887346}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.62
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
@@ -571,7 +576,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1.35
+  m_Height: 1.32
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -609,6 +614,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
 --- !u!114 &4085471689535122488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -626,15 +639,6 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
-  minimumDistanceAtaque: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 4
@@ -976,6 +980,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!54 &1382442201972937506
 Rigidbody:
   m_ObjectHideFlags: 0

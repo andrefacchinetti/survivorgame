@@ -311,28 +311,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         bool hasValidPath = NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas);
         if (hasValidPath)
         {
-            NavMeshPath path = new NavMeshPath();
-            agent.CalculatePath(position, path);
-            if (path.status == NavMeshPathStatus.PathInvalid || path.status == NavMeshPathStatus.PathPartial)
-            {
-                // Se o caminho não for válido, encontrar uma nova posição
-                Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaMaxParaAndarAleatoriamente;
-                randomDirection += transform.position;
-                NavMesh.Raycast(transform.position, randomDirection, out hit, NavMesh.AllAreas);
-                MoveToPosition(hit.position);
-            }
-            else
-            {
-                agent.SetDestination(position);
-            }
+            agent.SetDestination(position);
         }
         else
         {
-            // Se não há posição válida, encontrar uma nova posição
-            Vector3 randomDirection = Random.insideUnitSphere * raioDeDistanciaMaxParaAndarAleatoriamente;
-            randomDirection += transform.position;
-            NavMesh.Raycast(transform.position, randomDirection, out hit, NavMesh.AllAreas);
-            MoveToPosition(hit.position);
+            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
         }
     }
 
@@ -404,6 +387,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 Debug.Log("LOBISOMEM ACHOU ANIMAL");
                 targetComida = null;
+                targetArvore = null;
                 if (objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)
                 {
                     if (objPai.gameObject.GetComponent<AnimalController>().isAnimalAgressivo)
@@ -417,7 +401,7 @@ public class LobisomemMovimentacao : MonoBehaviour
                 }
             }
         }
-        if (targetInimigo == null && other.tag == "ItemDrop")
+        if (targetInimigo == null && targetArvore == null && other.tag == "ItemDrop")
         {
             if (other.GetComponent<Consumivel>() != null && other.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
             {

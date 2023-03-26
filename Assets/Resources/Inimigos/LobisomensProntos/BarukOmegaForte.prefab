@@ -3462,7 +3462,7 @@ MonoBehaviour:
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 8199317177307660030}
-  lobisomemHumanoMovimentacao: {fileID: 6106045561050803767}
+  lobisomemHumanoMovimentacao: {fileID: 0}
 --- !u!114 &9159999217009756276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3502,14 +3502,6 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
-  distanciaDePerseguicao: 20
-  distanciaDeAtaque: 2
-  attackInterval: 2
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.1
-  leadTime: 1.2
-  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 8
@@ -3538,8 +3530,18 @@ MonoBehaviour:
   isEstadoAgressivo: 1
   isSubindoNaArvore: 0
   isIndoAteArvore: 0
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  walkSpeed: 0.8
+  runSpeed: 1.5
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
   lobisomemMovimentacao: {fileID: 8199317177307660030}
-  lobisomemHumanoMovimentacao: {fileID: 6106045561050803767}
+  lobisomemHumanoMovimentacao: {fileID: 0}
 --- !u!1 &209136431104670796
 GameObject:
   m_ObjectHideFlags: 0
@@ -4627,7 +4629,9 @@ MonoBehaviour:
   pontoBaseTerritorio: {fileID: 0}
   distanciaMaximaPontoBase: 20
   distanciaMaximaDoSeuAlfa: 10
-  raioDeDistanciaParaAndarAleatoriamente: 20
+  tempoCorridaFugindo: 5
+  raioDeDistanciaMinParaAndarAleatoriamente: 10
+  raioDeDistanciaMaxParaAndarAleatoriamente: 40
   timerParaAndarAleatoriamente: 5
   timerParaAlfaDecidirComandosParaSeusBetas: 10
   tempoParadoNaArvore: 10
@@ -4639,7 +4643,6 @@ MonoBehaviour:
   lobisomemStats: {fileID: 9089510650732018569}
   statsGeral: {fileID: 1261355147216508628}
   animator: {fileID: 0}
-  speedMove: 1.5
 --- !u!65 &6960679276695296074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4771,7 +4774,7 @@ GameObject:
   - component: {fileID: 941658251227914323}
   - component: {fileID: 734083893592348392}
   - component: {fileID: 8572093041245066305}
-  - component: {fileID: 6106045561050803767}
+  - component: {fileID: 3586960325503839136}
   m_Layer: 0
   m_Name: FormaHumano
   m_TagString: Lobisomem
@@ -4935,7 +4938,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6106045561050803767
+--- !u!114 &3586960325503839136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4944,17 +4947,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3896854903909817699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9445b63c76a96b45bf503f9e6f8f46c, type: 3}
+  m_Script: {fileID: 11500000, guid: 213f51c1714e92b4888f7fd266217d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pontoBaseTerritorio: {fileID: 0}
-  distanciaMaximaPontoBase: 50
+  distanciaMaximaPontoBase: 20
   distanciaMaximaDoSeuAlfa: 10
-  raioDeDistanciaParaAndarAleatoriamente: 20
+  tempoCorridaFugindo: 5
+  raioDeDistanciaMinParaAndarAleatoriamente: 10
+  raioDeDistanciaMaxParaAndarAleatoriamente: 40
   timerParaAndarAleatoriamente: 5
   timerParaAlfaDecidirComandosParaSeusBetas: 10
+  tempoParadoNaArvore: 10
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
+  targetArvore: {fileID: 0}
   agent: {fileID: 0}
   lobisomemController: {fileID: 4819405745802178698}
   lobisomemStats: {fileID: 9089510650732018569}

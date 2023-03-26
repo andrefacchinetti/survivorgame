@@ -384,6 +384,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!136 &6581828840344600725
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -521,7 +522,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1336841924710946}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1.86
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -530,7 +531,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 0.73
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -551,14 +552,6 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
-  distanciaDePerseguicao: 20
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 14
     qtdMinDrops: 4
@@ -575,6 +568,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
 --- !u!65 &7544594070509556138
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -604,6 +605,7 @@ MonoBehaviour:
   isAnimalCarnivoro: 1
   isAnimalHerbivoro: 0
   isPredador: 1
+  isPequenoPorte: 0
   eatTime: 5
   walkSpeed: 1
   runSpeed: 3
@@ -611,7 +613,9 @@ MonoBehaviour:
   eatDistance: 2
   tempoCorridaFugindo: 5
   restTime: 20
-  raioDeDistanciaParaAndarAleatoriamente: 20
+  raioDeDistanciaMinParaAndarAleatoriamente: 10
+  raioDeDistanciaMaxParaAndarAleatoriamente: 40
+  timerParaAndarAleatoriamente: 5
   animator: {fileID: 0}
   agent: {fileID: 0}
   targetInimigo: {fileID: 0}
@@ -844,6 +848,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!136 &2265368288249814714
 CapsuleCollider:
   m_ObjectHideFlags: 0

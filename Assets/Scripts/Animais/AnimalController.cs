@@ -18,12 +18,15 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
     public float restTime = 20f; // tempo que o animal descansa após tomar dano
     public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
+    [SerializeField] public float timerParaAndarAleatoriamente = 5f;
+
+    private float timer;
+    private bool isEating = false;
 
     StatsGeral statsGeral;
     AnimalStats animalStats;
     [HideInInspector] public Animator animator;
     [HideInInspector] public NavMeshAgent agent;
-    private bool isEating = false;
     [SerializeField] private StatsGeral targetInimigo;
     [SerializeField] private GameObject targetComida;
     PhotonView PV;
@@ -166,21 +169,26 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private void MoveToRandomPosition(float minDistance, float maxDistance)
     {
-        Debug.Log("animal andando aleatoriamente");
-        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-        randomDirection += transform.position;
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
+        timer += Time.deltaTime;
+
+        if (timer >= timerParaAndarAleatoriamente)
         {
-            float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
-            if (distanceToNewPosition >= minDistance)
+            timer = 0;
+            Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
+            randomDirection += transform.position;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
             {
-                MoveToPosition(hit.position);
-            }
-            else
-            {
-                // Se a nova posição estiver muito próxima, gere uma nova posição aleatória
-                MoveToRandomPosition(minDistance, maxDistance);
+                float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
+                if (distanceToNewPosition >= minDistance)
+                {
+                    MoveToPosition(hit.position);
+                }
+                else
+                {
+                    // Se a nova posição estiver muito próxima, gere uma nova posição aleatória
+                    MoveToRandomPosition(minDistance, maxDistance);
+                }
             }
         }
     }
@@ -239,7 +247,15 @@ public class AnimalController : MonoBehaviourPunCallbacks
                 }
                 else if(objPai.gameObject.GetComponent<LobisomemController>() != null)
                 {
-                    Fugir();
+                    if (isPredador)
+                    {
+                        targetInimigo = objPai;
+                        targetComida = null;
+                    }
+                    else
+                    {
+                        Fugir();
+                    }
                 }
             }
         }
