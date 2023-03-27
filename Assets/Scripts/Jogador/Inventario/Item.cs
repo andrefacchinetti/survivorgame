@@ -215,17 +215,25 @@ public class Item : MonoBehaviourPunCallbacks
         txQuantidade.text = quantidade + "";
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.BeginDrag;
-        entry.callback.AddListener((data) => { OnBeginDragDelegate((PointerEventData)data); });
-        trigger.triggers.Add(entry);
         EventTrigger.Entry entry2 = new EventTrigger.Entry();
-        entry2.eventID = EventTriggerType.EndDrag;
-        entry2.callback.AddListener((data) => { OnEndDragDelegate((PointerEventData)data); });
-        trigger.triggers.Add(entry2);
         EventTrigger.Entry entry3 = new EventTrigger.Entry();
+        EventTrigger.Entry entry4 = new EventTrigger.Entry();
+        EventTrigger.Entry entry5 = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.BeginDrag;
+        entry2.eventID = EventTriggerType.EndDrag;
         entry3.eventID = EventTriggerType.Drop;
+        entry4.eventID = EventTriggerType.PointerEnter;
+        entry5.eventID = EventTriggerType.PointerExit;
+        entry.callback.AddListener((data) => { OnBeginDragDelegate((PointerEventData)data); });
+        entry2.callback.AddListener((data) => { OnEndDragDelegate((PointerEventData)data); });
         entry3.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
+        entry4.callback.AddListener((data) => { OnPointerEnterDelegate((PointerEventData)data);});
+        entry5.callback.AddListener((data) => { OnPointerExitDelegate((PointerEventData)data);});
+        trigger.triggers.Add(entry);
+        trigger.triggers.Add(entry2);
         trigger.triggers.Add(entry3);
+        trigger.triggers.Add(entry4);
+        trigger.triggers.Add(entry5);
     }
 
     public void DeselecionarItem()
@@ -388,5 +396,12 @@ public class Item : MonoBehaviourPunCallbacks
         arrastarItensInventario.TrocarLugarInventario(gameObject);
     }
     
+    public void OnPointerEnterDelegate(PointerEventData data){
+        arrastarItensInventario.HoverItem(this);
+    }
+
+    public void OnPointerExitDelegate(PointerEventData data){
+        arrastarItensInventario.HoverNothing();
+    }
 
 }
