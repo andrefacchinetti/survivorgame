@@ -22,7 +22,7 @@ public class ArrastarItensInventario : MonoBehaviour
     void Update()
     {
         if(itemHover!=null && item==null && inventario.canvasInventario.activeSelf){
-            Debug.Log("Mouse sobre: " + itemHover);
+            //Debug.Log("Mouse sobre: " + itemHover);
             if(Input.GetButtonDown("HotbarButton_1")){
                 hotbar1.SetupSlotHotbar(itemHover);
             }else if (Input.GetButtonDown("HotbarButton_2"))
@@ -75,7 +75,7 @@ public class ArrastarItensInventario : MonoBehaviour
     }
 
     public void TrocarLugarInventario(GameObject go2){
-        Debug.Log("trocou " + go2.name + " por " + slot1.name);
+        //Debug.Log("trocou " + go2.name + " por " + slot1.name);
         slot2 = go2.transform.GetSiblingIndex();
         go2.transform.SetSiblingIndex(slot1.transform.GetSiblingIndex());
         slot1.transform.SetSiblingIndex(slot2);

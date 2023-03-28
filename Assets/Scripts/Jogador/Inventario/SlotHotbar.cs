@@ -19,7 +19,7 @@ public class SlotHotbar : MonoBehaviour
 
     private void Start()
     {
-        SetupSlotHotbar(null);
+        ResetSlotHotbar();
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.Drop;
@@ -29,23 +29,28 @@ public class SlotHotbar : MonoBehaviour
 
     public void SetupSlotHotbar(Item itemResponse)
     {
+        foreach(SlotHotbar hb in hotbar.slots){
+            //Debug.Log("Slot: " + hb.name + " item: " + hb.item.nomePortugues);
+            if(hb.item == itemResponse){
+                Debug.Log("Item = item");
+                hb.ResetSlotHotbar();
+            }
+        }
         item = itemResponse;
-        if (item == null)
-        {
-            txNomeItem.text = "";
-            txQuantidade.text = "";
-            imagemItem.gameObject.SetActive(false);
-            objEmbacarImg.SetActive(false);
-        }
-        else
-        {
-            txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? item.nomePortugues : item.nomeIngles; ;
-            txQuantidade.text = item.quantidade + "";
-            imagemItem.gameObject.SetActive(true);
-            imagemItem.texture = item.imagemItem.texture;
-            objEmbacarImg.SetActive(item.quantidade <= 0);
-        }
+        txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? item.nomePortugues : item.nomeIngles; ;
+        txQuantidade.text = item.quantidade + "";
+        imagemItem.gameObject.SetActive(true);
+        imagemItem.texture = item.imagemItem.texture;
+        objEmbacarImg.SetActive(item.quantidade <= 0);
         bordaSelecionado.SetActive(false);
+    }
+
+    public void ResetSlotHotbar(){
+        item = null;
+        txNomeItem.text = "";
+        txQuantidade.text = "";
+        imagemItem.gameObject.SetActive(false);
+        objEmbacarImg.SetActive(false);
     }
 
     public void SelecionarSlotHotbar()
