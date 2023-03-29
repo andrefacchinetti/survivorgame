@@ -21,8 +21,11 @@ public class ItemArmadura : MonoBehaviour
     private void Start() {
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
+        EventTrigger.Entry entry2 = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.Drop;
+        entry2.eventID = EventTriggerType.PointerClick;
         entry.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
+        entry2.callback.AddListener((data) => { OnPointerClickDelegate((PointerEventData)data);});
         trigger.triggers.Add(entry);
     }
 
@@ -80,4 +83,20 @@ public class ItemArmadura : MonoBehaviour
         arrastarItensInventario.DragEndItemInventario(this);
     }
 
+    public void OnPointerClickDelegate(PointerEventData data)
+    {
+        if (data.button == PointerEventData.InputButton.Left)
+        {
+
+        }
+        else if (data.button == PointerEventData.InputButton.Right)
+        {
+            Debug.Log("Apertou o botão direito sobre: " + name);
+            SetupItemNoSlot(null);
+        }
+        else if (data.button == PointerEventData.InputButton.Middle)
+        {
+
+        }
+    }
 }

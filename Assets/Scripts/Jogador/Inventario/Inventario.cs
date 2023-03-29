@@ -101,6 +101,7 @@ public class Inventario : MonoBehaviour
         playerMovement.canMove = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        //playerMovement.anim.SetBool("")
     }
 
     public bool AdicionarItemAoInventario(Item.NomeItem nomeItemResponse, int quantidadeResponse)

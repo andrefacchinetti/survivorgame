@@ -83,4 +83,20 @@ public class Hotbar : MonoBehaviour
         }
     }
 
+    public void ColocarItemNaMao(){
+        if (inventario.itemNaMao != null)
+        {
+            ultimoItemNaMao = inventario.itemNaMao;
+            inventario.itemNaMao.DeselecionarItem();
+        }
+        else
+        {
+            if (ultimoItemNaMao != null) ultimoItemNaMao.SelecionarItem();
+        }
+    }
+
+    public void ColocarItemNaMao(Item itemResponse){
+
+    }
+
 }

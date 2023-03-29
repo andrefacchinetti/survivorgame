@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ArrastarItensInventario : MonoBehaviour
 {
     private Item item, itemHover;
-    public GameObject placeHolder, slot1;
+    public GameObject placeHolder, slot1, nameHolder;
     private int slot2;
     [SerializeField]
     public SlotHotbar hotbar1,hotbar2,hotbar3,hotbar4,hotbar5,hotbar6,hotbar7,hotbar8,hotbar9,hotbar0;
+
+    [SerializeField]
+    public ItemArmadura[] slotsArmaduras = new ItemArmadura[4];
+    [SerializeField]
+    public ItemArmadura slotMunicoes;
 
     private Inventario inventario;
     // Start is called before the first frame update
@@ -58,6 +65,7 @@ public class ArrastarItensInventario : MonoBehaviour
 
     public void DragStartItemInventario(Item itemDrag, GameObject go1){
         item = itemDrag;
+        
         placeHolder.GetComponent<RawImage>().texture = itemDrag.imagemItem.texture;
         placeHolder.SetActive(true);
         slot1 = go1;
@@ -81,19 +89,34 @@ public class ArrastarItensInventario : MonoBehaviour
         slot1.transform.SetSiblingIndex(slot2);
     }
 
-    public void StopDrag(){
+    public void HoverNothing()
+    {
+        itemHover = null;
+        nameHolder.SetActive(false);
+    }
+    public void HoverItem(Item responsiveItem){
+        itemHover = responsiveItem;
+        nameHolder.GetComponent<TextMeshProUGUI>().text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? responsiveItem.nomePortugues : responsiveItem.nomeIngles;
+        nameHolder.SetActive(true);
+
+    }
+
+    public void SoltarItemNoPlayer(){
+        if(item.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Armadura.ToString())){
+            foreach(ItemArmadura armadura in slotsArmaduras){
+                armadura.ColocarItemNoSlot(item);
+            }
+        } else if(item.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Municao.ToString())){
+            slotMunicoes.ColocarItemNoSlot(item);
+        } else{
+            item.SelecionarItem();
+        }
+    }
+
+    public void StopDrag()
+    {
         Debug.Log("Soltou item");
         placeHolder.SetActive(false);
         item = null;
     }
-
-    public void HoverNothing()
-    {
-        itemHover = null;
-    }
-    public void HoverItem(Item responsiveItem){
-        itemHover = responsiveItem;
-    }
-
-    
 }

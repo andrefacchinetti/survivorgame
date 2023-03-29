@@ -13,7 +13,7 @@ public class SlotHotbar : MonoBehaviour
 
     [SerializeField] public TMP_Text txTeclaAtalho, txNomeItem ,txQuantidade;
     [SerializeField] public RawImage imagemItem;
-    [SerializeField] public GameObject objEmbacarImg, bordaSelecionado;
+    [SerializeField] public GameObject objEmbacarImg;
     public ArrastarItensInventario arrastarItensInventario;
 
 
@@ -22,18 +22,22 @@ public class SlotHotbar : MonoBehaviour
         ResetSlotHotbar();
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
+        EventTrigger.Entry entry2 = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.Drop;
+        entry2.eventID = EventTriggerType.PointerClick;
         entry.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
+        entry2.callback.AddListener((data) => { OnPointerClickDelegate((PointerEventData)data);});
         trigger.triggers.Add(entry);
+        trigger.triggers.Add(entry2);
     }
 
     public void SetupSlotHotbar(Item itemResponse)
     {
-        foreach(SlotHotbar hb in hotbar.slots){
-            //Debug.Log("Slot: " + hb.name + " item: " + hb.item.nomePortugues);
-            if(hb.item == itemResponse){
-                Debug.Log("Item = item");
-                hb.ResetSlotHotbar();
+        foreach(SlotHotbar slot in hotbar.slots){
+            //Debug.Log("Slot: " + slot.name + " item: " + slot.item.nomePortugues);
+            if(slot.item == itemResponse){
+                //Debug.Log("Item = item");
+                slot.ResetSlotHotbar();
             }
         }
         item = itemResponse;
@@ -42,7 +46,6 @@ public class SlotHotbar : MonoBehaviour
         imagemItem.gameObject.SetActive(true);
         imagemItem.texture = item.imagemItem.texture;
         objEmbacarImg.SetActive(item.quantidade <= 0);
-        bordaSelecionado.SetActive(false);
     }
 
     public void ResetSlotHotbar(){
@@ -53,20 +56,20 @@ public class SlotHotbar : MonoBehaviour
         objEmbacarImg.SetActive(false);
     }
 
-    public void SelecionarSlotHotbar()
-    {
-        foreach(SlotHotbar slot in hotbar.slots)
-        {
-            slot.bordaSelecionado.SetActive(false);
-        }
-        hotbar.slotHotbarSelecionada = this;
-        hotbar.estaSelecionandoSlotHotbar = true;
-        bordaSelecionado.SetActive(true);
-    }
 
     public void OnDropDelegate(PointerEventData data){
         arrastarItensInventario.DragEndItemInventario(this);
     }
 
+    public void OnPointerClickDelegate(PointerEventData data){
+        if(data.button == PointerEventData.InputButton.Left){
+            
+        }else if(data.button == PointerEventData.InputButton.Right){
+            Debug.Log("Apertou o botão direito sobre: " + name);
+            ResetSlotHotbar();
+        }else if(data.button == PointerEventData.InputButton.Middle){
+
+        }
+    }
 }
 

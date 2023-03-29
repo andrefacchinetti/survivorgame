@@ -40,7 +40,9 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Armadura")]
         Armadura,
         [EnumMember(Value = "Objeto")]
-        Objeto
+        Objeto,
+        [EnumMember(Value = "Municao")]
+        Municao
     }
 
     public enum NomeItem
@@ -133,11 +135,11 @@ public class Item : MonoBehaviourPunCallbacks
         Panela,
         [EnumMember(Value = "Ferramenta")]
         Cantil,
-        [EnumMember(Value = "Objeto")]
+        [EnumMember(Value = "Municao")]
         FlechaDeMadeira,
-        [EnumMember(Value = "Objeto")]
+        [EnumMember(Value = "Municao")]
         FlechaDeOsso,
-        [EnumMember(Value = "Objeto")]
+        [EnumMember(Value = "Municao")]
         FlechaDeMetal,
         [EnumMember(Value = "Ferramenta")]
         VaraDePesca,
@@ -245,17 +247,6 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void SelecionarItem()
     {
-        if (hotbar.estaSelecionandoSlotHotbar)
-        {
-            hotbar.SelecionouItemParaSlotHotbar(this);
-            return;
-        }
-        if (armaduras.estaSelecionandoSlotArmadura)
-        {
-            armaduras.SelecionouItemParaSlotArmadura(this);
-            return;
-        }
-
         if (inventario.itemNaMao != null)
         {
             if (inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
@@ -277,11 +268,12 @@ public class Item : MonoBehaviourPunCallbacks
                 itemObjMao.gameObject.SetActive(true);
                 if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
                 if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
-                inventario.FecharInventario();
+                //inventario.FecharInventario();
             }
             else
             {
-                if (nomeItem.Equals(NomeItem.Nenhum)) inventario.FecharInventario();
+                if (nomeItem.Equals(NomeItem.Nenhum)){}
+                 //inventario.FecharInventario();
             }
         }
 

@@ -5,13 +5,11 @@ using UnityEngine.UI;
 
 public class FollowMouse : MonoBehaviour
 {
-    public Canvas canvas;
-    public RawImage rawImage;
-    public Vector2 pos;
+    public Vector3 pos, offset;
     private void Start() {
-        rawImage = gameObject.GetComponent<RawImage>();
     }
     private void LateUpdate() {
-        transform.position = Input.mousePosition;
+        pos = Input.mousePosition + offset;
+        transform.position = pos;
     }
 }
