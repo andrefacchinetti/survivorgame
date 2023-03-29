@@ -148,17 +148,18 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		{
 			horizontalMove = Input.GetAxisRaw("Horizontal");
 			verticalMove = Input.GetAxisRaw("Vertical");
-			anim.SetFloat("horizontalMove", horizontalMove);
-			anim.SetFloat("verticalMove", verticalMove);
 			anim.SetBool("correndo", isRunning);
 			anim.SetBool("isPlayerParado", (horizontalMove == 0 && verticalMove == 0 && !isRunning));
 		}
         else
         {
+			horizontalMove = 0;
+			verticalMove = 0;
 			anim.SetBool("isPlayerParado", true);
 			anim.SetBool("correndo", false);
 		}
-
+		anim.SetFloat("horizontalMove", horizontalMove);
+		anim.SetFloat("verticalMove", verticalMove);
 		if (Input.GetKey(KeyCode.LeftControl) && canMove && characterController.isGrounded)
 		{
 			anim.SetBool("agachando", true);
