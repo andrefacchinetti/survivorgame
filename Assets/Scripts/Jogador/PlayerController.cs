@@ -301,12 +301,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			if (itemDrop.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
 			{
 				Debug.Log("coletou fruta: " + itemDrop.nomeItemEnum.ToString());
-				inventario.AdicionarItemAoInventario(itemDrop.nomeItemEnum, 1);
-				Item.ItemDropStruct novo = new Item.ItemDropStruct();
-				novo.nomeItemEnum = itemDrop.nomeItemEnum;
-				novo.qtdMinDrops = itemDrop.qtdMinDrops - 1;
-				novo.qtdMaxDrops = itemDrop.qtdMaxDrops - 1;
-				itemDrops.Add(novo);
+				if(itemDrop.qtdMaxDrops > 0)
+                {
+					inventario.AdicionarItemAoInventario(itemDrop.nomeItemEnum, 1);
+					Item.ItemDropStruct novo = new Item.ItemDropStruct();
+					novo.nomeItemEnum = itemDrop.nomeItemEnum;
+					novo.qtdMinDrops = itemDrop.qtdMinDrops - 1;
+					novo.qtdMaxDrops = itemDrop.qtdMaxDrops - 1;
+					itemDrops.Add(novo);
+				}
 			}
             else
             {
