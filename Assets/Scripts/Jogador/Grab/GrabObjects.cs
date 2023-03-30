@@ -309,6 +309,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.E))
         {
             transferOwnerPV(hit.transform.gameObject);
+            playerController.arvoreColetando = hit.transform.gameObject;
             animator.SetTrigger("coletandoFrutas");
         }
         possibleInteraction = true;

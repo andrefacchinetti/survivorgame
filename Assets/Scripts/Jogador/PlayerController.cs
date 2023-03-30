@@ -270,18 +270,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void AnimEventTiroArcoFlecha()
     {
 		Debug.Log("tiro flecha");
-		TiroArcoFlecha();
-	}
-
-	void AnimEventColetouFruta()
-    {
-		Debug.Log("coletou fruta");
-		//arvoreColetando.GetComponent<>
-		inventario.AdicionarItemAoInventario(Item.NomeItem.Banana, 1);
-	}
-
-	private void TiroArcoFlecha() // Função que arremessa o objeto na direção da câmera
-	{
 		if (inventario.itemNaMao == null) return;
 		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
 		Ray ray = new Ray(playerMovement.pivotTiroBase.transform.position, playerMovement.pivotTiroBase.transform.forward);
@@ -303,6 +291,31 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			inventario.RemoverItemDoInventario(flechaNaAljava, 1);
 		}
 	}
+
+	void AnimEventColetouFruta()
+    {
+		if (arvoreColetando == null) return;
+		List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
+		foreach (Item.ItemDropStruct itemDrop in arvoreColetando.GetComponent<StatsGeral>().dropsItems)
+		{
+			if (itemDrop.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+			{
+				Debug.Log("coletou fruta: " + itemDrop.nomeItemEnum.ToString());
+				inventario.AdicionarItemAoInventario(itemDrop.nomeItemEnum, 1);
+				Item.ItemDropStruct novo = new Item.ItemDropStruct();
+				novo.nomeItemEnum = itemDrop.nomeItemEnum;
+				novo.qtdMinDrops = itemDrop.qtdMinDrops - 1;
+				novo.qtdMaxDrops = itemDrop.qtdMaxDrops - 1;
+				itemDrops.Add(novo);
+			}
+            else
+            {
+				itemDrops.Add(itemDrop);
+			}
+		}
+		arvoreColetando.GetComponent<StatsGeral>().dropsItems = itemDrops;
+	}
+	
 
 	[PunRPC]
 	void RPC_ExecutarAcoesRessurgimento()

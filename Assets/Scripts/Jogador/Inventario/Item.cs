@@ -66,6 +66,26 @@ public class Item : MonoBehaviourPunCallbacks
         Seiva,
         [EnumMember(Value = "Recurso")]
         Folha,
+        [EnumMember(Value = "Recurso")]
+        Carvao,
+        [EnumMember(Value = "Recurso")]
+        Argila,
+        [EnumMember(Value = "Recurso")]
+        Graveto,
+        [EnumMember(Value = "Recurso")]
+        Veneno,
+        [EnumMember(Value = "Recurso")]
+        SementeMaca,
+        [EnumMember(Value = "Recurso")]
+        SementeBanana,
+        [EnumMember(Value = "Recurso")]
+        SementeLaranja,
+        [EnumMember(Value = "Recurso")]
+        SementeManga,
+        [EnumMember(Value = "Recurso")]
+        SementeCogumelo,
+        [EnumMember(Value = "Recurso")]
+        SementeCogumeloVenenoso,
         //Consumivel
         [EnumMember(Value = "Consumivel")]
         Laranja,
@@ -81,6 +101,32 @@ public class Item : MonoBehaviourPunCallbacks
         CarneCrua,
         [EnumMember(Value = "Consumivel")]
         CarneCozida,
+        [EnumMember(Value = "Consumivel")]
+        Manga,
+        [EnumMember(Value = "Consumivel")]
+        Maca,
+        [EnumMember(Value = "Consumivel")]
+        Banana,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloVenenosoCru,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloVenenosoCozido,
+        [EnumMember(Value = "Consumivel")]
+        CarneEstragada,
+        [EnumMember(Value = "Consumivel")]
+        PeixeEstragado,
+        [EnumMember(Value = "Consumivel")]
+        BananaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        LaranjaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        MangaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        MacaEstragada,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloEstragado,
+        [EnumMember(Value = "Consumivel")]
+        CogumeloVenenosoEstragado,
         //Ferramenta
         [EnumMember(Value = "Ferramenta")]
         MachadoSimples,
@@ -102,6 +148,10 @@ public class Item : MonoBehaviourPunCallbacks
         Bussola,
         [EnumMember(Value = "Ferramenta")]
         Tocha,
+        [EnumMember(Value = "Ferramenta")]
+        Cantil,
+        [EnumMember(Value = "Ferramenta")]
+        VaraDePesca,
         //Arma
         [EnumMember(Value = "Arma")]
         LancaSimples,
@@ -115,6 +165,15 @@ public class Item : MonoBehaviourPunCallbacks
         EspadaSimples,
         [EnumMember(Value = "Arma")]
         EspadaAvancada,
+        [EnumMember(Value = "Arma")]
+        Besta,
+        //Municao
+        [EnumMember(Value = "Municao")]
+        FlechaDeMadeira,
+        [EnumMember(Value = "Municao")]
+        FlechaDeOsso,
+        [EnumMember(Value = "Municao")]
+        FlechaDeMetal,
         //Armadura
         [EnumMember(Value = "Armadura")]
         CapaceteDeCouro,
@@ -132,65 +191,7 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Objeto")]
         Tigela,
         [EnumMember(Value = "Objeto")]
-        Panela,
-        [EnumMember(Value = "Ferramenta")]
-        Cantil,
-        [EnumMember(Value = "Municao")]
-        FlechaDeMadeira,
-        [EnumMember(Value = "Municao")]
-        FlechaDeOsso,
-        [EnumMember(Value = "Municao")]
-        FlechaDeMetal,
-        [EnumMember(Value = "Ferramenta")]
-        VaraDePesca,
-        [EnumMember(Value = "Consumivel")]
-        Manga,
-        [EnumMember(Value = "Consumivel")]
-        Maca,
-        [EnumMember(Value = "Consumivel")]
-        Banana,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloVenenosoCru,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloVenenosoCozido,
-        [EnumMember(Value = "Arma")]
-        Besta,
-        [EnumMember(Value = "Recurso")]
-        Carvao,
-        [EnumMember(Value = "Recurso")]
-        Argila,
-        [EnumMember(Value = "Recurso")]
-        Graveto,
-        [EnumMember(Value = "Recurso")]
-        Veneno,
-        [EnumMember(Value = "Recurso")]
-        SementeMaca,
-        [EnumMember(Value = "Recurso")]
-        SementeBanana,
-        [EnumMember(Value = "Recurso")]
-        SementeLaranja,
-        [EnumMember(Value = "Recurso")]
-        SementeManga,
-        [EnumMember(Value = "Recurso")]
-        SementeCogumelo,
-        [EnumMember(Value = "Recurso")]
-        SementeCogumeloVenenoso,
-        [EnumMember(Value = "Consumivel")]
-        CarneEstragada,
-        [EnumMember(Value = "Consumivel")]
-        PeixeEstragado,
-        [EnumMember(Value = "Consumivel")]
-        BananaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        LaranjaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        MangaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        MacaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloEstragado,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloVenenosoEstragado,
+        Panela
     }
 
     [System.Serializable]
