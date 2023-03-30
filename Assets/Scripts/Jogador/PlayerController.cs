@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
 	[SerializeField] [HideInInspector] public PlayerMovement playerMovement;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
-	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando;
+	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando;
 	[SerializeField] [HideInInspector] public Item itemConsumindo;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
 	private GameController gameController;
@@ -271,6 +271,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		Debug.Log("tiro flecha");
 		TiroArcoFlecha();
+	}
+
+	void AnimEventColetouFruta()
+    {
+		Debug.Log("coletou fruta");
+		//arvoreColetando.GetComponent<>
+		inventario.AdicionarItemAoInventario(Item.NomeItem.Banana, 1);
 	}
 
 	private void TiroArcoFlecha() // Função que arremessa o objeto na direção da câmera
