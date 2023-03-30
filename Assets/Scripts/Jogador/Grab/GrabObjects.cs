@@ -179,7 +179,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 interacaoPesca(hit);
             }
-            else if (hit.transform.tag == tagArvore)
+            else if (hit.transform.tag == tagArvore && hit.transform.gameObject.GetComponent<ArvoreFrutifera>() != null)
             {
                 interacaoArvore(hit);
             }
