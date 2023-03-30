@@ -300,10 +300,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
 			if (itemDrop.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
 			{
-				Debug.Log("coletou fruta: " + itemDrop.nomeItemEnum.ToString());
 				if(itemDrop.qtdMaxDrops > 0)
                 {
+					Debug.Log("coletou fruta: " + itemDrop.nomeItemEnum.ToString());
 					inventario.AdicionarItemAoInventario(itemDrop.nomeItemEnum, 1);
+					arvoreColetando.GetComponent<ArvoreFrutifera>().DesaparecerUmaFrutaDaArvore();
 					Item.ItemDropStruct novo = new Item.ItemDropStruct();
 					novo.nomeItemEnum = itemDrop.nomeItemEnum;
 					novo.qtdMinDrops = itemDrop.qtdMinDrops - 1;

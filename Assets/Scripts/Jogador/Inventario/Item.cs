@@ -191,7 +191,9 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Objeto")]
         Tigela,
         [EnumMember(Value = "Objeto")]
-        Panela
+        Panela,
+        [EnumMember(Value = "Consumivel")]
+        Coco,
     }
 
     [System.Serializable]
