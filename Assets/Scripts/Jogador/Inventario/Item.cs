@@ -11,7 +11,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField] public bool isConsumivel;
-    [SerializeField] public int quantidade = 0, peso;
+    [SerializeField] public int quantidade = 0, peso, clicks;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
     [SerializeField] public ItemObjMao itemObjMao;
     [SerializeField] public Inventario inventario;
@@ -21,6 +21,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
     PhotonView PV;
+    private float lastTimeClicked;
 
     public ArrastarItensInventario arrastarItensInventario;
 
@@ -224,21 +225,25 @@ public class Item : MonoBehaviourPunCallbacks
         EventTrigger.Entry entry3 = new EventTrigger.Entry();
         EventTrigger.Entry entry4 = new EventTrigger.Entry();
         EventTrigger.Entry entry5 = new EventTrigger.Entry();
+        EventTrigger.Entry entry6 = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.BeginDrag;
         entry2.eventID = EventTriggerType.EndDrag;
         entry3.eventID = EventTriggerType.Drop;
         entry4.eventID = EventTriggerType.PointerEnter;
         entry5.eventID = EventTriggerType.PointerExit;
+        entry6.eventID = EventTriggerType.PointerDown;
         entry.callback.AddListener((data) => { OnBeginDragDelegate((PointerEventData)data); });
         entry2.callback.AddListener((data) => { OnEndDragDelegate((PointerEventData)data); });
         entry3.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
         entry4.callback.AddListener((data) => { OnPointerEnterDelegate((PointerEventData)data);});
         entry5.callback.AddListener((data) => { OnPointerExitDelegate((PointerEventData)data);});
+        entry6.callback.AddListener((data) => { OnPointerDownDelegate((PointerEventData)data);});
         trigger.triggers.Add(entry);
         trigger.triggers.Add(entry2);
         trigger.triggers.Add(entry3);
         trigger.triggers.Add(entry4);
         trigger.triggers.Add(entry5);
+        trigger.triggers.Add(entry6);
     }
 
     public void DeselecionarItem()
@@ -397,6 +402,23 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void OnPointerExitDelegate(PointerEventData data){
         arrastarItensInventario.HoverNothing();
+    }
+
+    public void OnPointerDownDelegate(PointerEventData data){
+        if(data.button == PointerEventData.InputButton.Left){
+            if(Time.time <= lastTimeClicked +0.5f){
+                clicks++;
+                
+                if(clicks == 2){
+                    SelecionarItem();
+                    clicks = 0;
+                }
+            }
+            else{
+                clicks = 1;
+            }
+            lastTimeClicked = Time.time;
+        }
     }
 
 }
