@@ -9,6 +9,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 {
     
     public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
+    public string tagAreaColeta = "AreaColeta";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -179,6 +180,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 interacaoPesca(hit);
             }
+            else if (hit.transform.tag == tagAreaColeta && hit.transform.gameObject.GetComponent<AreaDeColeta>().isAreaAtiva && inventario.itemNaMao == null)
+            {
+                interacaoAreaDeColeta(hit);
+            }
             else if (hit.transform.tag == tagArvore && hit.transform.gameObject.GetComponent<ArvoreFrutifera>() != null)
             {
                 interacaoArvore(hit);
@@ -288,6 +293,17 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             playerController.pescaPescando = hit.transform.gameObject;
             animator.SetTrigger("pescando");
             playerController.animatorVaraDePesca.SetTrigger("pescando");
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoAreaDeColeta(RaycastHit hit)
+    {
+        if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
+        {
+            transferOwnerPV(hit.transform.gameObject);
+            playerController.nomeItemColetando = hit.transform.gameObject.GetComponent<AreaDeColeta>().itemColetavel;
+            animator.SetTrigger("coletandoBaixo");
         }
         possibleInteraction = true;
     }
