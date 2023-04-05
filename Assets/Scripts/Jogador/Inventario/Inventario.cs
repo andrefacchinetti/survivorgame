@@ -11,9 +11,12 @@ public class Inventario : MonoBehaviour
     [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
     [SerializeField] public GameObject canvasInventario;
     [SerializeField] GameObject contentItensMochila;
-    [HideInInspector] public List<Item> itens;
-    [SerializeField][HideInInspector] public Item itemNaMao;
+    [SerializeField] public GameObject prefabItem;
     [SerializeField] public Hotbar hotbar;
+    [SerializeField] public List<Item.ItemStruct> itensStruct;
+
+     public List<Item> itens;
+    [SerializeField][HideInInspector] public Item itemNaMao;
     [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
 
@@ -21,7 +24,7 @@ public class Inventario : MonoBehaviour
     private void Awake()
     {
         itens = new List<Item>();
-        itens.AddRange(contentItensMochila.GetComponentsInChildren<Item>());
+        //itens.AddRange(contentItensMochila.GetComponentsInChildren<Item>());
     }
 
     public void setarPesoAtual(int valor)
@@ -104,24 +107,54 @@ public class Inventario : MonoBehaviour
         //playerMovement.anim.SetBool("")
     }
 
-    public bool AdicionarItemAoInventario(Item.NomeItem nomeItemResponse, int quantidadeResponse)
+    public bool AdicionarItemAoInventario(Item.NomeItem nomeItemEnumResponse, int quantidadeResponse)
     {
-        foreach (Item item in itens)
+        foreach(Item.ItemStruct itemStruct in itensStruct)
         {
-            if (item.nomeItem.Equals(nomeItemResponse))
+            if(itemStruct.nomeItemEnum == nomeItemEnumResponse)
             {
-                if(pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
-                {
-                    Debug.Log("Peso maximo do inventario atingido");
-                    return false;
-                }
-                else
-                {
-                    return item.aumentarQuantidade(quantidadeResponse);
-                }
+                return AdicionarItemAoInventario(itemStruct, quantidadeResponse);
             }
         }
         return false;
+    }
+
+    public bool AdicionarItemAoInventario(Item.ItemStruct itemStructResponse, int quantidadeResponse)
+    {
+        if(itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()) //Verifica se ja existe algum item igual pra adicionar no mesmo slot
+            || itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Recurso.ToString()))
+        {
+            foreach (Item item in itens) 
+            {
+                if (item.nomeItem.Equals(itemStructResponse.nomeItemEnum))
+                {
+                    if (pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
+                    {
+                        Debug.Log("Peso maximo do inventario atingido");
+                        return false;
+                    }
+                    else
+                    {
+                        return item.aumentarQuantidade(quantidadeResponse);
+                    }
+                }
+            }
+        }
+
+        //Adiciona um novo item na mochila
+        if (pesoAtual + itemStructResponse.peso * quantidadeResponse > pesoCapacidadeMaxima)
+        {
+            Debug.Log("Peso maximo do inventario atingido");
+            return false;
+        }
+        else
+        {
+            GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
+            novoObjeto.transform.SetParent(contentItensMochila.transform);
+            Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
+            itens.Add(novoItem);
+            return true;
+        }
     }
 
     public void RemoverItemDoInventarioPorNome(Item.NomeItem nomeItemResponse, int quantidadeResponse)

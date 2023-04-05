@@ -13,16 +13,18 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
+
+    [SerializeField] public Texture textureImgItem;
     [SerializeField] public ItemObjMao itemObjMao;
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
     [SerializeField] public Armaduras armaduras;
+    [SerializeField] public ArrastarItensInventario arrastarItensInventario;
 
-    [SerializeField] public TMP_Text txQuantidade, txNomeItem;
+    //PADRAO
     [SerializeField] public RawImage imagemItem;
+    [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     PhotonView PV;
-
-    public ArrastarItensInventario arrastarItensInventario;
 
 
     public enum TiposItems
@@ -204,6 +206,39 @@ public class Item : MonoBehaviourPunCallbacks
         public int qtdMaxDrops;
     }
 
+    [System.Serializable]
+    public struct ItemStruct
+    {
+        public Item.NomeItem nomeItemEnum;
+        public string nomePortugues, nomeIngles;
+        public bool isConsumivel;
+        public int peso, durabilidadeAtual, durabilidadeMaxima;
+        public ItemObjMao itemObjMao;
+        public Texture textureImgItem;
+        public GameObject objInventario;
+    }
+
+    public Item setupItemFromItemStruct(ItemStruct itemResponse)
+    {
+        nomeItem = itemResponse.nomeItemEnum;
+        nomePortugues = itemResponse.nomePortugues;
+        nomeIngles = itemResponse.nomeIngles;
+        isConsumivel = itemResponse.isConsumivel;
+        quantidade = 1;
+        peso = itemResponse.peso;
+        durabilidadeAtual = itemResponse.durabilidadeAtual;
+        durabilidadeMaxima = itemResponse.durabilidadeMaxima;
+        itemObjMao = itemResponse.itemObjMao;
+        imagemItem.texture = itemResponse.textureImgItem;
+        inventario = itemResponse.objInventario.GetComponent<Inventario>();
+        hotbar = itemResponse.objInventario.GetComponent<Hotbar>();
+        armaduras = itemResponse.objInventario.GetComponent<Armaduras>();
+        arrastarItensInventario = itemResponse.objInventario.GetComponent<ArrastarItensInventario>();
+        txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
+        txQuantidade.text = quantidade + "";
+        return this;
+    }
+
     public static string ObterNomeIdPorTipoItem(NomeItem nomeItemResponse)
     {
         return nomeItemResponse.ToString();
@@ -334,7 +369,6 @@ public class Item : MonoBehaviourPunCallbacks
                 if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
                 inventario.itemNaMao = null;
             }
-            gameObject.SetActive(false);
         }
         if (armaduras.slotAljava.item != null && nomeItem.Equals(armaduras.slotAljava.item.nomeItem))
         {
@@ -342,6 +376,17 @@ public class Item : MonoBehaviourPunCallbacks
         }
         txQuantidade.text = quantidade + "";
         inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null));
+
+        if(quantidade <= 0)
+        {
+            RemoverItemDaMochila();
+        }
+    }
+
+    private void RemoverItemDaMochila()
+    {
+        inventario.itens.Remove(this);
+        GameObject.Destroy(this.gameObject);
     }
 
     public bool aumentarQuantidade(int quantidadeResponse)
