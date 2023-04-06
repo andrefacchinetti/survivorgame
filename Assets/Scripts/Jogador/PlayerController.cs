@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public PlayerMovement playerMovement;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando;
-	[SerializeField] [HideInInspector] public Item itemConsumindo;
+	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
+	[SerializeField] [HideInInspector] public Item.NomeItem nomeItemColetando;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
 	private GameController gameController;
 	
@@ -319,7 +320,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 		arvoreColetando.GetComponent<StatsGeral>().dropsItems = itemDrops;
 	}
-	
+
+	void AnimEventColetouItem()
+	{
+		if (nomeItemColetando.Equals(Item.NomeItem.Nenhum)) return;
+		Debug.Log("coletou item: " + nomeItemColetando.ToString());
+		inventario.AdicionarItemAoInventario(nomeItemColetando, 1);
+		nomeItemColetando = Item.NomeItem.Nenhum;
+	}
 
 	[PunRPC]
 	void RPC_ExecutarAcoesRessurgimento()
