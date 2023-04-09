@@ -100,7 +100,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 
                 if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
-                    && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>() != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>().fogo != null)
+                    && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>() != null && hit.transform.GetComponent<Panela>().fogueira != null)
                 {
                     interacaoPanelas(hit);
                 }
