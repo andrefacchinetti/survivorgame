@@ -13,6 +13,7 @@ public class AnimalStats : MonoBehaviourPunCallbacks
     [SerializeField] public float destinationOffset = 1f;
     [SerializeField] public float speedVariation = 0.5f;
     [SerializeField] public float leadTime = 1.2f, leadDistance = 2;
+    [HideInInspector] public bool estaFugindo;
 
     StatsGeral statsGeral;
     AnimalController animalController;
@@ -22,6 +23,7 @@ public class AnimalStats : MonoBehaviourPunCallbacks
     {
         animalController = GetComponent<AnimalController>();
         statsGeral = GetComponent<StatsGeral>();
+        estaFugindo = false;
     }
 
     public void AcoesTomouDano()
