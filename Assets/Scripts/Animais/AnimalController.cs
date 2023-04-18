@@ -56,7 +56,11 @@ public class AnimalController : MonoBehaviourPunCallbacks
                 agent.ResetPath();
             }
 
-            if (targetInimigo != null)
+            if (animalStats.estaFugindo)
+            {
+                Debug.Log("animal ta fugindo...");
+            }
+            else if (targetInimigo != null)
             {
                 perseguirInimigo(); 
             }
@@ -103,10 +107,12 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private void andarAleatoriamentePeloMapa()
     {
+        if (animalStats.estaFugindo) return;
         if (!agent.hasPath)
         {
             agent.speed = walkSpeed;
             MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente); // Não há comida e não há destino definido, mover-se para uma posição aleatória
+            Debug.Log("andandoAleatoriamente");
         }
     }
 
@@ -148,9 +154,10 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
     }
 
-    void StopRunning()
+    void PararDeFugir()
     {
         agent.speed = walkSpeed;
+        animalStats.estaFugindo = false;
     }
 
     void FinishEating()
@@ -212,10 +219,9 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
     }
 
-    //AGRESSIVOS
     void OnTriggerStay(Collider other)
     {
-        if (targetInimigo != null || statsGeral.isDead) return;
+        if (targetInimigo != null || statsGeral.isDead || animalStats.estaFugindo) return;
         if (other.gameObject.tag == "ItemDrop" && other.gameObject.GetComponent<Consumivel>() != null)
         {
             FindFood(other.gameObject);
@@ -264,9 +270,10 @@ public class AnimalController : MonoBehaviourPunCallbacks
     private void Fugir()
     {
         Debug.Log("animal fugindo");
+        animalStats.estaFugindo = true;
         targetInimigo = null;
         targetComida = null;
-        Invoke("StopRunning", tempoCorridaFugindo);
+        Invoke("PararDeFugir", tempoCorridaFugindo);
         agent.speed = runSpeed;
         MoveToRandomPosition(raioDeDistanciaMaxParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
     }

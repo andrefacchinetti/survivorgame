@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_StartPoint: {x: 0, y: -0.5668278, z: 0.07306607}
+  m_StartPoint: {x: 0, y: -0.5991378, z: 0.07306682}
   m_EndPoint: {x: 0, y: -0.824335, z: -0.7513405}
-  m_Width: 3.161377
+  m_Width: 2.5321045
   m_CostModifier: -1
   m_Bidirectional: 1
   m_AutoUpdatePosition: 1
@@ -168,8 +168,8 @@ GameObject:
   - component: {fileID: 1999211246}
   - component: {fileID: 1999211249}
   - component: {fileID: 413733548662689022}
-  - component: {fileID: 4662650383553779770}
   - component: {fileID: 422031681151366058}
+  - component: {fileID: 3259333029545475388}
   m_Layer: 0
   m_Name: SubirNaArvore
   m_TagString: NavMeshVertical
@@ -185,7 +185,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999211245}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 7.14, z: 0.09}
+  m_LocalPosition: {x: 0, y: 7.14, z: 0.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -230,10 +230,23 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: a2ab51d7166f5b744aa3805b1c194155, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: e0750eac870606247a4962e37854b739, type: 2}
   m_BuildHeightMesh: 0
---- !u!136 &4662650383553779770
-CapsuleCollider:
+--- !u!114 &422031681151366058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999211245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1702eedc5869df418c835775d9b1bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeDestination: {fileID: 341367282}
+--- !u!65 &3259333029545475388
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -250,24 +263,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.99
-  m_Height: 42
-  m_Direction: 2
+  serializedVersion: 3
+  m_Size: {x: 2.9, y: 2.86, z: 38.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &422031681151366058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1999211245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1702eedc5869df418c835775d9b1bdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  treeDestination: {fileID: 341367282}
 --- !u!1 &365875561385255256
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +301,7 @@ Transform:
   - {fileID: 1999211246}
   - {fileID: 341367282}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7270303751526096708
 MonoBehaviour:

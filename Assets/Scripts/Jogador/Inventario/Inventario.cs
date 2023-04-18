@@ -122,7 +122,8 @@ public class Inventario : MonoBehaviour
     public bool AdicionarItemAoInventario(Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
         if(itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()) //Verifica se ja existe algum item igual pra adicionar no mesmo slot
-            || itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Recurso.ToString()))
+            || itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Recurso.ToString())
+            || itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Municao.ToString()))
         {
             foreach (Item item in itens) 
             {

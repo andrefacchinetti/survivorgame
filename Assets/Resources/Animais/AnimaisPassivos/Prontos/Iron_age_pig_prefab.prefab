@@ -1546,8 +1546,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656665454874136}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.13
   m_Height: 0.57
   m_Direction: 0
@@ -1566,6 +1575,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!54 &40826775547105543
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1573,10 +1584,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656665454874136}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1953,7 +1975,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95347568802973558
 Animator:
-  serializedVersion: 4
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1967,10 +1989,12 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &2724552629160426915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1987,6 +2011,7 @@ MonoBehaviour:
   isAnimalCarnivoro: 0
   isAnimalHerbivoro: 1
   isPredador: 0
+  isPequenoPorte: 0
   eatTime: 10
   walkSpeed: 1
   runSpeed: 1
@@ -1994,11 +2019,13 @@ MonoBehaviour:
   eatDistance: 2
   tempoCorridaFugindo: 5
   restTime: 10
-  raioDeDistanciaParaAndarAleatoriamente: 20
+  raioDeDistanciaMinParaAndarAleatoriamente: 10
+  raioDeDistanciaMaxParaAndarAleatoriamente: 40
+  timerParaAndarAleatoriamente: 5
   animator: {fileID: 0}
   agent: {fileID: 0}
-  targetComida: {fileID: 0}
   targetInimigo: {fileID: 0}
+  targetComida: {fileID: 0}
 --- !u!195 &4388767236681393940
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2055,6 +2082,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
 --- !u!114 &4071521643879966431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2072,15 +2107,6 @@ MonoBehaviour:
   vidaAtual: 100
   isDead: 0
   isAttacking: 0
-  minimumDistanceAtaque: 5
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 1
@@ -2088,7 +2114,7 @@ MonoBehaviour:
   - nomeItemEnum: 5
     qtdMinDrops: 5
     qtdMaxDrops: 10
-  - nomeItemEnum: 14
+  - nomeItemEnum: 24
     qtdMinDrops: 6
     qtdMaxDrops: 8
 --- !u!65 &-4785663404009738490
@@ -2099,9 +2125,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828100575842878}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 9.54, y: 7.8, z: 15.93}
   m_Center: {x: 0, y: 0, z: 1.5}
 --- !u!1 &1830721697503034
@@ -2369,8 +2403,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943738228194350}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.08
   m_Height: 0.22
   m_Direction: 0
@@ -2389,6 +2432,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
+  statsGeral: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!54 &7613075735736994327
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2396,10 +2441,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943738228194350}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
