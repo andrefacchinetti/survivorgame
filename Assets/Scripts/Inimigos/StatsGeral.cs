@@ -51,6 +51,10 @@ public class StatsGeral : MonoBehaviour
             else if (lobisomemStats != null) lobisomemStats.AcoesMorreu();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesMorreu();
             else if (jogadorStats != null) jogadorStats.AcoesMorreu();
+            else
+            {
+                DestruirGameObject();
+            }
         }
     }
 
