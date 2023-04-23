@@ -9,9 +9,10 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public float vidaAtual = 100f; // pontos de vida
 
     [SerializeField] public bool isDead = false;
-    [HideInInspector] public bool isAttacking;
+    [SerializeField] public GameObject objPaiParaDestruir;
 
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
+    [HideInInspector] public bool isAttacking;
 
     StatsJogador jogadorStats;
     LobisomemStats lobisomemStats;
@@ -73,8 +74,8 @@ public class StatsGeral : MonoBehaviour
 
     public void DestruirGameObject()
     {
-        if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(this.gameObject);
-        else GameObject.Destroy(this.gameObject);
+        if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
+        else GameObject.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
     }
 
     public Transform obterTransformPositionDoCollider()
