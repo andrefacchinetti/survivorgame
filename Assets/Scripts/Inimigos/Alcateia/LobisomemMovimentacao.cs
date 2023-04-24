@@ -71,6 +71,22 @@ public class LobisomemMovimentacao : MonoBehaviour
         verificarAtaque();
     }
 
+    private Transform obterObstaculoNoCaminhoDoInimigo()
+    {
+        // Cria um raio na direção em que o personagem está olhando
+        Ray ray = new Ray(transform.position, transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, 1))
+        {
+            if(hit.collider.tag == "ConstrucaoStats")
+            {
+                // O raio colidiu com um objeto, faça algo com ele
+                Debug.Log("Objeto encontrado: " + hit.collider.name);
+                return hit.collider.transform;
+            }
+        }
+        return null;
+    }
+
     void SairDaArvore()
     {
         targetArvore = null;
@@ -104,6 +120,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void verificarAtaque()
     {
         if (targetInimigo == null) return;
+
         float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.obterTransformPositionDoCollider().position);
         if (targetInimigo.isDead || distanceToTarget > lobisomemStats.distanciaDePerseguicao)
         {
@@ -112,37 +129,29 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else if (distanceToTarget < lobisomemStats.distanciaDeAtaque) // Ataca o alvo
         {
-            if (!statsGeral.isAttacking && Time.time > lobisomemStats.lastAttackTime + lobisomemStats.attackInterval)
-            {
-                transform.LookAt(targetInimigo.obterTransformPositionDoCollider().position);
-                lobisomemStats.lastAttackTime = Time.time;
-                animator.SetTrigger("attack" + Random.Range(1, 3));
-            }
+            atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
         }
         else // Persegue o alvo
         {
-            Vector3 targetOffset = Random.insideUnitSphere * lobisomemStats.destinationOffset;
-            Vector3 leadTarget;
-            // Calcula a posi��o futura do jogador com base na sua velocidade atual
-            if (targetInimigo.GetComponent<CharacterController>() != null)
+            Transform obstaculo = obterObstaculoNoCaminhoDoInimigo();
+            if(obstaculo != null)
             {
-                leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * lobisomemStats.leadTime);
+                atacarAlvo(obstaculo.position);
             }
             else
             {
-                leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized * lobisomemStats.leadTime);
+                perseguirInimigo();
             }
-            // Calcula o offset da posi��o futura do jogador
-            Vector3 leadTargetOffset = (leadTarget - targetInimigo.obterTransformPositionDoCollider().position).normalized * lobisomemStats.leadDistance;
-            // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
-            Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
-            // Define a posi��o de destino para o inimigo
-            MoveToPosition(destination);
+        }
+    }
 
-            // Aplica uma varia��o de velocidade aleat�ria
-            /*agent.speed += Random.Range(-statsGeral.speedVariation, statsGeral.speedVariation);
-            if (agent.speed > 1.5f) agent.speed = 1.5f;*/
-            agent.speed = lobisomemStats.walkSpeed;
+    private void atacarAlvo(Vector3 positionAlvo)
+    {
+        if (!statsGeral.isAttacking && Time.time > lobisomemStats.lastAttackTime + lobisomemStats.attackInterval)
+        {
+            transform.LookAt(positionAlvo);
+            lobisomemStats.lastAttackTime = Time.time;
+            animator.SetTrigger("attack" + Random.Range(1, 3));
         }
     }
 
@@ -243,7 +252,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else
             {
-                perseguirJogador();
+                perseguirInimigo();
             }
         }
     }
@@ -295,7 +304,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 if(targetInimigo != null)
                 {
-                    perseguirJogador();
+                    perseguirInimigo();
                 }
                 else
                 {
@@ -345,9 +354,31 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private void perseguirJogador()
+    private void perseguirInimigo()
     {
-        MoveToPosition(targetInimigo.obterTransformPositionDoCollider().position);
+        Debug.Log("perseguir inimigo");
+        Vector3 targetOffset = Random.insideUnitSphere * lobisomemStats.destinationOffset;
+        Vector3 leadTarget;
+        // Calcula a posi��o futura do jogador com base na sua velocidade atual
+        if (targetInimigo.GetComponent<CharacterController>() != null)
+        {
+            leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * lobisomemStats.leadTime);
+        }
+        else
+        {
+            leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized * lobisomemStats.leadTime);
+        }
+        // Calcula o offset da posi��o futura do jogador
+        Vector3 leadTargetOffset = (leadTarget - targetInimigo.obterTransformPositionDoCollider().position).normalized * lobisomemStats.leadDistance;
+        // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
+        Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
+        // Define a posi��o de destino para o inimigo
+        MoveToPosition(destination);
+
+        // Aplica uma varia��o de velocidade aleat�ria
+        /*agent.speed += Random.Range(-statsGeral.speedVariation, statsGeral.speedVariation);
+        if (agent.speed > 1.5f) agent.speed = 1.5f;*/
+        agent.speed = lobisomemStats.walkSpeed;
     }
 
     void OnTriggerEnter(Collider other)
@@ -356,7 +387,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
         }
-        if (other.gameObject.tag == "NavMeshVertical" && targetInimigo == null && targetComida == null && !lobisomemStats.isSubindoNaArvore && !lobisomemStats.isIndoAteArvore)
+        if (other.gameObject.tag == "NavMeshVertical" && targetInimigo == null && targetComida == null && !lobisomemStats.isSubindoNaArvore && !lobisomemStats.isIndoAteArvore && other.GetComponent<JumpToTree>() != null)
         {
             Debug.Log("jump to tree");
             lobisomemStats.isIndoAteArvore = true;

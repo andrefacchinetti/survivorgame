@@ -42,25 +42,6 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
     void OnCollisionEnter(Collision other)
     {
         if (statsGeral.vidaAtual <= 0) return;
-       /* if (other.transform.tag == "Ferramenta" || other.transform.tag == "Arma") //recebe dano qdo player ataca com ferramenta ou arma da mao
-        {
-            if (!other.transform.root.gameObject.GetComponent<StatsGeral>().isAttacking) return;
-            float damage = other.transform.gameObject.GetComponent<ItemObjMao>().damage;
-            if (isApenasFerramentaRecomendadaCausaDano)
-            {
-                if (nomeItemFerramentasRecomendadas.Contains(other.transform.gameObject.GetComponent<ItemObjMao>().nomeItem))
-                {
-                    statsGeral.TakeDamage(damage / 2);
-                }
-            }
-            else
-            {
-                statsGeral.TakeDamage(damage);
-            }
-           
-            other.transform.gameObject.GetComponentInParent<StatsGeral>().isAttacking = false;
-            other.transform.gameObject.GetComponentInParent<StatsGeral>().gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
-        }*/
 
         if (other.transform.tag == "ItemDrop") //Qdo toca em objeto que causa dano em velocidade (lança ou flecha)
         {
