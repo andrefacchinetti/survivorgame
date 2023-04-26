@@ -10,12 +10,15 @@ public class StatsJogador : MonoBehaviour
     [SerializeField] HudJogador hudJogador;
 
     // STATS MAXIMO
-    [SerializeField] public float fomeMaxima = 100, sedeMaxima = 100, energiaMaxima = 100;
+    [SerializeField] public float fomeMaxima = 100, sedeMaxima = 100, energiaMaxima = 100, temperaturaMaxima = 100;
 
     //STATS CURRENT
-    [SerializeField] [HideInInspector] public float fomeAtual, sedeAtual, energiaAtual;
+    [SerializeField] [HideInInspector] public float fomeAtual, sedeAtual, energiaAtual, temperaturaAtual;
 
-    [SerializeField] float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
+    [SerializeField] float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, tempoPraVerificarTemperaturaPorSegundos = 60 * 3, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
+
+    [SerializeField] [HideInInspector] public Fogo fogoProximo;
+    [SerializeField] [HideInInspector] public float temperaturaAmbiente = 20;
 
     private void Awake()
     {
@@ -25,13 +28,18 @@ public class StatsJogador : MonoBehaviour
 
     private void Start()
     {
-        
         setarVidaAtual(statsGeral.vidaMaxima);
         setarFomeAtual(fomeMaxima);
         setarSedeAtual(sedeMaxima);
         setarEnergiaAtual(energiaMaxima);
-
+        temperaturaAtual = temperaturaAmbiente;
         InvokeRepeating("DiminuirStatsPorTempo", 0, tempoPraDiminuirStatsFomeSedePorSegundos);
+        InvokeRepeating("VerificarTemperaturaJogador", 0, tempoPraVerificarTemperaturaPorSegundos);
+    }
+
+    private void LateUpdate()
+    {
+        if (fogoProximo != null && !fogoProximo.isFogoAceso) fogoProximo = null;
     }
 
     void DiminuirStatsPorTempo()
@@ -42,6 +50,20 @@ public class StatsJogador : MonoBehaviour
         {
             statsGeral.TakeDamage(10);
         }
+    }
+
+    void VerificarTemperaturaJogador()
+    {
+        Debug.Log("verificando variaveis que alteram a temperatura do jogador: ambiente, armadura, fogo, agua");
+        temperaturaAtual = 0;
+        temperaturaAtual += temperaturaAmbiente; //verificar se é dia ou noite
+        if(fogoProximo != null && fogoProximo.isFogoAceso)
+        {
+            temperaturaAtual += fogoProximo.temperaturaAquecimento;
+        }
+        Debug.Log("temperatura atual: " + temperaturaAtual);
+        //somar com temperatura armadura
+        //SETAR HIPERTERMIA OU HIPOTERMIA se necessario
     }
 
 
