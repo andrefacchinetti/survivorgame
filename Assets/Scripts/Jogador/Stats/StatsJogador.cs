@@ -17,6 +17,9 @@ public class StatsJogador : MonoBehaviour
 
     [SerializeField] float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, tempoPraVerificarTemperaturaPorSegundos = 60 * 3, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
 
+    [SerializeField] int valorMaxHipertermia = 80, valorMaxHipotermia = 10;
+    [SerializeField] int damageHipertermia = 10, damageHipotermia = 10;
+
     [SerializeField] [HideInInspector] public Fogo fogoProximo;
     [SerializeField] [HideInInspector] public float temperaturaAmbiente = 20;
 
@@ -24,6 +27,7 @@ public class StatsJogador : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         statsGeral = GetComponent<StatsGeral>();
+        temperaturaAtual = 50;
     }
 
     private void Start()
@@ -32,7 +36,6 @@ public class StatsJogador : MonoBehaviour
         setarFomeAtual(fomeMaxima);
         setarSedeAtual(sedeMaxima);
         setarEnergiaAtual(energiaMaxima);
-        temperaturaAtual = temperaturaAmbiente;
         InvokeRepeating("DiminuirStatsPorTempo", 0, tempoPraDiminuirStatsFomeSedePorSegundos);
         InvokeRepeating("VerificarTemperaturaJogador", 0, tempoPraVerificarTemperaturaPorSegundos);
     }
@@ -55,15 +58,34 @@ public class StatsJogador : MonoBehaviour
     void VerificarTemperaturaJogador()
     {
         Debug.Log("verificando variaveis que alteram a temperatura do jogador: ambiente, armadura, fogo, agua");
-        temperaturaAtual = 0;
-        temperaturaAtual += temperaturaAmbiente; //verificar se é dia ou noite
+        float porcentagemAnterior = temperaturaAtual / temperaturaMaxima * 100;
+        bool jaEstavaDoenteHipertermia = false, jaEstavaDoenteHipotermia = false;
+        if(porcentagemAnterior > valorMaxHipertermia)
+        {
+            jaEstavaDoenteHipertermia = true;
+        }
+        if (porcentagemAnterior < valorMaxHipotermia)
+        {
+            jaEstavaDoenteHipotermia = true;
+        }
+        temperaturaAtual = playerController.gameController.isNoite ? playerController.gameController.temperaturaNoite : playerController.gameController.temperaturaDia;
         if(fogoProximo != null && fogoProximo.isFogoAceso)
         {
             temperaturaAtual += fogoProximo.temperaturaAquecimento;
         }
+        //TODO: somar com temperatura armadura
         Debug.Log("temperatura atual: " + temperaturaAtual);
-        //somar com temperatura armadura
-        //SETAR HIPERTERMIA OU HIPOTERMIA se necessario
+        float porcentagem = temperaturaAtual / temperaturaMaxima * 100;
+        if (porcentagem > valorMaxHipertermia && jaEstavaDoenteHipertermia)
+        {
+            statsGeral.TakeDamage(damageHipertermia);
+        }
+        if (porcentagem < valorMaxHipotermia && jaEstavaDoenteHipotermia)
+        {
+            statsGeral.TakeDamage(damageHipotermia);
+        }
+        hudJogador.atualizarImgHipertermia(porcentagem > valorMaxHipertermia);
+        hudJogador.atualizarImgHipotermia(porcentagem < valorMaxHipotermia);
     }
 
 

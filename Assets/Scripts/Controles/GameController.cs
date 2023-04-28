@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     private float elapsedTime = 0f;  // Tempo que passou desde o início do jogo
 
     public bool isNoite = false;
+    public int temperaturaNoite = 0, temperaturaDia = 20;
 
     // Define as cores de sol para diferentes horas do dia
     public Color amanhecer;

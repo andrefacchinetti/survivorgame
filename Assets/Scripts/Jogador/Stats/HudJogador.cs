@@ -7,7 +7,8 @@ using TMPro;
 public class HudJogador : MonoBehaviour
 {
 
-    public RawImage imgVida, imgFome, imgSede, imgEnergia;
+    public RawImage imgVida, imgFome, imgSede, imgEnergia; //Stats Principais
+    public RawImage imgHipertermia, imgHipotermia; //Stats Doenças
 
     public Texture[] listImgsVida, listImgsFome, listImgsSede, listImgsEnergia;
 
@@ -46,6 +47,16 @@ public class HudJogador : MonoBehaviour
         float porcentagem = atual / maxima * 100;
         int index = obterIndexPorPorcentagem(porcentagem);
         imgEnergia.texture = listImgsEnergia[index];
+    }
+
+    public void atualizarImgHipertermia(bool possuiHipertermia)
+    {
+        imgHipertermia.gameObject.SetActive(possuiHipertermia);
+    }
+
+    public void atualizarImgHipotermia(bool possuiHipotermia)
+    {
+        imgHipotermia.gameObject.SetActive(possuiHipotermia);
     }
 
 }

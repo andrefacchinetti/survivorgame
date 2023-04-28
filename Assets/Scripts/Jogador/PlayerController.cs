@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
 	[SerializeField] [HideInInspector] public Item.NomeItem nomeItemColetando;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
-	private GameController gameController;
+	[SerializeField][HideInInspector] public GameController gameController;
 	
 
 	PhotonView PV;
