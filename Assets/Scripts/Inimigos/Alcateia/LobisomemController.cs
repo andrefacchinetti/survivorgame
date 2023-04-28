@@ -10,11 +10,10 @@ public class LobisomemController : MonoBehaviour
     [SerializeField] public GameObject objFormaHumano, objFormaLobo;
     [SerializeField] public LobisomemController alfa;
     [SerializeField] public List<LobisomemController> betas;
-    [SerializeField] public List<Item.ItemDropStruct> dropsItems;
 
     [SerializeField][HideInInspector] public LobisomemStats lobisomemStats;
     [SerializeField] [HideInInspector] public StatsGeral statsGeral;
-    [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao;
+    [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao, lobisomemHumanoMovimentacao;
     GameController gameController;
 
     private void Awake()

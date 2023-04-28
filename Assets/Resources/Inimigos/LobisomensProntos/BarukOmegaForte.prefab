@@ -3706,7 +3706,7 @@ Transform:
   - {fileID: 2455065877086455161}
   - {fileID: 3051287140423321473}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4819405745802178698
 MonoBehaviour:
@@ -3726,16 +3726,10 @@ MonoBehaviour:
   objFormaLobo: {fileID: 3128501391971407670}
   alfa: {fileID: 0}
   betas: []
-  dropsItems:
-  - nomeItemEnum: 5
-    qtdMinDrops: 5
-    qtdMaxDrops: 15
-  - nomeItemEnum: 14
-    qtdMinDrops: 3
-    qtdMaxDrops: 5
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 8199317177307660030}
+  lobisomemHumanoMovimentacao: {fileID: 0}
 --- !u!114 &9159999217009756276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3774,7 +3768,7 @@ MonoBehaviour:
   damage: 30
   vidaAtual: 100
   isDead: 0
-  isAttacking: 0
+  objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 8
@@ -3782,9 +3776,10 @@ MonoBehaviour:
   - nomeItemEnum: 5
     qtdMinDrops: 13
     qtdMaxDrops: 23
-  - nomeItemEnum: 14
+  - nomeItemEnum: 24
     qtdMinDrops: 4
     qtdMaxDrops: 8
+  isAttacking: 0
 --- !u!114 &9089510650732018569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3813,8 +3808,6 @@ MonoBehaviour:
   speedVariation: 0.5
   leadTime: 1.2
   leadDistance: 2
-  lobisomemMovimentacao: {fileID: 8199317177307660030}
-  lobisomemHumanoMovimentacao: {fileID: 0}
 --- !u!1 &209136431104670796
 GameObject:
   m_ObjectHideFlags: 0
@@ -4909,8 +4902,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pontoBaseTerritorio: {fileID: 0}
-  distanciaMaximaPontoBase: 20
-  distanciaMaximaDoSeuAlfa: 10
+  distanciaMaximaPontoBase: 100
+  distanciaMaximaDoSeuAlfa: 100
   tempoCorridaFugindo: 5
   raioDeDistanciaMinParaAndarAleatoriamente: 10
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
@@ -4918,7 +4911,6 @@ MonoBehaviour:
   timerParaAlfaDecidirComandosParaSeusBetas: 10
   tempoParadoNaArvore: 10
   targetInimigo: {fileID: 0}
-  targetConstrucao: {fileID: 0}
   targetComida: {fileID: 0}
   targetArvore: {fileID: 0}
   agent: {fileID: 0}
@@ -5262,8 +5254,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pontoBaseTerritorio: {fileID: 0}
-  distanciaMaximaPontoBase: 20
-  distanciaMaximaDoSeuAlfa: 10
+  distanciaMaximaPontoBase: 100
+  distanciaMaximaDoSeuAlfa: 100
   tempoCorridaFugindo: 5
   raioDeDistanciaMinParaAndarAleatoriamente: 10
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
@@ -5271,7 +5263,6 @@ MonoBehaviour:
   timerParaAlfaDecidirComandosParaSeusBetas: 10
   tempoParadoNaArvore: 10
   targetInimigo: {fileID: 0}
-  targetConstrucao: {fileID: 0}
   targetComida: {fileID: 0}
   targetArvore: {fileID: 0}
   agent: {fileID: 0}
