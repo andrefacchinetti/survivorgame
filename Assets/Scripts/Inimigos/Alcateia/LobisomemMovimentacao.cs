@@ -248,7 +248,14 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if (targetInimigo == null)
             {
-                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+                if (lobisomemController.forma == LobisomemController.Forma.Humano && !lobisomemStats.isEstadoAgressivo && lobisomemController.categoria != LobisomemController.Categoria.Omega)
+                {
+                    TrabalharNaProfissao();
+                }
+                else
+                {
+                    MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+                }
             }
             else
             {
@@ -308,7 +315,7 @@ public class LobisomemMovimentacao : MonoBehaviour
                 }
                 else
                 {
-                    MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+                    movimentarAleatoriamentePeloMapa();
                 }
             }
         }
@@ -387,7 +394,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
         }
-        if (other.gameObject.tag == "NavMeshVertical" && targetInimigo == null && targetComida == null && !lobisomemStats.isSubindoNaArvore && !lobisomemStats.isIndoAteArvore && other.GetComponent<JumpToTree>() != null)
+        if (lobisomemController.categoria == LobisomemController.Categoria.Omega && other.gameObject.tag == "NavMeshVertical" && targetInimigo == null && targetComida == null && !lobisomemStats.isSubindoNaArvore && !lobisomemStats.isIndoAteArvore && other.GetComponent<JumpToTree>() != null)
         {
             Debug.Log("jump to tree");
             lobisomemStats.isIndoAteArvore = true;
@@ -408,7 +415,7 @@ public class LobisomemMovimentacao : MonoBehaviour
                 targetInimigo = other.GetComponent<StatsGeral>();
                 targetComida = null;
                 targetArvore = null;
-                Debug.Log("LOBISOMEM indo atrasd do player");
+                Debug.Log("LOBISOMEM indo atras do player");
             }
         }
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
@@ -473,5 +480,19 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (targetInimigo != null || animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar")) return;
         animator.SetTrigger("uivar");
     }
+
+    //PROFISSOES
+
+    private void TrabalharNaProfissao()
+    {
+        if (lobisomemController.profissao == LobisomemController.Profissao.Alfa) trabalharProfissaoAlfa();
+    }
+
+    private void trabalharProfissaoAlfa()
+    {
+        MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+    }
+
+    //FIM PROFISSOES
 
 }

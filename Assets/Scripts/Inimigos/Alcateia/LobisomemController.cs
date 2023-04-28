@@ -7,6 +7,7 @@ public class LobisomemController : MonoBehaviour
 
     [SerializeField] public Categoria categoria;
     [SerializeField] public Forma forma;
+    [SerializeField] public Profissao profissao;
     [SerializeField] public GameObject objFormaHumano, objFormaLobo;
     [SerializeField] public LobisomemController alfa;
     [SerializeField] public List<LobisomemController> betas;
@@ -31,6 +32,11 @@ public class LobisomemController : MonoBehaviour
     public enum Forma
     {
         Humano, Lobo
+    }
+
+    public enum Profissao
+    {
+        Alfa, Seguranca, Cacador, Pescador, ColetorAgua, Fazendeiro, ColhedorFrutas, Rezador
     }
 
     private void Start()
