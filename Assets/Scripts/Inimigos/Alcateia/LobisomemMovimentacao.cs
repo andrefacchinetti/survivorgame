@@ -503,7 +503,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     int indexLocaisSeguranca = 0; //Alterar index por tempo
     private void trabalharProfissaoSeguranca()
     {
-        Vector3 positionLocalSeguranca = lobisomemController.aldeiaController.locaisSeguranca[indexLocaisSeguranca].transform.position;
+        Vector3 positionLocalSeguranca = lobisomemController.aldeiaController.locaisSeguranca[indexLocaisSeguranca].localPosicao.position;
         if (EstaDistanteDe(positionLocalSeguranca, 1))
         {
             MoveToPosition(positionLocalSeguranca);
@@ -511,13 +511,14 @@ public class LobisomemMovimentacao : MonoBehaviour
         else
         {
             if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("poseSeguranca");
+            transform.LookAt(lobisomemController.aldeiaController.locaisSeguranca[indexLocaisSeguranca].localOlhando);
         }
     }
 
     int indexLocaisPesca = 0; //Alterar index por tempo
     private void trabalharProfissaoPescador()
     {
-        Vector3 positionLocal = lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].transform.position;
+        Vector3 positionLocal = lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localPosicao.position;
         if (EstaDistanteDe(positionLocal, 1))
         {
             MoveToPosition(positionLocal);
@@ -525,6 +526,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         else
         {
             if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("profissaoPescando");
+            transform.LookAt(lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localOlhando);
         }
     }
 
@@ -534,7 +536,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (lobisomemController.aldeiaController == null) return;
         indexLocaisSeguranca++;
-        if (indexLocaisSeguranca >= lobisomemController.aldeiaController.locaisSeguranca.Length) indexLocaisSeguranca = 0;
+        if (indexLocaisSeguranca >= lobisomemController.aldeiaController.locaisSeguranca.Count) indexLocaisSeguranca = 0;
     }
 
     //EVENT ANIMACOES
