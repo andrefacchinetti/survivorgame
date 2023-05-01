@@ -18,7 +18,7 @@ public class LobisomemStats : MonoBehaviour
     [HideInInspector] public float lastAttackTime; // Tempo do �ltimo ataque
     [SerializeField] public float destinationOffset = 1f;
     [SerializeField] public float walkSpeed = 0.8f, runSpeed = 1.5f, speedVariation = 0.5f;
-    [SerializeField] public float leadTime = 1.2f, leadDistance = 2;
+    [SerializeField] public float leadTime = 1.2f, leadDistance = 2, tempoMudancaDeTurnoProfissoes = 300;
     LobisomemController lobisomemController;
     StatsGeral statsGeral;
 

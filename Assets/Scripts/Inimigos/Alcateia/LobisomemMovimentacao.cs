@@ -7,7 +7,6 @@ using Photon.Pun;
 public class LobisomemMovimentacao : MonoBehaviour
 {
 
-    [SerializeField] public GameObject pontoBaseTerritorio;
     [SerializeField] public float distanciaMaximaPontoBase = 50, distanciaMaximaDoSeuAlfa = 10;
     [SerializeField] public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
     [SerializeField] public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
@@ -35,6 +34,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         statsGeral = GetComponentInParent<StatsGeral>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
+        InvokeRepeating("FinalTurnoProfissao", 0, lobisomemStats.tempoMudancaDeTurnoProfissoes);
     }
 
     private void Update()
@@ -191,12 +191,12 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else
         {
-            if (agent.velocity.magnitude > 0.2f)
+            if (agent.velocity.magnitude > 1f)
             {
                 animator.SetBool("run", true);
                 animator.SetBool("walk", false);
             }
-            else if (agent.velocity.magnitude > 0.02f)
+            else if (agent.velocity.magnitude > 0.05f)
             {
                 animator.SetBool("walk", true);
                 animator.SetBool("run", false);
@@ -209,21 +209,21 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private bool estaDistanteDoPontoBaseTerritorio()
+    private bool estaDistanteDoCentroDaAldeia()
     {
-        if (pontoBaseTerritorio == null) return false;
-        float distance = Vector3.Distance(transform.position, pontoBaseTerritorio.transform.position);  // Calcula a dist�ncia entre o inimigo e a posicao do territorio base
-        if (distance > distanciaMaximaPontoBase)
-        {
-            return true;
-        }
-        return false;
+        if (lobisomemController.aldeiaController == null) return false;
+        return EstaDistanteDe(lobisomemController.aldeiaController.centroDaAldeia.transform.position, distanciaMaximaPontoBase);
     }
 
     private bool estaDistanteDoAlfa()
     {
-        float distance = Vector3.Distance(transform.position, lobisomemController.alfa.transform.position);  // Calcula a dist�ncia entre o inimigo e a posicao do territorio base
-        if (distance > distanciaMaximaDoSeuAlfa)
+        return EstaDistanteDe(lobisomemController.alfa.transform.position, distanciaMaximaDoSeuAlfa);
+    }
+
+    private bool EstaDistanteDe(Vector3 destino, float distanciaMaximaDestino)
+    {
+        float distance = Vector3.Distance(transform.position, destino);  // Calcula a dist�ncia entre o inimigo e a posicao do territorio base
+        if (distance > distanciaMaximaDestino)
         {
             return true;
         }
@@ -238,11 +238,11 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void movimentarAleatoriamentePeloMapa()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("Comendo")) return;
-        if (estaDistanteDoPontoBaseTerritorio())
+        if (estaDistanteDoCentroDaAldeia())
         {
             targetInimigo = null;
             targetComida = null;
-            MoveToPosition(pontoBaseTerritorio.transform.position);
+            MoveToPosition(lobisomemController.aldeiaController.centroDaAldeia.transform.position);
         }
         else
         {
@@ -383,9 +383,9 @@ public class LobisomemMovimentacao : MonoBehaviour
         MoveToPosition(destination);
 
         // Aplica uma varia��o de velocidade aleat�ria
-        /*agent.speed += Random.Range(-statsGeral.speedVariation, statsGeral.speedVariation);
+        /*agent.speed = Random.Range(lobisomemStats.walkSpeed, lobisomemStats.runSpeed);
         if (agent.speed > 1.5f) agent.speed = 1.5f;*/
-        agent.speed = lobisomemStats.walkSpeed;
+        agent.speed = lobisomemStats.runSpeed;
     }
 
     void OnTriggerEnter(Collider other)
@@ -486,6 +486,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void TrabalharNaProfissao()
     {
         if (lobisomemController.profissao == LobisomemController.Profissao.Alfa) trabalharProfissaoAlfa();
+        if (lobisomemController.profissao == LobisomemController.Profissao.Seguranca) trabalharProfissaoSeguranca();
     }
 
     private void trabalharProfissaoAlfa()
@@ -493,6 +494,27 @@ public class LobisomemMovimentacao : MonoBehaviour
         MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
     }
 
+    int indexLocaisSeguranca = 0; //Alterar index por tempo
+    private void trabalharProfissaoSeguranca()
+    {
+        Vector3 positionLocalSeguranca = lobisomemController.aldeiaController.locaisSeguranca[indexLocaisSeguranca].transform.position;
+        if (EstaDistanteDe(positionLocalSeguranca, 1))
+        {
+            MoveToPosition(positionLocalSeguranca);
+        }
+        else
+        {
+            if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("poseSeguranca");
+        }
+    }
+
     //FIM PROFISSOES
+
+    void FinalTurnoProfissao()
+    {
+        if (lobisomemController.aldeiaController == null) return;
+        indexLocaisSeguranca++;
+        if (indexLocaisSeguranca >= lobisomemController.aldeiaController.locaisSeguranca.Length) indexLocaisSeguranca = 0;
+    }
 
 }
