@@ -6,6 +6,6 @@ public class AldeiaController : MonoBehaviour
 {
 
     [SerializeField] public GameObject centroDaAldeia;
-    [SerializeField] public GameObject[] locaisSeguranca;
+    [SerializeField] public GameObject[] locaisSeguranca, locaisPesca;
 
 }

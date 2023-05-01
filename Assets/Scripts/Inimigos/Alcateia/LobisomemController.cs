@@ -12,6 +12,7 @@ public class LobisomemController : MonoBehaviour
     [SerializeField] public LobisomemController alfa;
     [SerializeField] public AldeiaController aldeiaController;
     [SerializeField] public List<LobisomemController> betas;
+    [SerializeField] public GameObject objProfissaoVaraPesca;
 
     [SerializeField] [HideInInspector] public LobisomemStats lobisomemStats;
     [SerializeField] [HideInInspector] public StatsGeral statsGeral;

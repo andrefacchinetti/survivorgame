@@ -71,6 +71,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         verificarAtaque();
     }
 
+    private void LateUpdate()
+    {
+        AtivarObjetosMaoDasAnimacoes();
+    }
+
     private Transform obterObstaculoNoCaminhoDoInimigo()
     {
         // Cria um raio na direção em que o personagem está olhando
@@ -486,7 +491,8 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void TrabalharNaProfissao()
     {
         if (lobisomemController.profissao == LobisomemController.Profissao.Alfa) trabalharProfissaoAlfa();
-        if (lobisomemController.profissao == LobisomemController.Profissao.Seguranca) trabalharProfissaoSeguranca();
+        else if (lobisomemController.profissao == LobisomemController.Profissao.Seguranca) trabalharProfissaoSeguranca();
+        else if (lobisomemController.profissao == LobisomemController.Profissao.Pescador) trabalharProfissaoPescador();
     }
 
     private void trabalharProfissaoAlfa()
@@ -508,6 +514,20 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    int indexLocaisPesca = 0; //Alterar index por tempo
+    private void trabalharProfissaoPescador()
+    {
+        Vector3 positionLocal = lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].transform.position;
+        if (EstaDistanteDe(positionLocal, 1))
+        {
+            MoveToPosition(positionLocal);
+        }
+        else
+        {
+            if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("profissaoPescando");
+        }
+    }
+
     //FIM PROFISSOES
 
     void FinalTurnoProfissao()
@@ -515,6 +535,13 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (lobisomemController.aldeiaController == null) return;
         indexLocaisSeguranca++;
         if (indexLocaisSeguranca >= lobisomemController.aldeiaController.locaisSeguranca.Length) indexLocaisSeguranca = 0;
+    }
+
+    //EVENT ANIMACOES
+
+    private void AtivarObjetosMaoDasAnimacoes()
+    {
+        if(lobisomemController.objProfissaoVaraPesca != null) lobisomemController.objProfissaoVaraPesca.SetActive(animator.GetCurrentAnimatorStateInfo(0).IsName("profissaoPescando"));
     }
 
 }
