@@ -34,7 +34,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         statsGeral = GetComponentInParent<StatsGeral>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         timer = timerParaAndarAleatoriamente;
-        InvokeRepeating("FinalTurnoProfissao", 0, lobisomemStats.tempoMudancaDeTurnoProfissoes);
+        InvokeRepeating("FinalTurnoProfissao", lobisomemStats.tempoMudancaDeTurnoProfissoes, lobisomemStats.tempoMudancaDeTurnoProfissoes);
     }
 
     private void Update()
@@ -217,15 +217,15 @@ public class LobisomemMovimentacao : MonoBehaviour
     private bool estaDistanteDoCentroDaAldeia()
     {
         if (lobisomemController.aldeiaController == null) return false;
-        return EstaDistanteDe(lobisomemController.aldeiaController.centroDaAldeia.transform.position, distanciaMaximaPontoBase);
+        return EstouDistanteDe(lobisomemController.aldeiaController.centroDaAldeia.transform.position, distanciaMaximaPontoBase);
     }
 
     private bool estaDistanteDoAlfa()
     {
-        return EstaDistanteDe(lobisomemController.alfa.transform.position, distanciaMaximaDoSeuAlfa);
+        return EstouDistanteDe(lobisomemController.alfa.transform.position, distanciaMaximaDoSeuAlfa);
     }
 
-    private bool EstaDistanteDe(Vector3 destino, float distanciaMaximaDestino)
+    private bool EstouDistanteDe(Vector3 destino, float distanciaMaximaDestino)
     {
         float distance = Vector3.Distance(transform.position, destino);  // Calcula a dist�ncia entre o inimigo e a posicao do territorio base
         if (distance > distanciaMaximaDestino)
@@ -504,7 +504,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void trabalharProfissaoSeguranca()
     {
         Vector3 positionLocalSeguranca = lobisomemController.aldeiaController.locaisSeguranca[indexLocaisSeguranca].localPosicao.position;
-        if (EstaDistanteDe(positionLocalSeguranca, 1))
+        if (EstouDistanteDe(positionLocalSeguranca, 1))
         {
             MoveToPosition(positionLocalSeguranca);
         }
@@ -518,25 +518,46 @@ public class LobisomemMovimentacao : MonoBehaviour
     int indexLocaisPesca = 0; //Alterar index por tempo
     private void trabalharProfissaoPescador()
     {
-        Vector3 positionLocal = lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localPosicao.position;
-        if (EstaDistanteDe(positionLocal, 1))
+        if (entregandoItemProfissao)
         {
-            MoveToPosition(positionLocal);
+            Vector3 positionLocal = lobisomemController.aldeiaController.armazemPesca.transform.position;
+            if (EstouDistanteDe(positionLocal, 1))
+            {
+                MoveToPosition(lobisomemController.aldeiaController.armazemPesca.transform.position);
+            }
+            else
+            {
+                entregandoItemProfissao = false;
+            }
         }
         else
         {
-            if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("profissaoPescando");
-            transform.LookAt(lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localOlhando);
+            Vector3 positionLocal = lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localPosicao.position;
+            if (EstouDistanteDe(positionLocal, 1))
+            {
+                MoveToPosition(positionLocal);
+                voltouProLocalDaProfissao = false;
+            }
+            else
+            {
+                if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("profissaoPescando");
+                transform.LookAt(lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localOlhando);
+                voltouProLocalDaProfissao = true;
+            }
         }
     }
 
     //FIM PROFISSOES
+    bool entregandoItemProfissao = false, voltouProLocalDaProfissao = false;
 
     void FinalTurnoProfissao()
     {
-        if (lobisomemController.aldeiaController == null) return;
+        if (lobisomemController.aldeiaController == null || entregandoItemProfissao || !voltouProLocalDaProfissao) return;
+        Debug.Log("fim turno profissao");
         indexLocaisSeguranca++;
         if (indexLocaisSeguranca >= lobisomemController.aldeiaController.locaisSeguranca.Count) indexLocaisSeguranca = 0;
+        entregandoItemProfissao = true;
+        voltouProLocalDaProfissao = false;
     }
 
     //EVENT ANIMACOES

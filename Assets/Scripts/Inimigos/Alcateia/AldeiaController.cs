@@ -5,7 +5,7 @@ using UnityEngine;
 public class AldeiaController : MonoBehaviour
 {
 
-    [SerializeField] public GameObject centroDaAldeia;
+    [SerializeField] public GameObject centroDaAldeia, armazemPesca;
     [SerializeField] public List<LocalProfissao> locaisSeguranca, locaisPesca;
 
 
