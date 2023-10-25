@@ -193,12 +193,16 @@ public class ControleConstruir : MonoBehaviour
             //Ray frontal tocou algo
             if (hit.collider.gameObject.tag == "construcao" && podeJuntar)
             {
+                float altura = construcao.altura;
+                if(construcao.nome == "Fundação")
+                {
+                    altura = 0;
+                }
                 objRotation = hit.transform.rotation;
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.eulerAngles.y + rotacao - (rotacao % 90), objRotation.eulerAngles.z));
-                objPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + construcao.altura, hit.transform.position.z);
+                objPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + altura, hit.transform.position.z);
                 Debug.Log(construcao.altura);
                 isConectado = true;
-                
             }
             else{
                 objPosition = new Vector3(hit.point.x, hit.point.y + construcao.altura + (meshObjeto.bounds.size.y * objeto.transform.localScale.y / 2), hit.point.z);
