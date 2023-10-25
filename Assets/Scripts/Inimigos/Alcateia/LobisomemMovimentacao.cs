@@ -61,7 +61,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
             else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
             else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
-            if (!agent.pathPending && agent.remainingDistance < 0.1f)
+            if (agent.isOnNavMesh && !agent.pathPending && agent.remainingDistance < 0.1f)
             {
                 agent.ResetPath(); // o animal chegou ao seu destino, pare de se mover
             }
