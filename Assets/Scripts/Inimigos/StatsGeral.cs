@@ -36,6 +36,7 @@ public class StatsGeral : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        Debug.Log("Tomando dano");
         if(jogadorStats != null) jogadorStats.setarVidaAtual(vidaAtual - damage);
         else vidaAtual -= damage;
 

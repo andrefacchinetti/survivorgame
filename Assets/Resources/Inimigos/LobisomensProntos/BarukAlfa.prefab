@@ -673,7 +673,7 @@ Transform:
   - {fileID: 8093462007807650854}
   - {fileID: 1721120842394565365}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &259249254
 MonoBehaviour:
@@ -688,7 +688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nivelAgressividadeMax: 100
-  nivelAgressividadeAtual: 50
+  nivelAgressividadeAtual: 100
   energiaAtual: 0
   isEstadoAgressivo: 0
   isSubindoNaArvore: 0
@@ -703,6 +703,7 @@ MonoBehaviour:
   speedVariation: 0.5
   leadTime: 1.2
   leadDistance: 2
+  tempoMudancaDeTurnoProfissoes: 300
 --- !u!114 &259249255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,12 +718,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   categoria: 0
   forma: 0
+  profissao: 0
   objFormaHumano: {fileID: 8839709914392214318}
   objFormaLobo: {fileID: 7775916410102296583}
   alfa: {fileID: 0}
+  aldeiaController: {fileID: 0}
   betas:
   - {fileID: 0}
   - {fileID: 0}
+  objProfissaoVaraPesca: {fileID: 0}
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 6794255505814172601}
@@ -5624,7 +5628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 213f51c1714e92b4888f7fd266217d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pontoBaseTerritorio: {fileID: 0}
   distanciaMaximaPontoBase: 100
   distanciaMaximaDoSeuAlfa: 100
   tempoCorridaFugindo: 5
@@ -5998,7 +6001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 213f51c1714e92b4888f7fd266217d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pontoBaseTerritorio: {fileID: 0}
   distanciaMaximaPontoBase: 100
   distanciaMaximaDoSeuAlfa: 100
   tempoCorridaFugindo: 5

@@ -80,12 +80,12 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         // Cria um raio na direção em que o personagem está olhando
         Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, 1))
+        if (Physics.Raycast(ray, out RaycastHit hit, 1.5F))
         {
             if(hit.collider.tag == "ConstrucaoStats")
             {
                 // O raio colidiu com um objeto, faça algo com ele
-                Debug.Log("Objeto encontrado: " + hit.collider.name);
+                Debug.Log("construcao encontrada... atacando: " + hit.collider.name);
                 return hit.collider.transform;
             }
         }

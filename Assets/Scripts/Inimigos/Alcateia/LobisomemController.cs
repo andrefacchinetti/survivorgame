@@ -41,15 +41,15 @@ public class LobisomemController : MonoBehaviour
         Alfa, Seguranca, Cacador, Pescador, ColetorAgua, Fazendeiro, ColhedorFrutas, Rezador
     }
 
-    private void Start()
+   /* private void Start()
     {
-        setarFormaLobisomem();
+        //setarFormaLobisomem();
     }
 
     private void LateUpdate()
     {
-        setarFormaLobisomem();
-    }
+        //setarFormaLobisomem();
+    }*/
 
     private void setarFormaLobisomem()
     {
