@@ -39,19 +39,28 @@ public class LobisomemStats : MonoBehaviour
 
     public void AcoesMorreu()
     {
+        if (lobisomemController.statsGeral.isDead) return;
         AumentarNivelAgressividade(20);
         if (lobisomemController.categoria.Equals(LobisomemController.Categoria.Beta))
         {
             lobisomemController.lobisomemMovimentacao.ComandosBetasParaAlfa();
             lobisomemController.lobisomemHumanoMovimentacao.ComandosBetasParaAlfa();
         }
-        lobisomemController.lobisomemMovimentacao.animator.SetBool("isDead", true);
-        lobisomemController.lobisomemMovimentacao.agent.isStopped = true;
-        lobisomemController.lobisomemMovimentacao.agent.speed = 0;
-        lobisomemController.lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
-        lobisomemController.lobisomemHumanoMovimentacao.agent.isStopped = true;
-        lobisomemController.lobisomemHumanoMovimentacao.agent.speed = 0;
+        if (lobisomemController.lobisomemMovimentacao.isActiveAndEnabled)
+        {
+            lobisomemController.lobisomemMovimentacao.animator.SetBool("isDead", true);
+            lobisomemController.lobisomemMovimentacao.agent.isStopped = true;
+            lobisomemController.lobisomemMovimentacao.agent.speed = 0;
+        }
+        if (lobisomemController.lobisomemHumanoMovimentacao.isActiveAndEnabled)
+        {
+            lobisomemController.lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
+            lobisomemController.lobisomemHumanoMovimentacao.agent.isStopped = true;
+            lobisomemController.lobisomemHumanoMovimentacao.agent.speed = 0;
+        }
+        
         statsGeral.isDead = true;
+        Debug.Log("Lobisomen morreu");
     }
 
     public void AumentarNivelAgressividade(float valor)

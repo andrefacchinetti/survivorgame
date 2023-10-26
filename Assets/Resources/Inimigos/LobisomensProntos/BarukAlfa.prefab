@@ -363,7 +363,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.28
+  m_Radius: 1
   m_Height: 0
   m_Direction: 0
   m_Center: {x: -0.15, y: 0, z: 0}
@@ -673,7 +673,7 @@ Transform:
   - {fileID: 8093462007807650854}
   - {fileID: 1721120842394565365}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &259249254
 MonoBehaviour:
@@ -690,7 +690,7 @@ MonoBehaviour:
   nivelAgressividadeMax: 100
   nivelAgressividadeAtual: 100
   energiaAtual: 0
-  isEstadoAgressivo: 0
+  isEstadoAgressivo: 1
   isSubindoNaArvore: 0
   isIndoAteArvore: 0
   distanciaDePerseguicao: 10
@@ -699,8 +699,8 @@ MonoBehaviour:
   lastAttackTime: 0
   destinationOffset: 1
   walkSpeed: 0.8
-  runSpeed: 1.5
-  speedVariation: 0.5
+  runSpeed: 1.1
+  speedVariation: 0.3
   leadTime: 1.2
   leadDistance: 2
   tempoMudancaDeTurnoProfissoes: 300
@@ -723,9 +723,7 @@ MonoBehaviour:
   objFormaLobo: {fileID: 7775916410102296583}
   alfa: {fileID: 0}
   aldeiaController: {fileID: 0}
-  betas:
-  - {fileID: 0}
-  - {fileID: 0}
+  betas: []
   objProfissaoVaraPesca: {fileID: 0}
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
@@ -743,7 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 500
+  vidaMaxima: 100
   damage: 35
   vidaAtual: 100
   isDead: 0
@@ -2877,7 +2875,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.28
+  m_Radius: 1
   m_Height: 0
   m_Direction: 0
   m_Center: {x: -0.15, y: 0, z: 0}
@@ -3866,8 +3864,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.11132817
-  m_Height: 0.38685596
+  m_Radius: 0.5
+  m_Height: 1.39
   m_Direction: 1
   m_Center: {x: -0.0661137, y: 0.09732558, z: 0.0000000046556115}
 --- !u!114 &5786359193279237999
@@ -5639,11 +5637,11 @@ MonoBehaviour:
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
   targetArvore: {fileID: 0}
-  agent: {fileID: 0}
   lobisomemController: {fileID: 259249255}
   lobisomemStats: {fileID: 259249254}
   statsGeral: {fileID: 3779143584047925500}
-  animator: {fileID: 0}
+  animator: {fileID: 6705834608301830161}
+  agent: {fileID: 0}
 --- !u!114 &9158058162828518566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5798,7 +5796,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 40, y: 30, z: 40}
+  m_Size: {x: 80, y: 30, z: 80}
   m_Center: {x: 0, y: 1.96, z: 9.57}
 --- !u!1 &8839709914392214318
 GameObject:
@@ -6012,11 +6010,11 @@ MonoBehaviour:
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
   targetArvore: {fileID: 0}
-  agent: {fileID: 0}
   lobisomemController: {fileID: 259249255}
   lobisomemStats: {fileID: 259249254}
   statsGeral: {fileID: 3779143584047925500}
-  animator: {fileID: 0}
+  animator: {fileID: 8819482749736827060}
+  agent: {fileID: 0}
 --- !u!1001 &6415850790711088112
 PrefabInstance:
   m_ObjectHideFlags: 0

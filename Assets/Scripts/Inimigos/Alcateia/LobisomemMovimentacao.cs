@@ -17,15 +17,15 @@ public class LobisomemMovimentacao : MonoBehaviour
     public StatsGeral targetInimigo;
     public GameObject targetComida;
     public Transform targetArvore;
-
-    [HideInInspector] public NavMeshAgent agent;
+    
     private float timer;
     
 
     [SerializeField] LobisomemController lobisomemController;
     [SerializeField] LobisomemStats lobisomemStats;
     [SerializeField] StatsGeral statsGeral;
-    [HideInInspector] public Animator animator;
+    [SerializeField] public Animator animator;
+    [SerializeField] public NavMeshAgent agent;
 
     private void Start()
     {
@@ -39,6 +39,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Update()
     {
+        if (statsGeral.isDead) return;
         if (targetArvore != null)
         {
             float distanceToTarget = Vector3.Distance(transform.position, targetArvore.position);
@@ -162,7 +163,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void verificarCorrerAndar()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar") || animator.GetCurrentAnimatorStateInfo(0).IsName("Comendo"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo"))
         {
             agent.speed = 0;
         }
@@ -242,7 +243,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void movimentarAleatoriamentePeloMapa()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("Comendo")) return;
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo")) return;
         if (estaDistanteDoCentroDaAldeia())
         {
             targetInimigo = null;
@@ -482,7 +483,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Uivar()
     {
-        if (targetInimigo != null || animator.GetCurrentAnimatorStateInfo(0).IsName("Uivar")) return;
+        if (targetInimigo != null || animator.GetCurrentAnimatorStateInfo(0).IsName("uivar")) return;
         animator.SetTrigger("uivar");
     }
 
