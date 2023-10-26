@@ -9,7 +9,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 {
     
     public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
-    public string tagAreaColeta = "AreaColeta";
+    public string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -192,6 +192,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 interacaoIncendiaveis(hit);
             }
+            else if(hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloAvancado)))
+            {
+                interacaoReconstruivelQuebrado(hit);
+            }
         }
         else
         {
@@ -293,6 +297,17 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             playerController.pescaPescando = hit.transform.gameObject;
             animator.SetTrigger("pescando");
             playerController.animatorVaraDePesca.SetTrigger("pescando");
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoReconstruivelQuebrado(RaycastHit hit)
+    {
+        if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
+        {
+            transferOwnerPV(hit.transform.gameObject);
+            playerController.objConsertando = hit.transform.gameObject;
+            animator.SetTrigger("consertando");
         }
         possibleInteraction = true;
     }

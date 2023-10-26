@@ -18,6 +18,7 @@ public class StatsGeral : MonoBehaviour
     LobisomemStats lobisomemStats;
     AnimalStats animalStats;
     DropaRecursosStats dropaRecursosStats;
+    ReconstruivelStats reconstruivelStats;
     PhotonView PV;
 
     private void Awake()
@@ -27,6 +28,7 @@ public class StatsGeral : MonoBehaviour
         animalStats = GetComponentInParent<AnimalStats>();
         dropaRecursosStats = GetComponentInParent<DropaRecursosStats>();
         jogadorStats = GetComponentInParent<StatsJogador>();
+        reconstruivelStats = GetComponentInParent<ReconstruivelStats>();
     }
 
     private void Start()
@@ -46,6 +48,7 @@ public class StatsGeral : MonoBehaviour
             else if (lobisomemStats != null) lobisomemStats.AcoesTomouDano();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesTomouDano();
             else if (jogadorStats != null) jogadorStats.AcoesTomouDano();
+            else if (reconstruivelStats != null) reconstruivelStats.AcoesTomouDano();
         }
         else
         {
@@ -53,6 +56,10 @@ public class StatsGeral : MonoBehaviour
             else if (lobisomemStats != null) lobisomemStats.AcoesMorreu();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesMorreu();
             else if (jogadorStats != null) jogadorStats.AcoesMorreu();
+            else if(reconstruivelStats != null)
+            {
+                reconstruivelStats.AcoesMorreu();
+            }
             else
             {
                 DestruirGameObject();
