@@ -7,7 +7,8 @@ using Photon.Realtime;
 
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
-    
+
+    private int cLayer, prLayer, fLayer, ptLayer;
     public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     public string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado";
 
@@ -90,112 +91,18 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (!playerMovimentController.canMove || inventario.canvasInventario.activeSelf) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
+        RaycastHit hit;
+        bool rayBool = false;
+        if(playerController.controleConstruir.isAtivo) {
+            rayBool = Physics.Raycast(ray, out hit, distanciaMaxParaPegarObj);
+        } else {
+            int layerMask = (1 << LayerMask.NameToLayer("InteracaoComGrab"));
+            rayBool = Physics.Raycast(ray, out hit, distanciaMaxParaPegarObj, layerMask);
+        }
 
-        if (Physics.Raycast(ray, out RaycastHit hit, distanciaMaxParaPegarObj))
+        if (rayBool)
         {
-            possibleGrab = false;
-            possibleInteraction = false;
-            
-            if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela) 
-            {
-                
-                if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
-                    && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>() != null && hit.transform.GetComponent<Panela>().fogueira != null)
-                {
-                    interacaoPanelas(hit);
-                }
-                else
-                {
-                    if(inventario.itemNaMao == null)
-                    {
-                        if (Input.GetMouseButtonDown(1)) //Segura objeto
-                        {
-                            transferOwnerPV(hit.transform.gameObject);
-                            grabedObj = hit.transform.gameObject;
-                        }
-                        if (Input.GetKeyDown(KeyCode.E)) //Pega item do chao
-                        {
-                            transferOwnerPV(hit.transform.gameObject);
-                            ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
-                            bool destruirObjetoDaCena = true;
-                            if (hit.transform.tag == tagConsumivelNaPanela)
-                            {
-                                pegarConsumivelNaPanela(hit);
-                                destruirObjetoDaCena = false;
-                                return;
-                            }
-                            if (hit.transform.tag == tagItemDrop && (itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
-                            {
-                                Panela panela = itemDrop.gameObject.GetComponent<Panela>();
-                                Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
-                                if (!itemNaPanela.Equals(Item.NomeItem.Nenhum))
-                                {
-                                    if (inventario.AdicionarItemAoInventario(itemNaPanela, 1))
-                                    {
-                                        panela.RetirarConsumivelDaPanela();
-                                    }
-                                    else
-                                    {
-                                        Debug.Log("nao foi possivel adicionar ao inventario do jogador");
-                                    }
-                                    return;
-                                }
-                                else
-                                {
-                                    panela.fogueira.RetirarPanelaTigela();
-                                }
-                                destruirObjetoDaCena = false;
-                            }
-                            if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
-                            {
-                                if (destruirObjetoDaCena)
-                                {
-                                    if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
-                                    else GameObject.Destroy(hit.transform.gameObject);
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("nao foi possivel adicionar ao inventario do jogador");
-                            }
-                        }
-                        possibleGrab = true;
-                    }
-                }
-            }
-            else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null 
-                && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
-            {
-                StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
-                if (objPai != null && objPai.isDead)
-                {
-                    interacaoDissecar(objPai);
-                }
-            }
-            else if(hit.transform.tag == tagAgua && inventario.itemNaMao == null)
-            {
-                interacaoBeberAgua(hit);
-            }
-            else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.VaraDePesca))
-            {
-                interacaoPesca(hit);
-            }
-            else if (hit.transform.tag == tagAreaColeta && hit.transform.gameObject.GetComponent<AreaDeColeta>().isAreaAtiva && inventario.itemNaMao == null)
-            {
-                interacaoAreaDeColeta(hit);
-            }
-            else if (hit.transform.tag == tagArvore && hit.transform.gameObject.GetComponent<ArvoreFrutifera>() != null)
-            {
-                interacaoArvore(hit);
-            }
-            else if (hit.transform.tag == tagIncendiavel && hit.transform.GetComponent<Fogueira>() != null)
-            {
-                interacaoIncendiaveis(hit);
-            }
-            else if(hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloAvancado)))
-            {
-                interacaoReconstruivelQuebrado(hit);
-            }
+            executarAcoesDoHit(hit);
         }
         else
         {
@@ -233,6 +140,115 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else
         {
             playerMovimentController.pesoGrab = 0;
+        }
+    }
+
+
+    private void executarAcoesDoHit(RaycastHit hit)
+    {
+        Debug.Log("raycast:> " + hit.transform.gameObject.layer);
+        possibleGrab = false;
+        possibleInteraction = false;
+
+        if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela)
+        {
+
+            if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
+                && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>() != null && hit.transform.GetComponent<Panela>().fogueira != null)
+            {
+                interacaoPanelas(hit);
+            }
+            else
+            {
+                if (inventario.itemNaMao == null)
+                {
+                    if (Input.GetMouseButtonDown(1)) //Segura objeto
+                    {
+                        transferOwnerPV(hit.transform.gameObject);
+                        grabedObj = hit.transform.gameObject;
+                    }
+                    if (Input.GetKeyDown(KeyCode.E)) //Pega item do chao
+                    {
+                        transferOwnerPV(hit.transform.gameObject);
+                        ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
+                        bool destruirObjetoDaCena = true;
+                        if (hit.transform.tag == tagConsumivelNaPanela)
+                        {
+                            pegarConsumivelNaPanela(hit);
+                            destruirObjetoDaCena = false;
+                            return;
+                        }
+                        if (hit.transform.tag == tagItemDrop && (itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
+                        {
+                            Panela panela = itemDrop.gameObject.GetComponent<Panela>();
+                            Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
+                            if (!itemNaPanela.Equals(Item.NomeItem.Nenhum))
+                            {
+                                if (inventario.AdicionarItemAoInventario(itemNaPanela, 1))
+                                {
+                                    panela.RetirarConsumivelDaPanela();
+                                }
+                                else
+                                {
+                                    Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                                }
+                                return;
+                            }
+                            else
+                            {
+                                panela.fogueira.RetirarPanelaTigela();
+                            }
+                            destruirObjetoDaCena = false;
+                        }
+                        if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                        {
+                            if (destruirObjetoDaCena)
+                            {
+                                if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
+                                else GameObject.Destroy(hit.transform.gameObject);
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                        }
+                    }
+                    possibleGrab = true;
+                }
+            }
+        }
+        else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null
+            && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
+        {
+            StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
+            if (objPai != null && objPai.isDead)
+            {
+                interacaoDissecar(objPai);
+            }
+        }
+        else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
+        {
+            interacaoBeberAgua(hit);
+        }
+        else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.VaraDePesca))
+        {
+            interacaoPesca(hit);
+        }
+        else if (hit.transform.tag == tagAreaColeta && hit.transform.gameObject.GetComponent<AreaDeColeta>().isAreaAtiva && inventario.itemNaMao == null)
+        {
+            interacaoAreaDeColeta(hit);
+        }
+        else if (hit.transform.tag == tagArvore && hit.transform.gameObject.GetComponent<ArvoreFrutifera>() != null)
+        {
+            interacaoArvore(hit);
+        }
+        else if (hit.transform.tag == tagIncendiavel && hit.transform.GetComponent<Fogueira>() != null)
+        {
+            interacaoIncendiaveis(hit);
+        }
+        else if (hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloAvancado)))
+        {
+            interacaoReconstruivelQuebrado(hit);
         }
     }
 

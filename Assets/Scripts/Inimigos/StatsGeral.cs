@@ -82,9 +82,9 @@ public class StatsGeral : MonoBehaviour
 
     public void DestruirGameObject()
     {
-        if(this.gameObject.tag == "construcao")
+        if(this.gameObject.tag == "ConstrucaoStats")
         {
-            ConstrucoesController construcaoController = this.GetComponent<ConstrucoesController>();
+            ConstrucoesController construcaoController = this.GetComponentInParent<ConstrucoesController>();
             construcaoController.MandarDestruirTodasAsConstrucoesConectadas();
         }
         else

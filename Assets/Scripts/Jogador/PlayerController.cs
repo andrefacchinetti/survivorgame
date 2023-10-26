@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public Inventario inventario;
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
+	[SerializeField] public ControleConstruir controleConstruir;
 	[SerializeField] public Animator animator, animatorVaraDePesca;
 	
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;

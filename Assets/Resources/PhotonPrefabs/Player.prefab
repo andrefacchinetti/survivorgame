@@ -12996,6 +12996,7 @@ MonoBehaviour:
   tagIncendiavel: Incendiavel
   tagArvore: Arvore
   tagAreaColeta: AreaColeta
+  tagReconstruivelQuebrado: ReconstruivelQuebrado
   forceGrab: 20
   maxDistPlayer: 1
   distanciaMaxParaPegarObj: 3
@@ -13291,6 +13292,7 @@ MonoBehaviour:
   distanciaMax: 50
   rotacao: 0
   velRotacao: 1
+  construcaoControllerHit: {fileID: 0}
   objeto: {fileID: 4757636977739658029}
   constructionUI: {fileID: 8910633890357106667}
   menuPrebfab: {fileID: 383610491722846108, guid: 46aff0721a3637c408f1194635a39714, type: 3}
@@ -13518,6 +13520,7 @@ MonoBehaviour:
   inventario: {fileID: 1778224454}
   armaduras: {fileID: 2978406032827318288}
   grabObjects: {fileID: 6737041256933510498}
+  controleConstruir: {fileID: 7087742774748206309}
   animator: {fileID: 6737041257339993087}
   animatorVaraDePesca: {fileID: 162749581640212520}
   statsJogador: {fileID: 0}
@@ -13528,6 +13531,7 @@ MonoBehaviour:
   fogueiraAcendendo: {fileID: 0}
   pescaPescando: {fileID: 0}
   arvoreColetando: {fileID: 0}
+  objConsertando: {fileID: 0}
   itemConsumindo: {fileID: 0}
   itemColetando: {fileID: 0}
   nomeItemColetando: 0
@@ -13733,6 +13737,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: coletandoFrutas
+  - Type: 9
+    SynchronizeType: 0
+    Name: coletandoBaixo
+  - Type: 9
+    SynchronizeType: 0
+    Name: consertando
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
