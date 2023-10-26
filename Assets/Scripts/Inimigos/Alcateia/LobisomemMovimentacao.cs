@@ -87,6 +87,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 // O raio colidiu com um objeto, faça algo com ele
                 Debug.Log("construcao encontrada... atacando: " + hit.collider.name);
+                agent.ResetPath();
                 return hit.collider.transform;
             }
         }
@@ -123,6 +124,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    Transform obstaculo;
     private void verificarAtaque()
     {
         if (targetInimigo == null) return;
@@ -139,7 +141,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else // Persegue o alvo
         {
-            Transform obstaculo = obterObstaculoNoCaminhoDoInimigo();
+            obstaculo = obterObstaculoNoCaminhoDoInimigo();
             if(obstaculo != null)
             {
                 atacarAlvo(obstaculo.position);
@@ -410,6 +412,31 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    private bool VerificarSeAlcancaAlvo(Transform transform)
+    {
+        if(!EstouDistanteDe(transform.position, 2))
+        {
+            NavMeshPath path = new NavMeshPath();
+
+            if (NavMesh.CalculatePath(agent.transform.position, transform.position, NavMesh.AllAreas, path))
+            {
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    Debug.Log("O NavMeshAgent pode alcançar o alvo.");
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("O NavMeshAgent não pode alcançar o alvo.");
+                    return false;
+                }
+            }
+            return false;
+        }
+        Debug.Log("O NavMeshAgent esta indo pra perto do alvo.");
+        return true;
+    }
+
     void OnTriggerStay(Collider other)
     {
         if (targetInimigo != null || statsGeral.isDead) return;
@@ -418,10 +445,13 @@ public class LobisomemMovimentacao : MonoBehaviour
             Debug.Log("LOBISOMEM ACHOU player");
             if (targetInimigo == null && lobisomemStats.isEstadoAgressivo && !other.GetComponent<StatsGeral>().isDead)
             {
-                targetInimigo = other.GetComponent<StatsGeral>();
-                targetComida = null;
-                targetArvore = null;
-                Debug.Log("LOBISOMEM indo atras do player");
+                if (VerificarSeAlcancaAlvo(other.gameObject.GetComponent<Transform>()))
+                {
+                    targetInimigo = other.GetComponent<StatsGeral>();
+                    targetComida = null;
+                    targetArvore = null;
+                    Debug.Log("LOBISOMEM indo atras do player");
+                }
             }
         }
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
