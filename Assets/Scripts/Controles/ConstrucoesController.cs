@@ -27,13 +27,11 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
         if (construcaoNova.isPlataforma) return;
         if (isTenhoPai())
         {
-            Debug.Log("conectou no pai da construcao");
             plataformaPai.listaConstrucoesConectadas.Add(construcaoNova);
             construcaoNova.plataformaPai = plataformaPai;
         }
         else 
         {
-            Debug.Log("conectou na plataforma");
             listaConstrucoesConectadas.Add(construcaoNova);
             construcaoNova.plataformaPai = this;
         }

@@ -21,6 +21,7 @@ public class LobisomemStats : MonoBehaviour
     [SerializeField] public float leadTime = 1.2f, leadDistance = 2, tempoMudancaDeTurnoProfissoes = 300;
     LobisomemController lobisomemController;
     StatsGeral statsGeral;
+    [SerializeField] Collider colliderCorpo;
 
 
     private void Awake()
@@ -58,7 +59,7 @@ public class LobisomemStats : MonoBehaviour
             lobisomemController.lobisomemHumanoMovimentacao.agent.isStopped = true;
             lobisomemController.lobisomemHumanoMovimentacao.agent.speed = 0;
         }
-        
+        colliderCorpo.gameObject.SetActive(false);
         statsGeral.isDead = true;
         Debug.Log("Lobisomen morreu");
     }

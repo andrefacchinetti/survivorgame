@@ -181,6 +181,10 @@ public class ControleConstruir : MonoBehaviour
         else{
             objeto.SetActive(false);
         }
+
+        objeto.transform.position = objPosition;
+        objeto.transform.rotation = objRotation;
+        AlterarCor(VerificarSePodeConstruir() && podeConstruir);
     }
 
     private void ToggleModoConstrucao(bool toggle)
@@ -257,15 +261,6 @@ public class ControleConstruir : MonoBehaviour
         
     }
 
-    /* public bool VerificarSePodeConstruir(){
-        Ray r1 = new Ray(new Vector3(objeto.transform.position.x - (meshObjeto.bounds.size.x/2),objeto.transform.position.y - (meshObjeto.bounds.size.y/2), objeto.transform.position.z - (meshObjeto.bounds.size.z/2)),new Vector3(objeto.transform.position.x - (meshObjeto.bounds.size.x / 2), objeto.transform.position.y - (meshObjeto.bounds.size.y / 2)- 0.1f, objeto.transform.position.z - (meshObjeto.bounds.size.z / 2)));
-    } */
-
-    void LateUpdate(){
-        objeto.transform.position = objPosition;
-        objeto.transform.rotation = objRotation;
-        AlterarCor(VerificarSePodeConstruir() && podeConstruir);
-    }
 
     bool VerificarSePodeConstruir(){
         Collider[] colliders = Physics.OverlapBox(objeto.transform.position, new Vector3(objeto.transform.localScale.x * meshObjeto.bounds.size.x / 2 * 0.90f, objeto.transform.localScale.y * meshObjeto.bounds.size.y / 2 * 0.90f, objeto.transform.localScale.z * meshObjeto.bounds.size.z / 2 * 0.90f), objeto.transform.rotation, lMaskProibidos);
