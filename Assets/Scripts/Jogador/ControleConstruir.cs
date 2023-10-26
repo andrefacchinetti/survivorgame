@@ -8,6 +8,7 @@ public class ControleConstruir : MonoBehaviour
 {
     public bool isAtivo = false, podeJuntar, isConectado, podeConstruir, isMadeira;
     public float distanciaMax, rotacao, velRotacao;
+    public ConstrucoesController construcaoControllerHit;
     public GameObject objeto;
     public GameObject constructionUI, menuPrebfab, abaPrefab, butConsPrefab;
     public RectTransform indicadorHud;
@@ -164,13 +165,17 @@ public class ControleConstruir : MonoBehaviour
             if(Input.GetButtonDown("Fire1")){
                 if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo) && podeConstruir){
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
+                    if(construcaoControllerHit != null)
+                    {
+                        construcaoControllerHit.inserirConstrucaoNaPlataforma(instanciado.GetComponent<ConstrucoesController>());
+                    }
                     inventario.RemoverItemDoInventarioPorNome(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra, construcao.custo);
                     try{
                         instanciado.GetComponent<Construcao>().disativarPlaceHolder(hit.collider.gameObject);
                     }
                     catch{}
+                    construcaoControllerHit = null;
                 }
-                
             }
         }
         else{
@@ -201,7 +206,8 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = hit.transform.rotation;
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.eulerAngles.y + rotacao - (rotacao % 90), objRotation.eulerAngles.z));
                 objPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + altura, hit.transform.position.z);
-                Debug.Log(construcao.altura);
+                construcaoControllerHit = hit.collider.gameObject.GetComponentInParent<ConstrucoesController>();
+                Debug.Log(construcao.altura + "setou contrucaoControllerHit: ");
                 isConectado = true;
             }
             else{
@@ -210,6 +216,8 @@ public class ControleConstruir : MonoBehaviour
                 direction.y = 0f;
                 objRotation = Quaternion.LookRotation(direction);
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x,objRotation.eulerAngles.y + rotacao, objRotation.eulerAngles.z));
+                construcaoControllerHit = null;
+                Debug.Log("setou contrucaoControllerHit else: ");
             }
         }
         else{
@@ -227,11 +235,13 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.y + rotacao, objRotation.eulerAngles.z));
                 //-objeto.transform.LookAt(new Vector3(transform.position.x,   objeto.transform.position.y, transform.position.z));
                 //-objeto.transform.Rotate(new Vector3(0f, rotacao, 0f));
+                Debug.Log("setou contrucaoControllerHit else else if: ");
             }
             else{
                 podeConstruir = false;
                 Debug.Log("Sem chão");
             }
+            construcaoControllerHit = null;
         }
     }
 

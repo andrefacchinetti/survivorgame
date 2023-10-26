@@ -82,8 +82,16 @@ public class StatsGeral : MonoBehaviour
 
     public void DestruirGameObject()
     {
-        if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
-        else GameObject.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
+        if(this.gameObject.tag == "construcao")
+        {
+            ConstrucoesController construcaoController = this.GetComponent<ConstrucoesController>();
+            construcaoController.MandarDestruirTodasAsConstrucoesConectadas();
+        }
+        else
+        {
+            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
+            else GameObject.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
+        }
     }
 
     public Transform obterTransformPositionDoCollider()
