@@ -12,6 +12,7 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public GameObject objPaiParaDestruir;
 
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
+    [SerializeField] public GameObject dropPosition;
     [HideInInspector] public bool isAttacking;
 
     StatsJogador jogadorStats;
@@ -29,6 +30,7 @@ public class StatsGeral : MonoBehaviour
         dropaRecursosStats = GetComponentInParent<DropaRecursosStats>();
         jogadorStats = GetComponentInParent<StatsJogador>();
         reconstruivelStats = GetComponentInParent<ReconstruivelStats>();
+        if (dropPosition == null) dropPosition = this.gameObject;
     }
 
     private void Start()
@@ -75,7 +77,7 @@ public class StatsGeral : MonoBehaviour
             {
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
                 string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
-                ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, transform.position, transform.rotation, PV.ViewID);
+                ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, PV.ViewID);
             }
         }
     }

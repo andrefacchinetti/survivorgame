@@ -19,7 +19,7 @@ public class LobisomemStats : MonoBehaviour
     [SerializeField] public float destinationOffset = 1f;
     [SerializeField] public float walkSpeed = 0.8f, runSpeed = 1.5f, speedVariation = 0.5f;
     [SerializeField] public float leadTime = 1.2f, leadDistance = 2, tempoMudancaDeTurnoProfissoes = 300;
-    LobisomemController lobisomemController;
+    [SerializeField][HideInInspector] public LobisomemController lobisomemController;
     StatsGeral statsGeral;
     [SerializeField] Collider colliderCorpo;
 
@@ -59,7 +59,7 @@ public class LobisomemStats : MonoBehaviour
             lobisomemController.lobisomemHumanoMovimentacao.agent.isStopped = true;
             lobisomemController.lobisomemHumanoMovimentacao.agent.speed = 0;
         }
-        colliderCorpo.gameObject.SetActive(false);
+        colliderCorpo.isTrigger = true;
         statsGeral.isDead = true;
         Debug.Log("Lobisomen morreu");
     }

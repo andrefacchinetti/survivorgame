@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
 			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
 			string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
-			ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, corpoDissecando.transform.position, corpoDissecando.transform.rotation, PV.ViewID);
+			ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position, corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.rotation, PV.ViewID);
         }
 		itemsDropsPosDissecar = new List<Item.ItemDropStruct>();
 		if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(corpoDissecando);
