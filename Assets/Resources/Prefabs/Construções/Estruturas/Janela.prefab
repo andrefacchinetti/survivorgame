@@ -99,7 +99,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -116,7 +116,6 @@ GameObject:
   - component: {fileID: 5112569466291525948}
   - component: {fileID: 8168585530416535193}
   - component: {fileID: 6248834690775474771}
-  - component: {fileID: 5966521992326075907}
   - component: {fileID: 7934501419563461652}
   - component: {fileID: -555905324053755842}
   - component: {fileID: 8196159800202710434}
@@ -124,6 +123,7 @@ GameObject:
   - component: {fileID: 6149961691376895907}
   - component: {fileID: 4651112799734553703}
   - component: {fileID: -2122430501911576991}
+  - component: {fileID: 1130947780171228974}
   m_Layer: 0
   m_Name: Janela
   m_TagString: ConstrucaoStats
@@ -205,28 +205,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5966521992326075907
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600417980298085254}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1952307752855211114, guid: 3c331b9473017804ab413fa6da44923d, type: 3}
 --- !u!114 &7934501419563461652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +259,7 @@ MonoBehaviour:
   isDead: 0
   objPaiParaDestruir: {fileID: 0}
   dropsItems: []
+  dropPosition: {fileID: 0}
   isAttacking: 0
 --- !u!54 &-2400238450288140867
 Rigidbody:
@@ -337,7 +316,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 1.35, y: 1.35, z: 0.17500001}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.019000001}
   m_TimeToStationary: 0.5
@@ -356,6 +335,27 @@ MonoBehaviour:
   isPlataforma: 0
   plataformaPai: {fileID: 0}
   listaConstrucoesConectadas: []
+--- !u!65 &1130947780171228974
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600417980298085254}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.7000003, y: 2.7, z: 0.073549174}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5812186823122717404
 GameObject:
   m_ObjectHideFlags: 0

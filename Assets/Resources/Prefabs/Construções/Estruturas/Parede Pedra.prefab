@@ -142,7 +142,6 @@ GameObject:
   - component: {fileID: 2793224352813420925}
   - component: {fileID: 1255480833941511896}
   - component: {fileID: 3929578018191043090}
-  - component: {fileID: 3674269118101216834}
   - component: {fileID: 6413650622524939385}
   - component: {fileID: 2115368103204157413}
   - component: {fileID: -7716307185015830462}
@@ -150,6 +149,7 @@ GameObject:
   - component: {fileID: 1407118398203200102}
   - component: {fileID: -6631436425137160494}
   - component: {fileID: 5805015059697655900}
+  - component: {fileID: 4230863468112096274}
   m_Layer: 0
   m_Name: Parede Pedra
   m_TagString: ConstrucaoStats
@@ -232,28 +232,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3674269118101216834
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3280966970121014215}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1952307752855211114, guid: 3c331b9473017804ab413fa6da44923d, type: 3}
 --- !u!114 &6413650622524939385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +258,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 1.15, y: 1.15, z: 0.065}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.037}
   m_TimeToStationary: 0.5
@@ -324,6 +302,7 @@ MonoBehaviour:
   isDead: 0
   objPaiParaDestruir: {fileID: 0}
   dropsItems: []
+  dropPosition: {fileID: 0}
   isAttacking: 0
 --- !u!54 &1407118398203200102
 Rigidbody:
@@ -383,6 +362,27 @@ MonoBehaviour:
   isPlataforma: 0
   plataformaPai: {fileID: 0}
   listaConstrucoesConectadas: []
+--- !u!65 &4230863468112096274
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3280966970121014215}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.7000003, y: 2.7013395, z: 0.22064528}
+  m_Center: {x: 0.0019426942, y: -0.0075632334, z: -0.0001606755}
 --- !u!1 &3502095679115956216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,7 +1160,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 7214344983954352170}
   - component: {fileID: 3656057188559014500}
   - component: {fileID: 8276280386265283690}
-  - component: {fileID: 8896430856034257466}
   - component: {fileID: 2411425745639997282}
   - component: {fileID: 162838025045103879}
+  - component: {fileID: 2913197991771824687}
   m_Layer: 3
   m_Name: Muro_madeira_inteiro
   m_TagString: ConstrucaoStats
@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 39348222206421724}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -20.721558, y: 2.83, z: -25.125809}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0.19264}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1052944281539167656}
@@ -58,6 +58,7 @@ MonoBehaviour:
   isDead: 0
   objPaiParaDestruir: {fileID: 0}
   dropsItems: []
+  dropPosition: {fileID: 0}
   isAttacking: 0
 --- !u!54 &6461471862816427161
 Rigidbody:
@@ -162,22 +163,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!208 &8896430856034257466
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 39348222206421724}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 3.69, y: 2.43, z: 1.005}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -0.001, y: -0.11800001, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!23 &2411425745639997282
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -228,6 +213,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39348222206421724}
   m_Mesh: {fileID: 6405055333489277325, guid: bc2dede5ba1f2ad40ba67fbf8d6e03ad, type: 3}
+--- !u!208 &2913197991771824687
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39348222206421724}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 3.0040002, y: 2.1590002, z: 0.77500004}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.001, y: -0.11800001, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &2230529719356574049
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3320953278123170597
 Transform:
   m_ObjectHideFlags: 0
@@ -328,7 +329,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
