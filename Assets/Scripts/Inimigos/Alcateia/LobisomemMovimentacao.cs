@@ -14,19 +14,17 @@ public class LobisomemMovimentacao : MonoBehaviour
 
 
     //MOVIMENTACAO
-    public StatsGeral targetInimigo;
-    public GameObject targetComida;
-    public Transform targetArvore;
-    public Transform targetObstaculo;
+    [SerializeField][HideInInspector] public StatsGeral targetInimigo;
+    [SerializeField] [HideInInspector] public GameObject targetComida;
+    [SerializeField] [HideInInspector] public Transform targetObstaculo;
 
     private float timer;
-    
 
-    [SerializeField] LobisomemController lobisomemController;
-    [SerializeField] LobisomemStats lobisomemStats;
-    [SerializeField] StatsGeral statsGeral;
-    [SerializeField] public Animator animator;
-    [SerializeField] public NavMeshAgent agent;
+    [SerializeField] [HideInInspector] LobisomemController lobisomemController;
+    [SerializeField] [HideInInspector] LobisomemStats lobisomemStats;
+    [SerializeField] [HideInInspector] public StatsGeral statsGeral;
+    [SerializeField] [HideInInspector] public Animator animator;
+    [SerializeField] [HideInInspector] public NavMeshAgent agent;
 
     private void Start()
     {
@@ -34,91 +32,25 @@ public class LobisomemMovimentacao : MonoBehaviour
         animator = GetComponent<Animator>();
         statsGeral = GetComponentInParent<StatsGeral>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
+        lobisomemController = GetComponentInParent<LobisomemController>();
         timer = timerParaAndarAleatoriamente;
-        InvokeRepeating("FinalTurnoProfissao", lobisomemStats.tempoMudancaDeTurnoProfissoes, lobisomemStats.tempoMudancaDeTurnoProfissoes);
     }
 
     private void Update()
     {
         if (statsGeral.isDead) return;
-        if (targetArvore != null)
+        animator.SetBool("subindoArvore", false);
+        animator.SetBool("paradoArvore", false);
+        movimentacaoAlfa();
+        if (agent.isOnNavMesh && !agent.pathPending && agent.remainingDistance < 0.1f)
         {
-            float distanceToTarget = Vector3.Distance(transform.position, targetArvore.position);
-            if (distanceToTarget <= 0.5f)//pousou na arvore
-            {
-                agent.ResetPath();
-                Invoke("SairDaArvore", tempoParadoNaArvore);
-            }
-            else
-            {
-                agent.speed = lobisomemStats.walkSpeed;
-                MoveToPosition(targetArvore.position);
-            }
-           
+            agent.ResetPath(); // o animal chegou ao seu destino, pare de se mover
         }
-        else
-        {
-            animator.SetBool("subindoArvore", false);
-            animator.SetBool("paradoArvore", false);
-            if (LobisomemController.Categoria.Omega.Equals(lobisomemController.categoria)) movimentacaoOmega();
-            else if (LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) movimentacaoAlfa();
-            else if (LobisomemController.Categoria.Beta.Equals(lobisomemController.categoria)) movimentacaoBeta();
-            if (agent.isOnNavMesh && !agent.pathPending && agent.remainingDistance < 0.1f)
-            {
-                agent.ResetPath(); // o animal chegou ao seu destino, pare de se mover
-            }
-            verificarProximoComida();
-        }
+        verificarProximoComida();
         verificarCorrerAndar();
         verificarAtaque();
     }
-
-    private void LateUpdate()
-    {
-        AtivarObjetosMaoDasAnimacoes();
-    }
-
-    private Transform obterObstaculoNoCaminhoDoInimigo()
-    {
-        if (targetObstaculo != null) return targetObstaculo;
-
-        Collider[] colliders = Physics.OverlapSphere(transform.position, lobisomemStats.distanciaDeAtaque);
-        foreach (Collider col in colliders)
-        {
-            if (col.tag == "ConstrucaoStats")
-            {
-                Debug.Log("construcao encontrada..." + col.name);
-                agent.ResetPath();
-                return col.transform;
-            }
-        }
-        Debug.Log("construcao NAO encontrada ");
-        return null;
-    }
-
-    private bool procurarObstaculoPerto(Transform targetTransform, float radius)
-    {
-        Collider[] colliders = Physics.OverlapSphere(targetTransform.position, radius);
-
-        foreach (Collider col in colliders)
-        {
-            if (col.tag == "ConstrucaoStats")
-            {
-                // Há um obstáculo perto do alvo
-                Debug.Log("Obstáculo encontrado: " + col.name);
-                return true;
-            }
-        }
-
-        // Não há obstáculos perto do alvo
-        return false;
-    }
-
-    void SairDaArvore()
-    {
-        targetArvore = null;
-    }
-
+  
     private void verificarProximoComida()
     {
         if(targetComida != null)
@@ -178,9 +110,9 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void atacarObstaculoOuInimigo()
     {
-        targetObstaculo = obterObstaculoNoCaminhoDoInimigo();
         if (targetObstaculo != null)
         {
+            if (!targetObstaculo.gameObject.activeSelf) targetObstaculo = null;
             if (isPodeAtacarAlvo(transform, targetObstaculo.position))
             {
                 atacarAlvo(targetObstaculo.position);
@@ -194,7 +126,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else
         {
-            Debug.Log("Perseguindo inimigo");
             perseguirInimigo();
         }
     }
@@ -218,49 +149,30 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else
         {
-            if(lobisomemStats.isIndoAteArvore || lobisomemStats.isSubindoNaArvore)
-            {
-                agent.speed = lobisomemStats.walkSpeed;
-            }
-            else if(targetInimigo == null)
-            {
-                agent.speed = lobisomemStats.walkSpeed;
-            }
+           if(targetInimigo == null)
+           {
+               agent.speed = lobisomemStats.walkSpeed;
+           }
         }
         setarAnimacaoPorVelocidade();
     }
 
     private void setarAnimacaoPorVelocidade()
     {
-        animator.SetBool("subindoArvore", lobisomemStats.isSubindoNaArvore);
-        if (lobisomemStats.isSubindoNaArvore)
+        if (agent.velocity.magnitude > 1f)
         {
-            if (agent.velocity.magnitude <= 0.001)
-            {
-                animator.SetBool("paradoArvore", true);
-            }
-            else
-            {
-                animator.SetBool("paradoArvore", false);
-            }
+            animator.SetBool("run", true);
+            animator.SetBool("walk", false);
+        }
+        else if (agent.velocity.magnitude > 0.05f)
+        {
+            animator.SetBool("walk", true);
+            animator.SetBool("run", false);
         }
         else
         {
-            if (agent.velocity.magnitude > 1f)
-            {
-                animator.SetBool("run", true);
-                animator.SetBool("walk", false);
-            }
-            else if (agent.velocity.magnitude > 0.05f)
-            {
-                animator.SetBool("walk", true);
-                animator.SetBool("run", false);
-            }
-            else
-            {
-                animator.SetBool("walk", false);
-                animator.SetBool("run", false);
-            }
+            animator.SetBool("walk", false);
+            animator.SetBool("run", false);
         }
     }
 
@@ -268,11 +180,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (lobisomemController.aldeiaController == null) return false;
         return EstouDistanteDe(lobisomemController.aldeiaController.centroDaAldeia.transform.position, distanciaMaximaPontoBase);
-    }
-
-    private bool estaDistanteDoAlfa()
-    {
-        return EstouDistanteDe(lobisomemController.alfa.transform.position, distanciaMaximaDoSeuAlfa);
     }
 
     private bool EstouDistanteDe(Vector3 destino, float distanciaMaximaDestino)
@@ -283,11 +190,6 @@ public class LobisomemMovimentacao : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    private void movimentacaoOmega()
-    {
-        movimentarAleatoriamentePeloMapa();
     }
 
     private void movimentarAleatoriamentePeloMapa()
@@ -303,14 +205,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if (targetInimigo == null)
             {
-                if (lobisomemController.forma == LobisomemController.Forma.Humano && !lobisomemStats.isEstadoAgressivo && lobisomemController.categoria != LobisomemController.Categoria.Omega)
-                {
-                    TrabalharNaProfissao();
-                }
-                else
-                {
-                    MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
-                }
+                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
             }
         }
     }
@@ -318,58 +213,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void movimentacaoAlfa()
     {
         movimentarAleatoriamentePeloMapa();
-    }
-
-    public void ComandosAlfaParaBetas()
-    {
-        if (!LobisomemController.Categoria.Alfa.Equals(lobisomemController.categoria)) return;
-        Uivar();
-        foreach (LobisomemController beta in lobisomemController.betas)
-        {
-            if (lobisomemStats.isEstadoAgressivo)
-            {
-                beta.lobisomemStats.isEstadoAgressivo = true;
-                beta.lobisomemMovimentacao.targetInimigo = targetInimigo;
-            }
-            else
-            {
-                beta.lobisomemStats.isEstadoAgressivo = false;
-                beta.lobisomemMovimentacao.targetInimigo = null;
-            }
-        }
-    }
-
-    public void ComandosBetasParaAlfa()
-    {
-        lobisomemController.alfa.lobisomemStats.AumentarNivelAgressividade(15);
-    }
-
-    private void movimentacaoBeta()
-    {
-        if (lobisomemController.alfa == null || lobisomemController.alfa.statsGeral.isDead)
-        {
-            lobisomemStats.isEstadoAgressivo = true;
-            movimentarAleatoriamentePeloMapa();
-        }
-        else
-        {
-            if (estaDistanteDoAlfa())
-            {
-                targetInimigo = null;
-                MoveToPosition(lobisomemController.alfa.transform.position);
-            }
-            else
-            {
-                if(targetInimigo != null)
-                {
-                    perseguirInimigo();
-                }
-                else
-                {
-                    movimentarAleatoriamentePeloMapa();
-                }
-            }
-        }
     }
 
     private void MoveToPosition(Vector3 position)
@@ -415,45 +258,54 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void perseguirInimigo()
     {
         if (targetInimigo == null) return;
-        Debug.Log("perseguir inimigo");
-        Vector3 targetOffset = Random.insideUnitSphere * lobisomemStats.destinationOffset;
-        Vector3 leadTarget;
-        // Calcula a posi��o futura do jogador com base na sua velocidade atual
-        if (targetInimigo.GetComponent<CharacterController>() != null)
+
+       
+
+        Vector3 targetVelocity = GetTargetVelocity(targetInimigo);
+
+        if (targetVelocity != Vector3.zero)
         {
-            leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * lobisomemStats.leadTime);
+            Vector3 predictedPosition = PredictTargetPosition(targetInimigo, targetVelocity);
+
+            Vector3 randomOffset = Random.insideUnitSphere * lobisomemStats.destinationOffset;
+
+            Vector3 destination = predictedPosition + (predictedPosition - targetInimigo.obterTransformPositionDoCollider().position).normalized * lobisomemStats.leadDistance + randomOffset;
+
+            // Verifica se o agent já tem um path e se ele está próximo do destino
+            if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > lobisomemStats.pathUpdateDistanceThreshold))
+            {
+                Debug.Log("Perseguindo inimigo 1");
+                MoveToPosition(destination);
+            }
+
+            agent.speed = lobisomemStats.runSpeed;
         }
         else
         {
-            leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized * lobisomemStats.leadTime);
+            if(agent.velocity == Vector3.zero)
+            {
+                Debug.Log("Perseguindo inimigo 2");
+                MoveToPosition(targetInimigo.obterTransformPositionDoCollider().position);
+            }
         }
-        // Calcula o offset da posi��o futura do jogador
-        Vector3 leadTargetOffset = (leadTarget - targetInimigo.obterTransformPositionDoCollider().position).normalized * lobisomemStats.leadDistance;
-        // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
-        Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
-        // Define a posi��o de destino para o inimigo
-        MoveToPosition(destination);
-
-        // Aplica uma varia��o de velocidade aleat�ria
-        /*agent.speed = Random.Range(lobisomemStats.walkSpeed, lobisomemStats.runSpeed);
-        if (agent.speed > 1.5f) agent.speed = 1.5f;*/
-        agent.speed = lobisomemStats.runSpeed;
     }
 
-    void OnTriggerEnter(Collider other)
+    private Vector3 GetTargetVelocity(StatsGeral target)
     {
-        if (other.tag == "Player")
+        if (target.GetComponent<CharacterController>() != null)
         {
-            lobisomemStats.VerificarSePlayerEstaArmado(other.gameObject);
+            return target.GetComponent<CharacterController>().velocity.normalized;
         }
-        if (lobisomemController.categoria == LobisomemController.Categoria.Omega && other.gameObject.tag == "NavMeshVertical" && targetInimigo == null && targetComida == null && !lobisomemStats.isSubindoNaArvore && !lobisomemStats.isIndoAteArvore && other.GetComponent<JumpToTree>() != null)
+        else if (target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>() != null)
         {
-            Debug.Log("jump to tree");
-            lobisomemStats.isIndoAteArvore = true;
-            agent.speed = lobisomemStats.walkSpeed;
-            targetArvore = other.GetComponent<JumpToTree>().treeDestination;
-            MoveToPosition(targetArvore.position);
+            return target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized;
         }
+        return Vector3.zero;
+    }
+
+    private Vector3 PredictTargetPosition(StatsGeral target, Vector3 velocity)
+    {
+        return target.obterTransformPositionDoCollider().position + velocity * lobisomemStats.leadTime;
     }
 
     private bool VerificarSeAlcancaAlvo(Transform transform)
@@ -490,12 +342,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (targetInimigo != null || statsGeral.isDead) return;
         if (other.gameObject.tag == "Player")
         {
-            if (targetInimigo == null && lobisomemStats.isEstadoAgressivo && !other.GetComponent<StatsGeral>().isDead)
+            if (targetInimigo == null && !other.GetComponent<StatsGeral>().isDead)
             {
                 Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
                 targetInimigo = other.GetComponent<StatsGeral>();
                 targetComida = null;
-                targetArvore = null;
             }
         }
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
@@ -505,7 +356,6 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 Debug.Log("LOBISOMEM ACHOU ANIMAL");
                 targetComida = null;
-                targetArvore = null;
                 if (objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)
                 {
                     if (objPai.gameObject.GetComponent<AnimalController>().isAnimalAgressivo)
@@ -519,7 +369,7 @@ public class LobisomemMovimentacao : MonoBehaviour
                 }
             }
         }
-        if (targetInimigo == null && targetArvore == null && other.tag == "ItemDrop")
+        if (targetInimigo == null && other.tag == "ItemDrop")
         {
             if (other.GetComponent<Consumivel>() != null && other.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
             {
@@ -528,7 +378,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private void Fugir()
+    public void Fugir()
     {
         Debug.Log("lobisomem fugindo");
         targetInimigo = null;
@@ -559,87 +409,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (targetInimigo != null || animator.GetCurrentAnimatorStateInfo(0).IsName("uivar")) return;
         animator.SetTrigger("uivar");
-    }
-
-    //PROFISSOES
-
-    private void TrabalharNaProfissao()
-    {
-        if (lobisomemController.profissao == LobisomemController.Profissao.Alfa) trabalharProfissaoAlfa();
-        else if (lobisomemController.profissao == LobisomemController.Profissao.Seguranca) trabalharProfissaoSeguranca();
-        else if (lobisomemController.profissao == LobisomemController.Profissao.Pescador) trabalharProfissaoPescador();
-    }
-
-    private void trabalharProfissaoAlfa()
-    {
-        MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
-    }
-
-    int indexLocaisSeguranca = 0; //Alterar index por tempo
-    private void trabalharProfissaoSeguranca()
-    {
-        Vector3 positionLocalSeguranca = lobisomemController.aldeiaController.locaisSeguranca[indexLocaisSeguranca].localPosicao.position;
-        if (EstouDistanteDe(positionLocalSeguranca, 1))
-        {
-            MoveToPosition(positionLocalSeguranca);
-        }
-        else
-        {
-            if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("poseSeguranca");
-            transform.LookAt(lobisomemController.aldeiaController.locaisSeguranca[indexLocaisSeguranca].localOlhando);
-        }
-    }
-
-    int indexLocaisPesca = 0; //Alterar index por tempo
-    private void trabalharProfissaoPescador()
-    {
-        if (entregandoItemProfissao)
-        {
-            Vector3 positionLocal = lobisomemController.aldeiaController.armazemPesca.transform.position;
-            if (EstouDistanteDe(positionLocal, 1))
-            {
-                MoveToPosition(lobisomemController.aldeiaController.armazemPesca.transform.position);
-            }
-            else
-            {
-                entregandoItemProfissao = false;
-            }
-        }
-        else
-        {
-            Vector3 positionLocal = lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localPosicao.position;
-            if (EstouDistanteDe(positionLocal, 1))
-            {
-                MoveToPosition(positionLocal);
-                voltouProLocalDaProfissao = false;
-            }
-            else
-            {
-                if (agent.velocity.magnitude <= 0.001) animator.SetTrigger("profissaoPescando");
-                transform.LookAt(lobisomemController.aldeiaController.locaisPesca[indexLocaisPesca].localOlhando);
-                voltouProLocalDaProfissao = true;
-            }
-        }
-    }
-
-    //FIM PROFISSOES
-    bool entregandoItemProfissao = false, voltouProLocalDaProfissao = false;
-
-    void FinalTurnoProfissao()
-    {
-        if (lobisomemController.aldeiaController == null || entregandoItemProfissao || !voltouProLocalDaProfissao) return;
-        Debug.Log("fim turno profissao");
-        indexLocaisSeguranca++;
-        if (indexLocaisSeguranca >= lobisomemController.aldeiaController.locaisSeguranca.Count) indexLocaisSeguranca = 0;
-        entregandoItemProfissao = true;
-        voltouProLocalDaProfissao = false;
-    }
-
-    //EVENT ANIMACOES
-
-    private void AtivarObjetosMaoDasAnimacoes()
-    {
-        if(lobisomemController.objProfissaoVaraPesca != null) lobisomemController.objProfissaoVaraPesca.SetActive(animator.GetCurrentAnimatorStateInfo(0).IsName("profissaoPescando"));
     }
 
 }
