@@ -105,23 +105,21 @@ public class LobisomemMovimentacao : MonoBehaviour
     private bool isPodeAtacarAlvo(Transform transformInicial, Vector3 positionTarget)
     {
         float distanceToInimigo = Vector3.Distance(transformInicial.position, positionTarget);
-        return distanceToInimigo <= 3.1f;
+        return distanceToInimigo <= lobisomemStats.distanciaDeAtaque;
     }
 
     private void atacarObstaculoOuInimigo()
     {
         if (targetObstaculo != null)
         {
-            if (!targetObstaculo.gameObject.activeSelf) targetObstaculo = null;
-            if (isPodeAtacarAlvo(transform, targetObstaculo.position))
+            if (!targetObstaculo.gameObject.activeSelf)
             {
-                atacarAlvo(targetObstaculo.position);
                 targetObstaculo = null;
             }
             else
             {
-                Debug.Log("indo ate o obstaculo no caminho...");
-                MoveToPosition(targetObstaculo.position);
+                atacarAlvo(targetObstaculo.position);
+                targetObstaculo = null;
             }
         }
         else

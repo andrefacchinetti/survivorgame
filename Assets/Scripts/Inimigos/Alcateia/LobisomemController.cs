@@ -8,7 +8,7 @@ public class LobisomemController : MonoBehaviour
 
     [SerializeField] [HideInInspector] public LobisomemStats lobisomemStats;
     [SerializeField] [HideInInspector] public StatsGeral statsGeral;
-    [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao, lobisomemHumanoMovimentacao;
+    [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao;
     GameController gameController;
 
     private void Awake()

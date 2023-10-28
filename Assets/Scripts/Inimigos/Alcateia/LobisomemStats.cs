@@ -29,24 +29,14 @@ public class LobisomemStats : MonoBehaviour
 	public void AcoesTomouDano()
 	{
         lobisomemController.lobisomemMovimentacao.animator.SetTrigger("hit");
-        lobisomemController.lobisomemHumanoMovimentacao.animator.SetTrigger("hit");
     }
 
     public void AcoesMorreu()
     {
         if (lobisomemController.statsGeral.isDead) return;
-        if (lobisomemController.lobisomemMovimentacao.isActiveAndEnabled)
-        {
-            lobisomemController.lobisomemMovimentacao.animator.SetBool("isDead", true);
-            lobisomemController.lobisomemMovimentacao.agent.isStopped = true;
-            lobisomemController.lobisomemMovimentacao.agent.speed = 0;
-        }
-        if (lobisomemController.lobisomemHumanoMovimentacao.isActiveAndEnabled)
-        {
-            lobisomemController.lobisomemHumanoMovimentacao.animator.SetBool("isDead", true);
-            lobisomemController.lobisomemHumanoMovimentacao.agent.isStopped = true;
-            lobisomemController.lobisomemHumanoMovimentacao.agent.speed = 0;
-        }
+        lobisomemController.lobisomemMovimentacao.animator.SetBool("isDead", true);
+        lobisomemController.lobisomemMovimentacao.agent.isStopped = true;
+        lobisomemController.lobisomemMovimentacao.agent.speed = 0;
         colliderCorpo.isTrigger = true;
         statsGeral.isDead = true;
         Debug.Log("Lobisomen morreu");
