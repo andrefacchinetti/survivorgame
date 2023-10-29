@@ -50,7 +50,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_ShadowFadeDistance: 10000
   m_UseContactShadow:
     m_Override: 1
-    m_UseOverride: 1
+    m_UseOverride: 0
     m_Level: 0
   m_RayTracedContactShadow: 0
   m_ShadowTint: {r: 0, g: 0, b: 0, a: 1}
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_ShadowVariant: 0
   m_ShadowPrecision: 0
   useOldInspector: 0
-  useVolumetric: 1
+  useVolumetric: 0
   featuresFoldout: 1
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
@@ -247,6 +247,55 @@ Transform:
   m_Father: {fileID: 6652729579810953492}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1537659621590213364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8509933423755590592}
+  - component: {fileID: 2464509441493695479}
+  m_Layer: 0
+  m_Name: Sky
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8509933423755590592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537659621590213364}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6652729579810953492}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2464509441493695479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537659621590213364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: a296996a29f0c684eb0cf3bbfaabb5dd, type: 2}
 --- !u!1 &6652729579810953490
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,8 +330,9 @@ Transform:
   m_Children:
   - {fileID: 330046237}
   - {fileID: 829974367786779408}
+  - {fileID: 8509933423755590592}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6652729579810953491
 MonoBehaviour:
@@ -297,20 +347,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   luzDoSol: {fileID: 330046236}
-  gameHour: 13
+  gameHour: 6
   gameDay: 1
-  gameSpeed: 60
+  gameSpeed: 1
   isNoite: 0
   temperaturaNoite: 0
   temperaturaDia: 20
-  amanhecer: {r: 0.22745098, g: 0.23921569, b: 0.32156864, a: 1}
+  amanhecer: {r: 0.9622642, g: 0.75669223, b: 0.43120328, a: 1}
   meioDia: {r: 1, g: 1, b: 1, a: 1}
-  entardecer: {r: 0.22745098, g: 0.23921569, b: 0.32156864, a: 1}
-  noite: {r: 0.22846209, g: 0.23974812, b: 0.3207547, a: 1}
-  intensidadeAmanhecer: 1000
-  intensidadeMeioDia: 1000
-  intensidadeEntardecer: 1000
-  intensidadeNoite: 1000
+  entardecer: {r: 0.8509804, g: 0.52156866, b: 0, a: 1}
+  noite: {r: 0.081568174, g: 0.08670234, b: 0.122641504, a: 1}
+  intensidadeAmanhecer: 200
+  intensidadeMeioDia: 600
+  intensidadeEntardecer: 200
+  intensidadeNoite: 100
   amanhecerHorario: 6
   meioDiaHorario: 13
   entardecerHorario: 19
