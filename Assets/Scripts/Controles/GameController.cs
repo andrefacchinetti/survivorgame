@@ -32,6 +32,13 @@ public class GameController : MonoBehaviour
     public float entardecerHorario = 17f;
     public float noiteHorario = 00f;
 
+    [SerializeField] [HideInInspector] SpawnController spawnController;
+
+    private void Start()
+    {
+        spawnController = GetComponent<SpawnController>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -53,7 +60,12 @@ public class GameController : MonoBehaviour
                 gameDay++;
             }
 
-            isNoite = gameHour >= 18;
+            isNoite = gameHour >= noiteHorario;
+
+            if(gameHour == noiteHorario || gameHour == amanhecerHorario)
+            {
+                spawnController.ReiniciarSpawnPorDiaNoite(isNoite, gameDay);
+            }
 
             // Exibe o horário fictício atual do jogo
             Debug.Log("Dia " + gameDay + " - Hora " + Mathf.FloorToInt(gameHour) + ":00");
