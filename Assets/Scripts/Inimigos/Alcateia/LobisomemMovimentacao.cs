@@ -1,56 +1,51 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Photon.Pun;
 
 public class LobisomemMovimentacao : MonoBehaviour
 {
+    public float distanciaMaximaPontoBase = 50f;
+    public float distanciaMaximaDoSeuAlfa = 10f;
+    public float tempoCorridaFugindo = 5f;
+    public float raioDeDistanciaMinParaAndarAleatoriamente = 10f;
+    public float raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
+    public float timerParaAndarAleatoriamente = 5f;
+    public float timerParaAlfaDecidirComandosParaSeusBetas = 10f;
+    public float tempoParadoNaArvore = 10f;
 
-    [SerializeField] public float distanciaMaximaPontoBase = 50, distanciaMaximaDoSeuAlfa = 10;
-    [SerializeField] public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
-    [SerializeField] public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
-    [SerializeField] public float timerParaAndarAleatoriamente = 5f, timerParaAlfaDecidirComandosParaSeusBetas = 10, tempoParadoNaArvore = 10;
-
-
-    //MOVIMENTACAO
-    [SerializeField][HideInInspector] public StatsGeral targetInimigo;
-    [SerializeField] [HideInInspector] public GameObject targetComida;
-    [SerializeField] [HideInInspector] public Transform targetObstaculo;
+    [HideInInspector] public StatsGeral targetInimigo;
+    [HideInInspector] public GameObject targetComida;
+    [HideInInspector] public Transform targetObstaculo;
 
     private float timer;
+    public NavMeshAgent agent;
+    public Animator animator;
+    public StatsGeral statsGeral;
+    public LobisomemStats lobisomemStats;
 
-    [SerializeField] [HideInInspector] LobisomemController lobisomemController;
-    [SerializeField] [HideInInspector] LobisomemStats lobisomemStats;
-    [SerializeField] [HideInInspector] public StatsGeral statsGeral;
-    [SerializeField] [HideInInspector] public Animator animator;
-    [SerializeField] [HideInInspector] public NavMeshAgent agent;
-
-    private void Start()
+    private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-        statsGeral = GetComponentInParent<StatsGeral>();
-        lobisomemStats = GetComponentInParent<LobisomemStats>();
-        lobisomemController = GetComponentInParent<LobisomemController>();
         timer = timerParaAndarAleatoriamente;
     }
 
     private void Update()
     {
         if (statsGeral.isDead) return;
-        animator.SetBool("subindoArvore", false);
-        animator.SetBool("paradoArvore", false);
         movimentacaoAlfa();
+        resetAgentDestination();
+        verificarProximoComida();
+        verificarAtaque();
+        verificarCorrerAndar();
+    }
+
+    private void resetAgentDestination()
+    {
         if (agent.isOnNavMesh && !agent.pathPending && agent.remainingDistance < 0.1f)
         {
-            agent.ResetPath(); // o animal chegou ao seu destino, pare de se mover
+            agent.ResetPath();
         }
-        verificarProximoComida();
-        verificarCorrerAndar();
-        verificarAtaque();
     }
-  
+
     private void verificarProximoComida()
     {
         if(targetComida != null)
@@ -180,8 +175,8 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private bool estaDistanteDoCentroDaAldeia()
     {
-        if (lobisomemController.aldeiaController == null) return false;
-        return EstouDistanteDe(lobisomemController.aldeiaController.centroDaAldeia.transform.position, distanciaMaximaPontoBase);
+        if (lobisomemStats.lobisomemController.aldeiaController == null) return false;
+        return EstouDistanteDe(lobisomemStats.lobisomemController.aldeiaController.centroDaAldeia.transform.position, distanciaMaximaPontoBase);
     }
 
     private bool EstouDistanteDe(Vector3 destino, float distanciaMaximaDestino)
@@ -201,7 +196,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             targetInimigo = null;
             targetComida = null;
-            MoveToPosition(lobisomemController.aldeiaController.centroDaAldeia.transform.position);
+            MoveToPosition(lobisomemStats.lobisomemController.aldeiaController.centroDaAldeia.transform.position);
         }
         else
         {

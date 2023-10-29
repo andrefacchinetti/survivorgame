@@ -5,12 +5,7 @@ using UnityEngine;
 public class VerificaObstaculo : MonoBehaviour
 {
    
-    [SerializeField][HideInInspector] LobisomemMovimentacao lobisomemMovimentacao;
-
-    private void Start()
-    {
-        lobisomemMovimentacao = GetComponentInParent<LobisomemMovimentacao>();
-    }
+    [SerializeField] LobisomemMovimentacao lobisomemMovimentacao;
 
     void OnTriggerStay(Collider other)
     {

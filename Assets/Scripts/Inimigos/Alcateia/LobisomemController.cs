@@ -9,13 +9,11 @@ public class LobisomemController : MonoBehaviour
     [SerializeField] [HideInInspector] public LobisomemStats lobisomemStats;
     [SerializeField] [HideInInspector] public StatsGeral statsGeral;
     [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao;
-    GameController gameController;
 
     private void Awake()
     {
         lobisomemStats = GetComponent<LobisomemStats>();
         statsGeral = GetComponent<StatsGeral>();
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
    
     public GameObject obterGameObjectFormaAtiva()

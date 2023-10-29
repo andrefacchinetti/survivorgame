@@ -21,30 +21,33 @@ public class SpawnController : MonoBehaviour
         lobosInGame = new List<GameObject>();
     }
 
-    public void ReiniciarSpawnPorDiaNoite(bool isNoite, int diaAtual)
+    public void SpawnarLobisomens(int diaAtual)
     {
-        if (isNoite)
-        {
-            InstanciarPrefabLobosPorPath("BarukAlfa", lobosBasePorNoite + (lobosAMaisPorNoite * diaAtual), PV.ViewID);
-        }
-        else
-        {
-            //TODO: Spawnar Animais
-        }
+        InstanciarPrefabLobosPorPath("BarukAlfa", lobosBasePorNoite + (lobosAMaisPorNoite * diaAtual), PV.ViewID);
     }
 
     public void InstanciarPrefabLobosPorPath(string nomePrefab, int quantidade, int viewID)
     {
+        Debug.Log("Spawnando " + quantidade + " Lobos");
+
         GameObject objInstanciado = null;
         string prefabPath = Path.Combine("Inimigos/Lobisomens/", nomePrefab);
+
         for (int i = 0; i < quantidade; i++)
         {
-            if (lobosInGame.Count >= qtdMaximaLobos) return;
-            if (i >= spawnPointsLobos.Length) i = 0;
-            Vector3 position = spawnPointsLobos[i].position;
-            Quaternion rotation = spawnPointsLobos[i].rotation;
+            if (lobosInGame.Count >= qtdMaximaLobos)
+            {
+                // Se atingiu a quantidade máxima de lobos, interrompe o loop
+                Debug.Log("Quantidade máxima de lobos atingida.");
+                break;
+            }
 
+            Vector3 position = spawnPointsLobos[i % spawnPointsLobos.Length].position;
+            Quaternion rotation = spawnPointsLobos[i % spawnPointsLobos.Length].rotation;
+
+            // Atribui a posição do último objeto instanciado, se existir
             position = objInstanciado != null ? objInstanciado.transform.position : position;
+
             if (PhotonNetwork.IsConnected)
             {
                 objInstanciado = PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID });
@@ -54,6 +57,8 @@ public class SpawnController : MonoBehaviour
                 GameObject prefab = Resources.Load<GameObject>(prefabPath);
                 objInstanciado = Instantiate(prefab, position, rotation);
             }
+
+            // Adiciona o lobo instanciado à lista
             lobosInGame.Add(objInstanciado);
         }
     }
