@@ -15,7 +15,7 @@ public class VerificaObstaculo : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (lobisomemMovimentacao.statsGeral.isDead) return;
-        if (other.gameObject.tag == "ConstrucaoStats")
+        if (other.gameObject.tag == "ConstrucaoStats" && other.gameObject.name != "Fundação")
         {
             Debug.Log("Achou obstaculo");
             lobisomemMovimentacao.agent.ResetPath();

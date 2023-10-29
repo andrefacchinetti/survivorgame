@@ -137,6 +137,10 @@ public class LobisomemMovimentacao : MonoBehaviour
             animator.SetTrigger("attack" + Random.Range(1, 3));
             Debug.Log("Atacando obstaculo");
         }
+        else
+        {
+            perseguirInimigo();
+        }
     }
 
     private void verificarCorrerAndar()
@@ -253,12 +257,9 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private void perseguirInimigo()
+    public void perseguirInimigo()
     {
         if (targetInimigo == null) return;
-
-       
-
         Vector3 targetVelocity = GetTargetVelocity(targetInimigo);
 
         if (targetVelocity != Vector3.zero)
