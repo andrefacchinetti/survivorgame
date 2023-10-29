@@ -8,7 +8,7 @@ public class SpawnController : MonoBehaviour
 {
 
     [SerializeField] int qtdMaximaLobos = 50;
-    [SerializeField] int lobosAMaisPorNoite = 3; //A cada noite, será spawnado (qtdMaximaLobos * multiplicadorLobosPorNoite)
+    [SerializeField] int lobosBasePorNoite = 3, lobosAMaisPorNoite = 1;
     [SerializeField] Transform[] spawnPointsLobos;
     [SerializeField] List<GameObject> lobosInGame;
 
@@ -17,7 +17,7 @@ public class SpawnController : MonoBehaviour
 
     private void Awake()
     {
-        PV = GetComponentInParent<PhotonView>();
+        PV = GetComponent<PhotonView>();
         lobosInGame = new List<GameObject>();
     }
 
@@ -25,7 +25,7 @@ public class SpawnController : MonoBehaviour
     {
         if (isNoite)
         {
-            //lobosInGame.Add(InstanciarPrefabLobosPorPath("BarukAlfa", lobosAMaisPorNoite * diaAtual, PV.ViewID));
+            InstanciarPrefabLobosPorPath("BarukAlfa", lobosBasePorNoite + (lobosAMaisPorNoite * diaAtual), PV.ViewID);
         }
         else
         {
@@ -33,19 +33,18 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    public GameObject InstanciarPrefabLobosPorPath(string nomePrefab, int quantidade, int viewID)
+    public void InstanciarPrefabLobosPorPath(string nomePrefab, int quantidade, int viewID)
     {
         GameObject objInstanciado = null;
-        string prefabPath = Path.Combine("Resources/Inimigos/Lobisomens/", nomePrefab);
+        string prefabPath = Path.Combine("Inimigos/Lobisomens/", nomePrefab);
         for (int i = 0; i < quantidade; i++)
         {
-            float alturaObjetoExistente = objInstanciado != null ? objInstanciado.GetComponent<Renderer>().bounds.size.y : 0;
-            int indexSpawnPoint = Random.Range(0, spawnPointsLobos.Length);
-            Vector3 position = spawnPointsLobos[indexSpawnPoint].position;
-            Quaternion rotation = spawnPointsLobos[indexSpawnPoint].rotation;
+            if (lobosInGame.Count >= qtdMaximaLobos) return;
+            if (i >= spawnPointsLobos.Length) i = 0;
+            Vector3 position = spawnPointsLobos[i].position;
+            Quaternion rotation = spawnPointsLobos[i].rotation;
 
             position = objInstanciado != null ? objInstanciado.transform.position : position;
-            position = position + new Vector3(0, alturaObjetoExistente, 0);
             if (PhotonNetwork.IsConnected)
             {
                 objInstanciado = PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID });
@@ -55,8 +54,8 @@ public class SpawnController : MonoBehaviour
                 GameObject prefab = Resources.Load<GameObject>(prefabPath);
                 objInstanciado = Instantiate(prefab, position, rotation);
             }
+            lobosInGame.Add(objInstanciado);
         }
-        return objInstanciado;
     }
 
 }
