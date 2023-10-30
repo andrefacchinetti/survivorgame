@@ -38,7 +38,6 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         spawnController = GetComponent<SpawnController>();
-        spawnController.SpawnarLobisomens(gameDay);
     }
 
     // Update is called once per frame
@@ -62,7 +61,18 @@ public class GameController : MonoBehaviour
             {
                 gameHour -= 24f;
                 gameDay++;
+            }
+            if (gameHour == 0)
+            {
                 spawnController.SpawnarLobisomens(gameDay);
+            }
+            if (gameHour == 6)
+            {
+                spawnController.SpawnarAnimaisPassivos();
+            }
+            if (gameHour == 7)
+            {
+                spawnController.SpawnarAnimaisAgressivos();
             }
 
             isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario; //so deve funcionar se a noite for a partir da meia noite

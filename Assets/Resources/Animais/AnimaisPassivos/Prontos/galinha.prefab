@@ -1109,12 +1109,12 @@ GameObject:
   - component: {fileID: 95376508284788292}
   - component: {fileID: 7310848749821181355}
   - component: {fileID: 6728211246385942684}
-  - component: {fileID: -8105638037111829157}
-  - component: {fileID: 9026109305755985585}
-  - component: {fileID: -5103903164440334339}
-  - component: {fileID: -3787589432920379139}
+  - component: {fileID: -3846994446708209008}
+  - component: {fileID: 4066934819552685068}
+  - component: {fileID: 3503072761056561713}
+  - component: {fileID: -2976110449842355798}
   m_Layer: 0
-  m_Name: Chicken_prefab_v3
+  m_Name: galinha
   m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1212,7 +1212,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-8105638037111829157
+--- !u!114 &-3846994446708209008
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1234,27 +1234,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &9026109305755985585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1746653575909406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
-  lastAttackTime: 0
-  destinationOffset: 1
-  speedVariation: 0.5
-  leadTime: 1.2
-  leadDistance: 2
---- !u!114 &-5103903164440334339
+--- !u!114 &4066934819552685068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1278,7 +1258,27 @@ MonoBehaviour:
   - nomeItemEnum: 24
     qtdMinDrops: 1
     qtdMaxDrops: 1
---- !u!65 &-3787589432920379139
+--- !u!114 &3503072761056561713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746653575909406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanciaDePerseguicao: 10
+  distanciaDeAtaque: 2
+  attackInterval: 1
+  lastAttackTime: 0
+  destinationOffset: 1
+  speedVariation: 0.5
+  leadTime: 1.2
+  leadDistance: 2
+--- !u!65 &-2976110449842355798
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1580,7 +1580,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 92b936650c1f26a4993ae5ae38c66ef7, type: 2}
+  - {fileID: 2100000, guid: 6fe48464581289847a7e0080bb6e7200, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

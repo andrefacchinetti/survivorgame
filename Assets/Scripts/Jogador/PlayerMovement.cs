@@ -259,7 +259,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		}
 	}
 
-	void FixedUpdate() //testar update ao inves de fixed
+	void FixedUpdate() //TODO: RETIRAR DO UPDATE E COLOCAR PRA ATUALIZAR NO START E QUANDO SALVAR AS CONFIGURACOES
 	{
 		if (PV == null) return;
 		if (!PV.IsMine)
