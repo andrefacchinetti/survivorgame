@@ -197,6 +197,10 @@ public class Item : MonoBehaviourPunCallbacks
         Panela,
         [EnumMember(Value = "Consumivel")]
         Coco,
+        [EnumMember(Value = "Arma")]
+        Pistola,
+        [EnumMember(Value = "Municao")]
+        MunicaoPistola,
     }
 
     [System.Serializable]
