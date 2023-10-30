@@ -12,7 +12,9 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerController : MonoBehaviourPunCallbacks
 {
 
-	//stats
+	public float fireRate = 1.0f; // Taxa de tiro por segundo
+	private float nextFireTime = 0.0f; // Tempo do próximo tiro
+
 	[SerializeField] public Inventario inventario;
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Item.NomeItem nomeItemColetando;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
 	[SerializeField][HideInInspector] public GameController gameController;
+
 	
 
 	PhotonView PV;
@@ -126,7 +129,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Arma.ToString()))
 		{
-			if (itemResponse.nomeItem == Item.NomeItem.Besta)
+			if (itemResponse.nomeItem == Item.NomeItem.Pistola)
+			{
+				if (Time.time > nextFireTime)
+                {
+					ApplyRecoil(); // Aplicar o recuo
+					animator.SetTrigger("usandoPistola");
+					nextFireTime = Time.time + 1 / fireRate; // Definir o próximo tempo permitido para atirar
+				}
+			}
+			else if (itemResponse.nomeItem == Item.NomeItem.Besta)
 			{
 				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoBesta"))
 				{
@@ -158,6 +170,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				}
 			}
 		}
+	}
+
+	private void ApplyRecoil()
+	{
+		//TODO: Implementar recoil a cada tiro
 	}
 
 	void GoAtk()
@@ -298,6 +315,34 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
 			//REMOVER ITEM DO INVENTARIO
 			inventario.RemoverItemDoInventario(flechaNaAljava, 1);
+		}
+	}
+
+	void AnimEventTiroPistola()
+	{
+		Debug.Log("tiro pistola");
+		if (inventario.itemNaMao == null) return;
+		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
+		Ray ray = new Ray(playerMovement.pivotTiroBase.transform.position, playerMovement.pivotTiroBase.transform.forward);
+		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
+		RaycastHit hit;
+		// Se o ray atingir alguma superfície, calcula a direção do arremesso
+		if (Physics.Raycast(ray, out hit))
+		{
+			Vector3 direction = hit.point - playerMovement.pivotTiroBase.transform.position;
+			direction.Normalize();
+
+			Item municaoNaAljava = armaduras.ObterItemFlechaNaAljava();
+			if (municaoNaAljava == null || municaoNaAljava.quantidade <= 0 || !municaoNaAljava.nomeItem.Equals(Item.NomeItem.MunicaoPistola)) {
+				Debug.Log("NAO TEM MUNICAO APROPRIADA NO SLOT DE MUNICOES");
+				return;
+			}
+			string nomePrefab = municaoNaAljava.nomeItem.GetTipoItemEnum() + "/" + municaoNaAljava.nomeItem.ToString();
+			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
+			// Aplica a força na direção calculada
+			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
+			//REMOVER ITEM DO INVENTARIO
+			inventario.RemoverItemDoInventario(municaoNaAljava, 1);
 		}
 	}
 

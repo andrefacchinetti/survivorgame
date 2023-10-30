@@ -290,6 +290,7 @@ public class Item : MonoBehaviourPunCallbacks
         if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
         inventario.playerMovement.anim.SetBool("isPlayerArmado", false);
+        inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", false);
     }
 
     public void SelecionarItem()
@@ -324,7 +325,11 @@ public class Item : MonoBehaviourPunCallbacks
             }
         }
 
-        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null));
+        bool isPlayerArmado = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null;
+        bool isPlayerArmadoPistola = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Pistola);
+        inventario.playerMovement.anim.SetBool("isPlayerArmado", isPlayerArmado);
+        inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", isPlayerArmadoPistola);
+        
     }
 
     public void DroparItem()
@@ -384,9 +389,13 @@ public class Item : MonoBehaviourPunCallbacks
             armaduras.slotAljava.SetupItemNoSlot(this);
         }
         txQuantidade.text = quantidade + "";
-        inventario.playerMovement.anim.SetBool("isPlayerArmado", (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null));
 
-        if(quantidade <= 0)
+        bool playerArmado = (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null);
+        bool playerArmadoPistola = (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Pistola));
+        inventario.playerMovement.anim.SetBool("isPlayerArmado", playerArmado);
+        inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", playerArmadoPistola);
+
+        if (quantidade <= 0)
         {
             RemoverItemDaMochila();
         }
