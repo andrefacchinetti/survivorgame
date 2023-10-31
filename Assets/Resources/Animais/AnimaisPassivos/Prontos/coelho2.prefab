@@ -943,7 +943,7 @@ GameObject:
   - component: {fileID: -4407130754299807305}
   - component: {fileID: -3664240122092799819}
   - component: {fileID: 1409224209880169965}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: coelho2
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -1084,6 +1084,7 @@ MonoBehaviour:
   speedVariation: 0.5
   leadTime: 1.2
   leadDistance: 2
+  estaFugindo: 0
 --- !u!114 &-3664240122092799819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,7 +1101,7 @@ MonoBehaviour:
   damage: 0
   vidaAtual: 100
   isDead: 0
-  isAttacking: 0
+  objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 1
@@ -1111,6 +1112,8 @@ MonoBehaviour:
   - nomeItemEnum: 24
     qtdMinDrops: 1
     qtdMaxDrops: 1
+  dropPosition: {fileID: 0}
+  isAttacking: 0
 --- !u!65 &1409224209880169965
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4804250998175404}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Spine_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4932840267850420}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_HindLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4206418497857506}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_FrontLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4830488640324910}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_HindLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 8539172039062474604}
   - component: {fileID: 3794121946623594168}
   - component: {fileID: 1198208228498732638}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: crocodile
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -249,7 +249,7 @@ MonoBehaviour:
   damage: 40
   vidaAtual: 100
   isDead: 0
-  isAttacking: 0
+  objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - nomeItemEnum: 4
     qtdMinDrops: 10
@@ -260,6 +260,8 @@ MonoBehaviour:
   - nomeItemEnum: 24
     qtdMinDrops: 4
     qtdMaxDrops: 6
+  dropPosition: {fileID: 0}
+  isAttacking: 0
 --- !u!114 &8539172039062474604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,6 +282,7 @@ MonoBehaviour:
   speedVariation: 0.5
   leadTime: 1.2
   leadDistance: 2
+  estaFugindo: 0
 --- !u!114 &3794121946623594168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,7 +344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4768593928025178}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_HindLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4527949987139746}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Neck_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +409,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4035890093787494}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_FrontLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +440,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4418030804773526}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_05SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -470,7 +473,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4840293563131928}
   - component: {fileID: 137703426030728952}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: crocodile_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,7 +600,7 @@ GameObject:
   - component: {fileID: 4478390402933808}
   - component: {fileID: 6676403834286662452}
   - component: {fileID: 2815105660499985340}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Head_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -666,7 +669,7 @@ GameObject:
   - component: {fileID: 1204697928373644254}
   - component: {fileID: 5236286053677374917}
   - component: {fileID: 6569495472206283672}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,7 +767,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4645465819661758}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_HindLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4388728190722654}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_FrontLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,7 +833,7 @@ GameObject:
   - component: {fileID: 2494833506387666803}
   - component: {fileID: 5218676779933737642}
   - component: {fileID: 7543512834393637805}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_HindLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -928,7 +931,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4653148558737270}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_FrontLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -960,7 +963,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4235455527877492}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_07SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -992,7 +995,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4810261172963492}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Spine_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1029,7 +1032,7 @@ GameObject:
   - component: {fileID: 6101509531002403171}
   - component: {fileID: 4394441568044102893}
   - component: {fileID: 4999452297809984523}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Spine_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,7 +1133,7 @@ GameObject:
   - component: {fileID: 7615340042099917116}
   - component: {fileID: 7581146804286585474}
   - component: {fileID: 7005656171073355774}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_HindLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1228,7 +1231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4196437105243716}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Neck_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1263,7 +1266,7 @@ GameObject:
   - component: {fileID: 5326054465062576669}
   - component: {fileID: 7662099466095441936}
   - component: {fileID: 1606952262691480353}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1361,7 +1364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4281434134652410}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Head_JawEndSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1392,7 +1395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4783494110100638}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_08SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1423,7 +1426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4213011994852854}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_Clavicle_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1455,7 +1458,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4368851785138308}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_HindLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1487,7 +1490,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4338935279972064}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_Clavicle_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1522,7 +1525,7 @@ GameObject:
   - component: {fileID: 7889352431480616647}
   - component: {fileID: 6210849710022606907}
   - component: {fileID: 134649119419011618}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_FrontLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1620,7 +1623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4724646796948024}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Spine_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1652,7 +1655,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4156142316585180}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Spine_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1684,7 +1687,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4010897911105742}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_HindLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1719,7 +1722,7 @@ GameObject:
   - component: {fileID: 2278491876134391809}
   - component: {fileID: 6342604046471569506}
   - component: {fileID: 5717779023236453652}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_HindLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1817,7 +1820,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4237078294766176}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1849,7 +1852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4189627735046050}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1881,7 +1884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4461983594729506}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_FrontLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1913,7 +1916,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4758506578009878}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_MAINSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1945,7 +1948,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4860274673621500}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Tail_01_06SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1977,7 +1980,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259105510277924}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_FrontLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2008,7 +2011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4279007713888994}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Neck_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2043,7 +2046,7 @@ GameObject:
   - component: {fileID: 2153708981831402477}
   - component: {fileID: 835590339557285498}
   - component: {fileID: 8901105212610734441}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_Head_JawSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2144,7 +2147,7 @@ GameObject:
   - component: {fileID: 5296582899158701762}
   - component: {fileID: 3897489941804841508}
   - component: {fileID: 6559682201167094405}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_HindLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2245,7 +2248,7 @@ GameObject:
   - component: {fileID: 659401901126677730}
   - component: {fileID: 3334240234068577043}
   - component: {fileID: 8241351968976875913}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_FrontLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2343,7 +2346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4211090277362826}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_ROOTSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2381,7 +2384,7 @@ GameObject:
   - component: {fileID: 5067058832489459404}
   - component: {fileID: 2360615612120566092}
   - component: {fileID: 1840003768238669544}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_r_FrontLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2482,7 +2485,7 @@ GameObject:
   - component: {fileID: 5167550699985631316}
   - component: {fileID: 5452593625321265294}
   - component: {fileID: 2082871338485002403}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crocodile_l_FrontLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}

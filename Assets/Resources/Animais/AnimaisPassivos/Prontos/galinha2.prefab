@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: -2719125232928570352}
   - component: {fileID: 382724571309541997}
   - component: {fileID: 9220714036079780874}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: galinha2
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -1254,6 +1254,7 @@ MonoBehaviour:
   speedVariation: 0.5
   leadTime: 1.2
   leadDistance: 2
+  estaFugindo: 0
 --- !u!114 &382724571309541997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1270,7 +1271,7 @@ MonoBehaviour:
   damage: 0
   vidaAtual: 100
   isDead: 0
-  isAttacking: 0
+  objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - nomeItemEnum: 5
     qtdMinDrops: 1
@@ -1278,6 +1279,8 @@ MonoBehaviour:
   - nomeItemEnum: 24
     qtdMinDrops: 1
     qtdMaxDrops: 1
+  dropPosition: {fileID: 0}
+  isAttacking: 0
 --- !u!65 &9220714036079780874
 BoxCollider:
   m_ObjectHideFlags: 0

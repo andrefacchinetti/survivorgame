@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 8764329325691716003}
   - component: {fileID: 3590659889389289683}
   - component: {fileID: -8313476912126276715}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: caranguejo
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -641,11 +641,13 @@ MonoBehaviour:
   damage: 0
   vidaAtual: 100
   isDead: 0
-  isAttacking: 0
+  objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - nomeItemEnum: 24
     qtdMinDrops: 1
     qtdMaxDrops: 1
+  dropPosition: {fileID: 0}
+  isAttacking: 0
 --- !u!114 &3590659889389289683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,6 +668,7 @@ MonoBehaviour:
   speedVariation: 0.5
   leadTime: 1.2
   leadDistance: 2
+  estaFugindo: 0
 --- !u!65 &-8313476912126276715
 BoxCollider:
   m_ObjectHideFlags: 0

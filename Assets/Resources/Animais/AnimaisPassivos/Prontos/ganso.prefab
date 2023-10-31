@@ -966,7 +966,7 @@ GameObject:
   - component: {fileID: 6609037249214524660}
   - component: {fileID: 3076297571955153355}
   - component: {fileID: -7400039510870969923}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ganso
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -1111,6 +1111,7 @@ MonoBehaviour:
   speedVariation: 0.5
   leadTime: 1.2
   leadDistance: 2
+  estaFugindo: 0
 --- !u!114 &3076297571955153355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1127,7 +1128,7 @@ MonoBehaviour:
   damage: 0
   vidaAtual: 100
   isDead: 0
-  isAttacking: 0
+  objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - nomeItemEnum: 5
     qtdMinDrops: 1
@@ -1135,6 +1136,8 @@ MonoBehaviour:
   - nomeItemEnum: 24
     qtdMinDrops: 1
     qtdMaxDrops: 1
+  dropPosition: {fileID: 0}
+  isAttacking: 0
 --- !u!65 &-7400039510870969923
 BoxCollider:
   m_ObjectHideFlags: 0
