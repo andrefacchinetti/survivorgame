@@ -49,7 +49,8 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.LancaAvancada)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeMadeira)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeOsso)
-                || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeMetal))
+                || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeMetal)
+                || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.MunicaoPistola))
             {
                 if (other.transform.GetComponent<Rigidbody>().velocity.magnitude > 1f)
                 {

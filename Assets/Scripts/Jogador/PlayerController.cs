@@ -339,8 +339,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			}
 			string nomePrefab = municaoNaAljava.nomeItem.GetTipoItemEnum() + "/" + municaoNaAljava.nomeItem.ToString();
 			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
+			meuObjLancado.GetComponent<TrailMunicao>().AtivarTrailMunicao();
 			// Aplica a força na direção calculada
-			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
+			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * (throwForce*2), ForceMode.Impulse);
 			//REMOVER ITEM DO INVENTARIO
 			inventario.RemoverItemDoInventario(municaoNaAljava, 1);
 		}
