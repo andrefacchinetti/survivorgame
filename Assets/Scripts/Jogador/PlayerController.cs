@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
 			meuObjLancado.GetComponent<TrailMunicao>().AtivarTrailMunicao();
 			// Aplica a força na direção calculada
-			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * (1000), ForceMode.Impulse);
+			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * (2000), ForceMode.Impulse);
 			//REMOVER ITEM DO INVENTARIO
 			inventario.RemoverItemDoInventario(municaoNaAljava, 1);
 		}

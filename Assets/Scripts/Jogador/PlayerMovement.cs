@@ -146,8 +146,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 		if (canMove)
 		{
-			horizontalMove = Input.GetAxisRaw("Horizontal");
-			verticalMove = Input.GetAxisRaw("Vertical");
+			horizontalMove = Input.GetAxis("Horizontal");
+			verticalMove = Input.GetAxis("Vertical");
 			anim.SetBool("correndo", isRunning);
 			anim.SetBool("isPlayerParado", (horizontalMove == 0 && verticalMove == 0 && !isRunning));
 		}
