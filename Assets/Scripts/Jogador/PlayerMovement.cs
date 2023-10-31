@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {// lembrete: nome de usuarios iguais buga a mudan�a de cena
 
-	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase, pelvisPivot;
+	[SerializeField] public GameObject cabecaPivot, pivotCameraInHead, colunaPivot, pivotTiroBase;
 	public Vector3 offset;
 	public Camera playerCamera;
 
@@ -196,7 +196,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 			float rotationY = Input.GetAxis("Mouse X") * sensivity;
 
-			bool segurandoArco = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoArco") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoArcoFlecha");
+			bool segurandoArco = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoArco") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoArcoFlecha") || anim.GetCurrentAnimatorStateInfo(1).IsName("segurandoPistola") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoPistola");
 			bool segurandoCrossbow = anim.GetCurrentAnimatorStateInfo(1).IsName("SegurandoCrossbow") || anim.GetCurrentAnimatorStateInfo(1).IsName("usandoCrossbow");
 			bool podeVirarColuna = anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || anim.GetCurrentAnimatorStateInfo(0).IsName("Run") || anim.GetCurrentAnimatorStateInfo(0).IsName("BlendCrouched")
 				|| anim.GetCurrentAnimatorStateInfo(0).IsName("atkFerramentaFrente") || anim.GetCurrentAnimatorStateInfo(0).IsName("atkArmaFrente")

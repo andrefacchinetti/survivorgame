@@ -1984,6 +1984,16 @@ MonoBehaviour:
     itemObjMao: {fileID: 6197465377264220638}
     textureImgItem: {fileID: 2800000, guid: c5c64a98b4cdc924cb21c5e9adf9f735, type: 3}
     objInventario: {fileID: 1778224452}
+  - nomeItemEnum: 70
+    nomePortugues: Pistola
+    nomeIngles: Pistol
+    isConsumivel: 0
+    peso: 10
+    durabilidadeAtual: 0
+    durabilidadeMaxima: 100
+    itemObjMao: {fileID: 95930086894027479}
+    textureImgItem: {fileID: 2800000, guid: 3c33affd85ff40044a3ffa7625a07770, type: 3}
+    objInventario: {fileID: 1778224452}
   itens:
   - {fileID: 0}
   - {fileID: 0}
@@ -4724,15 +4734,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516531220104546229}
-  m_LocalRotation: {x: 0.27924415, y: -0.116677314, z: -0.20761292, w: 0.9302183}
-  m_LocalPosition: {x: 0.106, y: -0.068, z: 0.005}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalRotation: {x: 0.3554516, y: -0.05524686, z: -0.15317474, w: 0.9204018}
+  m_LocalPosition: {x: 0.0932, y: -0.053, z: -0.0168}
+  m_LocalScale: {x: 0.35050002, y: 0.35050002, z: 0.35050002}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3022941755552736042}
   m_Father: {fileID: 7416559910010062164}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -208.104, y: -202.181, z: -210.781}
+  m_LocalEulerAnglesHint: {x: -219.59799, y: -195.861, z: -204.639}
 --- !u!114 &95930086894027479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12998,7 +13008,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 300
+  far clip plane: 2000
   field of view: 95
   orthographic: 0
   orthographic size: 5
@@ -13531,7 +13541,7 @@ Transform:
   - {fileID: 384674125}
   - {fileID: 8549272576258559373}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6737041257339993087
 Animator:
@@ -13567,6 +13577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30bf392b187a8a74dacdec5f02a53a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireRate: 1
   inventario: {fileID: 1778224454}
   armaduras: {fileID: 2978406032827318288}
   grabObjects: {fileID: 6737041256933510498}
@@ -13655,7 +13666,6 @@ MonoBehaviour:
   pivotCameraInHead: {fileID: 1173317601}
   colunaPivot: {fileID: 3849078994890302540}
   pivotTiroBase: {fileID: 7992121863190197270}
-  pelvisPivot: {fileID: 2760411230809276545}
   offset: {x: 0, y: 0, z: 0}
   playerCamera: {fileID: 6737041256933510500}
   walkingSpeed: 3
