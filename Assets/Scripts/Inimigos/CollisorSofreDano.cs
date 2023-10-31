@@ -57,6 +57,10 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
                     float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
                     statsGeral.TakeDamage(damage);
                 }
+                if (other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.MunicaoPistola))
+                {
+                    Destroy(other.gameObject);
+                }
             }
         }
     }
