@@ -9,12 +9,21 @@ public class SpawnLoots : MonoBehaviour
 
     public Item.NomeItem[] itensPossiveis;
     private GameObject itemSpawnado;
+    [SerializeField] GameController gameController;
 
     PhotonView PV;
 
     private void Start()
     {
         SpawnarRandomLoot();
+    }
+
+    private void Update()
+    {
+        if(gameController.gameHour == 5)
+        {
+            SpawnarRandomLoot();
+        }
     }
 
     public void SpawnarRandomLoot()
