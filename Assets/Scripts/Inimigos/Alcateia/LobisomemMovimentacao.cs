@@ -173,12 +173,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private bool estaDistanteDoCentroDaAldeia()
-    {
-        if (lobisomemStats.lobisomemController.aldeiaController == null) return false;
-        return EstouDistanteDe(lobisomemStats.lobisomemController.aldeiaController.centroDaAldeia.transform.position, distanciaMaximaPontoBase);
-    }
-
     private bool EstouDistanteDe(Vector3 destino, float distanciaMaximaDestino)
     {
         float distance = Vector3.Distance(transform.position, destino);  // Calcula a dist�ncia entre o inimigo e a posicao do territorio base
@@ -192,18 +186,9 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void movimentarAleatoriamentePeloMapa()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo")) return;
-        if (estaDistanteDoCentroDaAldeia())
+        if (targetInimigo == null)
         {
-            targetInimigo = null;
-            targetComida = null;
-            MoveToPosition(lobisomemStats.lobisomemController.aldeiaController.centroDaAldeia.transform.position);
-        }
-        else
-        {
-            if (targetInimigo == null)
-            {
-                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
-            }
+            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
         }
     }
 

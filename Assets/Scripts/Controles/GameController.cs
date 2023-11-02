@@ -12,7 +12,6 @@ public class GameController : MonoBehaviour
     private float elapsedTime = 0f;  // Tempo que passou desde o início do jogo
 
     public bool isNoite = false;
-    public int temperaturaNoite = 0, temperaturaDia = 20;
 
     // Define as cores de sol para diferentes horas do dia
     public Color amanhecer;
@@ -34,6 +33,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] [HideInInspector] SpawnController spawnController;
     float deltaTime = 0.0f;
+    private float lastGameDayLobos = -1, lastGameDayAnimais = -1;
 
     private void Start()
     {
@@ -62,18 +62,7 @@ public class GameController : MonoBehaviour
                 gameHour -= 24f;
                 gameDay++;
             }
-            if (gameHour == 0)
-            {
-                spawnController.SpawnarLobisomens(gameDay);
-            }
-            if (gameHour == 6)
-            {
-                spawnController.SpawnarAnimaisPassivos();
-            }
-            if (gameHour == 7)
-            {
-                spawnController.SpawnarAnimaisAgressivos();
-            }
+            spawnarPorDia();
 
             isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario; //so deve funcionar se a noite for a partir da meia noite
 
@@ -106,7 +95,21 @@ public class GameController : MonoBehaviour
         }
 
         luzDoSol.color = currentColor;
+    }
 
+    private void spawnarPorDia()
+    {
+        if (lastGameDayLobos != gameDay && gameHour >= entardecerHorario)
+        {
+            spawnController.SpawnarLobisomens(gameDay);
+            lastGameDayLobos = gameDay;
+        }
+        if (lastGameDayAnimais != gameDay && gameHour >= amanhecerHorario)
+        {
+            spawnController.SpawnarAnimaisPassivos();
+            spawnController.SpawnarAnimaisAgressivos();
+            lastGameDayAnimais = gameDay;
+        }
     }
 
     void OnGUI()

@@ -23,8 +23,9 @@ public class AnimalController : MonoBehaviourPunCallbacks
     private float timer;
     private bool isEating = false;
 
-    StatsGeral statsGeral;
-    AnimalStats animalStats;
+    [SerializeField] [HideInInspector] public GameController gameController;
+    [SerializeField] [HideInInspector] StatsGeral statsGeral;
+    [SerializeField] [HideInInspector] AnimalStats animalStats;
     [HideInInspector] public Animator animator;
     [HideInInspector] public NavMeshAgent agent;
     [SerializeField] private StatsGeral targetInimigo;
@@ -105,14 +106,19 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
     }
 
+    private bool agentEstaIndoParaDestino(Vector3 destino, float margemErro = 0.1f)
+    {
+        return !agent.hasPath || Vector3.Distance(agent.destination, destino) > margemErro;
+    }
+
     private void andarAleatoriamentePeloMapa()
     {
         if (animalStats.estaFugindo) return;
-        if (!agent.hasPath)
+
+        if (agentEstaIndoParaDestino(agent.destination))
         {
             agent.speed = walkSpeed;
-            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente); // Não há comida e não há destino definido, mover-se para uma posição aleatória
-            Debug.Log("andandoAleatoriamente");
+            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
         }
     }
 

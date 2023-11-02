@@ -11,6 +11,8 @@ public class SpawnLoots : MonoBehaviour
     private GameObject itemSpawnado;
     [SerializeField] GameController gameController;
 
+    private float lastGameDay = -1;
+
     PhotonView PV;
 
     private void Start()
@@ -18,11 +20,12 @@ public class SpawnLoots : MonoBehaviour
         SpawnarRandomLoot();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if(gameController.gameHour == 5)
+        if(lastGameDay != gameController.gameDay)
         {
             SpawnarRandomLoot();
+            lastGameDay = gameController.gameDay;
         }
     }
 
@@ -50,6 +53,7 @@ public class SpawnLoots : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
 
         this.itemSpawnado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { PV.ViewID }) : Instantiate(prefab, position, rotation);
+        Debug.Log("Spawnou loot: " + nomePrefab);
     }
 
 

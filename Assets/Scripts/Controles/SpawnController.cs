@@ -7,6 +7,8 @@ using UnityEngine;
 public class SpawnController : MonoBehaviour
 {
 
+    [SerializeField] GameController gameController;
+
     [SerializeField] int qtdBasePorNoiteLobos = 3, qtdAMaisPorNoiteLobos = 1, qtdMaxLobos = 50, qtdMaxAnimaisAgressivos = 20, qtdMaxAnimaisPassivos = 10;
     [SerializeField] SpawnArea spawnLobos;
     [SerializeField] SpawnArea[] spawnAnimaisAgressivos, spawnAnimaisPassivos;
@@ -32,8 +34,9 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnarLobisomens(int diaAtual)
     {
+        Debug.Log("Spawnando lobisomens");
         lobosInGame.RemoveAll(lobo => {
-            if (lobo.isDead)
+            if (lobo.isDead || lobo.GetComponent<LobisomemController>().estouLongeDeAlgumJogador())
             {
                 Destroy(lobo.gameObject);
                 return true;
@@ -46,6 +49,7 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnarAnimaisAgressivos()
     {
+        Debug.Log("Spawnando animais agressivos");
         animaisAgressivosInGame.RemoveAll(animal => {
             if (animal.isDead)
             {
@@ -61,6 +65,7 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnarAnimaisPassivos()
     {
+        Debug.Log("Spawnando animais passivos");
         animaisPassivosInGame.RemoveAll(animal => {
             if (animal.isDead)
             {
@@ -92,7 +97,7 @@ public class SpawnController : MonoBehaviour
             Quaternion rotation = spawnLobos.spawnPoints[i % spawnPointCount].rotation;
 
             GameObject objInstanciado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID }) : Instantiate(prefab, position, rotation);
-
+            objInstanciado.GetComponent<LobisomemController>().gameController = gameController;
             lobosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
         }
     }
@@ -117,7 +122,7 @@ public class SpawnController : MonoBehaviour
             GameObject prefab = Resources.Load<GameObject>(prefabPath);
 
             GameObject objInstanciado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID }) : Instantiate(prefab, position, rotation);
-
+            objInstanciado.GetComponent<AnimalController>().gameController = gameController;
             if (isAnimaisAgressivos) animaisAgressivosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
             else animaisPassivosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
         }
