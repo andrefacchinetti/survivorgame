@@ -10,6 +10,7 @@ public class SpawnController : MonoBehaviour
     [SerializeField] GameController gameController;
 
     [SerializeField] int qtdBasePorNoiteLobos = 3, qtdAMaisPorNoiteLobos = 1, qtdMaxLobos = 50, qtdMaxAnimaisAgressivos = 20, qtdMaxAnimaisPassivos = 10;
+    [SerializeField] float distanciaMaxEntreSpawnPointLoboxJogadores = 100;
     [SerializeField] SpawnArea spawnLobos;
     [SerializeField] SpawnArea[] spawnAnimaisAgressivos, spawnAnimaisPassivos;
 
@@ -90,16 +91,36 @@ public class SpawnController : MonoBehaviour
 
         int spawnPointCount = spawnLobos.spawnPoints.Length;
         int maxLobosToSpawn = Mathf.Min(qtdMaxLobos - lobosInGame.Count, quantidade);
-
-        for (int i = 0; i < maxLobosToSpawn; i++)
+        GameObject[] jogadores = GameObject.FindGameObjectsWithTag("Player");
+        if(jogadores != null && jogadores.Length > 0)
         {
-            Vector3 position = spawnLobos.spawnPoints[i % spawnPointCount].position;
-            Quaternion rotation = spawnLobos.spawnPoints[i % spawnPointCount].rotation;
+            int indexSpawnPointPorVez = 0;
+            for (int i = 0; i < maxLobosToSpawn; i++)
+            {
+                int indexJogador = Random.Range(0, jogadores.Length);
+                float distanciaLimiteAoQuadrado = distanciaMaxEntreSpawnPointLoboxJogadores * distanciaMaxEntreSpawnPointLoboxJogadores;
+                Transform spawnPointSelecionado = spawnLobos.spawnPoints[i % spawnPointCount];
+                for (int j=indexSpawnPointPorVez; j < spawnLobos.spawnPoints.Length;j++)
+                {
+                    float distanciaAoQuadrado = (spawnLobos.spawnPoints[j].position - jogadores[indexJogador].transform.position).sqrMagnitude;
+                    if (distanciaAoQuadrado < distanciaLimiteAoQuadrado)  // Os objetos estão dentro da distância limite
+                    {
+                        spawnPointSelecionado = spawnLobos.spawnPoints[j];
+                        indexSpawnPointPorVez = j+1;
+                        if (indexSpawnPointPorVez >= spawnLobos.spawnPoints.Length) indexSpawnPointPorVez = 0;
+                        break;
+                    }
+                }
 
-            GameObject objInstanciado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID }) : Instantiate(prefab, position, rotation);
-            objInstanciado.GetComponent<LobisomemController>().gameController = gameController;
-            lobosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
+                Vector3 position = spawnPointSelecionado.position;
+                Quaternion rotation = spawnPointSelecionado.rotation;
+
+                GameObject objInstanciado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID }) : Instantiate(prefab, position, rotation);
+                objInstanciado.GetComponent<LobisomemController>().gameController = gameController;
+                lobosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
+            }
         }
+        
     }
 
     public void InstanciarPrefabPorPathAnimais(string path, SpawnArea[] spawnsArea, bool isAnimaisAgressivos, int viewID)

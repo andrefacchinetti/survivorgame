@@ -32,7 +32,7 @@ public class LobisomemController : MonoBehaviour
         {
             if(jogador != null)
             {
-                float distanciaAoQuadrado = (this.transform.position - jogador.transform.position).sqrMagnitude;
+                float distanciaAoQuadrado = (lobisomemMovimentacao.transform.position - jogador.transform.position).sqrMagnitude;
                 if (distanciaAoQuadrado > distanciaLimiteAoQuadrado)  // Os objetos NÃO estão dentro da distância limite
                 {
                     return true;
