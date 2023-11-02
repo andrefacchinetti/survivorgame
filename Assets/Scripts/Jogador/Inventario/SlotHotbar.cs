@@ -33,6 +33,7 @@ public class SlotHotbar : MonoBehaviour
 
     public void SetupSlotHotbar(Item itemResponse)
     {
+        if (itemResponse == null) return;
         foreach(SlotHotbar slot in hotbar.slots){
             //Debug.Log("Slot: " + slot.name + " item: " + slot.item.nomePortugues);
             if(slot.item == itemResponse){

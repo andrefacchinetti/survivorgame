@@ -64,8 +64,8 @@ public class ArrastarItensInventario : MonoBehaviour
     }
 
     public void DragStartItemInventario(Item itemDrag, GameObject go1){
+        if (itemDrag == null) return;
         item = itemDrag;
-        
         placeHolder.GetComponent<RawImage>().texture = itemDrag.imagemItem.texture;
         placeHolder.SetActive(true);
         slot1 = go1;
@@ -94,14 +94,15 @@ public class ArrastarItensInventario : MonoBehaviour
         itemHover = null;
         nameHolder.SetActive(false);
     }
+
     public void HoverItem(Item responsiveItem){
         itemHover = responsiveItem;
         nameHolder.GetComponent<TextMeshProUGUI>().text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? responsiveItem.nomePortugues : responsiveItem.nomeIngles;
         nameHolder.SetActive(true);
-
     }
 
     public void SoltarItemNoPlayer(){
+        if (item == null) return;
         if(item.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Armadura.ToString())){
             foreach(ItemArmadura armadura in slotsArmaduras){
                 armadura.ColocarItemNoSlot(item);
@@ -119,4 +120,5 @@ public class ArrastarItensInventario : MonoBehaviour
         placeHolder.SetActive(false);
         item = null;
     }
+
 }

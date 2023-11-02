@@ -15,7 +15,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] public Hotbar hotbar;
     [SerializeField] public List<Item.ItemStruct> itensStruct;
 
-     public List<Item> itens;
+    [HideInInspector] public List<Item> itens;
     [SerializeField][HideInInspector] public Item itemNaMao;
     [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
@@ -121,23 +121,18 @@ public class Inventario : MonoBehaviour
 
     public bool AdicionarItemAoInventario(Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
-        if(itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()) //Verifica se ja existe algum item igual pra adicionar no mesmo slot
-            || itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Recurso.ToString())
-            || itemStructResponse.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Municao.ToString()))
+        foreach (Item item in itens)
         {
-            foreach (Item item in itens) 
+            if (item.nomeItem.Equals(itemStructResponse.nomeItemEnum))
             {
-                if (item.nomeItem.Equals(itemStructResponse.nomeItemEnum))
+                if (pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
                 {
-                    if (pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
-                    {
-                        Debug.Log("Peso maximo do inventario atingido");
-                        return false;
-                    }
-                    else
-                    {
-                        return item.aumentarQuantidade(quantidadeResponse);
-                    }
+                    Debug.Log("Peso maximo do inventario atingido");
+                    return false;
+                }
+                else
+                {
+                    return item.aumentarQuantidade(quantidadeResponse);
                 }
             }
         }

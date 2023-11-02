@@ -8,7 +8,7 @@ public class Armaduras : MonoBehaviour
     [SerializeField] public Inventario inventario;
     [SerializeField] public List<ItemArmadura> slotsItemArmadura;
     [SerializeField] [HideInInspector] public ItemArmadura slotItemArmaduraSelecionada;
-    [SerializeField] public ItemArmadura slotAljava;
+    [SerializeField] public ItemArmadura slotAljava, slotLanterna;
     [SerializeField] public bool estaSelecionandoSlotArmadura;
 
     public void SelecionouItemParaSlotArmadura(Item item)

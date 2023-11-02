@@ -322,6 +322,11 @@ public class Item : MonoBehaviourPunCallbacks
                 itemObjMao.gameObject.SetActive(true);
                 if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
                 if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
+                if (nomeItem.Equals(NomeItem.Lanterna) && !inventario.VerificarQtdItem(NomeItem.Lanterna, 2) && armaduras.slotLanterna.item != null && armaduras.slotLanterna.item.nomeItem.Equals(NomeItem.Lanterna))
+                {
+                    armaduras.slotLanterna.objEquipLanterna.SetActive(false);
+                    armaduras.slotLanterna.item = null;
+                }
                 //inventario.FecharInventario();
             }
             else

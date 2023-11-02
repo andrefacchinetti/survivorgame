@@ -10,11 +10,12 @@ public class ItemArmadura : MonoBehaviour
 {
 
     [SerializeField] public List<Item.NomeItem> itensPermitidosNoSlot;
-    [SerializeField] public Item item;
+    [SerializeField][HideInInspector] public Item item;
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public Texture texturaInvisivel;
     [SerializeField] public GameObject bordaSelecionado;
+    [SerializeField] public GameObject objEquipLanterna;
     [SerializeField] public Armaduras armaduras;
     [SerializeField] public ArrastarItensInventario arrastarItensInventario;
 
@@ -22,11 +23,20 @@ public class ItemArmadura : MonoBehaviour
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
         EventTrigger.Entry entry2 = new EventTrigger.Entry();
+        EventTrigger.Entry entry3 = new EventTrigger.Entry();
+        EventTrigger.Entry entry4 = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.Drop;
         entry2.eventID = EventTriggerType.PointerClick;
+        entry3.eventID = EventTriggerType.BeginDrag;
+        entry4.eventID = EventTriggerType.EndDrag;
         entry.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
         entry2.callback.AddListener((data) => { OnPointerClickDelegate((PointerEventData)data);});
+        entry3.callback.AddListener((data) => { OnBeginDragDelegate((PointerEventData)data); });
+        entry4.callback.AddListener((data) => { OnEndDragDelegate((PointerEventData)data); });
         trigger.triggers.Add(entry);
+        trigger.triggers.Add(entry2);
+        trigger.triggers.Add(entry3);
+        trigger.triggers.Add(entry4);
     }
 
 
@@ -43,6 +53,7 @@ public class ItemArmadura : MonoBehaviour
 
     public bool ColocarItemNoSlot(Item itemResponse)
     {
+        if (itemResponse == null) return false;
         bordaSelecionado.SetActive(false);
         armaduras.slotItemArmaduraSelecionada = null;
         armaduras.estaSelecionandoSlotArmadura = false;
@@ -59,7 +70,7 @@ public class ItemArmadura : MonoBehaviour
 
     public void RetirarItemDoSlot()
     {
-
+        Debug.Log("RETIRANDO ITEM SLOT");
     }
 
     public void SetupItemNoSlot(Item itemResponse)
@@ -70,12 +81,22 @@ public class ItemArmadura : MonoBehaviour
             txNomeItem.text = "";
             txQuantidade.text = "";
             imagemItem.texture = texturaInvisivel;
+            if(objEquipLanterna!=null) objEquipLanterna.SetActive(false);
         }
         else
         {
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
             txQuantidade.text = itemResponse.quantidade + "";
             imagemItem.texture = itemResponse.imagemItem.texture;
+            if (itemResponse.nomeItem.Equals(Item.NomeItem.Lanterna))
+            {
+                objEquipLanterna.SetActive(true);
+                armaduras.slotLanterna = this;
+                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Lanterna) && !armaduras.inventario.VerificarQtdItem(Item.NomeItem.Lanterna, 2))
+                {
+                    armaduras.inventario.itemNaMao.DeselecionarItem();
+                }
+            }
         }
     }
 
@@ -99,4 +120,17 @@ public class ItemArmadura : MonoBehaviour
 
         }
     }
+
+    public void OnBeginDragDelegate(PointerEventData data)
+    {
+        Debug.Log("onbegin drag");
+        arrastarItensInventario.DragStartItemInventario(this.item, this.gameObject);
+        SetupItemNoSlot(null);
+    }
+
+    public void OnEndDragDelegate(PointerEventData data)
+    {
+        arrastarItensInventario.StopDrag();
+    }
+
 }
