@@ -10,6 +10,7 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
     [SerializeField] List<Item.NomeItem> nomeItemFerramentasRecomendadas;
     [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false;
     [HideInInspector] public StatsGeral statsGeral;
+    [SerializeField] bool isConstrucao;
     public PhotonView PV;
 
     private void Awake()
@@ -45,21 +46,29 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
 
         if (other.transform.tag == "ItemDrop") //Qdo toca em objeto que causa dano em velocidade (lan�a ou flecha)
         {
-            if (other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.LancaSimples)
+            if(isConstrucao && other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.MarteloSimples) || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.MarteloAvancado))
+            {
+                float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
+                statsGeral.TakeCura(damage);
+            }
+            else
+            {
+                if (other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.LancaSimples)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.LancaAvancada)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeMadeira)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeOsso)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.FlechaDeMetal)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.MunicaoPistola))
-            {
-                if (other.transform.GetComponent<Rigidbody>().velocity.magnitude > 1f)
                 {
-                    float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
-                    statsGeral.TakeDamage(damage);
-                }
-                if (other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.MunicaoPistola))
-                {
-                    Destroy(other.gameObject);
+                    if (other.transform.GetComponent<Rigidbody>().velocity.magnitude > 1f)
+                    {
+                        float damage = other.transform.GetComponent<ItemDrop>().damageQuandoColide;
+                        statsGeral.TakeDamage(damage);
+                    }
+                    if (other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.MunicaoPistola))
+                    {
+                        Destroy(other.gameObject);
+                    }
                 }
             }
         }

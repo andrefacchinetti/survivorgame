@@ -38,6 +38,11 @@ public class StatsGeral : MonoBehaviour
         vidaAtual = vidaMaxima;
     }
 
+    public void TakeCura(float damage)
+    {
+        vidaAtual += damage;
+    }
+
     public void TakeDamage(float damage)
     {
         Debug.Log("Tomando dano");
