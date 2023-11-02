@@ -698,7 +698,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3480488334132052623}
-  m_Layer: 0
+  - component: {fileID: 5050412400933730395}
+  m_Layer: 14
   m_Name: L Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -721,6 +722,29 @@ Transform:
   m_Father: {fileID: 3480488334835364413}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5050412400933730395
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480488334132052608}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 1.84
+  m_Height: 1.23
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3480488334146713817
 GameObject:
   m_ObjectHideFlags: 0
@@ -2804,7 +2828,7 @@ GameObject:
   - component: {fileID: 8817566113519457645}
   - component: {fileID: 6943174582465703776}
   m_Layer: 0
-  m_Name: BarukBetaFraco
+  m_Name: BarukBeta
   m_TagString: Inimigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2819,12 +2843,12 @@ Transform:
   m_GameObject: {fileID: 3480488334938978821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.56, y: 0, z: -3.51}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.5707, y: 0.5707, z: 0.5707}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7581572316815441344}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5136368655001136268
 MonoBehaviour:
@@ -2839,11 +2863,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objFormaLobo: {fileID: 3729656669622578240}
-  aldeiaController: {fileID: 0}
+  gameController: {fileID: 0}
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 5395484721726252598}
-  lobisomemHumanoMovimentacao: {fileID: 0}
+  limiteDistanciaAteJogadores: 80
 --- !u!114 &8094014223833661833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2863,13 +2887,15 @@ MonoBehaviour:
   lastAttackTime: 0
   destinationOffset: 1
   walkSpeed: 0.8
-  runSpeed: 1.5
-  speedVariation: 0.5
+  runSpeed: 1.1
+  speedVariation: 0.3
   leadTime: 1.2
   leadDistance: 2
   tempoMudancaDeTurnoProfissoes: 300
+  pathUpdateDistanceThreshold: 10
   lobisomemController: {fileID: 0}
-  colliderCorpo: {fileID: 0}
+  statsGeral: {fileID: 8817566113519457645}
+  colliderCorpo: {fileID: 5050412400933730395}
 --- !u!114 &8817566113519457645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2884,7 +2910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vidaMaxima: 200
   damage: 20
-  vidaAtual: 100
+  vidaAtual: 200
   isDead: 0
   objPaiParaDestruir: {fileID: 0}
   dropsItems:
@@ -4790,6 +4816,73 @@ Transform:
   m_Father: {fileID: 3480488334823687070}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3691528665392428831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 421609749773628018}
+  - component: {fileID: 957404679135946498}
+  - component: {fileID: 7349177925722677773}
+  m_Layer: 0
+  m_Name: VerificaObstaculo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &421609749773628018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691528665392428831}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7581572316815441344}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &957404679135946498
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691528665392428831}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.5, y: 2, z: 4.5}
+  m_Center: {x: 0, y: 0.93, z: 0}
+--- !u!114 &7349177925722677773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691528665392428831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00a1b555b9ca10a4089f93a85e5545a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 5395484721726252598}
 --- !u!1 &3729656669622578240
 GameObject:
   m_ObjectHideFlags: 0
@@ -4825,6 +4918,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 421609749773628018}
   - {fileID: 3480488335153517917}
   - {fileID: 3480488334123271826}
   m_Father: {fileID: 3480488334938978825}
@@ -4852,13 +4946,11 @@ MonoBehaviour:
   tempoParadoNaArvore: 10
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
-  targetArvore: {fileID: 0}
   targetObstaculo: {fileID: 0}
-  lobisomemController: {fileID: 5136368655001136268}
-  lobisomemStats: {fileID: 8094014223833661833}
+  agent: {fileID: 2233054291421786745}
+  animator: {fileID: 9065241160681522896}
   statsGeral: {fileID: 8817566113519457645}
-  animator: {fileID: 0}
-  agent: {fileID: 0}
+  lobisomemStats: {fileID: 8094014223833661833}
 --- !u!195 &2233054291421786745
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4868,16 +4960,16 @@ NavMeshAgent:
   m_GameObject: {fileID: 3729656669622578240}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.54
-  m_Speed: 0.5
-  m_Acceleration: 0.8
+  m_Radius: 1.05
+  m_Speed: 1
+  m_Acceleration: 1
   avoidancePriority: 50
   m_AngularSpeed: 999
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2.45
+  m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -4951,6 +5043,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: comendo
+  - Type: 4
+    SynchronizeType: 0
+    Name: subindoArvore
+  - Type: 4
+    SynchronizeType: 0
+    Name: paradoArvore
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -5013,7 +5111,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15.6, y: 5.9, z: 24.03}
+  m_Size: {x: 80, y: 30, z: 80}
   m_Center: {x: 0, y: 1.96, z: 9.57}
 --- !u!1 &5597691540608719961
 GameObject:

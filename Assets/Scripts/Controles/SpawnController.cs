@@ -85,8 +85,10 @@ public class SpawnController : MonoBehaviour
         int quantidade = qtdBasePorNoiteLobos + (qtdAMaisPorNoiteLobos * diaAtual);
 
         bool isPhotonConnected = PhotonNetwork.IsConnected;
-        string animalRandom = spawnLobos.nomesPrefab[Random.Range(0, spawnLobos.nomesPrefab.Length)];
-        string prefabPath = Path.Combine("Inimigos/Lobisomens/", animalRandom);
+        string loboRandom;
+        if (Random.value <= 0.3f) loboRandom = spawnLobos.nomesPrefab[0]; //Alfa tem 30% de probabilidade
+        else loboRandom = spawnLobos.nomesPrefab[Random.Range(1, spawnLobos.nomesPrefab.Length)]; // Selecionar aleatoriamente entre os demais índices
+        string prefabPath = Path.Combine("Inimigos/Lobisomens/", loboRandom);
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
 
         int spawnPointCount = spawnLobos.spawnPoints.Length;

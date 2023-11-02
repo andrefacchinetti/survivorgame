@@ -1032,7 +1032,7 @@ GameObject:
   - component: {fileID: 7903728559268399649}
   - component: {fileID: 2979989734103152106}
   m_Layer: 0
-  m_Name: BarukBetaForte
+  m_Name: BarukOmega
   m_TagString: Inimigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1047,12 +1047,12 @@ Transform:
   m_GameObject: {fileID: 4613647014722688651}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.68, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.66894, y: 0.66894, z: 0.66894}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 32190855700425336}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &267380533
 MonoBehaviour:
@@ -1073,13 +1073,15 @@ MonoBehaviour:
   lastAttackTime: 0
   destinationOffset: 1
   walkSpeed: 0.8
-  runSpeed: 1.5
-  speedVariation: 0.5
+  runSpeed: 1.1
+  speedVariation: 0.3
   leadTime: 1.2
   leadDistance: 2
   tempoMudancaDeTurnoProfissoes: 300
+  pathUpdateDistanceThreshold: 10
   lobisomemController: {fileID: 0}
-  colliderCorpo: {fileID: 0}
+  statsGeral: {fileID: 7903728559268399649}
+  colliderCorpo: {fileID: 5604265349195844965}
 --- !u!114 &267380534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1093,11 +1095,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objFormaLobo: {fileID: 5468006273728238530}
-  aldeiaController: {fileID: 0}
+  gameController: {fileID: 0}
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 4731360456219773428}
-  lobisomemHumanoMovimentacao: {fileID: 0}
+  limiteDistanciaAteJogadores: 80
 --- !u!114 &7903728559268399649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,7 +1114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vidaMaxima: 300
   damage: 30
-  vidaAtual: 100
+  vidaAtual: 300
   isDead: 0
   objPaiParaDestruir: {fileID: 0}
   dropsItems:
@@ -1125,7 +1127,7 @@ MonoBehaviour:
   - nomeItemEnum: 24
     qtdMinDrops: 4
     qtdMaxDrops: 8
-  dropPosition: {fileID: 0}
+  dropPosition: {fileID: 5468006273728238530}
   isAttacking: 0
 --- !u!114 &2979989734103152106
 MonoBehaviour:
@@ -3745,7 +3747,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4613647016066477569}
-  m_Layer: 0
+  - component: {fileID: 5604265349195844965}
+  m_Layer: 14
   m_Name: L Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3768,6 +3771,29 @@ Transform:
   m_Father: {fileID: 4613647016704827059}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5604265349195844965
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613647016066477582}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 1.84
+  m_Height: 1.23
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4613647016085521761
 GameObject:
   m_ObjectHideFlags: 0
@@ -5579,6 +5605,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6013480123304703975}
   - {fileID: 4613647014776584659}
   - {fileID: 4613647016058481180}
   m_Father: {fileID: 4613647014722688647}
@@ -5668,13 +5695,11 @@ MonoBehaviour:
   tempoParadoNaArvore: 10
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
-  targetArvore: {fileID: 0}
   targetObstaculo: {fileID: 0}
-  lobisomemController: {fileID: 267380534}
-  lobisomemStats: {fileID: 267380533}
+  agent: {fileID: 3282043018525333715}
+  animator: {fileID: 1108925025853680717}
   statsGeral: {fileID: 7903728559268399649}
-  animator: {fileID: 0}
-  agent: {fileID: 0}
+  lobisomemStats: {fileID: 267380533}
 --- !u!114 &1320667856605422304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5723,6 +5748,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: comendo
+  - Type: 4
+    SynchronizeType: 0
+    Name: subindoArvore
+  - Type: 4
+    SynchronizeType: 0
+    Name: paradoArvore
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -5735,16 +5766,16 @@ NavMeshAgent:
   m_GameObject: {fileID: 5468006273728238530}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.54
-  m_Speed: 0.5
-  m_Acceleration: 0.8
+  m_Radius: 1.05
+  m_Speed: 1
+  m_Acceleration: 1
   avoidancePriority: 50
   m_AngularSpeed: 999
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2.45
+  m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -5767,8 +5798,75 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 40, y: 30, z: 40}
+  m_Size: {x: 80, y: 30, z: 80}
   m_Center: {x: 0, y: 1.96, z: 9.57}
+--- !u!1 &6257151522080331373
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6013480123304703975}
+  - component: {fileID: 5597512538616921049}
+  - component: {fileID: 5218051852410893734}
+  m_Layer: 0
+  m_Name: VerificaObstaculo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6013480123304703975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6257151522080331373}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 32190855700425336}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5597512538616921049
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6257151522080331373}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.5, y: 2, z: 4.5}
+  m_Center: {x: 0, y: 0.93, z: 0}
+--- !u!114 &5218051852410893734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6257151522080331373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00a1b555b9ca10a4089f93a85e5545a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobisomemMovimentacao: {fileID: 4731360456219773428}
 --- !u!1 &6769918230844760620
 GameObject:
   m_ObjectHideFlags: 0
