@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
         {
-			animator.SetTrigger("comendoEmPe");
+			animator.SetTrigger("comendoEmPe"); //Colocar Animacao de usando kit medico qdo tipo do item for medicinal (adicionar event na animacao)
 			itemConsumindo = itemResponse;
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Arma.ToString()))

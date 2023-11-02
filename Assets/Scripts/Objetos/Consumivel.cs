@@ -11,7 +11,8 @@ public class Consumivel : MonoBehaviour
     {
         Fruta,
         Carne,
-        Vegetal
+        Vegetal,
+        Medicinal
     }
 
 }

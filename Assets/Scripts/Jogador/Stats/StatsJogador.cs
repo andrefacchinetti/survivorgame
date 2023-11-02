@@ -6,7 +6,7 @@ public class StatsJogador : MonoBehaviour
 {
 
     [SerializeField][HideInInspector] PlayerController playerController;
-    [SerializeField] [HideInInspector] StatsGeral statsGeral;
+    [SerializeField] [HideInInspector] public StatsGeral statsGeral;
     [SerializeField] HudJogador hudJogador;
 
     // STATS MAXIMO

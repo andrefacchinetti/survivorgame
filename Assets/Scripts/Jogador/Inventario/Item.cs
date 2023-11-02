@@ -201,6 +201,12 @@ public class Item : MonoBehaviourPunCallbacks
         Pistola,
         [EnumMember(Value = "Municao")]
         MunicaoPistola,
+        [EnumMember(Value = "Consumivel")]
+        ComidaEnlatada,
+        [EnumMember(Value = "Ferramenta")]
+        Lanterna,
+        [EnumMember(Value = "Consumivel")]
+        KitMedico,
     }
 
     [System.Serializable]
@@ -363,6 +369,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + itemObjMao.curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + itemObjMao.curaFome);
+        inventario.statsJogador.setarVidaAtual(inventario.statsJogador.statsGeral.vidaAtual + itemObjMao.curaVida);
     }
 
     public void diminuirQuantidade(int valorQtd)
