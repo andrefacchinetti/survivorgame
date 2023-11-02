@@ -124,7 +124,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
         {
-			animator.SetTrigger("comendoEmPe"); //Colocar Animacao de usando kit medico qdo tipo do item for medicinal (adicionar event na animacao)
+            if (itemResponse.nomeItem.Equals(Item.NomeItem.KitMedico))
+            {
+				animator.SetTrigger("usandoKitMedico");
+            }
+            else
+            {
+				animator.SetTrigger("comendoEmPe"); 
+			}
 			itemConsumindo = itemResponse;
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Arma.ToString()))
@@ -191,7 +198,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (itemConsumindo == null) return;
 		itemConsumindo.UsarItem();
-		Debug.Log("comeu: " + itemConsumindo.nomeItem.ToString());
+		Debug.Log("consumiu: " + itemConsumindo.nomeItem.ToString());
 		itemConsumindo = null;
 	}
 
