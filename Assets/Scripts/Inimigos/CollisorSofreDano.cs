@@ -43,7 +43,7 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
     {
         if (statsGeral.vidaAtual <= 0) return;
 
-        if (other.transform.tag == "ItemDrop") //Qdo toca em objeto que causa dano em velocidade (lança ou flecha)
+        if (other.transform.tag == "ItemDrop") //Qdo toca em objeto que causa dano em velocidade (lanï¿½a ou flecha)
         {
             if (other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.LancaSimples)
                 || other.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.LancaAvancada)

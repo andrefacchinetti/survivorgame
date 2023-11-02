@@ -146,7 +146,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void executarAcoesDoHit(RaycastHit hit)
     {
-        Debug.Log("raycast:> " + hit.transform.gameObject.layer);
         possibleGrab = false;
         possibleInteraction = false;
 
