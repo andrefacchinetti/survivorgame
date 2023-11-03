@@ -41,6 +41,8 @@ public class StatsGeral : MonoBehaviour
     public void TakeCura(float damage)
     {
         vidaAtual += damage;
+        if (vidaAtual > vidaMaxima) vidaAtual = vidaMaxima;
+        Debug.Log("alvo curado: " + vidaAtual);
     }
 
     public void TakeDamage(float damage)

@@ -28,7 +28,14 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     damage = collisorSofreDano.CalcularDanoPorArmaCausandoDano(itemObjMao, statsGeral.damage);
                 }
                 GameObject objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>().gameObject;
-                objPai.GetComponent<StatsGeral>().TakeDamage(damage);
+                if (collisorSofreDano.isConstrucao && this.GetComponent<ItemObjMao>() != null && (this.GetComponent<ItemObjMao>().nomeItem.Equals(Item.NomeItem.MarteloSimples) || this.GetComponent<ItemObjMao>().nomeItem.Equals(Item.NomeItem.MarteloAvancado)))
+                {
+                    objPai.GetComponent<StatsGeral>().TakeCura(damage);
+                }
+                else
+                {
+                    objPai.GetComponent<StatsGeral>().TakeDamage(damage);
+                }
                 statsGeral.isAttacking = false;
                 if (statsGeral.gameObject.tag == "Player")
                 {
