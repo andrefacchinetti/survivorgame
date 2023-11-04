@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
 	[SerializeField] [HideInInspector] public PlayerMovement playerMovement;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
-	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando;
+	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando, corpoReanimando;
 	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
 	[SerializeField] [HideInInspector] public Item.NomeItem nomeItemColetando;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
@@ -215,6 +215,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(corpoDissecando);
 		else GameObject.Destroy(corpoDissecando);
 		corpoDissecando = null;
+	}
+
+	void AnimEventReanimouJogador()
+    {
+		if (corpoReanimando != null)
+        {
+			corpoReanimando.GetComponent<MorteController>().ReanimarJogador();
+		}
 	}
 
 	void AnimEventConsertado()

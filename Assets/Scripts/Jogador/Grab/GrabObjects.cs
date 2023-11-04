@@ -249,6 +249,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoReconstruivelQuebrado(hit);
         }
+        else if (hit.transform.tag == "Player")
+        {
+            StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
+            if (objPai != null && objPai.isDead)
+            {
+                interacaoReanimar(objPai);
+            }
+        }
     }
 
    
@@ -346,6 +354,16 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             animator.SetTrigger("dissecando");
             playerController.itemsDropsPosDissecar = objPai.dropsItems;
             playerController.corpoDissecando = objPai.gameObject;
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoReanimar(StatsGeral objPai)
+    {
+        if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+        {
+            animator.SetTrigger("reanimando");
+            playerController.corpoReanimando = objPai.gameObject;
         }
         possibleInteraction = true;
     }
