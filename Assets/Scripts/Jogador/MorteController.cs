@@ -6,6 +6,7 @@ using UnityEngine;
 public class MorteController : MonoBehaviour
 {
     private StatsGeral statsGeral;
+    private PlayerController playerController;
     [SerializeField] GameObject hudMorte;
     [SerializeField] float tempoRespawn = 60.0f; // Tempo em segundos para o respawn
     [SerializeField] TMP_Text textoTempoRestante;
@@ -14,6 +15,7 @@ public class MorteController : MonoBehaviour
     private void Awake()
     {
         statsGeral = GetComponent<StatsGeral>();
+        playerController = GetComponent<PlayerController>();
     }
 
     void Update()
@@ -27,6 +29,7 @@ public class MorteController : MonoBehaviour
             if (Input.GetButtonDown("Use"))
             {
                 RespawnarJogador();
+                StopAllCoroutines();
             }
         }
     }
@@ -39,12 +42,14 @@ public class MorteController : MonoBehaviour
 
     public void RespawnarJogador()
     {
-        // Implemente as ações de respawn do jogador
+        this.gameObject.transform.position = playerController.gameController.respawnPointJogador.transform.position;
         reviverJogador();
+        Debug.Log("Respawnou jogador");
     }
 
     public void ReanimarJogador()
     {
+        StopCoroutine(TemporizadorRespawn());
         reviverJogador();
     }
 
@@ -64,6 +69,7 @@ public class MorteController : MonoBehaviour
             tempoAtual--;
         }
         RespawnarJogador();
+        StopAllCoroutines();
     }
 
     public void AtualizarTempo(float tempoRestante) // Atualiza a HUD com o tempo restante

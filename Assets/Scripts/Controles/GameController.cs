@@ -35,6 +35,8 @@ public class GameController : MonoBehaviour
     float deltaTime = 0.0f;
     private float lastGameDayLobos = -1, lastGameDayAnimais = -1;
 
+    [SerializeField] public GameObject respawnPointJogador;
+
     private void Start()
     {
         spawnController = GetComponent<SpawnController>();
