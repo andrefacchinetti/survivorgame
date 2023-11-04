@@ -87,6 +87,15 @@ public class StatsJogador : MonoBehaviour
         playerController.animator.SetBool("isDead", true);
         statsGeral.isDead = true;
         playerController.playerMovement.canMove = false;
+        setarVidaAtual(0);
+    }
+
+    public void AcoesReviveu()
+    {
+        playerController.animator.SetBool("isDead", false);
+        statsGeral.isDead = false;
+        playerController.playerMovement.canMove = true;
+        setarVidaAtual(statsGeral.vidaMaxima * 0.20f);
     }
 
 }
