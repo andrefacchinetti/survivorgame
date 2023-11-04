@@ -163,7 +163,7 @@ public class ControleConstruir : MonoBehaviour
                 rotacao = rotacao%360;
             }
             if(Input.GetButtonDown("Fire1")){
-                if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo) && podeConstruir){
+                if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo) && (podeConstruir && VerificarSePodeConstruir())){
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
                     {
@@ -207,11 +207,11 @@ public class ControleConstruir : MonoBehaviour
                 {
                     altura = 0;
                 }
-                objRotation = hit.transform.rotation;
+                objRotation = hit.collider.transform.rotation;
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.eulerAngles.y + rotacao - (rotacao % 90), objRotation.eulerAngles.z));
-                objPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + altura, hit.transform.position.z);
+                objPosition = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + altura, hit.collider.transform.position.z);
                 construcaoControllerHit = hit.collider.gameObject.GetComponentInParent<ConstrucoesController>();
-                Debug.Log(construcao.altura + "setou contrucaoControllerHit: ");
+                Debug.Log(construcao.altura + "setou contrucaoControllerHit: "+ hit.collider.transform.name);
                 isConectado = true;
             }
             else{
@@ -221,12 +221,11 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = Quaternion.LookRotation(direction);
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x,objRotation.eulerAngles.y + rotacao, objRotation.eulerAngles.z));
                 construcaoControllerHit = null;
-                Debug.Log("setou contrucaoControllerHit else: ");
+                Debug.Log("setou contrucaoControllerHit else: "+ hit.collider.gameObject.name);
             }
         }
         else{
             //Ray frontal não tocou algo
-
             Ray r2 = new Ray(new Vector3(r.GetPoint(distanciaMax).x, r.GetPoint(distanciaMax).y + 100f, r.GetPoint(distanciaMax).z),new Vector3(0f,-1f,0f));
             Debug.DrawRay(r2.origin,r2.direction,Color.blue);
             RaycastHit[] hits = Physics.RaycastAll(r2,Mathf.Infinity,construcao.layerMask);
@@ -239,7 +238,7 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.y + rotacao, objRotation.eulerAngles.z));
                 //-objeto.transform.LookAt(new Vector3(transform.position.x,   objeto.transform.position.y, transform.position.z));
                 //-objeto.transform.Rotate(new Vector3(0f, rotacao, 0f));
-                Debug.Log("setou contrucaoControllerHit else else if: ");
+                Debug.Log("setou contrucaoControllerHit else else if: "+ hit.collider.gameObject.name);
             }
             else{
                 podeConstruir = false;
@@ -249,8 +248,8 @@ public class ControleConstruir : MonoBehaviour
         }
     }
 
-    public void AlterarCor(bool podeConstruir){
-        if(podeConstruir){
+    public void AlterarCor(bool isPodeConstruir){
+        if(isPodeConstruir){
             objeto.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.green);
             objeto.GetComponent<MeshRenderer>().material.SetColor("_EmissiveColor", (Vector4)Color.green);
         }
@@ -258,12 +257,13 @@ public class ControleConstruir : MonoBehaviour
             objeto.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.red);
             objeto.GetComponent<MeshRenderer>().material.SetColor("_EmissiveColor", (Vector4)Color.red);
         }
-        
     }
 
-
+    public float percColisaoMax = 0.9f;
     bool VerificarSePodeConstruir(){
-        Collider[] colliders = Physics.OverlapBox(objeto.transform.position, new Vector3(objeto.transform.localScale.x * meshObjeto.bounds.size.x / 2 * 0.90f, objeto.transform.localScale.y * meshObjeto.bounds.size.y / 2 * 0.90f, objeto.transform.localScale.z * meshObjeto.bounds.size.z / 2 * 0.90f), objeto.transform.rotation, lMaskProibidos);
+        Collider[] colliders = Physics.OverlapBox(objeto.transform.position, 
+            new Vector3(objeto.transform.localScale.x * meshObjeto.bounds.size.x / 2 * percColisaoMax, objeto.transform.localScale.y * meshObjeto.bounds.size.y / 2 * percColisaoMax,
+            objeto.transform.localScale.z * meshObjeto.bounds.size.z / 2 * percColisaoMax), objeto.transform.rotation, lMaskProibidos);
         if (colliders.Length > 0)
         {
             foreach (Collider col in colliders)
