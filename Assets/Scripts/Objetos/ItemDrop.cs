@@ -25,7 +25,7 @@ public class ItemDrop : MonoBehaviourPunCallbacks
         Debug.Log(prefabPath);
         for(int i=0; i < quantidade; i++)
         {
-            float alturaObjetoExistente = objInstanciado != null ? objInstanciado.GetComponent<Renderer>().bounds.size.y : 0;
+            float alturaObjetoExistente = objInstanciado != null ? objInstanciado.GetComponent<Collider>().bounds.size.y : 0;
             position = objInstanciado != null ? objInstanciado.transform.position : position;
             position = position + new Vector3(0, alturaObjetoExistente, 0);
             if (PhotonNetwork.IsConnected)

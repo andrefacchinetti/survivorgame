@@ -37,6 +37,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] public GameObject respawnPointJogador;
 
+    public bool isRespawnarInimigos = true; //DEIXAR TRUE 
+
     private void Start()
     {
         spawnController = GetComponent<SpawnController>();
@@ -101,6 +103,7 @@ public class GameController : MonoBehaviour
 
     private void spawnarPorDia()
     {
+        if (!isRespawnarInimigos) return;
         if (lastGameDayLobos != gameDay && gameHour >= entardecerHorario)
         {
             spawnController.SpawnarLobisomens(gameDay);

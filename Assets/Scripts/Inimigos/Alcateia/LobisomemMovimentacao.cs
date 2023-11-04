@@ -204,6 +204,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (hasValidPath)
         {
             agent.SetDestination(position);
+            Debug.Log("lobo move to position");
         }
         else
         {
@@ -218,8 +219,10 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (timer >= timerParaAndarAleatoriamente)
         {
             timer = 0;
+
             Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
             randomDirection += transform.position;
+
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
             {

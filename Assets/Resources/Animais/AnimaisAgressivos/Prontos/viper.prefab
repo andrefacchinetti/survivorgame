@@ -264,6 +264,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!1 &1132141283225370
 GameObject:
@@ -397,6 +398,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!1 &1168094689816034
 GameObject:
@@ -498,6 +500,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!1 &1175668935495310
 GameObject:
@@ -599,6 +602,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!1 &1247036049213462
 GameObject:
@@ -624,9 +628,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247036049213462}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.73829895}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4946070378526692}
   m_Father: {fileID: 4658868625101402}
@@ -931,6 +935,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &106785895477904641
 CapsuleCollider:
@@ -1206,9 +1211,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1729113142550374}
   m_LocalRotation: {x: -0.00000005338508, y: 0.7071068, z: 0.7071068, w: 0.00000005338508}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 0.98611283, y: 0.98611283, z: 0.98611283}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: -0.7383}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4658868625101402}
   m_RootOrder: 0
@@ -1461,13 +1466,13 @@ Transform:
   m_GameObject: {fileID: 1881191173831034}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 8.598876, y: 8.598876, z: 8.598876}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4813575816450814}
   - {fileID: 4136770427326466}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95912807735780388
 Animator:
@@ -1522,16 +1527,16 @@ NavMeshAgent:
   m_GameObject: {fileID: 1881191173831034}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.45
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Radius: 0.11
+  m_Speed: 50
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 900
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.15
+  m_Height: 0.1
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -1547,8 +1552,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 100
-  damage: 10
+  vidaMaxima: 400
+  damage: 40
   vidaAtual: 100
   isDead: 0
   objPaiParaDestruir: {fileID: 0}
@@ -1561,6 +1566,7 @@ MonoBehaviour:
     qtdMaxDrops: 2
   dropPosition: {fileID: 0}
   isAttacking: 0
+  jogadorStats: {fileID: 0}
 --- !u!114 &8376307214870781326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1575,7 +1581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanciaDePerseguicao: 10
   distanciaDeAtaque: 2
-  attackInterval: 1
+  attackInterval: 3
   lastAttackTime: 0
   destinationOffset: 1
   speedVariation: 0.5
@@ -1601,8 +1607,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 14.13, y: 7.68, z: 22.2}
-  m_Center: {x: 0, y: 0, z: 1.5}
+  m_Size: {x: 3.64, y: 0.6, z: 4.4}
+  m_Center: {x: 0, y: 0, z: -0.06}
 --- !u!114 &8310634545460554655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1619,21 +1625,26 @@ MonoBehaviour:
   isAnimalCarnivoro: 1
   isAnimalHerbivoro: 0
   isPredador: 1
-  isPequenoPorte: 1
+  isPequenoPorte: 0
   eatTime: 5
   walkSpeed: 1
   runSpeed: 3
   isProcuraComida: 0
   eatDistance: 2
   tempoCorridaFugindo: 5
-  restTime: 20
+  restTime: 10
   raioDeDistanciaMinParaAndarAleatoriamente: 10
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
   timerParaAndarAleatoriamente: 5
+  pathUpdateDistanceThreshold: 10
+  gameController: {fileID: 0}
+  statsGeral: {fileID: 0}
+  animalStats: {fileID: 0}
   animator: {fileID: 0}
   agent: {fileID: 0}
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
+  targetObstaculo: {fileID: 0}
 --- !u!1 &1887234423509154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,4 +1905,5 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}

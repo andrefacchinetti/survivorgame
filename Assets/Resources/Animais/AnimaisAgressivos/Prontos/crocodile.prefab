@@ -165,7 +165,7 @@ Transform:
   - {fileID: 4758506578009878}
   - {fileID: 4840293563131928}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95838215188104654
 Animator:
@@ -220,7 +220,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1152602052714694}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.39
+  m_Radius: 1.25
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -262,6 +262,7 @@ MonoBehaviour:
     qtdMaxDrops: 6
   dropPosition: {fileID: 0}
   isAttacking: 0
+  jogadorStats: {fileID: 0}
 --- !u!114 &8539172039062474604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,14 +307,19 @@ MonoBehaviour:
   isProcuraComida: 0
   eatDistance: 2
   tempoCorridaFugindo: 5
-  restTime: 20
+  restTime: 10
   raioDeDistanciaMinParaAndarAleatoriamente: 10
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
   timerParaAndarAleatoriamente: 5
+  pathUpdateDistanceThreshold: 10
+  gameController: {fileID: 0}
+  statsGeral: {fileID: 0}
+  animalStats: {fileID: 0}
   animator: {fileID: 0}
   agent: {fileID: 0}
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
+  targetObstaculo: {fileID: 0}
 --- !u!65 &1198208228498732638
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -757,6 +763,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!1 &1409009871103208
 GameObject:
@@ -898,6 +905,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &7543512834393637805
 CapsuleCollider:
@@ -1097,6 +1105,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &4999452297809984523
 CapsuleCollider:
@@ -1198,6 +1207,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &7005656171073355774
 CapsuleCollider:
@@ -1331,6 +1341,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &1606952262691480353
 CapsuleCollider:
@@ -1590,6 +1601,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &134649119419011618
 CapsuleCollider:
@@ -1787,6 +1799,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &5717779023236453652
 CapsuleCollider:
@@ -2111,6 +2124,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &8901105212610734441
 CapsuleCollider:
@@ -2212,6 +2226,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &6559682201167094405
 CapsuleCollider:
@@ -2313,6 +2328,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &8241351968976875913
 CapsuleCollider:
@@ -2449,6 +2465,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &1840003768238669544
 CapsuleCollider:
@@ -2550,6 +2567,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &2082871338485002403
 CapsuleCollider:

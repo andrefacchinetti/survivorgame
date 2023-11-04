@@ -85,6 +85,21 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
+    public void DroparItensDaMochila()
+    {
+        if (jogadorStats == null) return; //NAO É UM JOGADOR
+
+        List<Item> itensParaRemover = new List<Item>(jogadorStats.playerController.inventario.itens);
+
+        foreach (Item item in itensParaRemover)
+        {
+            int quantidade = item.quantidade;
+            string nomePrefab = item.nomeItem.GetTipoItemEnum() + "/" + item.nomeItem.ToString();
+            ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, PV.ViewID);
+            jogadorStats.playerController.inventario.RemoverItemDoInventario(item, quantidade);
+        }
+    }
+
     public void DroparItensAoMorrer()
     {
         foreach (Item.ItemDropStruct drop in dropsItems)

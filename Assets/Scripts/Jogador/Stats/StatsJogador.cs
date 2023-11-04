@@ -5,7 +5,7 @@ using UnityEngine;
 public class StatsJogador : MonoBehaviour
 {
 
-    [SerializeField][HideInInspector] PlayerController playerController;
+    [SerializeField][HideInInspector] public PlayerController playerController;
     [SerializeField] [HideInInspector] public StatsGeral statsGeral;
     [SerializeField] HudJogador hudJogador;
 

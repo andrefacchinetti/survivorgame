@@ -28,8 +28,7 @@ public class MorteController : MonoBehaviour
         {
             if (Input.GetButtonDown("Use"))
             {
-                RespawnarJogador();
-                StopAllCoroutines();
+                tempoAtual = 0;
             }
         }
     }
@@ -42,9 +41,18 @@ public class MorteController : MonoBehaviour
 
     public void RespawnarJogador()
     {
-        this.gameObject.transform.position = playerController.gameController.respawnPointJogador.transform.position;
-        reviverJogador();
-        Debug.Log("Respawnou jogador");
+        statsGeral.DroparItensDaMochila();
+
+        if (playerController != null && playerController.gameController != null && playerController.gameController.respawnPointJogador != null)
+        {
+            this.gameObject.transform.position = playerController.gameController.respawnPointJogador.transform.position;
+            reviverJogador();
+            Debug.Log("Respawnou jogador na posição: " + playerController.gameController.respawnPointJogador.transform.position);
+        }
+        else
+        {
+            Debug.Log("Erro: Ponto de respawn não está configurado corretamente.");
+        }
     }
 
     public void ReanimarJogador()
@@ -59,9 +67,10 @@ public class MorteController : MonoBehaviour
         statsGeral.jogadorStats.AcoesReviveu();
     }
 
+    float tempoAtual;
     IEnumerator TemporizadorRespawn()
     {
-        float tempoAtual = tempoRespawn;
+        tempoAtual = tempoRespawn;
         while (tempoAtual > 0)
         {
             AtualizarTempo(tempoAtual);

@@ -19,6 +19,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float restTime = 20f; // tempo que o animal descansa após tomar dano
     public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
     [SerializeField] public float timerParaAndarAleatoriamente = 5f;
+    [SerializeField] public float pathUpdateDistanceThreshold = 10;
 
     private float timer;
     private bool isEating = false;
@@ -30,6 +31,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     [HideInInspector] public NavMeshAgent agent;
     [SerializeField] private StatsGeral targetInimigo;
     [SerializeField] private GameObject targetComida;
+    [HideInInspector] public Transform targetObstaculo;
     PhotonView PV;
 
     private void Awake()
@@ -67,6 +69,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
                 andarAleatoriamentePeloMapa();
             }
             verificarCorrerAndar();
+            verificarAtaque();
         }
         else
         {
@@ -167,11 +170,19 @@ public class AnimalController : MonoBehaviourPunCallbacks
         targetComida = null;
     }
 
-    public void MoveToPosition(Vector3 position)
+    private void MoveToPosition(Vector3 position)
     {
-        transform.LookAt(position);
-        agent.SetDestination(position);
-        Debug.Log("Animal movendo position");
+        NavMeshHit hit;
+        bool hasValidPath = NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas);
+        if (hasValidPath)
+        {
+            agent.SetDestination(position);
+            Debug.Log("animal move to position");
+        }
+        else
+        {
+            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
+        }
     }
 
     private void MoveToRandomPosition(float minDistance, float maxDistance)
@@ -188,12 +199,16 @@ public class AnimalController : MonoBehaviourPunCallbacks
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
             {
-                MoveToPosition(hit.position);
-            }
-            else
-            {
-                Debug.Log("else random position");
-                MoveToRandomPosition(minDistance, maxDistance);
+                float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
+                if (distanceToNewPosition >= minDistance)
+                {
+                    MoveToPosition(hit.position);
+                }
+                else
+                {
+                    // Se a nova posição estiver muito próxima, gere uma nova posição aleatória
+                    MoveToRandomPosition(minDistance, maxDistance);
+                }
             }
         }
     }
@@ -267,6 +282,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private void Fugir()
     {
+        if (animalStats.estaFugindo) return;
         Debug.Log("animal fugindo");
         animalStats.estaFugindo = true;
         targetInimigo = null;
@@ -277,45 +293,121 @@ public class AnimalController : MonoBehaviourPunCallbacks
         MoveToRandomPosition(raioDeDistanciaMaxParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
     }
 
-    private void perseguirInimigo()
+    private void verificarAtaque()
     {
-        if (targetInimigo == null || !isAnimalAgressivo) return;
-        float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.obterTransformPositionDoCollider().position);
-        if (targetInimigo.isDead || distanceToTarget > animalStats.distanciaDePerseguicao)
+        if (targetInimigo == null)
         {
-            //targetComida = target;
+            atacarObstaculoOuInimigo();
+            return;
+        }
+
+        if (targetInimigo.isDead)
+        {
             targetInimigo = null;
         }
-        else if (distanceToTarget < animalStats.distanciaDeAtaque) // Ataca o alvo
+        else
         {
-            if (!statsGeral.isAttacking && Time.time > animalStats.lastAttackTime + animalStats.attackInterval)
+            if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))  // Ataca o alvo
             {
-                transform.LookAt(targetInimigo.obterTransformPositionDoCollider().position);
-                animalStats.lastAttackTime = Time.time;
-                animator.SetTrigger("isAttacking");
-            }
-        }
-        else // Persegue o alvo
-        {
-            Vector3 targetOffset = Random.insideUnitSphere * animalStats.destinationOffset;
-            Vector3 leadTarget;
-            // Calcula a posi��o futura do jogador com base na sua velocidade atual
-            if (targetInimigo.GetComponent<CharacterController>() != null)
-            {
-                leadTarget = targetInimigo.transform.position + (targetInimigo.GetComponent<CharacterController>().velocity.normalized * animalStats.leadTime);
+                Debug.Log("Atacando inimigo");
+                atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
             }
             else
             {
-                leadTarget = targetInimigo.obterTransformPositionDoCollider().position + (targetInimigo.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized * animalStats.leadTime);
+                atacarObstaculoOuInimigo();
             }
-            
-            // Calcula o offset da posi��o futura do jogador
-            Vector3 leadTargetOffset = (leadTarget - targetInimigo.obterTransformPositionDoCollider().position).normalized * animalStats.leadDistance;
-            // Soma o offset da posi��o futura do jogador com o offset aleat�rio do destino
-            Vector3 destination = leadTarget + leadTargetOffset + targetOffset;
-            // Define a posi��o de destino para o inimigo
-            agent.SetDestination(destination);
         }
+    }
+
+    private bool isPodeAtacarAlvo(Transform transformInicial, Vector3 positionTarget)
+    {
+        float distanceToInimigo = Vector3.Distance(transformInicial.position, positionTarget);
+        return distanceToInimigo <= animalStats.distanciaDeAtaque;
+    }
+
+    private void atacarObstaculoOuInimigo()
+    {
+        if (targetObstaculo != null)
+        {
+            if (!targetObstaculo.gameObject.activeSelf)
+            {
+                targetObstaculo = null;
+            }
+            else
+            {
+                atacarAlvo(targetObstaculo.position);
+                targetObstaculo = null;
+            }
+        }
+        else
+        {
+            perseguirInimigo();
+        }
+    }
+
+    private void atacarAlvo(Vector3 positionAlvo)
+    {
+        if (!statsGeral.isAttacking && Time.time > animalStats.lastAttackTime + animalStats.attackInterval)
+        {
+            transform.LookAt(positionAlvo);
+            animalStats.lastAttackTime = Time.time;
+            animator.SetTrigger("isAttacking");
+            Debug.Log("Atacando obstaculo");
+        }
+        else
+        {
+            perseguirInimigo();
+        }
+    }
+
+    public void perseguirInimigo()
+    {
+        if (targetInimigo == null) return;
+        Vector3 targetVelocity = GetTargetVelocity(targetInimigo);
+
+        if (targetVelocity != Vector3.zero)
+        {
+            Vector3 predictedPosition = PredictTargetPosition(targetInimigo, targetVelocity);
+
+            Vector3 randomOffset = Random.insideUnitSphere * animalStats.destinationOffset;
+
+            Vector3 destination = predictedPosition + (predictedPosition - targetInimigo.obterTransformPositionDoCollider().position).normalized * animalStats.leadDistance + randomOffset;
+
+            // Verifica se o agent já tem um path e se ele está próximo do destino
+            if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > pathUpdateDistanceThreshold))
+            {
+                Debug.Log("Perseguindo inimigo 1");
+                MoveToPosition(destination);
+            }
+
+            agent.speed = runSpeed;
+        }
+        else
+        {
+            if (agent.velocity == Vector3.zero)
+            {
+                Debug.Log("Perseguindo inimigo 2");
+                MoveToPosition(targetInimigo.obterTransformPositionDoCollider().position);
+            }
+        }
+    }
+
+    private Vector3 GetTargetVelocity(StatsGeral target)
+    {
+        if (target.GetComponent<CharacterController>() != null)
+        {
+            return target.GetComponent<CharacterController>().velocity.normalized;
+        }
+        else if (target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>() != null)
+        {
+            return target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized;
+        }
+        return Vector3.zero;
+    }
+
+    private Vector3 PredictTargetPosition(StatsGeral target, Vector3 velocity)
+    {
+        return target.obterTransformPositionDoCollider().position + velocity * animalStats.leadTime;
     }
 
     void CorrerOuAndarEmPerseguicao()

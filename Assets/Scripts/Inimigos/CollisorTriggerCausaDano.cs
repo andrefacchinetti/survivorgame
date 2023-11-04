@@ -14,6 +14,7 @@ public class CollisorTriggerCausaDano : MonoBehaviour
         {
             GameObject objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>().gameObject;
             objPai.GetComponent<StatsGeral>().TakeDamage(damage);
+            Debug.Log(this.gameObject.GetComponentInParent<StatsGeral>().gameObject.name + " causou dano no: " + objPai.name);
         }
     }
 
