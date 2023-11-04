@@ -9,7 +9,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] public int pesoCapacidadeMaxima, qtdItensMaximo;
     [SerializeField] public TMP_Text txPesoInventario, txQtdItensInventario;
     [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
-    [SerializeField] public GameObject canvasInventario;
+    [SerializeField] public GameObject canvasInventario, cameraInventario;
     [SerializeField] GameObject contentItensMochila;
     [SerializeField] public GameObject prefabItem;
     [SerializeField] public Hotbar hotbar;
@@ -71,7 +71,7 @@ public class Inventario : MonoBehaviour
         {
             ToggleInventario();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || playerMovement.playerController.statsGeral.isDead)
         {
             FecharInventario();
         }
@@ -92,6 +92,7 @@ public class Inventario : MonoBehaviour
     public void FecharInventario()
     {
         canvasInventario.SetActive(false);
+        cameraInventario.SetActive(false);
         playerMovement.canMove = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -101,6 +102,7 @@ public class Inventario : MonoBehaviour
     {
         if (!playerMovement.canMove) return;
         canvasInventario.SetActive(true);
+        cameraInventario.SetActive(true);
         playerMovement.canMove = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;

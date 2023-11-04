@@ -83,8 +83,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	void Update()
 	{
 		if (PV == null) return;
-		if (!PV.IsMine)
-			return;
+		if (!PV.IsMine || playerController.statsGeral.isDead) return;
 
 		characterController.Move(moveDirection * Time.deltaTime);
 		Move();
@@ -121,7 +120,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		Vector3 right = transform.TransformDirection(Vector3.right);
 
 		// Press Left Shift to run
-		bool isRunning = Input.GetKey(KeyCode.LeftShift) && pesoGrab == 0 && !recarregandoEnergia;
+		bool isRunning = Input.GetButton("Sprint") && pesoGrab == 0 && !recarregandoEnergia;
         if (isRunning)
         {
 			playerController.statsJogador.setarEnergiaAtual(playerController.statsJogador.energiaAtual - consumoEnergiaPorSegundo * Time.deltaTime);
@@ -160,7 +159,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		}
 		anim.SetFloat("horizontalMove", horizontalMove);
 		anim.SetFloat("verticalMove", verticalMove);
-		if (Input.GetKey(KeyCode.LeftControl) && canMove && characterController.isGrounded)
+		if (Input.GetButton("Crouch") && canMove && characterController.isGrounded)
 		{
 			anim.SetBool("agachando", true);
 			characterController.height = alturaPlayer/2;
@@ -267,7 +266,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 		if (PlayerPrefs.GetFloat("sensivity") <= 0) sensivity = 2.0f;
 		else sensivity = PlayerPrefs.GetFloat("sensivity");
-
 	}
 
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class ControleConstruir : MonoBehaviour
 {
+    [SerializeField] PlayerController playerController;
     public bool isAtivo = false, podeJuntar, isConectado, podeConstruir, isMadeira;
     public float distanciaMax, rotacao, velRotacao;
     public ConstrucoesController construcaoControllerHit;
@@ -54,7 +55,7 @@ public class ControleConstruir : MonoBehaviour
         public GameObject pedPrefab;
         
     }
-    
+
     private void Start() {
         int i = 0;
         construcao = abas[indexAbas].construcoes[indexConstrucoes];
@@ -80,6 +81,7 @@ public class ControleConstruir : MonoBehaviour
     }
     
     void Update(){
+        if (!playerController.podeSeMexer()) return;
         podeConstruir = true;
         if(Input.GetButtonDown("Cancel")) ToggleModoConstrucao(false);
         if (Input.GetButtonDown("MenuConstruir_Abrir"))
@@ -88,7 +90,7 @@ public class ControleConstruir : MonoBehaviour
         }
         if (isAtivo)
         {
-            if (Input.GetButtonDown("MenuConstruir_Direita"))
+            if (Input.GetButtonDown("MenuConstruir_Direita") || Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 if (indexConstrucoes + 1 < abas[indexAbas].construcoes.Count)
                 {
@@ -96,7 +98,7 @@ public class ControleConstruir : MonoBehaviour
                     construcao = abas[indexAbas].construcoes[indexConstrucoes];
                 }
             }
-            if (Input.GetButtonDown("MenuConstruir_Esquerda"))
+            if (Input.GetButtonDown("MenuConstruir_Esquerda") || Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 if (indexConstrucoes - 1 >= 0)
                 {

@@ -88,7 +88,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (!playerMovimentController.canMove || inventario.canvasInventario.activeSelf) return;
+        if (!playerController.podeSeMexer() || inventario.canvasInventario.activeSelf) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
         RaycastHit hit;

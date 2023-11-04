@@ -22,6 +22,13 @@ public class MorteController : MonoBehaviour
         {
             AttHudJogadorMorreu();
         }
+        if (hudMorte.activeSelf && statsGeral.isDead)
+        {
+            if (Input.GetButtonDown("Use"))
+            {
+                RespawnarJogador();
+            }
+        }
     }
 
     private void AttHudJogadorMorreu()

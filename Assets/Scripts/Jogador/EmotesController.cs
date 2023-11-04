@@ -7,17 +7,17 @@ public class EmotesController : MonoBehaviour
 {
 
     [SerializeField] [HideInInspector] Animator animator;
-    [SerializeField] [HideInInspector] PlayerMovement playerMoviment;
+    [SerializeField] [HideInInspector] PlayerController playerController;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        playerMoviment = GetComponent<PlayerMovement>();
+        playerController = GetComponent<PlayerController>();
     }
 
     private void Update()
     {
-        if (!playerMoviment.canMove || playerMoviment.playerController.statsGeral.isDead) return;
+        if (!playerController.podeSeMexer()) return;
 
         if (Input.GetKeyDown(KeyCode.F1)) animator.SetTrigger("animationF1");
         else if (Input.GetKeyDown(KeyCode.F2)) animator.SetTrigger("animationF2");

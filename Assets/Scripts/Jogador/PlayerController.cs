@@ -390,16 +390,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		nomeItemColetando = Item.NomeItem.Nenhum;
 	}
 
-	[PunRPC]
-	void RPC_ExecutarAcoesRessurgimento()
+	public bool podeSeMexer()
 	{
-		statsGeral.isDead = false;
-	}
-
-	[PunRPC]
-	void RPC_RespawnarPlayer(bool isLoading)
-	{
-		PhotonNetwork.Destroy(gameObject);
+		return playerMovement.canMove && !statsGeral.isDead;
 	}
 
 }
