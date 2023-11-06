@@ -16,6 +16,7 @@ public class ItemArmadura : MonoBehaviour
     [SerializeField] public Texture texturaInvisivel;
     [SerializeField] public GameObject bordaSelecionado;
     [SerializeField] public GameObject objEquipLanterna;
+    [SerializeField] public GameObject objLuzLanterna;
     [SerializeField] public Armaduras armaduras;
     [SerializeField] public ArrastarItensInventario arrastarItensInventario;
 
@@ -97,6 +98,15 @@ public class ItemArmadura : MonoBehaviour
                     armaduras.inventario.itemNaMao.DeselecionarItem();
                 }
             }
+        }
+    }
+
+    public void TurnOffOnLanterna()
+    {
+        if(item != null)
+        {
+            objLuzLanterna.SetActive(!objLuzLanterna.activeSelf);
+            //TODO: Sound click lanterna
         }
     }
 

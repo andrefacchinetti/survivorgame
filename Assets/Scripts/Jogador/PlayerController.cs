@@ -62,16 +62,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			statsGeral.TakeDamage(9999);
 		}
 
-		if (!inventario.canvasInventario.activeSelf && inventario.itemNaMao != null && playerMovement.canMove)
+		if (!inventario.canvasInventario.activeSelf && playerMovement.canMove)
 		{
-            if (Input.GetMouseButtonDown(0))
+			if(inventario.itemNaMao != null)
             {
-				ativarAnimacaoPorTipoItem(inventario.itemNaMao);
+				if (Input.GetMouseButtonDown(0))
+				{
+					ativarAnimacaoPorTipoItem(inventario.itemNaMao);
+				}
+				else if (Input.GetKeyDown(KeyCode.G))
+				{
+					inventario.itemNaMao.DroparItem();
+				}
 			}
-			else if (Input.GetKeyDown(KeyCode.G))
-			{
-				inventario.itemNaMao.DroparItem();
+            if (Input.GetButton("Flashlight"))
+            {
+				armaduras.slotLanterna.TurnOffOnLanterna();
 			}
+            
+            
 		}
 		verificarAnimacoesSegurandoItem();
 	}

@@ -159,61 +159,58 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
             else
             {
-                if (inventario.itemNaMao == null)
+                if (Input.GetMouseButtonDown(1)) //Segura objeto
                 {
-                    if (Input.GetMouseButtonDown(1)) //Segura objeto
+                    transferOwnerPV(hit.transform.gameObject);
+                    grabedObj = hit.transform.gameObject;
+                }
+                if (Input.GetKeyDown(KeyCode.E)) //Pega item do chao
+                {
+                    transferOwnerPV(hit.transform.gameObject);
+                    ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
+                    bool destruirObjetoDaCena = true;
+                    if (hit.transform.tag == tagConsumivelNaPanela)
                     {
-                        transferOwnerPV(hit.transform.gameObject);
-                        grabedObj = hit.transform.gameObject;
+                        pegarConsumivelNaPanela(hit);
+                        destruirObjetoDaCena = false;
+                        return;
                     }
-                    if (Input.GetKeyDown(KeyCode.E)) //Pega item do chao
+                    if (hit.transform.tag == tagItemDrop && (itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
                     {
-                        transferOwnerPV(hit.transform.gameObject);
-                        ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
-                        bool destruirObjetoDaCena = true;
-                        if (hit.transform.tag == tagConsumivelNaPanela)
+                        Panela panela = itemDrop.gameObject.GetComponent<Panela>();
+                        Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
+                        if (!itemNaPanela.Equals(Item.NomeItem.Nenhum))
                         {
-                            pegarConsumivelNaPanela(hit);
-                            destruirObjetoDaCena = false;
-                            return;
-                        }
-                        if (hit.transform.tag == tagItemDrop && (itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
-                        {
-                            Panela panela = itemDrop.gameObject.GetComponent<Panela>();
-                            Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
-                            if (!itemNaPanela.Equals(Item.NomeItem.Nenhum))
+                            if (inventario.AdicionarItemAoInventario(itemNaPanela, 1))
                             {
-                                if (inventario.AdicionarItemAoInventario(itemNaPanela, 1))
-                                {
-                                    panela.RetirarConsumivelDaPanela();
-                                }
-                                else
-                                {
-                                    Debug.Log("nao foi possivel adicionar ao inventario do jogador");
-                                }
-                                return;
+                                panela.RetirarConsumivelDaPanela();
                             }
                             else
                             {
-                                panela.fogueira.RetirarPanelaTigela();
+                                Debug.Log("nao foi possivel adicionar ao inventario do jogador");
                             }
-                            destruirObjetoDaCena = false;
-                        }
-                        if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
-                        {
-                            if (destruirObjetoDaCena)
-                            {
-                                if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
-                                else GameObject.Destroy(hit.transform.gameObject);
-                            }
+                            return;
                         }
                         else
                         {
-                            Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                            panela.fogueira.RetirarPanelaTigela();
+                        }
+                        destruirObjetoDaCena = false;
+                    }
+                    if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                    {
+                        if (destruirObjetoDaCena)
+                        {
+                            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
+                            else GameObject.Destroy(hit.transform.gameObject);
                         }
                     }
-                    possibleGrab = true;
+                    else
+                    {
+                        Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                    }
                 }
+                possibleGrab = true;
             }
         }
         else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null
