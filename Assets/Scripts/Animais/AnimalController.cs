@@ -33,6 +33,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     [SerializeField] private StatsGeral targetInimigo;
     [SerializeField] private GameObject targetComida;
     [HideInInspector] public Transform targetObstaculo;
+    [HideInInspector] public GameObject targetCapturador;
     PhotonView PV;
 
     private void Awake()
@@ -56,6 +57,9 @@ public class AnimalController : MonoBehaviourPunCallbacks
             if (animalStats.estaFugindo)
             {
                 //Debug.Log("animal ta fugindo...");
+            }else if(isCapturado && targetCapturador != null)
+            {
+                seguirCapturador();
             }
             else if (targetInimigo != null)
             {
@@ -100,6 +104,25 @@ public class AnimalController : MonoBehaviourPunCallbacks
             {
                 MoveToPosition(targetComida.transform.position);
             }
+        }
+    }
+
+    private float distanciaMinima = 2.0f;
+    private void seguirCapturador()
+    {
+        float distancia = Vector3.Distance(transform.position, targetCapturador.transform.position); // Calcula a distância entre o animal e o targetCapturador
+
+        if (distancia > distanciaMinima)
+        {
+            // Define a posição de destino para ser a posição do targetCapturador com um deslocamento para trás com base na distância mínima
+            Vector3 posicaoDestino = targetCapturador.transform.position - (targetCapturador.transform.forward * distanciaMinima);
+            // Move o animal em direção à posição de destino
+            agent.SetDestination(posicaoDestino);
+        }
+        else
+        {
+            // Se estiver dentro da distância mínima, para o agente
+            agent.ResetPath();
         }
     }
 

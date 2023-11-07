@@ -5,7 +5,7 @@ using UnityEngine;
 public class PointRopeFollow : MonoBehaviour
 {
 
-    [SerializeField] Transform objFollowed;
+    [SerializeField] public Transform objFollowed;
 
     void LateUpdate()
     {
