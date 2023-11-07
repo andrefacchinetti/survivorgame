@@ -13,8 +13,7 @@ public class AnimalStats : MonoBehaviourPunCallbacks
     [SerializeField] public float destinationOffset = 1f;
     [SerializeField] public float speedVariation = 0.5f;
     [SerializeField] public float leadTime = 1.2f, leadDistance = 2;
-    [HideInInspector] public bool estaFugindo;
-
+    [HideInInspector] public bool estaFugindo = false;
     StatsGeral statsGeral;
     AnimalController animalController;
 

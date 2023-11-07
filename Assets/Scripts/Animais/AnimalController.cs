@@ -12,8 +12,9 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public bool isAnimalAgressivo, isAnimalCarnivoro, isAnimalHerbivoro, isPredador, isPequenoPorte;
     public float eatTime = 5f; // tempo de alimentação
     public float walkSpeed = 1, runSpeed = 2;
-    public bool isProcuraComida = true;
-    
+    public bool isProcuraComida = true, isCapturado;
+    public GameObject objRopePivot;
+
     public float eatDistance = 2f; // distância para detectar comida
     public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
     public float restTime = 20f; // tempo que o animal descansa após tomar dano

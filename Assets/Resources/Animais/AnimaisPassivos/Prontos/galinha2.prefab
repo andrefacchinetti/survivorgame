@@ -166,6 +166,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!1 &1089017765117130
 GameObject:
@@ -1180,16 +1181,22 @@ MonoBehaviour:
   walkSpeed: 1
   runSpeed: 2
   isProcuraComida: 1
+  objRopePivot: {fileID: 1786657527550230}
   eatDistance: 2
   tempoCorridaFugindo: 5
   restTime: 10
   raioDeDistanciaMinParaAndarAleatoriamente: 10
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
   timerParaAndarAleatoriamente: 5
+  pathUpdateDistanceThreshold: 10
+  gameController: {fileID: 0}
+  statsGeral: {fileID: 0}
+  animalStats: {fileID: 0}
   animator: {fileID: 0}
   agent: {fileID: 0}
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
+  targetObstaculo: {fileID: 0}
 --- !u!195 &6728211246385942684
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1281,6 +1288,7 @@ MonoBehaviour:
     qtdMaxDrops: 1
   dropPosition: {fileID: 0}
   isAttacking: 0
+  jogadorStats: {fileID: 0}
 --- !u!65 &9220714036079780874
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1507,6 +1515,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!136 &4110048745419852820
 CapsuleCollider:

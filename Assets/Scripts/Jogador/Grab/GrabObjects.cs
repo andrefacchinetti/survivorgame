@@ -9,8 +9,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
     private int cLayer, prLayer, fLayer, ptLayer;
-    public string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
-    public string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado";
+    private string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
+    private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -222,6 +222,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 interacaoDissecar(objPai);
             }
         }
+        else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Cipo) && hit.transform.GetComponentInParent<AnimalController>() != null)
+        {
+            StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
+            if (objPai != null && !objPai.isDead)
+            {
+                interacaoCapturar(objPai.gameObject.GetComponent<AnimalController>());
+            }
+        }
         else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
         {
             interacaoBeberAgua(hit);
@@ -351,6 +359,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             animator.SetTrigger("dissecando");
             playerController.itemsDropsPosDissecar = objPai.dropsItems;
             playerController.corpoDissecando = objPai.gameObject;
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoCapturar(AnimalController objPai)
+    {
+        if (playerController.animalCapturado != null || objPai.objRopePivot == null) return;
+        if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+        {
+            transferOwnerPV(objPai.gameObject);
+            animator.SetTrigger("capturando");
+            playerController.animalCapturado = objPai;
+            playerController.inventario.ToggleGrabUngrabCorda();
         }
         possibleInteraction = true;
     }

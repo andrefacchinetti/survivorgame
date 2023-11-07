@@ -204,6 +204,22 @@ public class Inventario : MonoBehaviour
         return itensStruct[0];
     }
 
-
+    [SerializeField] public GameObject objRopeStart, objCordaMao;
+    public void ToggleGrabUngrabCorda()
+    {
+        if (itemNaMao == null || !itemNaMao.nomeItem.Equals(Item.NomeItem.Cipo)) return;
+        if (!objRopeStart.activeSelf) //Grabando Animal
+        {
+            objCordaMao.SetActive(false);
+            objRopeStart.SetActive(true);
+        }
+        else //Ungrab Animal
+        {
+            objCordaMao.SetActive(true);
+            objRopeStart.SetActive(false);
+            playerMovement.playerController.animalCapturado.isCapturado = false;
+            playerMovement.playerController.animalCapturado = null;
+        }
+    }
 
 }

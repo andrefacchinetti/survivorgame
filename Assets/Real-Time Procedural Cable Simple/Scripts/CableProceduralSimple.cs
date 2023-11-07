@@ -11,7 +11,7 @@ public class CableProceduralSimple : MonoBehaviour
 
 	// The Start of the cable will be the transform of the Gameobject that has this component.
 	// The Transform of the Gameobject where the End of the cable is. This needs to be assigned in the inspector.
-	[SerializeField] Transform endPointTransform;
+	[SerializeField] public Transform endPointTransform;
 
 	// Number of points per meter
 	[SerializeField, Tooltip("Number of points per unit length, using the straight line from the start to the end transform.")] float pointDensity = 3;
@@ -40,7 +40,6 @@ public class CableProceduralSimple : MonoBehaviour
 
 		if (!endPointTransform)
 		{
-			Debug.LogError("No Endpoint Transform assigned to Cable_Procedural component attached to " + gameObject.name);
 			return;
 		}
 		transform.forward = (endPointTransform.position - transform.position).normalized;
@@ -51,8 +50,12 @@ public class CableProceduralSimple : MonoBehaviour
 	
 
 
-	void Update () 
+	void LateUpdate () 
 	{
+		if (!endPointTransform)
+		{
+			return;
+		}
 		transform.forward = (endPointTransform.position - transform.position).normalized;
 		pointsInLineRenderer = Mathf.FloorToInt(pointDensity * (endPointTransform.position - transform.position).magnitude);
 		line.positionCount = pointsInLineRenderer;

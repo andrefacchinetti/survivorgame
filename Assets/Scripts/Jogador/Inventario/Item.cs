@@ -295,6 +295,16 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
+        if (nomeItem.Equals(NomeItem.Cipo))
+        {
+            inventario.objRopeStart.SetActive(false);
+            inventario.objCordaMao.SetActive(true);
+            if (inventario.playerMovement.playerController.animalCapturado != null)
+            {
+                inventario.playerMovement.playerController.animalCapturado.isCapturado = false;
+                inventario.playerMovement.playerController.animalCapturado = null;
+            }
+        }
         inventario.playerMovement.anim.SetBool("isPlayerArmado", false);
         inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", false);
     }
@@ -327,12 +337,16 @@ public class Item : MonoBehaviourPunCallbacks
                     armaduras.slotLanterna.objEquipLanterna.SetActive(false);
                     armaduras.slotLanterna.item = null;
                 }
-                //inventario.FecharInventario();
-            }
-            else
-            {
-                if (nomeItem.Equals(NomeItem.Nenhum)){}
-                 //inventario.FecharInventario();
+                if (nomeItem.Equals(NomeItem.Cipo))
+                {
+                    inventario.objRopeStart.SetActive(false);
+                    inventario.objCordaMao.SetActive(true);
+                    if (inventario.playerMovement.playerController.animalCapturado != null)
+                    {
+                        inventario.playerMovement.playerController.animalCapturado.isCapturado = false;
+                        inventario.playerMovement.playerController.animalCapturado = null;
+                    }
+                }
             }
         }
 
@@ -393,6 +407,10 @@ public class Item : MonoBehaviourPunCallbacks
             if(inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
             {
                 if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
+                if (inventario.itemNaMao.nomeItem.Equals(NomeItem.Cipo))
+                {
+                    inventario.ToggleGrabUngrabCorda();
+                }
                 inventario.itemNaMao = null;
             }
         }

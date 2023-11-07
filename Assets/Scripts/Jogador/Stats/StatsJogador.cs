@@ -95,6 +95,8 @@ public class StatsJogador : MonoBehaviour
         playerController.animator.SetBool("isDead", false);
         statsGeral.isDead = false;
         playerController.playerMovement.canMove = true;
+        playerController.corpoDissecando = null;
+        playerController.animalCapturado = null;
         setarVidaAtual(statsGeral.vidaMaxima * 0.20f);
     }
 
