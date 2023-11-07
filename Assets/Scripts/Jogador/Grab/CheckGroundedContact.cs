@@ -12,6 +12,11 @@ public class CheckGroundedContact : MonoBehaviourPunCallbacks
     public float fallDamageMultiplier = 10f;
     private Vector3 startPosition;
 
+    private void Awake()
+    {
+        if (characterController == null) characterController = GetComponent<CharacterController>();
+    }
+
     void Start()
     {
         startPosition = characterController.transform.position;
@@ -19,7 +24,7 @@ public class CheckGroundedContact : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (characterController.isGrounded)
+        if ( characterController.isGrounded)
         {
             // Se o jogador estiver no chão, atualize a posição inicial
             startPosition = characterController.transform.position;
