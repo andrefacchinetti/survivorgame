@@ -234,6 +234,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (animalCapturado == null) return;
 		animalCapturado.isCapturado = true;
 		animalCapturado.targetCapturador = this.gameObject;
+		animalCapturado.objColeiraRope.SetActive(true);
 		ropeGrab.objFollowed = animalCapturado.objRopePivot.transform;
 	}
 

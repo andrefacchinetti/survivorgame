@@ -13,7 +13,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float eatTime = 5f; // tempo de alimentação
     public float walkSpeed = 1, runSpeed = 2;
     public bool isProcuraComida = true, isCapturado;
-    public GameObject objRopePivot;
+    public GameObject objRopePivot, objColeiraRope;
 
     public float eatDistance = 2f; // distância para detectar comida
     public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
@@ -81,6 +81,11 @@ public class AnimalController : MonoBehaviourPunCallbacks
             animator.SetBool("isDead", true);
             targetInimigo = null;
             targetComida = null;
+            if(targetCapturador != null)
+            {
+                targetCapturador.GetComponent<PlayerController>().inventario.UngrabAnimalCapturado();
+                targetCapturador = null;
+            }
             agent.ResetPath();
         }
     }

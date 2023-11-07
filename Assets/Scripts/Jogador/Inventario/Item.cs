@@ -297,13 +297,7 @@ public class Item : MonoBehaviourPunCallbacks
         inventario.itemNaMao = null;
         if (nomeItem.Equals(NomeItem.Cipo))
         {
-            inventario.objRopeStart.SetActive(false);
-            inventario.objCordaMao.SetActive(true);
-            if (inventario.playerMovement.playerController.animalCapturado != null)
-            {
-                inventario.playerMovement.playerController.animalCapturado.isCapturado = false;
-                inventario.playerMovement.playerController.animalCapturado = null;
-            }
+            inventario.UngrabAnimalCapturado();
         }
         inventario.playerMovement.anim.SetBool("isPlayerArmado", false);
         inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", false);
@@ -339,13 +333,7 @@ public class Item : MonoBehaviourPunCallbacks
                 }
                 if (nomeItem.Equals(NomeItem.Cipo))
                 {
-                    inventario.objRopeStart.SetActive(false);
-                    inventario.objCordaMao.SetActive(true);
-                    if (inventario.playerMovement.playerController.animalCapturado != null)
-                    {
-                        inventario.playerMovement.playerController.animalCapturado.isCapturado = false;
-                        inventario.playerMovement.playerController.animalCapturado = null;
-                    }
+                    inventario.UngrabAnimalCapturado();
                 }
             }
         }

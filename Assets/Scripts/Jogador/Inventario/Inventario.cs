@@ -222,4 +222,16 @@ public class Inventario : MonoBehaviour
         }
     }
 
+    public void UngrabAnimalCapturado()
+    {
+        objRopeStart.SetActive(false);
+        objCordaMao.SetActive(true);
+        if (playerMovement.playerController.animalCapturado != null)
+        {
+            playerMovement.playerController.animalCapturado.objColeiraRope.SetActive(false);
+            playerMovement.playerController.animalCapturado.isCapturado = false;
+            playerMovement.playerController.animalCapturado = null;
+        }
+    }
+
 }
