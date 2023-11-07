@@ -9,6 +9,7 @@ public class PointRopeFollow : MonoBehaviour
 
     void LateUpdate()
     {
+        if (objFollowed == null) return;
         this.transform.position = objFollowed.transform.position;
     }
 }
