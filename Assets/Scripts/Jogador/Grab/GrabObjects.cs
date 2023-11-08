@@ -227,7 +227,17 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
             if (objPai != null && !objPai.isDead)
             {
-                interacaoCapturar(objPai.gameObject.GetComponent<AnimalController>());
+                AnimalController animalController = objPai.gameObject.GetComponent<AnimalController>();
+                if (playerController.animalCapturado == null && animalController.objRopePivot != null)
+                {
+                    interacaoCapturar(animalController);
+                    
+                }
+                else if(playerController.animalCapturado != null && animalController.PV.ViewID == playerController.animalCapturado.PV.ViewID)
+                {
+                    interacaoDescapturar(animalController);
+                }
+                
             }
         }
         else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
@@ -363,14 +373,23 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         possibleInteraction = true;
     }
 
-    private void interacaoCapturar(AnimalController objPai)
+    private void interacaoCapturar(AnimalController animalController)
     {
-        if (playerController.animalCapturado != null || objPai.objRopePivot == null) return;
         if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
         {
-            transferOwnerPV(objPai.gameObject);
+            transferOwnerPV(animalController.gameObject);
             animator.SetTrigger("capturando");
-            playerController.animalCapturado = objPai;
+            playerController.animalCapturado = animalController;
+            playerController.inventario.ToggleGrabUngrabCorda();
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoDescapturar(AnimalController animalController)
+    {
+        if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+        {
+            transferOwnerPV(animalController.gameObject);
             playerController.inventario.ToggleGrabUngrabCorda();
         }
         possibleInteraction = true;

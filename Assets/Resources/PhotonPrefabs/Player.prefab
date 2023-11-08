@@ -15308,7 +15308,7 @@ Transform:
   - {fileID: 384674125}
   - {fileID: 8549272576258559373}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6737041257339993087
 Animator:
@@ -25014,6 +25014,10 @@ PrefabInstance:
       propertyPath: thicknessScale
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6480779159954147541, guid: 8f74df07444fea84b9da66cafa5d8ae5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6553116149856751063, guid: 8f74df07444fea84b9da66cafa5d8ae5, type: 3}
       propertyPath: solverIndices.Array.size
       value: 0
@@ -25029,13 +25033,40 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3224334767178672804, guid: 8f74df07444fea84b9da66cafa5d8ae5, type: 3}
       insertIndex: 1
       addedObject: {fileID: 6889143123152980651}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6950897041268353916, guid: 8f74df07444fea84b9da66cafa5d8ae5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 31578190113426547}
   m_SourcePrefab: {fileID: 100100000, guid: 8f74df07444fea84b9da66cafa5d8ae5, type: 3}
 --- !u!4 &1446707445984300115 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3224334767178672804, guid: 8f74df07444fea84b9da66cafa5d8ae5, type: 3}
   m_PrefabInstance: {fileID: 4083814484033857271}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6402451445260733835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6950897041268353916, guid: 8f74df07444fea84b9da66cafa5d8ae5, type: 3}
+  m_PrefabInstance: {fileID: 4083814484033857271}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &31578190113426547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6402451445260733835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0118bde1cebb0d4cac0abe4cf8c72e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 6737041257339993086}
+  prefab: {fileID: 1583403103468830, guid: 46b3b311bc85645d88ddbc56ad5465f2, type: 3}
+  instanceScale: {x: 1, y: 1, z: 1}
+  plugTears: 1
+  plugStart: 0
+  plugEnd: 0
+  isPartido: 0
 --- !u!1001 &4669966509123591276
 PrefabInstance:
   m_ObjectHideFlags: 0
