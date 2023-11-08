@@ -1,27 +1,22 @@
 # Details per file setting:
 #   text    These files should be normalized (i.e. convert CRLF to LF).
 #   binary  These files are binary and should be left untouched.
-
 # Auto detect text files and perform LF normalization
 * text=auto
 # The above will handle all files NOT found below
-
 # SOURCE CODE
 *.bat      text eol=crlf
 *.sh       text eol=lf
 *.cs       text
-
 # COMPILED FILES
 *.dll      binary
 *.dylib    binary
 *.exe      binary
 *.so       binary
-
 # DOCUMENTATION
 *.md         text
 *.txt        text
 LICENSE      text
-
 # CONFIGS
 .editorconfig  text
 .gitattributes text
@@ -33,7 +28,6 @@ LICENSE      text
 *.toml         text
 *.yaml         text
 *.yml          text
-
 # GRAPHICS
 *.ai   binary
 *.bmp  binary
@@ -41,10 +35,10 @@ LICENSE      text
 *.gif  binary
 *.heic binary
 *.ico  binary
-*.jpeg binary
-*.jpg  binary
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
 *.pdf  binary
-*.png  binary
+*.png filter=lfs diff=lfs merge=lfs -text
 *.psb  binary
 *.psd  binary
 *.svg  text
@@ -52,7 +46,6 @@ LICENSE      text
 *.tiff binary
 *.wbmp binary
 *.webp binary
-
 # AUDIO
 *.aac  binary
 *.flac binary
@@ -66,7 +59,6 @@ LICENSE      text
 *.ogg  binary
 *.wav  binary
 *.weba binary
-
 # VIDEO
 *.3g2  binary
 *.3gp  binary
@@ -84,7 +76,6 @@ LICENSE      text
 *.qt   binary
 *.swf  binary
 *.webm binary
-
 # ARCHIVES
 *.7z  binary
 *.gz  binary
@@ -92,10 +83,10 @@ LICENSE      text
 *.rar binary
 *.tar binary
 *.zip binary
-
 # FONTS
 *.eot   binary
 *.otf   binary
 *.ttf   binary
 *.woff  binary
 *.woff2 binary
+*.sbsar filter=lfs diff=lfs merge=lfs -text
