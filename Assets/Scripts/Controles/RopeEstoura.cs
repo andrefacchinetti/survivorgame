@@ -21,13 +21,15 @@ public class RopeEstoura : MonoBehaviour
     private List<GameObject> instances;         /**< instances of the prefab being rendered. */
     private ObiPathSmoother smoother;
 
-    public bool isPartido = false;
+    public bool isPartido = false, jaEstourou = false;
 
     void OnEnable()
     {
         instances = new List<GameObject>();
         smoother = GetComponent<ObiPathSmoother>();
         smoother.OnCurveGenerated += UpdatePlugs;
+        jaEstourou = false;
+        isPartido = false;
     }
 
     void OnDisable()
@@ -107,7 +109,6 @@ public class RopeEstoura : MonoBehaviour
 
     public void RenovarCorda() //TESTAR ISSO
     {
-        isPartido = false;
         OnEnable();
     }
 

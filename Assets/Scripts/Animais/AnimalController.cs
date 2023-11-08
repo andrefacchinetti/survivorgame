@@ -83,7 +83,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
             targetComida = null;
             if(targetCapturador != null)
             {
-                targetCapturador.GetComponent<PlayerController>().inventario.UngrabAnimalCapturado();
+                targetCapturador.GetComponent<PlayerController>().inventario.UngrabAnimalCapturado(false);
                 targetCapturador = null;
             }
             agent.ResetPath();

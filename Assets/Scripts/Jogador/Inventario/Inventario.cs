@@ -162,7 +162,7 @@ public class Inventario : MonoBehaviour
         {
             if (item.nomeItem.Equals(nomeItemResponse))
             {
-                item.diminuirQuantidade(quantidadeResponse);
+                item.diminuirQuantidade(quantidadeResponse, false);
                 return;
             }
         }
@@ -170,10 +170,15 @@ public class Inventario : MonoBehaviour
 
     public void RemoverItemDoInventario(Item itemResponse, int quantidadeResponse)
     {
-        itemResponse.diminuirQuantidade(quantidadeResponse);
+        itemResponse.diminuirQuantidade(quantidadeResponse, false);
     }
 
     public void RemoverItemDaMao()
+    {
+        RemoverItemDaMao(false);
+    }
+
+    public void RemoverItemDaMao(bool isPartindo)
     {
         if (itemNaMao == null) return;
        
@@ -181,7 +186,7 @@ public class Inventario : MonoBehaviour
         {
             if (item.nomeItem.Equals(itemNaMao.nomeItem))
             {
-                item.diminuirQuantidade(1);
+                item.diminuirQuantidade(1, isPartindo);
                 return;
             }
         }
@@ -207,7 +212,7 @@ public class Inventario : MonoBehaviour
     }
 
     [SerializeField] public GameObject objRopeStart, objCordaMao;
-    public void ToggleGrabUngrabCorda()
+    public void ToggleGrabUngrabCorda(bool isPartindo)
     {
         if (itemNaMao == null || !itemNaMao.nomeItem.Equals(Item.NomeItem.Cipo)) return;
         if (!objRopeStart.activeSelf) //Grabando Animal
@@ -217,14 +222,18 @@ public class Inventario : MonoBehaviour
         }
         else //Ungrab Animal
         {
-            UngrabAnimalCapturado();
+            UngrabAnimalCapturado(isPartindo);
         }
     }
 
-    public void UngrabAnimalCapturado()
+    public void UngrabAnimalCapturado(bool isPartindo)
     {
-        objRopeStart.SetActive(false);
-        objCordaMao.SetActive(true);
+        Debug.Log("UngrabAnimalCapturado");
+        if (!isPartindo)
+        {
+            objRopeStart.SetActive(false);
+            objCordaMao.SetActive(true);
+        }
         if (playerMovement.playerController.animalCapturado != null)
         {
             playerMovement.playerController.animalCapturado.objColeiraRope.SetActive(false);
@@ -234,14 +243,24 @@ public class Inventario : MonoBehaviour
             playerMovement.playerController.animalCapturado = null;
         }
     }
+
+    void SumirObjRopeStart()
+    {
+        Debug.Log("sumindo corda");
+        objRopeStart.SetActive(false);
+        objCordaMao.SetActive(true);
+        ropeEstoura.RenovarCorda();
+    }
+
     [SerializeField] RopeEstoura ropeEstoura;
     private void VerificarCordaPartindo()
     {
-        if (ropeEstoura.isPartido)
+        if (ropeEstoura.isPartido && !ropeEstoura.jaEstourou)
         {
-            ropeEstoura.isPartido = false;
-            //ropeEstoura.RenovarCorda();
-            RemoverItemDaMao();
+            Debug.Log("VerificarCordaPartindo");
+            RemoverItemDaMao(true);
+            ropeEstoura.jaEstourou = true;
+            Invoke("SumirObjRopeStart", 1f);
             //TODO: Sound de corda partindo
         }
     }

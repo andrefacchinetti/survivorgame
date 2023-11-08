@@ -380,7 +380,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             transferOwnerPV(animalController.gameObject);
             animator.SetTrigger("capturando");
             playerController.animalCapturado = animalController;
-            playerController.inventario.ToggleGrabUngrabCorda();
+            playerController.inventario.ToggleGrabUngrabCorda(false);
         }
         possibleInteraction = true;
     }
@@ -390,7 +390,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
         {
             transferOwnerPV(animalController.gameObject);
-            playerController.inventario.ToggleGrabUngrabCorda();
+            playerController.inventario.ToggleGrabUngrabCorda(false);
         }
         possibleInteraction = true;
     }
