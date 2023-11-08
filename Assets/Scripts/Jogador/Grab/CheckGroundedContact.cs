@@ -12,11 +12,6 @@ public class CheckGroundedContact : MonoBehaviourPunCallbacks
     public float fallDamageMultiplier = 10f;
     private Vector3 startPosition;
 
-    private void Awake()
-    {
-        if (characterController == null) characterController = GetComponent<CharacterController>();
-    }
-
     void Start()
     {
         startPosition = characterController.transform.position;

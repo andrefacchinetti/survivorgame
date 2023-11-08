@@ -75,6 +75,7 @@ public class Inventario : MonoBehaviour
         {
             FecharInventario();
         }
+        VerificarCordaPartindo();
     }
 
     public void ToggleInventario()
@@ -175,6 +176,7 @@ public class Inventario : MonoBehaviour
     public void RemoverItemDaMao()
     {
         if (itemNaMao == null) return;
+       
         foreach (Item item in itens)
         {
             if (item.nomeItem.Equals(itemNaMao.nomeItem))
@@ -215,10 +217,7 @@ public class Inventario : MonoBehaviour
         }
         else //Ungrab Animal
         {
-            objCordaMao.SetActive(true);
-            objRopeStart.SetActive(false);
-            playerMovement.playerController.animalCapturado.isCapturado = false;
-            playerMovement.playerController.animalCapturado = null;
+            UngrabAnimalCapturado();
         }
     }
 
@@ -230,7 +229,20 @@ public class Inventario : MonoBehaviour
         {
             playerMovement.playerController.animalCapturado.objColeiraRope.SetActive(false);
             playerMovement.playerController.animalCapturado.isCapturado = false;
+            playerMovement.playerController.animalCapturado.targetCapturador = null;
+            playerMovement.playerController.animalCapturado.agent.ResetPath();
             playerMovement.playerController.animalCapturado = null;
+        }
+    }
+    [SerializeField] RopeEstoura ropeEstoura;
+    private void VerificarCordaPartindo()
+    {
+        if (ropeEstoura.isPartido)
+        {
+            ropeEstoura.isPartido = false;
+            //ropeEstoura.RenovarCorda();
+            RemoverItemDaMao();
+            //TODO: Sound de corda partindo
         }
     }
 

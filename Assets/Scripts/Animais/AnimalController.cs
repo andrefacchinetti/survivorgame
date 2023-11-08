@@ -34,7 +34,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject targetComida;
     [HideInInspector] public Transform targetObstaculo;
     [HideInInspector] public GameObject targetCapturador;
-    PhotonView PV;
+    public PhotonView PV;
 
     private void Awake()
     {
