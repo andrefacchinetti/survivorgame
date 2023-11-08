@@ -21,6 +21,8 @@ namespace Obi
         private List<GameObject> instances;         /**< instances of the prefab being rendered. */
         private ObiPathSmoother smoother;
 
+        public bool isPartido = false;
+
         void OnEnable()
         {
             instances = new List<GameObject>();
@@ -79,6 +81,7 @@ namespace Obi
                     instance.transform.position = l2w.MultiplyPoint3x4(frame.position);
                     instance.transform.rotation = l2wRot * (Quaternion.LookRotation(-frame.tangent, frame.binormal));
                     instance.transform.localScale = instanceScale;
+                    isPartido = true;
                 }
 
                 if ((plugTears && c < smoother.smoothChunks.Count - 1) ||
