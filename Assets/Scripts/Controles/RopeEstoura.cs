@@ -81,10 +81,7 @@ public class RopeEstoura : MonoBehaviour
                 instance.transform.position = l2w.MultiplyPoint3x4(frame.position);
                 instance.transform.rotation = l2wRot * (Quaternion.LookRotation(-frame.tangent, frame.binormal));
                 instance.transform.localScale = instanceScale;
-                if (!isPartido)
-                {
-                    cordaPartindo();
-                }
+                isPartido = true;
             }
 
             if ((plugTears && c < smoother.smoothChunks.Count - 1) ||
@@ -108,17 +105,10 @@ public class RopeEstoura : MonoBehaviour
 
     }
 
-    private void cordaPartindo()
+    public void RenovarCorda() //TESTAR ISSO
     {
-        isPartido = true;
-        if(playerController.animalCapturado != null)
-        {
-            playerController.animalCapturado.isCapturado = false;
-            playerController.animalCapturado.targetCapturador = null;
-            playerController.animalCapturado.agent.ResetPath();
-        }
-        playerController.inventario.RemoverItemDaMao();
-        //TODO: Sound de corda partindo
+        isPartido = false;
+        OnEnable();
     }
 
 }
