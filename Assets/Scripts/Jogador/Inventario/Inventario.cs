@@ -178,7 +178,7 @@ public class Inventario : MonoBehaviour
         RemoverItemDaMao(false);
     }
 
-    public void RemoverItemDaMao(bool isPartindo)
+    public void RemoverItemDaMao(bool isCordaPartindo)
     {
         if (itemNaMao == null) return;
        
@@ -186,7 +186,7 @@ public class Inventario : MonoBehaviour
         {
             if (item.nomeItem.Equals(itemNaMao.nomeItem))
             {
-                item.diminuirQuantidade(1, isPartindo);
+                item.diminuirQuantidade(1, isCordaPartindo);
                 return;
             }
         }
@@ -212,7 +212,7 @@ public class Inventario : MonoBehaviour
     }
 
     [SerializeField] public GameObject objRopeStart, objCordaMao;
-    public void ToggleGrabUngrabCorda(bool isPartindo)
+    public void ToggleGrabUngrabCorda(bool isCordaPartindo)
     {
         if (itemNaMao == null || !itemNaMao.nomeItem.Equals(Item.NomeItem.Cipo)) return;
         if (!objRopeStart.activeSelf) //Grabando Animal
@@ -222,14 +222,14 @@ public class Inventario : MonoBehaviour
         }
         else //Ungrab Animal
         {
-            UngrabAnimalCapturado(isPartindo);
+            UngrabAnimalCapturado(isCordaPartindo);
         }
     }
 
-    public void UngrabAnimalCapturado(bool isPartindo)
+    public void UngrabAnimalCapturado(bool isCordaPartindo)
     {
         Debug.Log("UngrabAnimalCapturado");
-        if (!isPartindo)
+        if (!isCordaPartindo)
         {
             objRopeStart.SetActive(false);
             objCordaMao.SetActive(true);
@@ -244,22 +244,27 @@ public class Inventario : MonoBehaviour
         }
     }
 
-    void SumirObjRopeStart()
+    public void SumirObjRopeStart()
+    {
+        AcoesRenovarCordaEstourada(true);
+    }
+
+    public void AcoesRenovarCordaEstourada(bool isCordaPartindo)
     {
         Debug.Log("sumindo corda");
         objRopeStart.SetActive(false);
-        objCordaMao.SetActive(true);
+        UngrabAnimalCapturado(isCordaPartindo);
         ropeEstoura.RenovarCorda();
     }
 
     [SerializeField] RopeEstoura ropeEstoura;
     private void VerificarCordaPartindo()
     {
-        if (ropeEstoura.isPartido && !ropeEstoura.jaEstourou)
+        if (ropeEstoura.isCordaPartida && !ropeEstoura.isCordaEstourou)
         {
             Debug.Log("VerificarCordaPartindo");
             RemoverItemDaMao(true);
-            ropeEstoura.jaEstourou = true;
+            ropeEstoura.isCordaEstourou = true;
             Invoke("SumirObjRopeStart", 1f);
             //TODO: Sound de corda partindo
         }

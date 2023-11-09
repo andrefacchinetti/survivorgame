@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				{
 					ativarAnimacaoPorTipoItem(inventario.itemNaMao);
 				}
-				else if (Input.GetKeyDown(KeyCode.G))
+				else if (Input.GetButton("Drop"))
 				{
 					inventario.itemNaMao.DroparItem();
 				}

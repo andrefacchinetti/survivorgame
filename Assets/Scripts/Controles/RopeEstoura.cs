@@ -21,15 +21,15 @@ public class RopeEstoura : MonoBehaviour
     private List<GameObject> instances;         /**< instances of the prefab being rendered. */
     private ObiPathSmoother smoother;
 
-    public bool isPartido = false, jaEstourou = false;
+    public bool isCordaPartida = false, isCordaEstourou = false;
 
     void OnEnable()
     {
         instances = new List<GameObject>();
         smoother = GetComponent<ObiPathSmoother>();
         smoother.OnCurveGenerated += UpdatePlugs;
-        jaEstourou = false;
-        isPartido = false;
+        isCordaEstourou = false;
+        isCordaPartida = false;
     }
 
     void OnDisable()
@@ -83,7 +83,7 @@ public class RopeEstoura : MonoBehaviour
                 instance.transform.position = l2w.MultiplyPoint3x4(frame.position);
                 instance.transform.rotation = l2wRot * (Quaternion.LookRotation(-frame.tangent, frame.binormal));
                 instance.transform.localScale = instanceScale;
-                isPartido = true;
+                isCordaPartida = true;
             }
 
             if ((plugTears && c < smoother.smoothChunks.Count - 1) ||
@@ -107,8 +107,9 @@ public class RopeEstoura : MonoBehaviour
 
     }
 
-    public void RenovarCorda() //TESTAR ISSO
+    public void RenovarCorda()
     {
+        Debug.Log("renovando corda");
         OnEnable();
     }
 

@@ -331,11 +331,12 @@ public class Item : MonoBehaviourPunCallbacks
                     armaduras.slotLanterna.objEquipLanterna.SetActive(false);
                     armaduras.slotLanterna.item = null;
                 }
-                if (nomeItem.Equals(NomeItem.Cipo))
-                {
-                    inventario.UngrabAnimalCapturado(false);
-                }
             }
+        }
+
+        if (nomeItem.Equals(NomeItem.Cipo))
+        {
+            inventario.AcoesRenovarCordaEstourada(false);
         }
 
         bool isPlayerArmado = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null;
@@ -383,10 +384,16 @@ public class Item : MonoBehaviourPunCallbacks
     {
         diminuirQuantidade(valorQtd, false);
     }
-    public void diminuirQuantidade(int valorQtd, bool isPartindo)
+    public void diminuirQuantidade(int valorQtd, bool isCordaPartindo)
     {
         inventario.setarPesoAtual(inventario.pesoAtual - peso * valorQtd);
         quantidade -= valorQtd;
+
+        if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Cipo))
+        {
+            inventario.ToggleGrabUngrabCorda(isCordaPartindo);
+            SetarItemNaMaoNull();
+        }
         if (quantidade <= 0)
         {
             quantidade = 0;
@@ -398,14 +405,10 @@ public class Item : MonoBehaviourPunCallbacks
             desativarOuAtivarUsoItemDaHotbar(true);
             if(inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
             {
-                if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
-                if (inventario.itemNaMao.nomeItem.Equals(NomeItem.Cipo))
-                {
-                    inventario.ToggleGrabUngrabCorda(isPartindo);
-                }
-                inventario.itemNaMao = null;
+                SetarItemNaMaoNull();
             }
         }
+        
         if (armaduras.slotAljava.item != null && nomeItem.Equals(armaduras.slotAljava.item.nomeItem))
         {
             armaduras.slotAljava.SetupItemNoSlot(this);
@@ -421,6 +424,12 @@ public class Item : MonoBehaviourPunCallbacks
         {
             RemoverItemDaMochila();
         }
+    }
+
+    private void SetarItemNaMaoNull()
+    {
+        if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
+        inventario.itemNaMao = null;
     }
 
     private void RemoverItemDaMochila()
