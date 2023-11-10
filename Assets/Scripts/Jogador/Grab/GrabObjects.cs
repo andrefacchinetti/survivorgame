@@ -10,7 +10,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private int cLayer, prLayer, fLayer, ptLayer;
     private string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
-    private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal";
+    private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -272,6 +272,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 interacaoReanimar(objPai);
             }
         }
+        else if (hit.transform.tag == tagToggleAnimationObjeto)
+        {
+            interacaoComToggleAnimationObjeto(hit);
+        }
     }
 
    
@@ -284,7 +288,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             if (inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Panela) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Tigela)))
             {
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetButtonDown("Use"))
                 {
                     Fogueira fogueira = hit.transform.GetComponent<Fogueira>();
                     if (fogueira.ColocarPanelaTigela(inventario.itemNaMao))
@@ -297,7 +301,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetButtonDown("Use"))
             {
                 playerController.fogueiraAcendendo = hit.transform.gameObject;
                 if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
@@ -315,7 +319,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoPanelas(RaycastHit hit)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetButtonDown("Use"))
         {
             Panela panela = hit.transform.GetComponent<ItemDrop>().GetComponent<Panela>();
             if (panela.ColocarConsumivelNaPanela(inventario.itemNaMao))
@@ -328,7 +332,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoPesca(RaycastHit hit)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
+        if (Input.GetButtonDown("Use")) //Interagir Pescar
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.peixeDaVara.SetActive(false);
@@ -341,7 +345,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoReconstruivelQuebrado(RaycastHit hit)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
+        if (Input.GetButtonDown("Use")) //Interagir Pescar
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.objConsertando = hit.transform.gameObject;
@@ -352,7 +356,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoAreaDeColeta(RaycastHit hit)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir Pescar
+        if (Input.GetButtonDown("Use")) //Interagir Pescar
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.nomeItemColetando = hit.transform.gameObject.GetComponent<AreaDeColeta>().itemColetavel;
@@ -363,7 +367,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoDissecar(StatsGeral objPai)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) //Interagir Dissecar
         {
             transferOwnerPV(objPai.gameObject);
             animator.SetTrigger("dissecando");
@@ -375,7 +379,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoCapturar(AnimalController animalController)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) //Interagir Dissecar
         {
             transferOwnerPV(animalController.gameObject);
             animator.SetTrigger("capturando");
@@ -387,7 +391,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoDescapturar(AnimalController animalController)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) //Interagir Dissecar
         {
             transferOwnerPV(animalController.gameObject);
             playerController.inventario.ToggleGrabUngrabCorda(false);
@@ -397,7 +401,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoReanimar(StatsGeral objPai)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) //Interagir Dissecar
         {
             animator.SetTrigger("reanimando");
             playerController.corpoReanimando = objPai.gameObject;
@@ -407,7 +411,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoArvore(RaycastHit hit)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetButtonDown("Use"))
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.arvoreColetando = hit.transform.gameObject;
@@ -418,7 +422,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoBeberAgua(RaycastHit hit)
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Interagir BeberAgua
+        if (Input.GetButtonDown("Use")) //Interagir BeberAgua
         {
             transferOwnerPV(hit.transform.gameObject);
             animator.SetTrigger("bebendoAguaBaixo");
@@ -437,6 +441,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             Debug.Log("nao foi possivel adicionar ao inventario do jogador");
         }
+    }
+
+    private void interacaoComToggleAnimationObjeto(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            ToggleAnimationObjeto toggle = hit.transform.GetComponent<ToggleAnimationObjeto>();
+            if (toggle != null && (!toggle.isAtivado || !toggle.isAtivaApenasUmaVez))
+            {
+                toggle.AtivarToggleAnimacaoObjeto();
+            }
+        }
+        possibleInteraction = true;
     }
 
 }

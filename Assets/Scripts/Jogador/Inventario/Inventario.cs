@@ -287,7 +287,7 @@ public class Inventario : MonoBehaviour
             Debug.Log("VerificarCordaPartindo");
             RemoverItemDaMao(true);
             ropeEstoura.isCordaEstourou = true;
-            Invoke("SumirObjRopeStart", 6f);
+            Invoke("SumirObjRopeStart", 1f);
             //TODO: Sound de corda partindo
         }
     }
