@@ -5,11 +5,17 @@ using UnityEngine;
 public class PointRopeFollow : MonoBehaviour
 {
 
-    [SerializeField] public Transform objFollowed;
+    [SerializeField] public Transform posicaoInicial, objFollowed;
 
     void LateUpdate()
     {
-        if (objFollowed == null) return;
-        this.transform.position = objFollowed.transform.position;
+        if (objFollowed == null)
+        {
+            this.transform.position = posicaoInicial.transform.position;
+        }
+        else
+        {
+            this.transform.position = objFollowed.transform.position;
+        }
     }
 }

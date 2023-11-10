@@ -28,14 +28,14 @@ public class RopeEstoura : MonoBehaviour
         instances = new List<GameObject>();
         smoother = GetComponent<ObiPathSmoother>();
         smoother.OnCurveGenerated += UpdatePlugs;
-        isCordaEstourou = false;
-        isCordaPartida = false;
     }
 
     void OnDisable()
     {
-        smoother.OnCurveGenerated -= UpdatePlugs;
+        if(smoother != null) smoother.OnCurveGenerated -= UpdatePlugs;
         ClearPrefabInstances();
+        isCordaPartida = false;
+        isCordaEstourou = false;
     }
 
     private GameObject GetOrCreatePrefabInstance(int index)
@@ -43,6 +43,7 @@ public class RopeEstoura : MonoBehaviour
         if (index < instances.Count)
             return instances[index];
 
+        isCordaPartida = true;
         GameObject tearPrefabInstance = Instantiate(prefab);
         tearPrefabInstance.hideFlags = HideFlags.HideAndDontSave;
         instances.Add(tearPrefabInstance);
@@ -51,10 +52,13 @@ public class RopeEstoura : MonoBehaviour
 
     public void ClearPrefabInstances()
     {
-        for (int i = 0; i < instances.Count; ++i)
-            DestroyImmediate(instances[i]);
+        if (instances != null)
+        {
+            for (int i = 0; i < instances.Count; ++i)
+                DestroyImmediate(instances[i]);
 
-        instances.Clear();
+            instances.Clear();
+        }
     }
 
     // Update is called once per frame
@@ -83,7 +87,6 @@ public class RopeEstoura : MonoBehaviour
                 instance.transform.position = l2w.MultiplyPoint3x4(frame.position);
                 instance.transform.rotation = l2wRot * (Quaternion.LookRotation(-frame.tangent, frame.binormal));
                 instance.transform.localScale = instanceScale;
-                isCordaPartida = true;
             }
 
             if ((plugTears && c < smoother.smoothChunks.Count - 1) ||
@@ -107,10 +110,5 @@ public class RopeEstoura : MonoBehaviour
 
     }
 
-    public void RenovarCorda()
-    {
-        Debug.Log("renovando corda");
-        OnEnable();
-    }
 
 }

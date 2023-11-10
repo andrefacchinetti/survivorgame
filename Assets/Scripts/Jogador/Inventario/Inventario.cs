@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Obi;
 
 public class Inventario : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class Inventario : MonoBehaviour
     [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
     [SerializeField] public GameObject canvasInventario, cameraInventario;
     [SerializeField] GameObject contentItensMochila;
-    [SerializeField] public GameObject prefabItem;
+    [SerializeField] public GameObject prefabItem, prefabCorda;
     [SerializeField] public Hotbar hotbar;
     [SerializeField] public List<Item.ItemStruct> itensStruct;
 
@@ -211,14 +212,13 @@ public class Inventario : MonoBehaviour
         return itensStruct[0];
     }
 
-    [SerializeField] public GameObject objRopeStart, objCordaMao;
+    [SerializeField] public GameObject objObiSolver,objObiRope, objCordaMao;
     public void ToggleGrabUngrabCorda(bool isCordaPartindo)
     {
-        if (itemNaMao == null || !itemNaMao.nomeItem.Equals(Item.NomeItem.Cipo)) return;
-        if (!objRopeStart.activeSelf) //Grabando Animal
+        if (!objObiRope.activeSelf) //Grabando Animal
         {
             objCordaMao.SetActive(false);
-            objRopeStart.SetActive(true);
+            objObiRope.SetActive(true);
         }
         else //Ungrab Animal
         {
@@ -231,7 +231,7 @@ public class Inventario : MonoBehaviour
         Debug.Log("UngrabAnimalCapturado");
         if (!isCordaPartindo)
         {
-            objRopeStart.SetActive(false);
+            objObiRope.SetActive(false);
             objCordaMao.SetActive(true);
         }
         if (playerMovement.playerController.animalCapturado != null)
@@ -241,23 +241,45 @@ public class Inventario : MonoBehaviour
             playerMovement.playerController.animalCapturado.targetCapturador = null;
             playerMovement.playerController.animalCapturado.agent.ResetPath();
             playerMovement.playerController.animalCapturado = null;
+            playerMovement.playerController.ropeGrab.objFollowed = null;
         }
     }
 
     public void SumirObjRopeStart()
     {
+        Debug.Log("SumirObjRopeStart");
         AcoesRenovarCordaEstourada(true);
     }
 
     public void AcoesRenovarCordaEstourada(bool isCordaPartindo)
     {
         Debug.Log("sumindo corda");
-        objRopeStart.SetActive(false);
+        CancelInvoke("SumirObjRopeStart");
+        Transform positionRope = objObiRope.gameObject.transform;
+        GameObject novaCorda = Instantiate(prefabCorda, positionRope.position, positionRope.rotation, objObiSolver.transform);
+        ropeEstoura = novaCorda.GetComponent<RopeEstoura>();
+        ropeEstoura.playerController = playerMovement.playerController;
+    
+        ObiParticleAttachment[] attachs = novaCorda.GetComponents<ObiParticleAttachment>();
+        foreach(ObiParticleAttachment attach in attachs)
+        {
+            if(attach.particleGroup.name == "START1")
+            {
+                attach.target = pivotRopeStart.transform;
+            }
+            else
+            {
+                attach.target = pivotRopeEnd.transform;
+            }
+        }
+        Destroy(objObiRope.gameObject);
+        objObiRope = novaCorda;
+        objObiRope.SetActive(false);
         UngrabAnimalCapturado(isCordaPartindo);
-        ropeEstoura.RenovarCorda();
     }
 
-    [SerializeField] RopeEstoura ropeEstoura;
+    [SerializeField] public RopeEstoura ropeEstoura;
+    [SerializeField] GameObject pivotRopeStart, pivotRopeEnd;
     private void VerificarCordaPartindo()
     {
         if (ropeEstoura.isCordaPartida && !ropeEstoura.isCordaEstourou)
@@ -265,7 +287,7 @@ public class Inventario : MonoBehaviour
             Debug.Log("VerificarCordaPartindo");
             RemoverItemDaMao(true);
             ropeEstoura.isCordaEstourou = true;
-            Invoke("SumirObjRopeStart", 1f);
+            Invoke("SumirObjRopeStart", 6f);
             //TODO: Sound de corda partindo
         }
     }
