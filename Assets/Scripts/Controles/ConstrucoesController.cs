@@ -83,7 +83,8 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
     private void destruirConstrucao(GameObject objConstrucao)
     {
         //TODO: EFEITO DA CONSTRUCAO SENDO DESTRUIDA EM PEDAÇOS
-        PhotonNetwork.Destroy(objConstrucao);
+        GameObject objPaiParaDestruir = objConstrucao.GetComponent<StatsGeral>().objPaiParaDestruir != null ? objConstrucao.GetComponent<StatsGeral>().objPaiParaDestruir : objConstrucao;
+        PhotonNetwork.Destroy(objPaiParaDestruir);
     }
 
 }

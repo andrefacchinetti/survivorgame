@@ -169,7 +169,7 @@ public class ControleConstruir : MonoBehaviour
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
                     {
-                        construcaoControllerHit.inserirConstrucaoNaPlataforma(instanciado.GetComponent<ConstrucoesController>());
+                        construcaoControllerHit.inserirConstrucaoNaPlataforma(instanciado.GetComponentInChildren<ConstrucoesController>());
                     }
                     inventario.RemoverItemDoInventarioPorNome(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra, construcao.custo);
                     try{
