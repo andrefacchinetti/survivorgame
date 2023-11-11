@@ -324,7 +324,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (targetInimigo != null || statsGeral.isDead) return;
         if (other.gameObject.tag == "Player")
         {
-            if (targetInimigo == null && !other.GetComponent<StatsGeral>().isDead)
+            if (targetInimigo == null && other.GetComponent<StatsGeral>() != null  && !other.GetComponent<StatsGeral>().isDead)
             {
                 Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
                 targetInimigo = other.GetComponent<StatsGeral>();

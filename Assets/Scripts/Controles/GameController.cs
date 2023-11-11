@@ -6,10 +6,16 @@ public class GameController : MonoBehaviour
 {
 
     [SerializeField] Light luzDoSol;
-    public float gameHour = 12f;  // Define a hora atual do jogo
+    [SerializeField] GameObject objMoon, pivotDoSol;
+    [SerializeField] float moonRotationSpeed = 10f;
+    public float multiplicadorVelocidade = 10f;
+
+    public int gameHour = 12;  // Define a hora atual do jogo
+    public int gameMinute = 0;  // Define o minuto atual do jogo
+    public int gameSecond = 0;  // Define o minuto atual do jogo
     public int gameDay = 1;  // Define o dia atual do jogo
     public float gameSpeed = 60f;  // Define a velocidade do tempo do jogo (em segundos do mundo real)
-    private float elapsedTime = 0f;  // Tempo que passou desde o início do jogo
+    private float elapsedTime = 0f;  // Tempo que passou desde o inï¿½cio do jogo
 
     public bool isNoite = false;
 
@@ -25,7 +31,7 @@ public class GameController : MonoBehaviour
     public float intensidadeEntardecer = 0.5f;
     public float intensidadeNoite = 0.1f;
 
-    // Horários personalizados
+    // Horï¿½rios personalizados
     public float amanhecerHorario = 6f;
     public float meioDiaHorario = 12f;
     public float entardecerHorario = 17f;
@@ -49,56 +55,50 @@ public class GameController : MonoBehaviour
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
 
-        elapsedTime += Time.deltaTime;  // Adiciona o tempo do mundo real que passou desde o último frame
+        elapsedTime += Time.deltaTime;
 
         if (elapsedTime >= gameSpeed)
         {
-            // Calcula o número de horas fictícias que passaram
-            int hoursPassed = Mathf.FloorToInt(elapsedTime / gameSpeed);
-            gameHour += hoursPassed;
-
-            // Atualiza o tempo restante que não foi considerado no último frame
-            elapsedTime -= hoursPassed * gameSpeed;
-
-            // Verifica se o dia do jogo precisa ser atualizado
-            if (gameHour >= 24f)
+            gameMinute++;
+            if (gameMinute >= 60)
             {
-                gameHour -= 24f;
-                gameDay++;
+                gameMinute -= 60;
+                gameHour++;
+
+                if (gameHour >= 24)
+                {
+                    gameHour -= 24;
+                    gameDay++;
+                }
             }
+
             spawnarPorDia();
 
-            isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario; //so deve funcionar se a noite for a partir da meia noite
-
-            // Exibe o horário fictício atual do jogo
-            Debug.Log("Dia " + gameDay + " - Hora " + Mathf.FloorToInt(gameHour) + ":00");
-
+            isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario;
+            elapsedTime = 0;
         }
+        gameSecond = Mathf.FloorToInt(elapsedTime % 60);
+        Debug.Log("Dia " + gameDay + " - Hora " + gameHour + ":" + gameMinute + ":" + gameSecond);
+        AtualizarRotacaoDoSol();
+        objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);
+    }
 
-        Color currentColor;
+    void AtualizarRotacaoDoSol()
+    {
+        // Mapeia gameHour, gameMinute e gameSegundos para o intervalo desejado (-190, -90, 20)
+        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
 
-        if (gameHour >= amanhecerHorario && gameHour < meioDiaHorario)
-        {
-            currentColor = Color.Lerp(amanhecer, meioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
-            luzDoSol.intensity = Mathf.Lerp(intensidadeAmanhecer, intensidadeMeioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
-        }
-        else if (gameHour >= meioDiaHorario && gameHour < entardecerHorario)
-        {
-            currentColor = Color.Lerp(meioDia, entardecer, Mathf.SmoothStep(0f, 1f, (gameHour - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
-            luzDoSol.intensity = Mathf.Lerp(intensidadeMeioDia, intensidadeEntardecer, Mathf.SmoothStep(0f, 1f, (gameHour - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
-        }
-        else if (gameHour >= entardecerHorario && gameHour < noiteHorario)
-        {
-            currentColor = Color.Lerp(entardecer, noite, Mathf.SmoothStep(0f, 1f, (gameHour - entardecerHorario) / (noiteHorario - entardecerHorario)));
-            luzDoSol.intensity = Mathf.Lerp(intensidadeEntardecer, intensidadeNoite, Mathf.SmoothStep(0f, 1f, (gameHour - entardecerHorario) / (noiteHorario - entardecerHorario)));
-        }
-        else
-        {
-            currentColor = noite;
-            luzDoSol.intensity = intensidadeNoite;
-        }
+        // Use deltaTime diretamente para calcular a rotaÃ§Ã£o
+        float rotationAngle = Mathf.Repeat(deltaTime * multiplicadorVelocidade, 360f);
 
-        luzDoSol.color = currentColor;
+        // Atribui a rotaÃ§Ã£o ao pivÃ´ do sol
+        pivotDoSol.transform.rotation = Quaternion.Euler(mappedHour + rotationAngle, 0, 0f);
+    }
+
+    // Funï¿½ï¿½o para mapear valores de um intervalo para outro
+    float Map(float value, float fromSource, float toSource, float fromTarget, float toTarget)
+    {
+        return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
     }
 
     private void spawnarPorDia()
