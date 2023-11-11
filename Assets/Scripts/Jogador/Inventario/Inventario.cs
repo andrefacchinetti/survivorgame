@@ -18,6 +18,7 @@ public class Inventario : MonoBehaviour
 
     [HideInInspector] public List<Item> itens;
     [SerializeField][HideInInspector] public Item itemNaMao;
+    [SerializeField] [HideInInspector] public PlayerController playerController;
     [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
 
@@ -44,6 +45,7 @@ public class Inventario : MonoBehaviour
 
     void Start()
     {
+        playerController = GetComponentInParent<PlayerController>();
         playerMovement = GetComponentInParent<PlayerMovement>();
         statsJogador = GetComponentInParent<StatsJogador>();
         setarQtdItensAtual(0);
@@ -72,7 +74,7 @@ public class Inventario : MonoBehaviour
         {
             ToggleInventario();
         }
-        if (Input.GetKeyDown(KeyCode.Escape) || playerMovement.playerController.statsGeral.isDead)
+        if (Input.GetKeyDown(KeyCode.Escape) || playerController.statsGeral.isDead)
         {
             FecharInventario();
         }
@@ -208,13 +210,21 @@ public class Inventario : MonoBehaviour
         }
     }
 
-    public bool VerificarQtdItem(Item.NomeItem nomeItemResponse, int quantidade){
+    public bool VerificarQtdItem(Item.NomeItem nomeItemResponse, int quantidade, bool alertar){
         if(quantidade<=0) return true;
+        int qtdItemAtual = 0;
+        string nomeItem = "";
         foreach(Item item in itens){
-            if(item.nomeItem == nomeItemResponse && item.quantidade >= quantidade){
-                return true;
+            if(item.nomeItem == nomeItemResponse){
+                qtdItemAtual = item.quantidade;
+                nomeItem = item.obterNomeItemTraduzido();
+                if(item.quantidade >= quantidade)
+                {
+                    return true;
+                }
             }
         }
+        if(alertar) playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaNaoPossuiMaterialSuficiente(nomeItem, qtdItemAtual, quantidade));
         return false;
     }
 
@@ -249,14 +259,14 @@ public class Inventario : MonoBehaviour
             objObiRope.SetActive(false);
             objCordaMao.SetActive(true);
         }
-        if (playerMovement.playerController.animalCapturado != null)
+        if (playerController.animalCapturado != null)
         {
-            playerMovement.playerController.animalCapturado.objColeiraRope.SetActive(false);
-            playerMovement.playerController.animalCapturado.isCapturado = false;
-            playerMovement.playerController.animalCapturado.targetCapturador = null;
-            playerMovement.playerController.animalCapturado.agent.ResetPath();
-            playerMovement.playerController.animalCapturado = null;
-            playerMovement.playerController.ropeGrab.objFollowed = null;
+            playerController.animalCapturado.objColeiraRope.SetActive(false);
+            playerController.animalCapturado.isCapturado = false;
+            playerController.animalCapturado.targetCapturador = null;
+            playerController.animalCapturado.agent.ResetPath();
+            playerController.animalCapturado = null;
+            playerController.ropeGrab.objFollowed = null;
         }
     }
 
@@ -273,7 +283,7 @@ public class Inventario : MonoBehaviour
         Transform positionRope = objObiRope.gameObject.transform;
         GameObject novaCorda = Instantiate(prefabCorda, positionRope.position, positionRope.rotation, objObiSolver.transform);
         ropeEstoura = novaCorda.GetComponent<RopeEstoura>();
-        ropeEstoura.playerController = playerMovement.playerController;
+        ropeEstoura.playerController = playerController;
     
         ObiParticleAttachment[] attachs = novaCorda.GetComponents<ObiParticleAttachment>();
         foreach(ObiParticleAttachment attach in attachs)

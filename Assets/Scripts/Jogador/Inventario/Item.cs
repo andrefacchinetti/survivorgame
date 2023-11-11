@@ -255,6 +255,11 @@ public class Item : MonoBehaviourPunCallbacks
         return nomeItemResponse.ToString();
     }
 
+    public string obterNomeItemTraduzido()
+    {
+        return PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles;
+    }
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -262,7 +267,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles;
+        txNomeItem.text = obterNomeItemTraduzido();
         txQuantidade.text = quantidade + "";
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
@@ -326,7 +331,7 @@ public class Item : MonoBehaviourPunCallbacks
                 itemObjMao.gameObject.SetActive(true);
                 if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
                 if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
-                if (nomeItem.Equals(NomeItem.Lanterna) && !inventario.VerificarQtdItem(NomeItem.Lanterna, 2) && armaduras.slotLanterna.item != null && armaduras.slotLanterna.item.nomeItem.Equals(NomeItem.Lanterna))
+                if (nomeItem.Equals(NomeItem.Lanterna) && !inventario.VerificarQtdItem(NomeItem.Lanterna, 2, false) && armaduras.slotLanterna.item != null && armaduras.slotLanterna.item.nomeItem.Equals(NomeItem.Lanterna))
                 {
                     armaduras.slotLanterna.objEquipLanterna.SetActive(false);
                     armaduras.slotLanterna.item = null;

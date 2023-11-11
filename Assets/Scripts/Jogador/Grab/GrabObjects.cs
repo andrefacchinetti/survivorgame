@@ -282,10 +282,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         }
     }
 
-   
-
     //INTERAÇÕES
-
     private void interacaoIncendiaveis(RaycastHit hit)
     {
         if (inventario.itemNaMao != null)

@@ -93,7 +93,7 @@ public class ItemArmadura : MonoBehaviour
             {
                 objEquipLanterna.SetActive(true);
                 armaduras.slotLanterna = this;
-                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Lanterna) && !armaduras.inventario.VerificarQtdItem(Item.NomeItem.Lanterna, 2))
+                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Lanterna) && !armaduras.inventario.VerificarQtdItem(Item.NomeItem.Lanterna, 2, false))
                 {
                     armaduras.inventario.itemNaMao.DeselecionarItem();
                 }

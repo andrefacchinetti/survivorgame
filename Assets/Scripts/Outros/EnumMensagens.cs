@@ -6,14 +6,14 @@ public static class EnumMensagens
 
     public static string ObterAlertaNaoPossuiMartelo()
     {
-        if(PlayerPrefs.GetInt("INDEXIDIOMA") == 1) //PORTUGUES
-        {
-            return "Você precisa de um Martelo Reparador";
-        }
-        else //OUTROS
-        {
-            return "You need a Repair Hammer";
-        }
+        if(PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Você precisa de um Martelo Reparador";
+        return "You need a Repair Hammer";
+    }
+
+    public static string ObterAlertaNaoPossuiMaterialSuficiente(string nomeItem, int qtdItemAtual, int qtdNecessaria)
+    {
+        if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Você não possui "+nomeItem+" suficiente ("+qtdItemAtual+"/"+qtdNecessaria+")";
+        return "You do not have enough " + nomeItem + " (" + qtdItemAtual + "/" + qtdNecessaria + ")"; ;
     }
 
 }

@@ -165,7 +165,7 @@ public class ControleConstruir : MonoBehaviour
                 rotacao = rotacao%360;
             }
             if(Input.GetButtonDown("Fire1")){
-                if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo) && (podeConstruir && VerificarSePodeConstruir())){
+                if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo, true) && (podeConstruir && VerificarSePodeConstruir())){
                     playerController.animator.SetTrigger("construindoAcao");
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
@@ -192,7 +192,7 @@ public class ControleConstruir : MonoBehaviour
 
     private void ToggleModoConstrucao(bool toggle)
     {
-        if(!isAtivo && !playerController.inventario.VerificarQtdItem(Item.NomeItem.MarteloReparador, 1))
+        if(!isAtivo && !playerController.inventario.VerificarQtdItem(Item.NomeItem.MarteloReparador, 1, false))
         {
             playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaNaoPossuiMartelo());
         }
