@@ -77,6 +77,32 @@ public class GameController : MonoBehaviour
             isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario;
             elapsedTime = 0;
         }
+
+        Color currentColor;
+
+        if (gameHour >= amanhecerHorario && gameHour < meioDiaHorario)
+        {
+            currentColor = Color.Lerp(amanhecer, meioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
+            luzDoSol.intensity = 0.7f; //Mathf.Lerp(intensidadeAmanhecer, intensidadeMeioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
+        }
+        else if (gameHour >= meioDiaHorario && gameHour < entardecerHorario)
+        {
+            currentColor = Color.Lerp(meioDia, entardecer, Mathf.SmoothStep(0f, 1f, (gameHour - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
+            luzDoSol.intensity = 0.7f; //Mathf.Lerp(intensidadeMeioDia, intensidadeEntardecer, Mathf.SmoothStep(0f, 1f, (gameHour - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
+        }
+        else if (gameHour >= entardecerHorario && gameHour < noiteHorario)
+        {
+            currentColor = Color.Lerp(entardecer, noite, Mathf.SmoothStep(0f, 1f, (gameHour - entardecerHorario) / (noiteHorario - entardecerHorario)));
+            luzDoSol.intensity = 0.7f; //Mathf.Lerp(intensidadeEntardecer, intensidadeNoite, Mathf.SmoothStep(0f, 1f, (gameHour - entardecerHorario) / (noiteHorario - entardecerHorario)));
+        }
+        else
+        {
+            currentColor = noite;
+            luzDoSol.intensity = 0.7f; //intensidadeNoite;
+        }
+
+        luzDoSol.color = currentColor;
+
         gameSecond = Mathf.FloorToInt(elapsedTime % 60);
         Debug.Log("Dia " + gameDay + " - Hora " + gameHour + ":" + gameMinute + ":" + gameSecond);
         AtualizarRotacaoDoSol();
