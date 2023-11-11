@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using Cinemachine;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public Animator animator, animatorVaraDePesca;
 	[SerializeField] public PointRopeFollow ropeGrab;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara, kitModoConstrucao;
+	[SerializeField] public TMP_Text txMsgAlerta;
 
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		playerMovement = GetComponent<PlayerMovement>();
 		statsJogador = GetComponent<StatsJogador>();
 		statsGeral = GetComponent<StatsGeral>();
+		txMsgAlerta.text = "";
 	}
 
 	void Start()
@@ -452,5 +455,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	{
 		return playerMovement.canMove && !statsGeral.isDead;
 	}
+
+	public void AlertarJogadorComMensagem(string texto)
+    {
+		CancelInvoke("SumirAlerta");
+		txMsgAlerta.text = texto;
+		Invoke("SumirAlerta", 2);
+	}
+
+	void SumirAlerta()
+    {
+		txMsgAlerta.text = "";
+    }
 
 }

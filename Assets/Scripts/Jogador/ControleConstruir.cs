@@ -192,9 +192,16 @@ public class ControleConstruir : MonoBehaviour
 
     private void ToggleModoConstrucao(bool toggle)
     {
-        constructionUI.SetActive(toggle);
-        isAtivo = toggle;
-        playerController.TogglePlayerModoConstrucao(isAtivo);
+        if(!isAtivo && !playerController.inventario.VerificarQtdItem(Item.NomeItem.MarteloReparador, 1))
+        {
+            playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaNaoPossuiMartelo());
+        }
+        else
+        {
+            constructionUI.SetActive(toggle);
+            isAtivo = toggle;
+            playerController.TogglePlayerModoConstrucao(isAtivo);
+        }
     }
 
     public void LocalConstrucao()
