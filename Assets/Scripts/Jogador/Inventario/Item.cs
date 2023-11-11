@@ -134,13 +134,13 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Ferramenta")]
         MachadoSimples,
         [EnumMember(Value = "Ferramenta")]
-        MarteloSimples,
+        MarteloReparador,
         [EnumMember(Value = "Ferramenta")]
         PicaretaSimples,
         [EnumMember(Value = "Ferramenta")]
         MachadoAvancado,
         [EnumMember(Value = "Ferramenta")]
-        MarteloAvancado,
+        MarteloDemolidor,
         [EnumMember(Value = "Ferramenta")]
         PicaretaAvancada,
         [EnumMember(Value = "Ferramenta")]

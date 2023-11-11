@@ -8,12 +8,13 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
     
     [SerializeField] public bool isPlataforma;
 
-    [SerializeField] public ConstrucoesController plataformaPai;
+    [HideInInspector] public ConstrucoesController plataformaPai;
 
-    [SerializeField] public List<ConstrucoesController> listaConstrucoesConectadas;
+    [HideInInspector] public List<ConstrucoesController> listaConstrucoesConectadas;
 
-    private void Start()
+    private void Awake()
     {
+        transform.tag = "ConstrucaoStats";
         listaConstrucoesConectadas = new List<ConstrucoesController>();
     }
 
@@ -36,6 +37,19 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
             construcaoNova.plataformaPai = this;
         }
     }
+
+    public void removerConstrucaoDaPlataforma(ConstrucoesController construcaoParaRemover)
+    {
+        foreach(ConstrucoesController construcao in listaConstrucoesConectadas)
+        {
+            if(construcao == construcaoParaRemover)
+            {
+                listaConstrucoesConectadas.Remove(construcao);
+                return;
+            }
+        }
+    }
+
     public void MandarDestruirTodasAsConstrucoesConectadas()
     {
         if (isTenhoPai())
@@ -52,9 +66,24 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
     {
         foreach(ConstrucoesController construcao in listaConstrucoesConectadas)
         {
-            PhotonNetwork.Destroy(construcao.gameObject);
+            destruirConstrucao(construcao.gameObject);
         }
-        PhotonNetwork.Destroy(this.gameObject);
+        destruirConstrucao(this.gameObject);
+    }
+
+    public void DemolirConstrucao()
+    {
+        if (isTenhoPai())
+        {
+            plataformaPai.removerConstrucaoDaPlataforma(this);
+        }
+        destruirConstrucao(this.gameObject);
+    }
+
+    private void destruirConstrucao(GameObject objConstrucao)
+    {
+        //TODO: EFEITO DA CONSTRUCAO SENDO DESTRUIDA EM PEDAÇOS
+        PhotonNetwork.Destroy(objConstrucao);
     }
 
 }

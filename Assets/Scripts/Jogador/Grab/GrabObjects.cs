@@ -264,7 +264,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoIncendiaveis(hit);
         }
-        else if (hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloAvancado)))
+        else if (hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloReparador))
         {
             interacaoReconstruivelQuebrado(hit);
         }

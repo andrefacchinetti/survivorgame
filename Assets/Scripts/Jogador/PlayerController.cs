@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             else
             {
 				string atkName = "atkFerramentaFrente";
-				if (itemResponse.nomeItem == Item.NomeItem.MarteloSimples)
+				if (itemResponse.nomeItem == Item.NomeItem.MarteloReparador)
 				{
 					atkName = "atkFerramentaMarteloFrente";
 				}
