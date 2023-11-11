@@ -152,7 +152,7 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Ferramenta")]
         Tocha,
         [EnumMember(Value = "Ferramenta")]
-        Cantil,
+        Garrafa,
         [EnumMember(Value = "Ferramenta")]
         VaraDePesca,
         //Arma
@@ -350,7 +350,11 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if (this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum)) return;
         string nomePrefab = this.nomeItem.GetTipoItemEnum() + "/"+ this.nomeItem.ToString();
-        ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
+        GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
+        if (this.nomeItem.Equals(NomeItem.Garrafa))
+        {
+            objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
+        }
         inventario.RemoverItemDoInventario(this, 1); //TODO: implementar opcao de dropar itens em quantidade
     }
 

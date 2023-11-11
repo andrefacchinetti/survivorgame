@@ -181,7 +181,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
                         if (!itemNaPanela.Equals(Item.NomeItem.Nenhum))
                         {
-                            if (inventario.AdicionarItemAoInventario(itemNaPanela, 1))
+                            if (inventario.AdicionarItemAoInventario(null, itemNaPanela, 1))
                             {
                                 panela.RetirarConsumivelDaPanela();
                             }
@@ -197,7 +197,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         }
                         destruirObjetoDaCena = false;
                     }
-                    if (inventario.AdicionarItemAoInventario(itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                    if (inventario.AdicionarItemAoInventario(itemDrop, itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
                     {
                         if (destruirObjetoDaCena)
                         {
@@ -243,6 +243,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
         {
             interacaoBeberAgua(hit);
+        }
+        else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Garrafa))
+        {
+            interacaoEncherGarrafa(hit);
         }
         else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.VaraDePesca))
         {
@@ -430,10 +434,20 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         possibleInteraction = true;
     }
 
+    private void interacaoEncherGarrafa(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use")) //Interagir EncherGarrafa
+        {
+            transferOwnerPV(hit.transform.gameObject);
+            animator.SetTrigger("enchendoGarrafa");
+        }
+        possibleInteraction = true;
+    }
+
     private void pegarConsumivelNaPanela(RaycastHit hit)
     {
         Item.NomeItem itemNaPanela = hit.transform.gameObject.GetComponent<ConsumivelCozinha>().slotConsumivelPanela.nomeItemNoSlot;
-        if (inventario.AdicionarItemAoInventario(itemNaPanela, 1))
+        if (inventario.AdicionarItemAoInventario(null, itemNaPanela, 1))
         {
             hit.transform.gameObject.GetComponent<ConsumivelCozinha>().panela.RetirarConsumivelDoSlot(hit.transform.gameObject.GetComponent<ConsumivelCozinha>().slotConsumivelPanela);
         }

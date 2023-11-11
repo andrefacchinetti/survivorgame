@@ -72,17 +72,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				{
 					ativarAnimacaoPorTipoItem(inventario.itemNaMao);
 				}
-				else if (Input.GetButton("Drop"))
+				if (Input.GetButtonDown("Dropar"))
 				{
 					inventario.itemNaMao.DroparItem();
 				}
 			}
-            if (Input.GetButton("Flashlight"))
+            if (Input.GetButtonDown("Flashlight"))
             {
 				armaduras.slotLanterna.TurnOffOnLanterna();
 			}
-            
-            
 		}
 		verificarAnimacoesSegurandoItem();
 	}
@@ -123,14 +121,21 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Ferramenta.ToString()))
 		{
-			string atkName = "atkFerramentaFrente";
-			if (itemResponse.nomeItem == Item.NomeItem.MarteloSimples)
+			if (itemResponse.nomeItem.Equals(Item.NomeItem.Garrafa))
 			{
-				atkName = "atkFerramentaMarteloFrente";
-			}
-			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
-			{
-				animator.SetTrigger(atkName);
+				animator.SetTrigger("bebendoGarrafa");
+            }
+            else
+            {
+				string atkName = "atkFerramentaFrente";
+				if (itemResponse.nomeItem == Item.NomeItem.MarteloSimples)
+				{
+					atkName = "atkFerramentaMarteloFrente";
+				}
+				if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
+				{
+					animator.SetTrigger(atkName);
+				}
 			}
 		}
 		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
@@ -285,8 +290,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	void AnimEventBebeuAgua()
     {
-		Debug.Log("bebeu agua");
 		statsJogador.setarSedeAtual(statsJogador.sedeAtual + 100);
+	}
+	void AnimEventBebeuGarrafa()
+	{
+		if(inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Garrafa))
+        {
+			statsJogador.setarSedeAtual(statsJogador.sedeAtual + inventario.itemNaMao.GetComponent<Garrafa>().BeberAgua());
+		}
+	}
+
+	void AnimEventEncheuGarrafa()
+    {
+		if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Garrafa))
+        {
+			inventario.itemNaMao.GetComponent<Garrafa>().EncherRepositorioComAgua();
+		}
 	}
 
 	void AnimEventAcendendoFogueira()
@@ -326,7 +345,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		Debug.Log("event pescou");
 		if (pescaPescando == null) return;
 		peixeDaVara.SetActive(false);
-		inventario.AdicionarItemAoInventario(Item.NomeItem.PeixeCru, 1);
+		inventario.AdicionarItemAoInventario(null, Item.NomeItem.PeixeCru, 1);
 	}
 
 	void AnimEventTiroArcoFlecha()
@@ -387,25 +406,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (arvoreColetando == null) return;
 		List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
-		foreach (Item.ItemDropStruct itemDrop in arvoreColetando.GetComponent<StatsGeral>().dropsItems)
+		foreach (Item.ItemDropStruct itemDropScruct in arvoreColetando.GetComponent<StatsGeral>().dropsItems)
 		{
-			if (itemDrop.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+			if (itemDropScruct.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
 			{
-				if(itemDrop.qtdMaxDrops > 0)
+				if(itemDropScruct.qtdMaxDrops > 0)
                 {
-					Debug.Log("coletou fruta: " + itemDrop.nomeItemEnum.ToString());
-					inventario.AdicionarItemAoInventario(itemDrop.nomeItemEnum, 1);
+					Debug.Log("coletou fruta: " + itemDropScruct.nomeItemEnum.ToString());
+					inventario.AdicionarItemAoInventario(null, itemDropScruct.nomeItemEnum, 1);
 					arvoreColetando.GetComponent<ArvoreFrutifera>().DesaparecerUmaFrutaDaArvore();
 					Item.ItemDropStruct novo = new Item.ItemDropStruct();
-					novo.nomeItemEnum = itemDrop.nomeItemEnum;
-					novo.qtdMinDrops = itemDrop.qtdMinDrops - 1;
-					novo.qtdMaxDrops = itemDrop.qtdMaxDrops - 1;
+					novo.nomeItemEnum = itemDropScruct.nomeItemEnum;
+					novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
+					novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
 					itemDrops.Add(novo);
 				}
 			}
             else
             {
-				itemDrops.Add(itemDrop);
+				itemDrops.Add(itemDropScruct);
 			}
 		}
 		arvoreColetando.GetComponent<StatsGeral>().dropsItems = itemDrops;
@@ -415,7 +434,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	{
 		if (nomeItemColetando.Equals(Item.NomeItem.Nenhum)) return;
 		Debug.Log("coletou item: " + nomeItemColetando.ToString());
-		inventario.AdicionarItemAoInventario(nomeItemColetando, 1);
+		inventario.AdicionarItemAoInventario(null, nomeItemColetando, 1);
 		nomeItemColetando = Item.NomeItem.Nenhum;
 	}
 

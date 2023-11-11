@@ -111,32 +111,35 @@ public class Inventario : MonoBehaviour
         //playerMovement.anim.SetBool("")
     }
 
-    public bool AdicionarItemAoInventario(Item.NomeItem nomeItemEnumResponse, int quantidadeResponse)
+    public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.NomeItem nomeItem, int quantidadeResponse)
     {
         foreach(Item.ItemStruct itemStruct in itensStruct)
         {
-            if(itemStruct.nomeItemEnum == nomeItemEnumResponse)
+            if(itemStruct.nomeItemEnum == nomeItem)
             {
-                return AdicionarItemAoInventario(itemStruct, quantidadeResponse);
+                return AdicionarItemAoInventario(itemDrop, itemStruct, quantidadeResponse);
             }
         }
         return false;
     }
 
-    public bool AdicionarItemAoInventario(Item.ItemStruct itemStructResponse, int quantidadeResponse)
+    public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
-        foreach (Item item in itens)
+        if (itemDrop == null || !itemDrop.nomeItem.Equals(Item.NomeItem.Garrafa)) //itens que nao stackam
         {
-            if (item.nomeItem.Equals(itemStructResponse.nomeItemEnum))
+            foreach (Item item in itens)
             {
-                if (pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
+                if (item.nomeItem.Equals(itemStructResponse.nomeItemEnum))
                 {
-                    Debug.Log("Peso maximo do inventario atingido");
-                    return false;
-                }
-                else
-                {
-                    return item.aumentarQuantidade(quantidadeResponse);
+                    if (pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
+                    {
+                        Debug.Log("Peso maximo do inventario atingido");
+                        return false;
+                    }
+                    else
+                    {
+                        return item.aumentarQuantidade(quantidadeResponse); //stackando item
+                    }
                 }
             }
         }
@@ -151,6 +154,10 @@ public class Inventario : MonoBehaviour
         {
             GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
             novoObjeto.transform.SetParent(contentItensMochila.transform);
+            if (itemDrop.nomeItem.Equals(Item.NomeItem.Garrafa))
+            {
+                novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
+            }
             Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
             itens.Add(novoItem);
             return true;
