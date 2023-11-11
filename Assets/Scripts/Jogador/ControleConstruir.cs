@@ -166,6 +166,7 @@ public class ControleConstruir : MonoBehaviour
             }
             if(Input.GetButtonDown("Fire1")){
                 if(inventario.VerificarQtdItem(isMadeira ? Item.NomeItem.Madeira : Item.NomeItem.Pedra,construcao.custo) && (podeConstruir && VerificarSePodeConstruir())){
+                    playerController.animator.SetTrigger("construindoAcao");
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
                     {
@@ -193,6 +194,7 @@ public class ControleConstruir : MonoBehaviour
     {
         constructionUI.SetActive(toggle);
         isAtivo = toggle;
+        playerController.TogglePlayerModoConstrucao(isAtivo);
     }
 
     public void LocalConstrucao()
@@ -213,7 +215,6 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.eulerAngles.y + rotacao - (rotacao % 90), objRotation.eulerAngles.z));
                 objPosition = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + altura, hit.collider.transform.position.z);
                 construcaoControllerHit = hit.collider.gameObject.GetComponentInParent<ConstrucoesController>();
-                Debug.Log(construcao.altura + "setou contrucaoControllerHit: "+ hit.collider.transform.name);
                 isConectado = true;
             }
             else{
@@ -223,7 +224,6 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = Quaternion.LookRotation(direction);
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x,objRotation.eulerAngles.y + rotacao, objRotation.eulerAngles.z));
                 construcaoControllerHit = null;
-                Debug.Log("setou contrucaoControllerHit else: "+ hit.collider.gameObject.name);
             }
         }
         else{
@@ -240,7 +240,6 @@ public class ControleConstruir : MonoBehaviour
                 objRotation = Quaternion.Euler(new Vector3(objRotation.eulerAngles.x, objRotation.y + rotacao, objRotation.eulerAngles.z));
                 //-objeto.transform.LookAt(new Vector3(transform.position.x,   objeto.transform.position.y, transform.position.z));
                 //-objeto.transform.Rotate(new Vector3(0f, rotacao, 0f));
-                Debug.Log("setou contrucaoControllerHit else else if: "+ hit.collider.gameObject.name);
             }
             else{
                 podeConstruir = false;

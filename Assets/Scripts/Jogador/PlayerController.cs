@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public ControleConstruir controleConstruir;
 	[SerializeField] public Animator animator, animatorVaraDePesca;
 	[SerializeField] public PointRopeFollow ropeGrab;
-	[SerializeField] public GameObject acendedorFogueira, peixeDaVara;
+	[SerializeField] public GameObject acendedorFogueira, peixeDaVara, kitModoConstrucao;
 
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
@@ -198,6 +198,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	private void ApplyRecoil()
 	{
 		//TODO: Implementar recoil a cada tiro
+	}
+
+	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
+    {
+		animator.SetBool("construindoIdle", construcaoAtiva);
+		if (construcaoAtiva)
+		{
+			inventario.GuardarItemDaMao();
+		}
+		kitModoConstrucao.SetActive(construcaoAtiva);
 	}
 
 	void GoAtk()

@@ -91,6 +91,14 @@ public class Inventario : MonoBehaviour
         }
     }
 
+    public void GuardarItemDaMao()
+    {
+        if(itemNaMao != null)
+        {
+            itemNaMao.DeselecionarItem();
+        }
+    }
+
     public void FecharInventario()
     {
         canvasInventario.SetActive(false);
