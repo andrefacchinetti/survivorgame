@@ -19,6 +19,8 @@ public class SlotHotbar : MonoBehaviour
     [SerializeField] public GameObject objEmbacarImg;
     public ArrastarItensInventario arrastarItensInventario;
 
+    [HideInInspector] public int qtdItemNoSlot = 0;
+
 
     private void Start()
     {
@@ -45,28 +47,58 @@ public class SlotHotbar : MonoBehaviour
     public void SetupSlotHotbar(Item itemResponse)
     {
         if (itemResponse == null) return;
-        List<SlotHotbar> listaSlots;
-        if (isSlotCraft) listaSlots = craftMaos.slots;
-        else listaSlots = hotbar.slots;
+        if (isSlotCraft) setupSlotHotbarCraft(itemResponse);
+        else setupSlotHotbarAtalhos(itemResponse);
+    }
 
-        foreach (SlotHotbar slot in listaSlots)
+    private void setupSlotHotbarAtalhos(Item itemResponse)
+    {
+        Debug.LogWarning("setup hotbar");
+        foreach (SlotHotbar slot in hotbar.slots)
         {
             if (slot.item == itemResponse)
             {
                 slot.ResetSlotHotbar();
+                Debug.LogWarning("resetando pq achou igual");
             }
         }
-
+        Debug.LogWarning("item do slot: " + txNomeItem.text + ". item chegando no slot: " + itemResponse.nomeItem);
         item = itemResponse;
         txNomeItem.text = item.obterNomeItemTraduzido();
         txQuantidade.text = item.quantidade + "";
         imagemItem.texture = item.imagemItem.texture;
         objEmbacarImg.SetActive(item.quantidade <= 0);
-        if(isSlotCraft) craftMaos.AtualizarPreviewResultado();
+    }
+
+    private void setupSlotHotbarCraft(Item itemResponse)
+    {
+        Debug.LogWarning("setup hotbar");
+        int countItens = 1;
+        foreach (SlotHotbar slot in craftMaos.slots)
+        {
+            if (slot.item == itemResponse)
+            {
+                if(slot.qtdItemNoSlot < itemResponse.quantidade)
+                {
+                    countItens += slot.qtdItemNoSlot;
+                    Debug.LogWarning("stackando qtd item no slot");
+                }
+                slot.ResetSlotHotbar();
+            }
+        }
+        Debug.LogWarning("item do slot: " + txNomeItem.text + ". item chegando no slot: " + itemResponse.nomeItem);
+        qtdItemNoSlot = countItens;
+        item = itemResponse;
+        txNomeItem.text = item.obterNomeItemTraduzido();
+        txQuantidade.text = qtdItemNoSlot + "";
+        imagemItem.texture = item.imagemItem.texture;
+        objEmbacarImg.SetActive(item.quantidade <= 0);
+        craftMaos.AtualizarPreviewResultado();
     }
 
     public void ResetSlotHotbar(){
         item = null;
+        qtdItemNoSlot = 0;
         txNomeItem.text = "";
         txQuantidade.text = "";
         imagemItem.texture = texturaInvisivel;

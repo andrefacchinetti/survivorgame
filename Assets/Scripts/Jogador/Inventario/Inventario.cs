@@ -21,12 +21,16 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public PlayerController playerController;
     [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
+    [SerializeField] [HideInInspector] public CraftMaos craftMaos;
 
 
     private void Awake()
     {
         itens = new List<Item>();
-        //itens.AddRange(contentItensMochila.GetComponentsInChildren<Item>());
+        playerController = GetComponentInParent<PlayerController>();
+        playerMovement = GetComponentInParent<PlayerMovement>();
+        statsJogador = GetComponentInParent<StatsJogador>();
+        craftMaos = GetComponent<CraftMaos>();
     }
 
     public void setarPesoAtual(int valor)
@@ -41,13 +45,11 @@ public class Inventario : MonoBehaviour
         qtdItensAtual = valor;
         txQtdItensInventario.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? "Itens: " : "Items: ";
         txQtdItensInventario.text += qtdItensAtual + "/" + qtdItensMaximo;
+        craftMaos.LimparTodosSlotsCraft();
     }
 
     void Start()
     {
-        playerController = GetComponentInParent<PlayerController>();
-        playerMovement = GetComponentInParent<PlayerMovement>();
-        statsJogador = GetComponentInParent<StatsJogador>();
         setarQtdItensAtual(0);
         setarPesoAtual(0);
         foreach (Item item in itens) //Ativando os itens que tem quantidade no inventario e desativando os que nao tem quantidade
@@ -103,6 +105,7 @@ public class Inventario : MonoBehaviour
 
     public void FecharInventario()
     {
+        craftMaos.LimparTodosSlotsCraft();
         canvasInventario.SetActive(false);
         cameraInventario.SetActive(false);
         playerMovement.canMove = true;

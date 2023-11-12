@@ -83,7 +83,6 @@ public class ControleConstruir : MonoBehaviour
     void Update(){
         if (!playerController.podeSeMexer()) return;
         podeConstruir = true;
-        if(Input.GetButtonDown("Cancel")) ToggleModoConstrucao(false);
         if (Input.GetButtonDown("MenuConstruir_Abrir"))
         {
             ToggleModoConstrucao(!isAtivo);

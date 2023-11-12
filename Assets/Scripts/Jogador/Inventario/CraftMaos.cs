@@ -16,7 +16,22 @@ public class CraftMaos : MonoBehaviour
     public class ReceitaCraft
     {
         public Item.NomeItem nomeItemResultado;
-        public List<Item.NomeItem> ingredientes;
+        public List<Ingrediente> ingredientes = new List<Ingrediente>();
+    }
+    [System.Serializable]
+    public class Ingrediente
+    {
+        public Item.NomeItem nomeItem;
+        public int quantidade;
+    }
+
+    public void LimparTodosSlotsCraft()
+    {
+        foreach (SlotHotbar slot in slots)
+        {
+            slot.ResetSlotHotbar();
+        }
+        slotResultado.ResetSlotHotbar();
     }
 
     public void CraftarItens()
@@ -27,11 +42,10 @@ public class CraftMaos : MonoBehaviour
             removerItensReceitaDoJogador(resultadoCraft);
             adicionarItemCraftadoAoJogador(resultadoCraft.nomeItemResultado);
             limparSlots();
-            Debug.Log("Item craftado: " + resultadoCraft);
+            Debug.Log("Item craftado: " + resultadoCraft.nomeItemResultado);
         }
         else
         {
-            // Não foi encontrada uma receita correspondente
             Debug.Log("Nenhuma receita correspondente encontrada.");
         }
     }
@@ -44,9 +58,9 @@ public class CraftMaos : MonoBehaviour
 
     private void removerItensReceitaDoJogador(ReceitaCraft resultadoCraft)
     {
-        foreach (Item.NomeItem nomeItemIngrediente in resultadoCraft.ingredientes)
+        foreach (Ingrediente ingrediente in resultadoCraft.ingredientes)
         {
-            inventario.RemoverItemDoInventarioPorNome(nomeItemIngrediente, 1);
+            inventario.RemoverItemDoInventarioPorNome(ingrediente.nomeItem, ingrediente.quantidade);
         }
     }
 
@@ -78,6 +92,33 @@ public class CraftMaos : MonoBehaviour
 
     private bool ReceitaCorresponde(ReceitaCraft receita)
     {
+        // Cria uma cópia dos slots para manipulação
+        List<SlotHotbar> slotsCopy = new List<SlotHotbar>(slots);
+
+        // Verifica se os ingredientes da receita correspondem aos itens nos slots
+        foreach (var ingrediente in receita.ingredientes)
+        {
+            bool ingredienteEncontrado = false;
+
+            foreach (var slot in slotsCopy)
+            {
+                if (slot.item != null && slot.item.nomeItem == ingrediente.nomeItem && slot.qtdItemNoSlot == ingrediente.quantidade)
+                {
+                    ingredienteEncontrado = true;
+                    break;
+                }
+            }
+
+            if (!ingredienteEncontrado)
+            {
+                return false; // Se um ingrediente não for encontrado ou a quantidade for insuficiente, a receita não corresponde
+            }
+        }
+
+        return true; // Todos os ingredientes foram encontrados nos slots com as quantidades adequadas
+    }
+    /*private bool ReceitaCorrespondeB(ReceitaCraft receita)
+    {
         // Verifica se os ingredientes da receita correspondem aos itens nos slots
         foreach (var ingrediente in receita.ingredientes)
         {
@@ -99,6 +140,6 @@ public class CraftMaos : MonoBehaviour
         }
 
         return true; // Todos os ingredientes foram encontrados nos slots
-    }
+    }*/
 
 }
