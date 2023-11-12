@@ -165,11 +165,11 @@ public class SlotHotbar : MonoBehaviour
         }
         else
         {
-            /*Item.ItemStruct itemStruct = Inventario.ObterItemStructPeloNome(receitaResultado.nomeItemResultado);
+            Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaResultado.nomeItemResultado);
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemStruct.nomePortugues : itemStruct.nomeIngles;
             txQuantidade.text = "";
             txTeclaAtalho.text = "";
-            imagemItem.texture = itemStruct.textureImgItem;*/
+            imagemItem.texture = itemStruct.textureImgItem;
         }
     }
 

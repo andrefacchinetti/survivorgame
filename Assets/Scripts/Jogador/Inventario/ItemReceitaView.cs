@@ -24,7 +24,7 @@ public class ItemReceitaView : MonoBehaviour
         foreach (CraftMaos.Ingrediente ingrediente in ingredientes)
         {
             GameObject novaReceita = Instantiate(prefabItemIngrediente, new Vector3(), new Quaternion(), contentIngredientes.transform);
-            //novaReceita.GetComponent<ItemIngredienteView>().SetupIngredienteView(Inventario.ObterItemStructPeloNome(ingrediente.nomeItem), ingrediente.quantidade);
+            novaReceita.GetComponent<ItemIngredienteView>().SetupIngredienteView(ingrediente.itemStruct, ingrediente.quantidade);
         }
     }
 

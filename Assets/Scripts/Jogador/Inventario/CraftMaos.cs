@@ -6,7 +6,7 @@ public class CraftMaos : MonoBehaviour
 {
 
     [SerializeField] public Inventario inventario;
-    [SerializeField] GameObject contentReceitas, prefabItemReceita;
+    [SerializeField] GameObject contentCanvasReceitas, contentReceitas, prefabItemReceita;
     [SerializeField] public List<SlotHotbar> slots = new List<SlotHotbar>();
     [SerializeField] public SlotHotbar slotResultado;
 
@@ -24,6 +24,7 @@ public class CraftMaos : MonoBehaviour
     {
         public Item.NomeItem nomeItem;
         public int quantidade;
+        public Item.ItemStruct itemStruct;
     }
 
     private void Start()
@@ -129,13 +130,17 @@ public class CraftMaos : MonoBehaviour
 
     public void ToggleVerReceitas()
     {
-        contentReceitas.SetActive(!contentReceitas.activeSelf);
+        contentCanvasReceitas.SetActive(!contentCanvasReceitas.activeSelf);
     }
 
     private void InstanciarReceitasNoContent()
     {
         foreach(ReceitaCraft receitaCraft in receitasCraft)
         {
+            foreach(Ingrediente ingrediente in receitaCraft.ingredientes)
+            {
+                ingrediente.itemStruct = inventario.ObterItemStructPeloNome(ingrediente.nomeItem);
+            }
             GameObject novaReceita = Instantiate(prefabItemReceita, new Vector3(), new Quaternion(), contentReceitas.transform);
             Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaCraft.nomeItemResultado);
             novaReceita.GetComponent<ItemReceitaView>().SetupReceitaView(itemStruct, receitaCraft.ingredientes);
