@@ -64,7 +64,7 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Recurso")]
         Osso,
         [EnumMember(Value = "Recurso")]
-        Cipo,
+        Corda,
         [EnumMember(Value = "Recurso")]
         Seiva,
         [EnumMember(Value = "Recurso")]
@@ -207,6 +207,8 @@ public class Item : MonoBehaviourPunCallbacks
         Lanterna,
         [EnumMember(Value = "Consumivel")]
         KitMedico,
+        [EnumMember(Value = "Recurso")]
+        Cipo
     }
 
     [System.Serializable]
@@ -300,7 +302,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
-        if (nomeItem.Equals(NomeItem.Cipo))
+        if (nomeItem.Equals(NomeItem.Corda))
         {
             inventario.UngrabAnimalCapturado(false);
         }
@@ -339,7 +341,7 @@ public class Item : MonoBehaviourPunCallbacks
             }
         }
 
-        if (nomeItem.Equals(NomeItem.Cipo))
+        if (nomeItem.Equals(NomeItem.Corda))
         {
             inventario.AcoesRenovarCordaEstourada(false);
         }
@@ -398,7 +400,7 @@ public class Item : MonoBehaviourPunCallbacks
         inventario.setarPesoAtual(inventario.pesoAtual - peso * valorQtd);
         quantidade -= valorQtd;
 
-        if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Cipo))
+        if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Corda))
         {
             inventario.ToggleGrabUngrabCorda(isCordaPartindo);
             SetarItemNaMaoNull();

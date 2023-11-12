@@ -60,7 +60,10 @@ public class CraftMaos : MonoBehaviour
     {
         foreach (Ingrediente ingrediente in resultadoCraft.ingredientes)
         {
-            inventario.RemoverItemDoInventarioPorNome(ingrediente.nomeItem, ingrediente.quantidade);
+            if(!ingrediente.nomeItem.Equals(Item.NomeItem.FacaSimples) && !ingrediente.nomeItem.Equals(Item.NomeItem.FacaAvancada)) //Itens que não perdem após craft
+            {
+                inventario.RemoverItemDoInventarioPorNome(ingrediente.nomeItem, ingrediente.quantidade);
+            }
         }
     }
 
@@ -117,29 +120,5 @@ public class CraftMaos : MonoBehaviour
 
         return true; // Todos os ingredientes foram encontrados nos slots com as quantidades adequadas
     }
-    /*private bool ReceitaCorrespondeB(ReceitaCraft receita)
-    {
-        // Verifica se os ingredientes da receita correspondem aos itens nos slots
-        foreach (var ingrediente in receita.ingredientes)
-        {
-            bool ingredienteEncontrado = false;
-
-            foreach (var slot in slots)
-            {
-                if (slot.item != null && slot.item.nomeItem == ingrediente)
-                {
-                    ingredienteEncontrado = true;
-                    break;
-                }
-            }
-
-            if (!ingredienteEncontrado)
-            {
-                return false; // Se um ingrediente não for encontrado, a receita não corresponde
-            }
-        }
-
-        return true; // Todos os ingredientes foram encontrados nos slots
-    }*/
 
 }
