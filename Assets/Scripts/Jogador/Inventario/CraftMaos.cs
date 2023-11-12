@@ -36,6 +36,12 @@ public class CraftMaos : MonoBehaviour
         }
     }
 
+    public void AtualizarPreviewResultado()
+    {
+        ReceitaCraft resultadoCraft = EncontrarReceitaCraft();
+        slotResultado.SetupPreviewNoSlot(resultadoCraft);
+    }
+
     private void removerItensReceitaDoJogador(ReceitaCraft resultadoCraft)
     {
         foreach (Item.NomeItem nomeItemIngrediente in resultadoCraft.ingredientes)

@@ -60,17 +60,18 @@ public class SlotHotbar : MonoBehaviour
         item = itemResponse;
         txNomeItem.text = item.obterNomeItemTraduzido();
         txQuantidade.text = item.quantidade + "";
-        imagemItem.gameObject.SetActive(true);
         imagemItem.texture = item.imagemItem.texture;
         objEmbacarImg.SetActive(item.quantidade <= 0);
+        if(isSlotCraft) craftMaos.AtualizarPreviewResultado();
     }
 
     public void ResetSlotHotbar(){
         item = null;
         txNomeItem.text = "";
         txQuantidade.text = "";
-        imagemItem.gameObject.SetActive(false);
+        imagemItem.texture = texturaInvisivel;
         objEmbacarImg.SetActive(false);
+        if (isSlotCraft) craftMaos.AtualizarPreviewResultado();
     }
 
 
@@ -118,6 +119,25 @@ public class SlotHotbar : MonoBehaviour
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
             txQuantidade.text = itemResponse.quantidade + "";
             imagemItem.texture = itemResponse.imagemItem.texture;
+        }
+    }
+
+    public void SetupPreviewNoSlot(CraftMaos.ReceitaCraft receitaResultado)
+    {
+        if (receitaResultado == null)
+        {
+            txNomeItem.text = "";
+            txQuantidade.text = "";
+            txTeclaAtalho.text = "";
+            imagemItem.texture = texturaInvisivel;
+        }
+        else
+        {
+            Item.ItemStruct itemStruct = inventario.PegarStructPeloNome(receitaResultado.nomeItemResultado);
+            txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemStruct.nomePortugues : itemStruct.nomeIngles;
+            txQuantidade.text = "";
+            txTeclaAtalho.text = "";
+            imagemItem.texture = itemStruct.textureImgItem;
         }
     }
 
