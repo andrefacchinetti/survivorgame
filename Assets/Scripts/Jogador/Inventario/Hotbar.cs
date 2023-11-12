@@ -95,8 +95,4 @@ public class Hotbar : MonoBehaviour
         }
     }
 
-    public void ColocarItemNaMao(Item itemResponse){
-
-    }
-
 }

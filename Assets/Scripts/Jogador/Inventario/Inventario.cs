@@ -164,7 +164,7 @@ public class Inventario : MonoBehaviour
         {
             GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
             novoObjeto.transform.SetParent(contentItensMochila.transform);
-            if (itemDrop.nomeItem.Equals(Item.NomeItem.Garrafa))
+            if (itemDrop != null && itemDrop.nomeItem.Equals(Item.NomeItem.Garrafa))
             {
                 novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
             }
