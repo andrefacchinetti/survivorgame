@@ -5,6 +5,7 @@ using UnityEngine;
 public class CraftMaos : MonoBehaviour
 {
 
+    [SerializeField] public Inventario inventario;
     [SerializeField] public List<SlotHotbar> slots = new List<SlotHotbar>();
     [SerializeField] public SlotHotbar slotResultado;
 
@@ -20,10 +21,12 @@ public class CraftMaos : MonoBehaviour
 
     public void CraftarItens()
     {
-        Item.NomeItem resultadoCraft = EncontrarReceitaCraft();
-        if (!Item.NomeItem.Nenhum.Equals(resultadoCraft))
+        ReceitaCraft resultadoCraft = EncontrarReceitaCraft();
+        if (resultadoCraft != null)
         {
-            // O item pode ser craftado, faça o que for necessário aqui
+            removerItensReceitaDoJogador(resultadoCraft);
+            adicionarItemCraftadoAoJogador(resultadoCraft.nomeItemResultado);
+            limparSlots();
             Debug.Log("Item craftado: " + resultadoCraft);
         }
         else
@@ -33,16 +36,38 @@ public class CraftMaos : MonoBehaviour
         }
     }
 
-    private Item.NomeItem EncontrarReceitaCraft()
+    private void removerItensReceitaDoJogador(ReceitaCraft resultadoCraft)
+    {
+        foreach (Item.NomeItem nomeItemIngrediente in resultadoCraft.ingredientes)
+        {
+            inventario.RemoverItemDoInventarioPorNome(nomeItemIngrediente, 1);
+        }
+    }
+
+    private void adicionarItemCraftadoAoJogador(Item.NomeItem nomeItem)
+    {
+        inventario.AdicionarItemAoInventarioPorNome(nomeItem, 1);
+    }
+
+    private void limparSlots()
+    {
+        foreach (var slot in slots)
+        {
+            slot.ResetSlotHotbar();
+        }
+        slotResultado.ResetSlotHotbar();
+    }
+
+    private ReceitaCraft EncontrarReceitaCraft()
     {
         foreach (ReceitaCraft receita in receitasCraft)
         {
             if (ReceitaCorresponde(receita))
             {
-                return receita.nomeItemResultado;
+                return receita;
             }
         }
-        return Item.NomeItem.Nenhum;
+        return null;
     }
 
     private bool ReceitaCorresponde(ReceitaCraft receita)

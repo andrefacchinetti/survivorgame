@@ -121,6 +121,11 @@ public class Inventario : MonoBehaviour
         //playerMovement.anim.SetBool("")
     }
 
+    public bool AdicionarItemAoInventarioPorNome(Item.NomeItem nomeItem, int quantidadeResponse)
+    {
+        return AdicionarItemAoInventario(null, nomeItem, quantidadeResponse);
+    }
+
     public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.NomeItem nomeItem, int quantidadeResponse)
     {
         foreach(Item.ItemStruct itemStruct in itensStruct)
