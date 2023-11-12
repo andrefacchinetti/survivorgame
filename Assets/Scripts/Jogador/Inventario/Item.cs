@@ -439,6 +439,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
+        if (inventario.objObiRope != null) inventario.objObiRope.SetActive(false);
     }
 
     private void RemoverItemDaMochila()

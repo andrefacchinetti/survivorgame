@@ -104,7 +104,6 @@ public class GameController : MonoBehaviour
         luzDoSol.color = currentColor;
 
         gameSecond = Mathf.FloorToInt(elapsedTime % 60);
-        Debug.Log("Dia " + gameDay + " - Hora " + gameHour + ":" + gameMinute + ":" + gameSecond);
         AtualizarRotacaoDoSol();
         objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);
     }
