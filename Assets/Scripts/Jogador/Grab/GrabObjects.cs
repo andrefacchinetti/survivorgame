@@ -214,7 +214,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
         }
         else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null
-            && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.FacaAvancada)))
+            && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Faca)))
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
             if (objPai != null && objPai.isDead)

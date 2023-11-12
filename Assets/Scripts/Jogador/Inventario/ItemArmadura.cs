@@ -21,6 +21,7 @@ public class ItemArmadura : MonoBehaviour
     [SerializeField] public ArrastarItensInventario arrastarItensInventario;
 
     private void Start() {
+        ResetSlotHotbar();
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
         EventTrigger.Entry entry2 = new EventTrigger.Entry();
@@ -40,6 +41,13 @@ public class ItemArmadura : MonoBehaviour
         trigger.triggers.Add(entry4);
     }
 
+    public void ResetSlotHotbar()
+    {
+        item = null;
+        txNomeItem.text = "";
+        txQuantidade.text = "";
+        imagemItem.texture = texturaInvisivel;
+    }
 
     public void SelecionarSlotArmadura()
     {
