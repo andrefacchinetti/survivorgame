@@ -6,6 +6,7 @@ public class CraftMaos : MonoBehaviour
 {
 
     [SerializeField] public Inventario inventario;
+    [SerializeField] GameObject contentReceitas, prefabItemReceita;
     [SerializeField] public List<SlotHotbar> slots = new List<SlotHotbar>();
     [SerializeField] public SlotHotbar slotResultado;
 
@@ -23,6 +24,11 @@ public class CraftMaos : MonoBehaviour
     {
         public Item.NomeItem nomeItem;
         public int quantidade;
+    }
+
+    private void Start()
+    {
+        InstanciarReceitasNoContent();
     }
 
     public void LimparTodosSlotsCraft()
@@ -119,6 +125,21 @@ public class CraftMaos : MonoBehaviour
         }
 
         return true; // Todos os ingredientes foram encontrados nos slots com as quantidades adequadas
+    }
+
+    public void ToggleVerReceitas()
+    {
+        contentReceitas.SetActive(!contentReceitas.activeSelf);
+    }
+
+    private void InstanciarReceitasNoContent()
+    {
+        foreach(ReceitaCraft receitaCraft in receitasCraft)
+        {
+            GameObject novaReceita = Instantiate(prefabItemReceita, new Vector3(), new Quaternion(), contentReceitas.transform);
+            //novaReceita.transform.SetParent(contentReceitas.transform);
+            novaReceita.GetComponent<ItemReceitaView>().SetupReceitaView(inventario.ObterItemStructPeloNome(receitaCraft.nomeItemResultado));
+        }
     }
 
 }

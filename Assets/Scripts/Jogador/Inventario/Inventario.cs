@@ -236,7 +236,7 @@ public class Inventario : MonoBehaviour
         return false;
     }
 
-    public Item.ItemStruct PegarStructPeloNome(Item.NomeItem nome){
+    public Item.ItemStruct ObterItemStructPeloNome(Item.NomeItem nome){
         foreach(Item.ItemStruct itemSt in itensStruct){
             if(itemSt.nomeItemEnum == nome){
                 return itemSt;

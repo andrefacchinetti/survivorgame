@@ -165,7 +165,7 @@ public class SlotHotbar : MonoBehaviour
         }
         else
         {
-            Item.ItemStruct itemStruct = inventario.PegarStructPeloNome(receitaResultado.nomeItemResultado);
+            Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaResultado.nomeItemResultado);
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemStruct.nomePortugues : itemStruct.nomeIngles;
             txQuantidade.text = "";
             txTeclaAtalho.text = "";
