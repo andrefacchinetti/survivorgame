@@ -137,8 +137,8 @@ public class CraftMaos : MonoBehaviour
         foreach(ReceitaCraft receitaCraft in receitasCraft)
         {
             GameObject novaReceita = Instantiate(prefabItemReceita, new Vector3(), new Quaternion(), contentReceitas.transform);
-            //novaReceita.transform.SetParent(contentReceitas.transform);
-            novaReceita.GetComponent<ItemReceitaView>().SetupReceitaView(inventario.ObterItemStructPeloNome(receitaCraft.nomeItemResultado));
+            Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaCraft.nomeItemResultado);
+            novaReceita.GetComponent<ItemReceitaView>().SetupReceitaView(itemStruct, receitaCraft.ingredientes);
         }
     }
 
