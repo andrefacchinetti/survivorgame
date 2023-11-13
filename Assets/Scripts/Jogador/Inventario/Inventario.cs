@@ -245,7 +245,7 @@ public class Inventario : MonoBehaviour
         return itensStruct[0];
     }
 
-    [SerializeField] public GameObject objObiSolver,objObiRope, objCordaMao;
+    [SerializeField] public GameObject objObiSolver, objObiRope, objCordaMao;
     public void ToggleGrabUngrabCorda(bool isCordaPartindo)
     {
         if (!objObiRope.activeSelf) //Grabando Animal

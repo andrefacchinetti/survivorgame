@@ -9,7 +9,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
     private int cLayer, prLayer, fLayer, ptLayer;
-    private string tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
+    private string tagObjGrab = "Objeto", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
 
     [Tooltip("Force to apply in object")]
@@ -132,7 +132,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             objRig.AddForce(-(grabedObj.transform.position - posGrab).normalized * calc, ForceMode.Impulse);
             playerMovimentController.pesoGrab = objRig.mass;
 
-            if (Input.GetMouseButtonUp(1) || objRig.velocity.magnitude >= 20 || dist >= 10 || playerMovimentController.isPulando)
+            if (Input.GetMouseButtonUp(1) || objRig.velocity.magnitude >= 20 || dist >= 10 )
             {
                 UngrabObject();
             }
@@ -151,8 +151,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
         if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela)
         {
-
-            if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
+            if (hit.transform.tag == tagObjGrab && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Corda))
+            {
+                interacaoCapturarObjeto(hit);
+            }
+            else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
                 && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>() != null && hit.transform.GetComponent<Panela>().fogueira != null)
             {
                 interacaoPanelas(hit);
@@ -388,6 +391,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             playerController.inventario.ToggleGrabUngrabCorda(false);
         }
         possibleInteraction = true;
+    }
+
+    private void interacaoCapturarObjeto(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use")) //Interagir Dissecar
+        {
+            transferOwnerPV(hit.transform.gameObject);
+            //animator.SetTrigger("capturando");
+            playerController.objetoCapturado = hit.transform.gameObject;
+            playerController.inventario.ToggleGrabUngrabCorda(false);
+            playerController.ropeGrab.objFollowed = hit.transform;
+        }
+        possibleGrab = true;
     }
 
     private void interacaoDescapturar(AnimalController animalController)

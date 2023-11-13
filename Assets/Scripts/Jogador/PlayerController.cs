@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
 	[SerializeField] [HideInInspector] public PlayerMovement playerMovement;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
-	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando, corpoReanimando;
+	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando, corpoReanimando, objetoCapturado;
 	[SerializeField] [HideInInspector] public AnimalController animalCapturado;
 	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
 	[SerializeField] [HideInInspector] public Item.NomeItem nomeItemColetando;
