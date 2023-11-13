@@ -167,7 +167,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     transferOwnerPV(hit.transform.gameObject);
                     grabedObj = hit.transform.gameObject;
                 }
-                if (Input.GetKeyDown(KeyCode.E)) //Pega item do chao
+                if (hit.transform.tag == tagItemDrop && Input.GetKeyDown(KeyCode.E)) //Pega item do chao
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
@@ -383,7 +383,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoCapturar(AnimalController animalController)
     {
-        if (Input.GetButtonDown("Use")) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(animalController.gameObject);
             animator.SetTrigger("capturando");
@@ -395,20 +395,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoCapturarObjeto(RaycastHit hit)
     {
-        if (Input.GetButtonDown("Use")) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(hit.transform.gameObject);
-            //animator.SetTrigger("capturando");
-            playerController.objetoCapturado = hit.transform.gameObject;
-            playerController.inventario.ToggleGrabUngrabCorda(false);
-            playerController.ropeGrab.objFollowed = hit.transform;
+            hit.transform.gameObject.GetComponent<ObjetoGrab>().objFollowed = inventario.pivotRopeStart;
+            hit.transform.gameObject.GetComponent<ObjetoGrab>().objPontaCorda.SetActive(true);
+            //playerController.inventario.ToggleGrabUngrabCorda(false);
         }
         possibleGrab = true;
     }
 
     private void interacaoDescapturar(AnimalController animalController)
     {
-        if (Input.GetButtonDown("Use")) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(animalController.gameObject);
             playerController.inventario.ToggleGrabUngrabCorda(false);
@@ -418,7 +417,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void interacaoReanimar(StatsGeral objPai)
     {
-        if (Input.GetButtonDown("Use")) //Interagir Dissecar
+        if (Input.GetButtonDown("Use")) 
         {
             animator.SetTrigger("reanimando");
             playerController.corpoReanimando = objPai.gameObject;

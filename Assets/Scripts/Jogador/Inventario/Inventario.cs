@@ -312,7 +312,7 @@ public class Inventario : MonoBehaviour
     }
 
     [SerializeField] public RopeEstoura ropeEstoura;
-    [SerializeField] GameObject pivotRopeStart, pivotRopeEnd;
+    [SerializeField] public GameObject pivotRopeStart, pivotRopeEnd;
     private void VerificarCordaPartindo()
     {
         if (ropeEstoura.isCordaPartida && !ropeEstoura.isCordaEstourou)
