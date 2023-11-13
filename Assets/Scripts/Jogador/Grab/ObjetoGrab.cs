@@ -11,7 +11,7 @@ public class ObjetoGrab : MonoBehaviourPunCallbacks
     [HideInInspector] public PhotonView PV;
 
     [SerializeField] public GameObject objPontaCorda, objNovoPaiPonta;
-    [SerializeField] public GameObject objFollowed;
+    [HideInInspector] public GameObject objFollowed;
 
     void LateUpdate()
     {
@@ -30,8 +30,18 @@ public class ObjetoGrab : MonoBehaviourPunCallbacks
     {
         objPontaCorda.transform.SetParent(objNovoPaiPonta.transform);
         objFollowed = pivotRopeStart;
+        objPontaCorda.GetComponent<CapsuleCollider>().isTrigger = true;
+        objPontaCorda.GetComponent<Rigidbody>().isKinematic = true;
         objPontaCorda.SetActive(true);
-        
+    }
+
+    public void DesativarCordaGrab()
+    {
+        objFollowed = null;
+        objPontaCorda.transform.SetParent(this.transform);
+        objPontaCorda.GetComponent<CapsuleCollider>().isTrigger = false;
+        objPontaCorda.GetComponent<Rigidbody>().isKinematic = false;
+        objPontaCorda.SetActive(false);
     }
 
 

@@ -397,10 +397,24 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (Input.GetButtonDown("Use")) 
         {
-            transferOwnerPV(hit.transform.gameObject);
-            hit.transform.gameObject.GetComponent<ObjetoGrab>().objFollowed = inventario.pivotRopeStart;
-            hit.transform.gameObject.GetComponent<ObjetoGrab>().objPontaCorda.SetActive(true);
-            //playerController.inventario.ToggleGrabUngrabCorda(false);
+            if(playerController.objCapturado != null && playerController.objCapturado.GetComponent<PhotonView>().ViewID == hit.transform.gameObject.GetComponent<PhotonView>().ViewID)
+            {
+                playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
+                playerController.objCapturado = null;
+            }
+            else
+            {
+                if(hit.transform.gameObject.GetComponent<ObjetoGrab>().objFollowed == null)
+                {
+                    transferOwnerPV(hit.transform.gameObject);
+                    playerController.objCapturado = hit.transform.gameObject;
+                    hit.transform.gameObject.GetComponent<ObjetoGrab>().AtivarCordaGrab(inventario.pivotRopeStart);
+                }
+                else //O objeto ja esta sendo capturado por outro jogador
+                {
+                    playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaInteracaoNaoDisponivelAgora());
+                }
+            }
         }
         possibleGrab = true;
     }

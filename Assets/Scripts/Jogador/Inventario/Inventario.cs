@@ -278,6 +278,16 @@ public class Inventario : MonoBehaviour
         }
     }
 
+    public void UngrabObjetoCapturado()
+    {
+        Debug.Log("UngrabObjetoCapturado");
+        if (playerController.objCapturado != null)
+        {
+            playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
+            playerController.objCapturado = null;
+        }
+    }
+
     public void SumirObjRopeStart()
     {
         Debug.Log("SumirObjRopeStart");

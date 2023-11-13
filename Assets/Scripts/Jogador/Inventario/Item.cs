@@ -305,6 +305,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (nomeItem.Equals(NomeItem.Corda))
         {
             inventario.UngrabAnimalCapturado(false);
+            inventario.UngrabObjetoCapturado();
         }
         inventario.playerMovement.anim.SetBool("isPlayerArmado", false);
         inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", false);

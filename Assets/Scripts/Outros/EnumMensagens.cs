@@ -16,4 +16,10 @@ public static class EnumMensagens
         return "You do not have enough " + nomeItem + " (" + qtdItemAtual + "/" + qtdNecessaria + ")"; ;
     }
 
+    public static string ObterAlertaInteracaoNaoDisponivelAgora()
+    {
+        if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Você não pode fazer isso agora";
+        return "You can't do this now";
+    }
+
 }
