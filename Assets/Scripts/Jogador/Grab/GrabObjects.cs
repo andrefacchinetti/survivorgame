@@ -238,7 +238,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
                 else if(playerController.animalCapturado != null && animalController.PV.ViewID == playerController.animalCapturado.PV.ViewID)
                 {
-                    interacaoDescapturar(animalController);
+                    interacaoDescapturarAnimal(animalController);
                 }
                 
             }
@@ -397,17 +397,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (Input.GetButtonDown("Use")) 
         {
-            if(playerController.objCapturado != null && playerController.objCapturado.GetComponent<PhotonView>().ViewID == hit.transform.gameObject.GetComponent<PhotonView>().ViewID)
+            if(playerController.objCapturado != null && playerController.objCapturado.GetComponent<PhotonView>().ViewID == hit.transform.gameObject.GetComponent<PhotonView>().ViewID) //descapturando objeto
             {
                 playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
                 playerController.objCapturado = null;
+                inventario.objCordaSemGrab.SetActive(true);
             }
             else
             {
-                if(hit.transform.gameObject.GetComponent<ObjetoGrab>().objFollowed == null)
+                if(hit.transform.gameObject.GetComponent<ObjetoGrab>().objFollowed == null) //Capturando objeto
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     playerController.objCapturado = hit.transform.gameObject;
+                    inventario.objCordaSemGrab.SetActive(false);
                     hit.transform.gameObject.GetComponent<ObjetoGrab>().AtivarCordaGrab(inventario.pivotRopeStart);
                 }
                 else //O objeto ja esta sendo capturado por outro jogador
@@ -419,7 +421,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         possibleGrab = true;
     }
 
-    private void interacaoDescapturar(AnimalController animalController)
+    private void interacaoDescapturarAnimal(AnimalController animalController)
     {
         if (Input.GetButtonDown("Use")) 
         {

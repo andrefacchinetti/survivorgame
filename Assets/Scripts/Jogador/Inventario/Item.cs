@@ -404,6 +404,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Corda))
         {
             inventario.ToggleGrabUngrabCorda(isCordaPartindo);
+            inventario.UngrabObjetoCapturado();
             SetarItemNaMaoNull();
         }
         if (quantidade <= 0)

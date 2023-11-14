@@ -245,7 +245,7 @@ public class Inventario : MonoBehaviour
         return itensStruct[0];
     }
 
-    [SerializeField] public GameObject objObiSolver, objObiRope, objCordaMao;
+    [SerializeField] public GameObject objObiSolver, objObiRope, objCordaMao, objCordaSemGrab;
     public void ToggleGrabUngrabCorda(bool isCordaPartindo)
     {
         if (!objObiRope.activeSelf) //Grabando Animal
@@ -255,8 +255,14 @@ public class Inventario : MonoBehaviour
         }
         else //Ungrab Animal
         {
-            UngrabAnimalCapturado(isCordaPartindo);
+            UngrabCoisasCapturadasComCorda(isCordaPartindo);
         }
+    }
+
+    public void UngrabCoisasCapturadasComCorda(bool isCordaPartindo)
+    {
+        UngrabAnimalCapturado(isCordaPartindo);
+        UngrabObjetoCapturado();
     }
 
     public void UngrabAnimalCapturado(bool isCordaPartindo)
@@ -285,6 +291,7 @@ public class Inventario : MonoBehaviour
         {
             playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
             playerController.objCapturado = null;
+            objCordaSemGrab.SetActive(true);
         }
     }
 
@@ -318,7 +325,7 @@ public class Inventario : MonoBehaviour
         Destroy(objObiRope.gameObject);
         objObiRope = novaCorda;
         objObiRope.SetActive(false);
-        UngrabAnimalCapturado(isCordaPartindo);
+        UngrabCoisasCapturadasComCorda(isCordaPartindo);
     }
 
     [SerializeField] public RopeEstoura ropeEstoura;
