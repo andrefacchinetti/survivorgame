@@ -42,13 +42,13 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     }
                     else
                     {
-                        bloodController.SangrarAlvo(other);
+                        bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
                         objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                     }
                 }
                 else
                 {
-                    bloodController.SangrarAlvo(other);
+                    bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
                     objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                 }
                 statsGeral.isAttacking = false;

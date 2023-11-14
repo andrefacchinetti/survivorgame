@@ -21,4 +21,15 @@ public class BFX_BloodSettings : MonoBehaviour
         HorizontalSurfacesOnly,
         DiagonalSurfaces
     }
+
+    private void Start()
+    {
+        Invoke("DestroyAfterDelay", 40f);
+    }
+
+    private void DestroyAfterDelay()
+    {
+        Destroy(gameObject);
+    }
+
 }

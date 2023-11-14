@@ -44,14 +44,18 @@ public class BFX_DemoTest : MonoBehaviour
     int effectIdx;
     int activeBloods;
 
-    public void SangrarAlvo(Collider collider)
+    public void SangrarAlvo(Collider colliderAlvo, Collider colliderArma)
     {
-        Debug.Log("Sangrando alvo"+collider.gameObject.tag);
+        Debug.Log("Sangrando alvo" + colliderAlvo.gameObject.tag);
+
         // Cálculo do ângulo para a orientação do efeito de sangue
         float angle = 0; // Modifique conforme necessário
 
         // Posição para instanciar o efeito de sangue
-        Vector3 spawnPosition = collider.ClosestPointOnBounds(transform.position);
+        Vector3 spawnPosition = colliderAlvo.transform.position;
+
+        // Direção do jorro de sangue - ajuste conforme necessário
+        Vector3 bloodDirection = (colliderArma.transform.position - spawnPosition).normalized;
 
         // Instancia um efeito de sangue na posição do hit
         if (effectIdx == BloodFX.Length) effectIdx = 0;
@@ -64,7 +68,7 @@ public class BFX_DemoTest : MonoBehaviour
         settings.LightIntensityMultiplier = DirLight.intensity;
 
         // Encontra o osso mais próximo e instancia um objeto de sangue anexado a ele
-        var nearestBone = GetNearestObject(collider.transform.root, spawnPosition);
+        var nearestBone = GetNearestObject(colliderAlvo.transform.root, spawnPosition);
         if (nearestBone != null)
         {
             var attachBloodInstance = Instantiate(BloodAttach);
@@ -72,8 +76,11 @@ public class BFX_DemoTest : MonoBehaviour
             bloodT.position = spawnPosition;
             bloodT.localRotation = Quaternion.identity;
             bloodT.localScale = Vector3.one * Random.Range(0.75f, 1.2f);
-            bloodT.LookAt(spawnPosition + collider.transform.up, direction);
+
+            // Ajusta a orientação do jorro de sangue
+            bloodT.LookAt(spawnPosition + bloodDirection, direction);
             bloodT.Rotate(90, 0, 0);
+
             bloodT.transform.parent = nearestBone;
         }
     }
@@ -82,19 +89,6 @@ public class BFX_DemoTest : MonoBehaviour
     public float CalculateAngle(Vector3 from, Vector3 to)
     {
         return Quaternion.FromToRotation(Vector3.up, to - from).eulerAngles.z;
-    }
-
-    Collider GetColliderUnderMouse()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            return hit.collider;
-        }
-
-        return null;
     }
 
 }
