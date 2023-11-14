@@ -46,6 +46,7 @@ public class BFX_DemoTest : MonoBehaviour
 
     public void SangrarAlvo(Collider collider)
     {
+        Debug.Log("Sangrando alvo"+collider.gameObject.tag);
         // Cálculo do ângulo para a orientação do efeito de sangue
         float angle = 0; // Modifique conforme necessário
 

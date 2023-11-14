@@ -6,11 +6,13 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
 
     StatsGeral statsGeral;
     PhotonView PV;
+    BFX_DemoTest bloodController;
 
     private void Awake()
     {
         statsGeral = GetComponentInParent<StatsGeral>();
         PV = GetComponentInParent<PhotonView>();
+        bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -40,11 +42,13 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     }
                     else
                     {
+                        bloodController.SangrarAlvo(other);
                         objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                     }
                 }
                 else
                 {
+                    bloodController.SangrarAlvo(other);
                     objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                 }
                 statsGeral.isAttacking = false;
