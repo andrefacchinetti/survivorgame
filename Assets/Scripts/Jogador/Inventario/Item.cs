@@ -14,7 +14,6 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public int quantidade = 0, peso, clicks;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
 
-    [SerializeField] public Texture textureImgItem;
     [SerializeField] public ItemObjMao itemObjMao;
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
@@ -396,10 +395,10 @@ public class Item : MonoBehaviourPunCallbacks
     {
         diminuirQuantidade(valorQtd, false);
     }
-    public void diminuirQuantidade(int valorQtd, bool isCordaPartindo)
+    public void diminuirQuantidade(int quantidadeResponse, bool isCordaPartindo)
     {
-        inventario.setarPesoAtual(inventario.pesoAtual - peso * valorQtd);
-        quantidade -= valorQtd;
+        inventario.setarPesoAtual(inventario.pesoAtual - peso * quantidadeResponse);
+        quantidade -= quantidadeResponse;
 
         if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Corda))
         {
@@ -437,6 +436,7 @@ public class Item : MonoBehaviourPunCallbacks
         {
             RemoverItemDaMochila();
         }
+        inventario.AlertarJogadorComLogItem(this.obterNomeItemTraduzido(), imagemItem.texture, false, quantidadeResponse);
     }
 
     private void SetarItemNaMaoNull()
@@ -471,6 +471,7 @@ public class Item : MonoBehaviourPunCallbacks
             quantidade += quantidadeResponse;
             txQuantidade.text = quantidade + "";
             gameObject.SetActive(true);
+            inventario.AlertarJogadorComLogItem(this.obterNomeItemTraduzido(), imagemItem.texture, true, quantidadeResponse);
             return true;
         }
     }

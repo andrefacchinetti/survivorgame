@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Obi;
 
@@ -22,6 +23,10 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
+
+    [SerializeField] TMP_Text txMsgLogItem;
+    [SerializeField] RawImage imgLogItem;
+    [SerializeField] Texture texturaTransparente;
 
 
     private void Awake()
@@ -178,6 +183,7 @@ public class Inventario : MonoBehaviour
             }
             Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
             itens.Add(novoItem);
+            AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
             return true;
         }
     }
@@ -340,6 +346,33 @@ public class Inventario : MonoBehaviour
             Invoke("SumirObjRopeStart", 1f);
             //TODO: Sound de corda partindo
         }
+    }
+
+    public void AlertarJogadorComLogItem(string nomeItemTraduzido, Texture imgItem, bool isAumentandoQtd, int quantidade)
+    {
+        CancelInvoke("SumirLogItem");
+        string texto = "";
+        if (isAumentandoQtd)
+        {
+            texto += "+";
+            txMsgLogItem.color = Color.green;
+        }
+        else
+        {
+            texto += "-";
+            txMsgLogItem.color = Color.red;
+        }
+        texto += quantidade + " ";
+        texto += nomeItemTraduzido;
+        txMsgLogItem.text = texto;
+        imgLogItem.texture = imgItem;
+        Invoke("SumirLogItem", 1);
+    }
+
+    void SumirLogItem()
+    {
+        txMsgLogItem.text = "";
+        imgLogItem.texture = texturaTransparente;
     }
 
 }

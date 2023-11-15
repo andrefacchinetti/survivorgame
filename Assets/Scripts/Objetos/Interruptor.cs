@@ -11,6 +11,8 @@ public class Interruptor : MonoBehaviour
     public bool isAtivado = false;
     [SerializeField] int index;
 
+    [SerializeField] Light[] luzes;
+
     private void Start()
     {
         DesligarInterruptor(); // Inicialmente, desligamos o interruptor
@@ -29,6 +31,10 @@ public class Interruptor : MonoBehaviour
         renderOff.material = materialInativo;
         isAtivado = true;
         animation.Play("alavancaInterruptorON");
+        foreach(Light luz in luzes)
+        {
+            luz.enabled = true;
+        }
     }
 
     public void DesligarInterruptor()
@@ -37,6 +43,10 @@ public class Interruptor : MonoBehaviour
         renderOff.material = materialOff;
         isAtivado = false;
         animation.Play("alavancaInterruptorOFF");
+        foreach (Light luz in luzes)
+        {
+            luz.enabled = false;
+        }
     }
 
 }

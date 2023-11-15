@@ -5,6 +5,7 @@ using UnityEngine;
 public class CentralInterruptores : MonoBehaviour
 {
     [SerializeField] Interruptor[] interruptores;
+    [SerializeField] Light[] luzes;
 
     int A = 0, B = 1, C = 2, D = 3;
 
@@ -70,7 +71,11 @@ public class CentralInterruptores : MonoBehaviour
         // Se todos estiverem ligados, a solução foi alcançada
         if (todosLigados)
         {
-            Debug.Log("Parabéns! Você resolveu o enigma!");
+            Debug.Log("Conseguiu acender todos os interruptores!");
+        }
+        foreach (Light luz in luzes)
+        {
+            luz.enabled = todosLigados;
         }
     }
 }
