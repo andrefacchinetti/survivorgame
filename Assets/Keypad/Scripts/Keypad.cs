@@ -45,7 +45,7 @@ public class Keypad : MonoBehaviour
     private void Awake()
     {
         ClearInput();
-        panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
+        alterarCorDoPainel(screenNormalColor * screenIntensity);
     }
 
 
@@ -99,15 +99,14 @@ public class Keypad : MonoBehaviour
         displayingResult = false;
         if (granted) yield break;
         ClearInput();
-        panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
-
+        alterarCorDoPainel(screenNormalColor * screenIntensity);
     }
 
     private void AccessDenied()
     {
         keypadDisplayText.text = accessDeniedText;
         onAccessDenied?.Invoke();
-        panelMesh.material.SetVector("_EmissionColor", screenDeniedColor * screenIntensity);
+        alterarCorDoPainel(screenDeniedColor * screenIntensity);
         audioSource.PlayOneShot(accessDeniedSfx);
     }
 
@@ -122,8 +121,14 @@ public class Keypad : MonoBehaviour
         accessWasGranted = true;
         keypadDisplayText.text = accessGrantedText;
         onAccessGranted?.Invoke();
-        panelMesh.material.SetVector("_EmissionColor", screenGrantedColor * screenIntensity);
+        alterarCorDoPainel(screenGrantedColor * screenIntensity);
         audioSource.PlayOneShot(accessGrantedSfx);
+    }
+
+    private void alterarCorDoPainel(Color newEmissionColor)
+    {
+        panelMesh.material.EnableKeyword("_EMISSION");
+        panelMesh.material.SetColor("_EmissiveColor", newEmissionColor);
     }
 
 }
