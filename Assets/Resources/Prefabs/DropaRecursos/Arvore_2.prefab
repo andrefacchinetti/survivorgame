@@ -30,14 +30,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365875561385255256}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.07204354, y: 0.07204354, z: 0.07204354}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3450930296932168037}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3358961031692989766
 MonoBehaviour:
@@ -66,7 +66,9 @@ MonoBehaviour:
   - nomeItemEnum: 6
     qtdMinDrops: 1
     qtdMaxDrops: 3
+  dropPosition: {fileID: 0}
   isAttacking: 0
+  jogadorStats: {fileID: 0}
 --- !u!114 &4218742848115672858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +84,7 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 270000002a000000
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
 --- !u!208 &-2860086694590876968
 NavMeshObstacle:
@@ -144,7 +147,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0

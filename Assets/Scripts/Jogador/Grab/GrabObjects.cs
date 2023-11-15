@@ -9,7 +9,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
     private int cLayer, prLayer, fLayer, ptLayer;
-    private string tagObj = "Objeto", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
+    private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
 
     [Tooltip("Force to apply in object")]
@@ -283,6 +283,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoComToggleAnimationObjeto(hit);
         }
+        else if(hit.transform.tag == tagInterruptor)
+        {
+            interacaoComToggleInterruptor(hit);
+        }
     }
 
     //INTERAÇÕES
@@ -497,5 +501,13 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         }
         possibleInteraction = true;
     }
-
+    private void interacaoComToggleInterruptor(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            hit.transform.GetComponent<Interruptor>().ToggleInterruptor();
+        }
+        possibleInteraction = true;
+    }
+    
 }
