@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BFX_RenderDepth : MonoBehaviour
 {
-    DepthTextureMode defaultMode;
+    /*DepthTextureMode defaultMode;
     void OnEnable()
     {
         var cam = GetComponent<Camera>();
@@ -20,5 +20,5 @@ public class BFX_RenderDepth : MonoBehaviour
     void OnDisable()
     {
         GetComponent<Camera>().depthTextureMode = defaultMode;
-    }
+    }*/
 }
