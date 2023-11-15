@@ -36,6 +36,7 @@ public class Keypad : MonoBehaviour
     [SerializeField] private Renderer panelMesh;
     [SerializeField] private TMP_Text keypadDisplayText;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private Animation animationPorta;
 
 
     private string currentInput;
@@ -123,6 +124,7 @@ public class Keypad : MonoBehaviour
         onAccessGranted?.Invoke();
         alterarCorDoPainel(screenGrantedColor * screenIntensity);
         audioSource.PlayOneShot(accessGrantedSfx);
+        if(animationPorta != null) animationPorta.Play();
     }
 
     private void alterarCorDoPainel(Color newEmissionColor)
