@@ -9,7 +9,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
     private int cLayer, prLayer, fLayer, ptLayer;
-    private string tagObjGrab = "Objeto", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
+    private string tagObj = "Objeto", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
 
     [Tooltip("Force to apply in object")]

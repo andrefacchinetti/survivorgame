@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 340990959659891581}
   - component: {fileID: 6461471862816427161}
   - component: {fileID: 8068084584988022394}
-  - component: {fileID: 7214344983954352170}
   - component: {fileID: 3656057188559014500}
   - component: {fileID: 8276280386265283690}
   - component: {fileID: 2411425745639997282}
   - component: {fileID: 162838025045103879}
-  - component: {fileID: 2913197991771824687}
+  - component: {fileID: 8514200642807101129}
+  - component: {fileID: 6228087310780139139}
   m_Layer: 3
   m_Name: Muro_madeira_inteiro
   m_TagString: ConstrucaoStats
@@ -32,13 +32,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39348222206421724}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 4.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.19264}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1052944281539167656}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &340990959659891581
 MonoBehaviour:
@@ -60,6 +60,7 @@ MonoBehaviour:
   dropsItems: []
   dropPosition: {fileID: 0}
   isAttacking: 0
+  jogadorStats: {fileID: 0}
 --- !u!54 &6461471862816427161
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -102,28 +103,8 @@ MonoBehaviour:
   nomeItemFerramentasRecomendadas: 
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
+  isConstrucao: 0
   PV: {fileID: 0}
---- !u!65 &7214344983954352170
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 39348222206421724}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6.0072255, y: 4.3188806, z: 1.5502579}
-  m_Center: {x: -0.00061535835, y: -0.11845136, z: 0.0004003346}
 --- !u!114 &3656057188559014500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +161,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -214,7 +197,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39348222206421724}
   m_Mesh: {fileID: -9080480406487245035, guid: 8ce24145386bc9447ac43ac709d07b47, type: 3}
---- !u!208 &2913197991771824687
+--- !u!65 &8514200642807101129
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39348222206421724}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 21.652878, y: 4.219285, z: 0.099999905}
+  m_Center: {x: -0.4506321, y: 0.001668334, z: 0.007722402}
+--- !u!208 &6228087310780139139
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -224,11 +228,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 3.0040002, y: 2.1590002, z: 0.77500004}
+  m_Extents: {x: 10.826, y: 2.1100001, z: 0.05}
   m_MoveThreshold: 0.1
-  m_Carve: 1
+  m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: -0.001, y: -0.11800001, z: 0}
+  m_Center: {x: -0.45100003, y: 0.002, z: 0.008}
   m_TimeToStationary: 0.5
 --- !u!1 &2230529719356574049
 GameObject:
@@ -254,6 +258,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2230529719356574049}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.52, y: 0, z: 23.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -262,7 +267,6 @@ Transform:
   - {fileID: 1015787165320775385}
   - {fileID: 3320953278123170597}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6265417462870330145
 MonoBehaviour:
@@ -287,19 +291,19 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3320953278123170597}
-  - component: {fileID: 2910388995843353361}
   - component: {fileID: 201200550429951919}
   - component: {fileID: 6019738244022004853}
   - component: {fileID: 7134167400333537108}
   - component: {fileID: 934929514931941208}
   - component: {fileID: 7414019315174303427}
+  - component: {fileID: 5200318604012557046}
   m_Layer: 11
   m_Name: Muro_madeira_quebrado
   m_TagString: ReconstruivelQuebrado
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3320953278123170597
 Transform:
   m_ObjectHideFlags: 0
@@ -307,35 +311,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9216071420134481818}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.7070346, y: -0, z: -0, w: 0.70717907}
   m_LocalPosition: {x: 0, y: 2.56, z: 2.87}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1052944281539167656}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!65 &2910388995843353361
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9216071420134481818}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.21, y: 0.04318881, z: 0.01550258}
-  m_Center: {x: -0.00061535835, y: 0, z: 0.0004003346}
 --- !u!114 &201200550429951919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,6 +375,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -439,3 +424,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reconstruivelStats: {fileID: 6265417462870330145}
+--- !u!65 &5200318604012557046
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9216071420134481818}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.21161279, y: 0.05523004, z: 0.0060459045}
+  m_Center: {x: 0.00020296499, y: -0.0015154801, z: 0.0007974856}

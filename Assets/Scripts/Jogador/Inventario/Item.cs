@@ -145,8 +145,8 @@ public class Item : MonoBehaviourPunCallbacks
         PicaretaAvancada,
         [EnumMember(Value = "Ferramenta")]
         Faca,
-        [EnumMember(Value = "Ferramenta")]
-        Gancho,
+        [EnumMember(Value = "Armadura")]
+        Mochila,
         [EnumMember(Value = "Ferramenta")]
         Bussola,
         [EnumMember(Value = "Ferramenta")]
