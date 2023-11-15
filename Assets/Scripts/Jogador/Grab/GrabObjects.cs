@@ -11,6 +11,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     private int cLayer, prLayer, fLayer, ptLayer;
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
+    private string tagKeypagButton = "KeypadButton";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -287,6 +288,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoComToggleInterruptor(hit);
         }
+        else if(hit.transform.tag == tagKeypagButton)
+        {
+            interacaoComKeypagButton(hit);
+        }
     }
 
     //INTERAÇÕES
@@ -509,5 +514,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         }
         possibleInteraction = true;
     }
-    
+
+    private void interacaoComKeypagButton(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            hit.transform.GetComponent<NavKeypad.KeypadButton>().PressButton();
+        }
+        possibleInteraction = true;
+    }
+
 }
