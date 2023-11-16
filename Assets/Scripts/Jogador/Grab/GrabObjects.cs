@@ -11,7 +11,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     private int cLayer, prLayer, fLayer, ptLayer;
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
-    private string tagKeypagButton = "KeypadButton";
+    private string tagKeypagButton = "KeypadButton", tagNote = "Note";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -292,6 +292,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoComKeypagButton(hit);
         }
+        else if(hit.transform.tag == tagNote)
+        {
+            interacaoComNote(hit);
+        }
     }
 
     //INTERAÇÕES
@@ -520,6 +524,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use"))
         {
             hit.transform.GetComponent<NavKeypad.KeypadButton>().PressButton();
+        }
+        possibleInteraction = true;
+    }
+
+    private VisualizarNote noteSendoVisualizada;
+    private void interacaoComNote(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            if (noteSendoVisualizada != null) noteSendoVisualizada.FecharNote();
+            VisualizarNote note = hit.transform.GetComponent<VisualizarNote>();
+            note.ToggleVisualizarNote(playerController.gameObject);
+            noteSendoVisualizada = note;
         }
         possibleInteraction = true;
     }
