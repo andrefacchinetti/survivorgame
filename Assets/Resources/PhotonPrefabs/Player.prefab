@@ -15251,6 +15251,37 @@ Transform:
   - {fileID: 2238885337334717688}
   m_Father: {fileID: 2573245028307524292}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5332318109578337762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8731075302669921805}
+  m_Layer: 0
+  m_Name: PivotCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8731075302669921805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5332318109578337762}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0441, y: -0.2508, z: -0.0011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1759537756762849625}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5403741110899724753
 GameObject:
   m_ObjectHideFlags: 0
@@ -16368,7 +16399,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0.1217957, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8731075302669921805}
   m_Father: {fileID: 4860948555720394463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6330198032639971674
@@ -17949,7 +17981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cabecaPivot: {fileID: 2369767529973499161}
-  pivotCameraInHead: {fileID: 6278859070323808032}
+  pivotCameraInHead: {fileID: 5332318109578337762}
   colunaPivot: {fileID: 1681634574044919393}
   pivotTiroBase: {fileID: 7992121863190197270}
   offset: {x: 0, y: 0, z: 0}
@@ -27275,11 +27307,11 @@ PrefabInstance:
       objectReference: {fileID: 9000000, guid: d0fa5ec13791fc54da1dae33c05caca1, type: 3}
     - target: {fileID: 8618433631246429632, guid: 12ab7a8e4fd48444493d7cabcdf63afa, type: 3}
       propertyPath: m_Name
-      value: FireSticks_SkelMesh (2) 1
+      value: FIRESTICK
       objectReference: {fileID: 0}
     - target: {fileID: 8618433631246429632, guid: 12ab7a8e4fd48444493d7cabcdf63afa, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8993973320572041082, guid: 12ab7a8e4fd48444493d7cabcdf63afa, type: 3}
       propertyPath: m_RootOrder
