@@ -560,7 +560,7 @@ namespace Opsive.UltimateCharacterController.Inventory
         public virtual int AddItemIdentifierAmount(IItemIdentifier itemIdentifier, int amount)
         {
             if (m_AutoSpawnDestroyRuntimeCharacterItems) {
-                return PickupItem(itemIdentifier, -1, amount, GetCharacterItem(itemIdentifier) == null, false, true, m_AutoSpawnDestroyRuntimeCharacterItems);
+                return PickupItem(itemIdentifier, -1, amount, false, false, true, m_AutoSpawnDestroyRuntimeCharacterItems);
             } else {
                 return AddItemIdentifierAmount(itemIdentifier, amount, m_AutoSpawnDestroyRuntimeCharacterItems);
             }

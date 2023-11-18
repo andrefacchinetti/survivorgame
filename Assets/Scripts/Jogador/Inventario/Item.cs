@@ -51,6 +51,7 @@ public class Item : MonoBehaviourPunCallbacks
         Municao
     }
 
+    [System.Serializable]
     public enum NomeItem
     {
         [EnumMember(Value = "Nenhum")]
@@ -315,6 +316,7 @@ public class Item : MonoBehaviourPunCallbacks
             inventario.UngrabAnimalCapturado(false);
             inventario.UngrabObjetoCapturado();
         }
+        UnequipItemInventory();
     }
 
     public void SelecionarItem()
@@ -336,8 +338,8 @@ public class Item : MonoBehaviourPunCallbacks
         {
             if (itemObjMao != null)
             {
-                EquiparItemInventory();
                 inventario.itemNaMao = this;
+                EquipItemInventory();
                 itemObjMao.gameObject.SetActive(true);
                 if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
                 if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerController.peixeDaVara.SetActive(false);
@@ -355,15 +357,22 @@ public class Item : MonoBehaviourPunCallbacks
         }
 
     }
-  
-    public void EquiparItemInventory()
+
+    private void EquipItemInventory()
     {
         Debug.Log("equipou com sucesso");
         inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
     }
 
+    private void UnequipItemInventory()
+    {
+        Debug.Log("unequipou com sucesso");
+        inventario.inventory.GetComponent<ItemSetManagerBase>().UnEquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
+    }
+
     public void DroparItem()
     {
+        int quantidade = 1;
         if (this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum)) return;
         string nomePrefab = this.nomeItem.GetTipoItemEnum() + "/"+ this.nomeItem.ToString();
         GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
@@ -371,7 +380,8 @@ public class Item : MonoBehaviourPunCallbacks
         {
             objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
         }
-        inventario.RemoverItemDoInventario(this, 1); //TODO: implementar opcao de dropar itens em quantidade
+        inventario.RemoverItemDoInventario(this, quantidade); //TODO: implementar opcao de dropar itens em quantidade
+        inventario.inventory.RemoveItemIdentifierAmount(itemIdentifierAmount.ItemIdentifier, quantidade);
     }
 
     public void UsarItem() //Usa item qdo aperta o botoa do mouse com o item na mao
