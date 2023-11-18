@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Obi;
+using Opsive.UltimateCharacterController.Inventory;
+using Opsive.Shared.Inventory;
 
 public class Inventario : MonoBehaviour
 {
 
+    [SerializeField] public Inventory inventory;
+    [SerializeField] public ItemDefinitionBase definitionBase;
     [SerializeField] public int pesoCapacidadeMaxima, qtdItensMaximo;
     [SerializeField] public TMP_Text txPesoInventario, txQtdItensInventario;
     [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
@@ -26,7 +30,6 @@ public class Inventario : MonoBehaviour
     [SerializeField] TMP_Text txMsgLogItem;
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
-
 
     private void Awake()
     {

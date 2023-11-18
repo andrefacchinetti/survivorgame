@@ -4,6 +4,9 @@ using TMPro;
 using System.Runtime.Serialization;
 using Photon.Pun;
 using UnityEngine.EventSystems;
+using Opsive.UltimateCharacterController.Items;
+using Opsive.Shared.Inventory;
+using Opsive.Shared.Utility;
 
 public class Item : MonoBehaviourPunCallbacks
 {
@@ -350,8 +353,23 @@ public class Item : MonoBehaviourPunCallbacks
         bool isPlayerArmadoPistola = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Pistola);
         inventario.playerController.animator.SetBool("isPlayerArmado", isPlayerArmado);
         inventario.playerController.animator.SetBool("isPlayerArmadoPistola", isPlayerArmadoPistola);
-        
+
+
+        var allItems = inventario.inventory.GetAllCharacterItems();
+        for (int i = allItems.Count - 1; i >= 0; --i)
+        {
+            var characterItem = allItems[i];
+            var itemIdentifier = characterItem.ItemIdentifier;
+            var slotID = characterItem.SlotID;
+            if (itemIdentifier.GetItemDefinition().Equals(inventario.definitionBase))
+            {
+                allItems[i].Equip(true);
+            }
+        }
+
     }
+
+    [SerializeField] ItemDefinitionBase definitionBase;
 
     public void DroparItem()
     {
