@@ -29,7 +29,6 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1003491584915618}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -38,6 +37,7 @@ Transform:
   - {fileID: 6031051735025286541}
   - {fileID: 5776400115113181058}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114961850518396034
 MonoBehaviour:
@@ -56,13 +56,15 @@ MonoBehaviour:
     m_Preset: {fileID: 0}
     m_BlockList: []
     m_Default: 1
-  m_ItemDefinition: {fileID: 114099228593570972, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  m_ItemDefinition: {fileID: 114099228593570972, guid: 5481010ef14c32f4cb7b6661b0c59fb4,
+    type: 2}
   m_SlotID: 0
   m_AnimatorItemID: 23
   m_AnimatorMovementSetID: 1
   m_DominantItem: 1
   m_AllowCameraZoom: 0
-  m_DropPrefab: {fileID: 8366821281719697815, guid: 78b5af6efd3f4fa4fa3a732957b888d7, type: 3}
+  m_DropPrefab: {fileID: 8366821281719697815, guid: 78b5af6efd3f4fa4fa3a732957b888d7,
+    type: 3}
   m_FullInventoryDrop: 0
   m_EquipEvent:
     m_WaitForAnimationEvent: 1
@@ -145,11 +147,13 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 4821689494049128481
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
+      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_ResetDelay: -1
     - rid: 4821689494049128482
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
+      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_ResetDelay: -1
 --- !u!114 &114074514125200878
@@ -358,7 +362,8 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1000
-      type: {class: CheckTargetImpactConditionBehaviour, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: CheckTargetImpactConditionBehaviour, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -369,7 +374,8 @@ MonoBehaviour:
           m_Bindings: []
         m_Enabled: 1
     - rid: 707337210847559703
-      type: {class: SimpleCombo, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
+      type: {class: SimpleCombo, ns: Opsive.UltimateCharacterController.Items.Actions.Modules,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -418,11 +424,13 @@ MonoBehaviour:
               m_AudioClips: []
         m_AllowAttackCombos: 1
     - rid: 707337210847559704
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
+      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_ResetDelay: -1
     - rid: 4821689494049128470
-      type: {class: SimpleAttack, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: SimpleAttack, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -448,7 +456,8 @@ MonoBehaviour:
           m_WaitForSlotEvent: 0
         m_SingleHit: 0
     - rid: 4821689494049128471
-      type: {class: HitboxCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: HitboxCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -493,7 +502,8 @@ MonoBehaviour:
             m_SingleHit: 0
             m_SurfaceImpact: {fileID: 0}
     - rid: 4821689494049128473
-      type: {class: GenericMeleeImpactModule, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: GenericMeleeImpactModule, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -517,7 +527,8 @@ MonoBehaviour:
         m_FailImpactActions:
           m_ImpactActions: []
     - rid: 4821689494049128474
-      type: {class: SimpleDamage, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: SimpleDamage, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -539,7 +550,8 @@ MonoBehaviour:
         m_ImpactRadius: 0
         m_ScaleDamageByImpactStrength: 0
     - rid: 4821689494049128475
-      type: {class: SpawnSurfaceEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: SpawnSurfaceEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -552,9 +564,11 @@ MonoBehaviour:
         m_Delay: 0
         m_AllowMultiHits: 0
         m_UseContextData: 0
-        m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
+        m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb,
+          type: 2}
     - rid: 4821689494049128476
-      type: {class: SimpleRecoil, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: SimpleRecoil, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -585,11 +599,13 @@ MonoBehaviour:
               m_AudioConfig: {fileID: 0}
               m_AudioClips: []
     - rid: 4821689494049128478
-      type: {class: RandomRecoil, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
+      type: {class: RandomRecoil, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_BlockedRecoilItemSubstateIndex: 20
     - rid: 4821689494049128494
-      type: {class: TrailEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: TrailEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -601,7 +617,8 @@ MonoBehaviour:
         m_Enabled: 1
         m_ID: 0
         m_Name: 
-        m_Trail: {fileID: 8594487973479184024, guid: 73dafbe664739e546ac122b733808534, type: 3}
+        m_Trail: {fileID: 8594487973479184024, guid: 73dafbe664739e546ac122b733808534,
+          type: 3}
         m_TrailVisibility: 0
         m_TrailSpawnDelay: 0
         m_AttackStopTrailEvent:
@@ -615,7 +632,8 @@ MonoBehaviour:
             m_ID: -1
             m_Object: {fileID: 4901281332618610}
     - rid: 5031970493140303894
-      type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
+      type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -635,7 +653,8 @@ MonoBehaviour:
           m_Effects:
           - rid: 5031970493140303895
     - rid: 5031970493140303895
-      type: {class: PlayAudioClip, ns: Opsive.UltimateCharacterController.Items.Actions.Effect, asm: Opsive.UltimateCharacterController}
+      type: {class: PlayAudioClip, ns: Opsive.UltimateCharacterController.Items.Actions.Effect,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -647,7 +666,8 @@ MonoBehaviour:
         m_Enabled: 1
         m_Delay: 0
         m_AudioClipSet:
-          m_AudioConfig: {fileID: 11400000, guid: d2f7b488ee8141d4fb94bed547512509, type: 2}
+          m_AudioConfig: {fileID: 11400000, guid: d2f7b488ee8141d4fb94bed547512509,
+            type: 2}
           m_AudioClips: []
 --- !u!114 &6772972550301837294
 MonoBehaviour:
@@ -710,7 +730,8 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1000
-      type: {class: CheckTargetImpactConditionBehaviour, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: CheckTargetImpactConditionBehaviour, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -721,7 +742,8 @@ MonoBehaviour:
           m_Bindings: []
         m_Enabled: 1
     - rid: 707337210847559708
-      type: {class: Simple, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
+      type: {class: Simple, ns: Opsive.UltimateCharacterController.Items.Actions.Modules,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -758,11 +780,13 @@ MonoBehaviour:
         m_CanStopIfInputStop: 0
         m_CanStopSubstateIndexAddition: 10
     - rid: 707337210847559709
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
+      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_ResetDelay: -1
     - rid: 4821689494049128470
-      type: {class: SimpleAttack, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: SimpleAttack, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -788,7 +812,8 @@ MonoBehaviour:
           m_WaitForSlotEvent: 0
         m_SingleHit: 0
     - rid: 4821689494049128471
-      type: {class: HitboxCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: HitboxCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -833,7 +858,8 @@ MonoBehaviour:
             m_SingleHit: 0
             m_SurfaceImpact: {fileID: 0}
     - rid: 4821689494049128473
-      type: {class: GenericMeleeImpactModule, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: GenericMeleeImpactModule, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -857,7 +883,8 @@ MonoBehaviour:
         m_FailImpactActions:
           m_ImpactActions: []
     - rid: 4821689494049128474
-      type: {class: SimpleDamage, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: SimpleDamage, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -879,7 +906,8 @@ MonoBehaviour:
         m_ImpactRadius: 0
         m_ScaleDamageByImpactStrength: 0
     - rid: 4821689494049128475
-      type: {class: SpawnSurfaceEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: SpawnSurfaceEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -892,9 +920,11 @@ MonoBehaviour:
         m_Delay: 0
         m_AllowMultiHits: 0
         m_UseContextData: 0
-        m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
+        m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb,
+          type: 2}
     - rid: 5031970493140303896
-      type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
+      type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -914,7 +944,8 @@ MonoBehaviour:
           m_Effects:
           - rid: 5031970493140303897
     - rid: 5031970493140303897
-      type: {class: PlayAudioClip, ns: Opsive.UltimateCharacterController.Items.Actions.Effect, asm: Opsive.UltimateCharacterController}
+      type: {class: PlayAudioClip, ns: Opsive.UltimateCharacterController.Items.Actions.Effect,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -926,7 +957,8 @@ MonoBehaviour:
         m_Enabled: 1
         m_Delay: 0
         m_AudioClipSet:
-          m_AudioConfig: {fileID: 11400000, guid: 847b10eacbc0e1d4bb9e7ff99e026d6f, type: 2}
+          m_AudioConfig: {fileID: 11400000, guid: 847b10eacbc0e1d4bb9e7ff99e026d6f,
+            type: 2}
           m_AudioClips: []
 --- !u!114 &6073286297891088119
 MonoBehaviour:
@@ -989,7 +1021,8 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1000
-      type: {class: CheckTargetImpactConditionBehaviour, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: CheckTargetImpactConditionBehaviour, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1000,7 +1033,8 @@ MonoBehaviour:
           m_Bindings: []
         m_Enabled: 1
     - rid: 707337210847559711
-      type: {class: Simple, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
+      type: {class: Simple, ns: Opsive.UltimateCharacterController.Items.Actions.Modules,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1037,11 +1071,13 @@ MonoBehaviour:
         m_CanStopIfInputStop: 0
         m_CanStopSubstateIndexAddition: 10
     - rid: 707337210847559712
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
+      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_ResetDelay: -1
     - rid: 4821689494049128471
-      type: {class: HitboxCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: HitboxCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1086,7 +1122,8 @@ MonoBehaviour:
             m_SingleHit: 0
             m_SurfaceImpact: {fileID: 0}
     - rid: 4821689494049128473
-      type: {class: GenericMeleeImpactModule, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: GenericMeleeImpactModule, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1110,7 +1147,8 @@ MonoBehaviour:
         m_FailImpactActions:
           m_ImpactActions: []
     - rid: 4821689494049128474
-      type: {class: SimpleDamage, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: SimpleDamage, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1132,7 +1170,8 @@ MonoBehaviour:
         m_ImpactRadius: 0
         m_ScaleDamageByImpactStrength: 0
     - rid: 4821689494049128475
-      type: {class: SpawnSurfaceEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
+      type: {class: SpawnSurfaceEffect, ns: Opsive.UltimateCharacterController.Items.Actions.Impact,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1145,9 +1184,11 @@ MonoBehaviour:
         m_Delay: 0
         m_AllowMultiHits: 0
         m_UseContextData: 0
-        m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
+        m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb,
+          type: 2}
     - rid: 5031970493140303898
-      type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
+      type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1167,7 +1208,8 @@ MonoBehaviour:
           m_Effects:
           - rid: 5031970493140303899
     - rid: 5031970493140303899
-      type: {class: PlayAudioClip, ns: Opsive.UltimateCharacterController.Items.Actions.Effect, asm: Opsive.UltimateCharacterController}
+      type: {class: PlayAudioClip, ns: Opsive.UltimateCharacterController.Items.Actions.Effect,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1179,10 +1221,12 @@ MonoBehaviour:
         m_Enabled: 1
         m_Delay: 0
         m_AudioClipSet:
-          m_AudioConfig: {fileID: 11400000, guid: 8654a97a056678645bf70a976a6f9524, type: 2}
+          m_AudioConfig: {fileID: 11400000, guid: 8654a97a056678645bf70a976a6f9524,
+            type: 2}
           m_AudioClips: []
     - rid: 5031970493140303900
-      type: {class: MultiAttack, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      type: {class: MultiAttack, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee,
+        asm: Opsive.UltimateCharacterController}
       data:
         m_States:
         - m_Name: Default
@@ -1274,13 +1318,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1270173736707046}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.040355228, y: 0.69258374, z: -0.720188, w: 0.0053407555}
   m_LocalPosition: {x: 0.001, y: -0.0009999856, z: 0.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6031051735025286541}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1819064872044906
 GameObject:
@@ -1305,96 +1349,98 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819064872044906}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.040355228, y: 0.69258374, z: -0.720188, w: 0.0053407555}
   m_LocalPosition: {x: 0.001, y: -0.0009999856, z: 0.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5776400115113181058}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4937889964630904267
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 4674895757500816}
     m_Modifications:
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.000000021855694
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_Name
       value: FirstPersonKnife
       objectReference: {fileID: 0}
-    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4955140857388480}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6078710403425811647}
-    - targetCorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8615753294168622207}
   m_SourcePrefab: {fileID: 100100000, guid: fa685a6b825054147a36860770eafe42, type: 3}
 --- !u!4 &6031051735025286541 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+    type: 3}
   m_PrefabInstance: {fileID: 4937889964630904267}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6411236040725440311 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42,
+    type: 3}
   m_PrefabInstance: {fileID: 4937889964630904267}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &6078710403425811647
@@ -1405,17 +1451,9 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6411236040725440311}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Size: {x: 0.04768604, y: 0.09326908, z: 0.4506961}
   m_Center: {x: 0.0000019185736, y: 0.002484556, z: 0.12017303}
 --- !u!82 &8615753294168622207
@@ -1429,7 +1467,6 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1520,86 +1557,85 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 4674895757500816}
     m_Modifications:
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.000000021855694
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_Name
       value: ThirdPersonKnife
       objectReference: {fileID: 0}
-    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
+    - target: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42,
+        type: 3}
       propertyPath: m_Layer
       value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4901281332618610}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4342487365261699660}
-    - targetCorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8452382130751578655}
-    - targetCorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7493301567830726196}
   m_SourcePrefab: {fileID: 100100000, guid: fa685a6b825054147a36860770eafe42, type: 3}
 --- !u!4 &5776400115113181058 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1672086000033460294, guid: fa685a6b825054147a36860770eafe42,
+    type: 3}
   m_PrefabInstance: {fileID: 5124414779338608580}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6584884842824525112 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2053538038328699644, guid: fa685a6b825054147a36860770eafe42,
+    type: 3}
   m_PrefabInstance: {fileID: 5124414779338608580}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &4342487365261699660
@@ -1610,17 +1646,9 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6584884842824525112}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Size: {x: 0.04768604, y: 0.09326908, z: 0.4506961}
   m_Center: {x: 0.0000019185736, y: 0.002484556, z: 0.12017303}
 --- !u!82 &8452382130751578655
@@ -1634,7 +1662,6 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

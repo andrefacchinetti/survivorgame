@@ -72,7 +72,7 @@ namespace Opsive.UltimateCharacterController.Demo
             }
 
             if (m_Character == null) {
-                m_Character = FindObjectOfType<DemoManager>()?.Character;
+                m_Character = FindFirstObjectByType<DemoManager>()?.Character;
             }
 
             if (m_Character == null) {
