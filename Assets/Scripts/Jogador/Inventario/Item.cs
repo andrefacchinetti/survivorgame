@@ -306,8 +306,8 @@ public class Item : MonoBehaviourPunCallbacks
             inventario.UngrabAnimalCapturado(false);
             inventario.UngrabObjetoCapturado();
         }
-        inventario.playerMovement.anim.SetBool("isPlayerArmado", false);
-        inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", false);
+        inventario.playerController.animator.SetBool("isPlayerArmado", false);
+        inventario.playerController.animator.SetBool("isPlayerArmadoPistola", false);
     }
 
     public void SelecionarItem()
@@ -332,7 +332,7 @@ public class Item : MonoBehaviourPunCallbacks
                 inventario.itemNaMao = this;
                 itemObjMao.gameObject.SetActive(true);
                 if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
-                if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerMovement.playerController.peixeDaVara.SetActive(false);
+                if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerController.peixeDaVara.SetActive(false);
                 if (nomeItem.Equals(NomeItem.Lanterna) && !inventario.VerificarQtdItem(NomeItem.Lanterna, 2, false) && armaduras.slotLanterna.item != null && armaduras.slotLanterna.item.nomeItem.Equals(NomeItem.Lanterna))
                 {
                     armaduras.slotLanterna.objEquipLanterna.SetActive(false);
@@ -348,8 +348,8 @@ public class Item : MonoBehaviourPunCallbacks
 
         bool isPlayerArmado = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null;
         bool isPlayerArmadoPistola = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Pistola);
-        inventario.playerMovement.anim.SetBool("isPlayerArmado", isPlayerArmado);
-        inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", isPlayerArmadoPistola);
+        inventario.playerController.animator.SetBool("isPlayerArmado", isPlayerArmado);
+        inventario.playerController.animator.SetBool("isPlayerArmadoPistola", isPlayerArmadoPistola);
         
     }
 
@@ -429,8 +429,8 @@ public class Item : MonoBehaviourPunCallbacks
 
         bool playerArmado = (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null);
         bool playerArmadoPistola = (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Pistola));
-        inventario.playerMovement.anim.SetBool("isPlayerArmado", playerArmado);
-        inventario.playerMovement.anim.SetBool("isPlayerArmadoPistola", playerArmadoPistola);
+        inventario.playerController.animator.SetBool("isPlayerArmado", playerArmado);
+        inventario.playerController.animator.SetBool("isPlayerArmadoPistola", playerArmadoPistola);
 
         if (quantidade <= 0)
         {

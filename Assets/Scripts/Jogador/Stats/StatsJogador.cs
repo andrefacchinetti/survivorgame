@@ -86,7 +86,7 @@ public class StatsJogador : MonoBehaviour
         //TODO: DROPAR MOCHILA
         playerController.animator.SetBool("isDead", true);
         statsGeral.isDead = true;
-        playerController.playerMovement.canMove = false;
+        playerController.canMove = false;
         setarVidaAtual(0);
     }
 
@@ -94,7 +94,7 @@ public class StatsJogador : MonoBehaviour
     {
         playerController.animator.SetBool("isDead", false);
         statsGeral.isDead = false;
-        playerController.playerMovement.canMove = true;
+        playerController.canMove = true;
         playerController.corpoDissecando = null;
         playerController.animalCapturado = null;
         setarVidaAtual(statsGeral.vidaMaxima * 0.20f);

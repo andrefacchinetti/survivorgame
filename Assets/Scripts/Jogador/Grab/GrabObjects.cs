@@ -23,17 +23,15 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     private Vector2 rigSaveGrabed;
 
     [SerializeField] Camera cam;
-    [SerializeField] [HideInInspector] PlayerController playerController;
-    [SerializeField] [HideInInspector] Inventario inventario;
-    [SerializeField] [HideInInspector] Animator animator;
+    [SerializeField] PlayerController playerController;
+    [SerializeField] Inventario inventario;
+    [SerializeField] Animator animator;
 
     PhotonView PV;
 
     void Awake()
     {
-        PV = GetComponentInParent<PhotonView>();
-        playerController = GetComponentInParent<PlayerController>();
-        animator = GetComponentInParent<Animator>();
+        PV = playerController.PV;
     }
 
     private void transferOwnerPV(GameObject obj)

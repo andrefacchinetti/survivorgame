@@ -20,7 +20,6 @@ public class Inventario : MonoBehaviour
     [HideInInspector] public List<Item> itens;
     [SerializeField][HideInInspector] public Item itemNaMao;
     [SerializeField] [HideInInspector] public PlayerController playerController;
-    [SerializeField] [HideInInspector] public PlayerMovement playerMovement;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
 
@@ -33,7 +32,6 @@ public class Inventario : MonoBehaviour
     {
         itens = new List<Item>();
         playerController = GetComponentInParent<PlayerController>();
-        playerMovement = GetComponentInParent<PlayerMovement>();
         statsJogador = GetComponentInParent<StatsJogador>();
         craftMaos = GetComponent<CraftMaos>();
     }
@@ -113,17 +111,17 @@ public class Inventario : MonoBehaviour
         craftMaos.LimparTodosSlotsCraft();
         canvasInventario.SetActive(false);
         cameraInventario.SetActive(false);
-        playerMovement.canMove = true;
+        playerController.canMove = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     public void AbrirInventario()
     {
-        if (!playerMovement.canMove) return;
+        if (!playerController.canMove) return;
         canvasInventario.SetActive(true);
         cameraInventario.SetActive(true);
-        playerMovement.canMove = false;
+        playerController.canMove = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         //playerMovement.anim.SetBool("")

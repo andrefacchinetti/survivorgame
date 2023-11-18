@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	public float pesoGrab = 0.0f;
 
 
-	PhotonView PV;
+	public PhotonView PV;
 
 	void Awake()
 	{
@@ -71,10 +71,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
 			if(inventario.itemNaMao != null)
             {
-				if (Input.GetMouseButtonDown(0))
+				/*if (Input.GetMouseButtonDown(0))
 				{
 					ativarAnimacaoPorTipoItem(inventario.itemNaMao);
-				}
+				}*/
 				if (Input.GetButtonDown("Dropar"))
 				{
 					inventario.itemNaMao.DroparItem();
@@ -85,12 +85,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				armaduras.slotLanterna.TurnOffOnLanterna();
 			}
 		}
-		verificarAnimacoesSegurandoItem();
+		//verificarAnimacoesSegurandoItem();
 	}
 
     private void verificarAnimacoesSegurandoItem()
     {
-		bool acendendo = animator.GetCurrentAnimatorStateInfo(0).IsName("AcendendoFogueira");
+		bool acendendo = false;// animator.GetCurrentAnimatorStateInfo(0).IsName("AcendendoFogueira");
 		if (!acendendo) acendedorFogueira.SetActive(false);
 		else acendedorFogueira.SetActive(true);
 

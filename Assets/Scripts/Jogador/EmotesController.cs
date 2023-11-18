@@ -6,14 +6,8 @@ using UnityEngine;
 public class EmotesController : MonoBehaviour
 {
 
-    [SerializeField] [HideInInspector] Animator animator;
-    [SerializeField] [HideInInspector] PlayerController playerController;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        playerController = GetComponent<PlayerController>();
-    }
+    [SerializeField] Animator animator;
+    [SerializeField] PlayerController playerController;
 
     private void Update()
     {
