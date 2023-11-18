@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
 	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
-	[SerializeField] [HideInInspector] public PlayerMovement playerMovement;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando, corpoReanimando, objCapturado;
 	[SerializeField] [HideInInspector] public AnimalController animalCapturado;
@@ -47,7 +46,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		animator = GetComponent<Animator>();
 		GameObject gc = GameObject.FindGameObjectWithTag("GameController");
 		if (gc != null) gameController = gc.GetComponent<GameController>();
-		playerMovement = GetComponent<PlayerMovement>();
 		statsJogador = GetComponent<StatsJogador>();
 		statsGeral = GetComponent<StatsGeral>();
 		txMsgAlerta.text = "";
@@ -69,7 +67,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			statsGeral.TakeDamage(9999);
 		}
 
-		if (!inventario.canvasInventario.activeSelf && playerMovement.canMove)
+		if (!inventario.canvasInventario.activeSelf && canMove)
 		{
 			if(inventario.itemNaMao != null)
             {
@@ -285,17 +283,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	{
 		if (inventario.itemNaMao == null) return;
 		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
-		Ray ray = new Ray(playerMovement.pivotTiroBase.transform.position, playerMovement.pivotTiroBase.transform.forward);
+		Ray ray = new Ray(transform.position, transform.forward);
 		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
 		RaycastHit hit;
 		// Se o ray atingir alguma superfície, calcula a direção do arremesso
 		if (Physics.Raycast(ray, out hit))
 		{
-			Vector3 direction = hit.point - playerMovement.pivotTiroBase.transform.position;
+			Vector3 direction = hit.point - transform.position;
 			direction.Normalize();
 			
 			string nomePrefab = inventario.itemNaMao.nomeItem.GetTipoItemEnum() + "/" + inventario.itemNaMao.nomeItem.ToString();
-			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
+			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), PV.ViewID);
 			// Aplica a força na direção calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
 			//REMOVER ITEM DA MAO
@@ -368,19 +366,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		Debug.Log("tiro flecha");
 		if (inventario.itemNaMao == null) return;
 		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
-		Ray ray = new Ray(playerMovement.pivotTiroBase.transform.position, playerMovement.pivotTiroBase.transform.forward);
+		Ray ray = new Ray(transform.position, transform.forward);
 		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
 		RaycastHit hit;
 		// Se o ray atingir alguma superfície, calcula a direção do arremesso
 		if (Physics.Raycast(ray, out hit))
 		{
-			Vector3 direction = hit.point - playerMovement.pivotTiroBase.transform.position;
+			Vector3 direction = hit.point - transform.position;
 			direction.Normalize();
 
 			Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
 			if (flechaNaAljava == null || flechaNaAljava.quantidade <= 0) return; // NAO TEM FLECHA
 			string nomePrefab = flechaNaAljava.nomeItem.GetTipoItemEnum() + "/" + flechaNaAljava.nomeItem.ToString();
-			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
+			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), PV.ViewID);
 			// Aplica a força na direção calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
 			//REMOVER ITEM DO INVENTARIO
@@ -393,13 +391,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		Debug.Log("tiro pistola");
 		if (inventario.itemNaMao == null) return;
 		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
-		Ray ray = new Ray(playerMovement.pivotTiroBase.transform.position, playerMovement.pivotTiroBase.transform.forward);
+		Ray ray = new Ray(transform.position, transform.forward);
 		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
 		RaycastHit hit;
 		// Se o ray atingir alguma superfície, calcula a direção do arremesso
 		if (Physics.Raycast(ray, out hit))
 		{
-			Vector3 direction = hit.point - playerMovement.pivotTiroBase.transform.position;
+			Vector3 direction = hit.point - transform.position;
 			direction.Normalize();
 
 			Item municaoNaAljava = armaduras.ObterItemFlechaNaAljava();
@@ -408,7 +406,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				return;
 			}
 			string nomePrefab = municaoNaAljava.nomeItem.GetTipoItemEnum() + "/" + municaoNaAljava.nomeItem.ToString();
-			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, playerMovement.pivotTiroBase.transform.position, Quaternion.LookRotation(direction), PV.ViewID);
+			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), PV.ViewID);
 			meuObjLancado.GetComponent<TrailMunicao>().AtivarTrailMunicao();
 			// Aplica a força na direção calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * (2000), ForceMode.Impulse);
@@ -455,7 +453,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	public bool podeSeMexer()
 	{
-		return playerMovement.canMove && !statsGeral.isDead;
+		return canMove && !statsGeral.isDead;
 	}
 
 	public void AlertarJogadorComMensagem(string texto)
