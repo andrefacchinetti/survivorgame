@@ -164,7 +164,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     transferOwnerPV(hit.transform.gameObject);
                     grabedObj = hit.transform.gameObject;
                 }
-                if (hit.transform.tag == tagItemDrop && Input.GetKeyDown(KeyCode.E)) //Pega item do chao
+                if (hit.transform.tag == tagItemDrop && Input.GetButtonDown("Use")) //Pega item do chao
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
@@ -197,6 +197,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         }
                         destruirObjetoDaCena = false;
                     }
+                    
                     if (inventario.AdicionarItemAoInventario(itemDrop, itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
                     {
                         if (destruirObjetoDaCena)

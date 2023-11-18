@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					inventario.itemNaMao.DroparItem();
 				}
 			}
-            if (Input.GetButtonDown("Flashlight"))
+            if (Input.GetButtonDown("Action"))
             {
 				armaduras.slotLanterna.TurnOffOnLanterna();
 			}

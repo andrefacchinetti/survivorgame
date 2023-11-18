@@ -4,9 +4,7 @@ using TMPro;
 using System.Runtime.Serialization;
 using Photon.Pun;
 using UnityEngine.EventSystems;
-using Opsive.UltimateCharacterController.Items;
 using Opsive.Shared.Inventory;
-using Opsive.Shared.Utility;
 using Opsive.UltimateCharacterController.Inventory;
 
 public class Item : MonoBehaviourPunCallbacks
@@ -14,7 +12,8 @@ public class Item : MonoBehaviourPunCallbacks
 
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField] public Item.NomeItem nomeItem;
-    [SerializeField] public ItemDefinitionBase itemDefinitionBase;
+    [SerializeField] public ItemIdentifierAmount itemIdentifierAmount;
+    [SerializeField] public int groupIndex;
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso, clicks;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
@@ -219,6 +218,7 @@ public class Item : MonoBehaviourPunCallbacks
     public struct ItemDropStruct
     {
         public Item.NomeItem nomeItemEnum;
+        public ItemDefinitionBase itemDefinitionBase;
         public int qtdMinDrops;
         public int qtdMaxDrops;
     }
@@ -227,13 +227,14 @@ public class Item : MonoBehaviourPunCallbacks
     public struct ItemStruct
     {
         public Item.NomeItem nomeItemEnum;
+        public ItemIdentifierAmount itemIdentifierAmount;
+        public int groupIndex;
         public string nomePortugues, nomeIngles;
         public bool isConsumivel;
         public int peso, durabilidadeAtual, durabilidadeMaxima;
         public ItemObjMao itemObjMao;
         public Texture textureImgItem;
         public GameObject objInventario;
-        public ItemDefinitionBase itemDefinitionBase;
     }
 
     public Item setupItemFromItemStruct(ItemStruct itemResponse)
@@ -241,7 +242,8 @@ public class Item : MonoBehaviourPunCallbacks
         nomeItem = itemResponse.nomeItemEnum;
         nomePortugues = itemResponse.nomePortugues;
         nomeIngles = itemResponse.nomeIngles;
-        itemDefinitionBase = itemResponse.itemDefinitionBase;
+        itemIdentifierAmount = itemResponse.itemIdentifierAmount;
+        groupIndex = itemResponse.groupIndex;
         isConsumivel = itemResponse.isConsumivel;
         quantidade = 1;
         peso = itemResponse.peso;
@@ -313,8 +315,6 @@ public class Item : MonoBehaviourPunCallbacks
             inventario.UngrabAnimalCapturado(false);
             inventario.UngrabObjetoCapturado();
         }
-        inventario.playerController.animator.SetBool("isPlayerArmado", false);
-        inventario.playerController.animator.SetBool("isPlayerArmadoPistola", false);
     }
 
     public void SelecionarItem()
@@ -355,25 +355,11 @@ public class Item : MonoBehaviourPunCallbacks
         }
 
     }
-
+  
     public void EquiparItemInventory()
     {
-        Debug.Log("equipando item inventory");
-        
-
-        var allCharItems = inventario.inventory.GetAllCharacterItems();
-        for (int i = allCharItems.Count - 1; i >= 0; --i)
-        {
-            var characterItem = allCharItems[i];
-            var itemIdentifier = characterItem.ItemIdentifier;
-            var slotID = characterItem.SlotID;
-            if (itemIdentifier.GetItemDefinition().Equals(itemDefinitionBase))
-            {
-                Debug.Log("equipou com sucesso");
-                inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifier, -1, true, true);
-                break;
-            }
-        }
+        Debug.Log("equipou com sucesso");
+        inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
     }
 
     public void DroparItem()
@@ -450,11 +436,6 @@ public class Item : MonoBehaviourPunCallbacks
         }
         txQuantidade.text = quantidade + "";
 
-        bool playerArmado = (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null);
-        bool playerArmadoPistola = (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Pistola));
-        inventario.playerController.animator.SetBool("isPlayerArmado", playerArmado);
-        inventario.playerController.animator.SetBool("isPlayerArmadoPistola", playerArmadoPistola);
-
         if (quantidade <= 0)
         {
             RemoverItemDaMochila();
@@ -475,7 +456,7 @@ public class Item : MonoBehaviourPunCallbacks
         GameObject.Destroy(this.gameObject);
     }
 
-    public bool aumentarQuantidade(int quantidadeResponse)
+    public bool aumentarQuantidade(int quantidadeResponse) ///INVENTORY PICKUP ITEM
     {
         if (!gameObject.activeSelf && inventario.qtdItensAtual >= inventario.qtdItensMaximo)
         {
@@ -484,7 +465,9 @@ public class Item : MonoBehaviourPunCallbacks
         }
         else
         {
-            if(quantidade <= 0)
+            //AUMENTAR QUANTIDADE INVENTORY
+            inventario.inventory.AddItemIdentifierAmount(itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
+            if (quantidade <= 0)
             {
                 desativarOuAtivarUsoItemDaHotbar(false);
                 gameObject.transform.SetAsLastSibling();

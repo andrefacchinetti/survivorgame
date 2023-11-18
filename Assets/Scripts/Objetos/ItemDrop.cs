@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Photon.Pun;
 using System.IO;
+using Opsive.Shared.Inventory;
 
 public class ItemDrop : MonoBehaviourPunCallbacks
 {

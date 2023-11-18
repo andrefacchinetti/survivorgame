@@ -19,6 +19,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] GameObject contentItensMochila;
     [SerializeField] public GameObject prefabItem, prefabCorda;
     [SerializeField] public Hotbar hotbar;
+
     [SerializeField] public List<Item.ItemStruct> itensStruct;
 
     [HideInInspector] public List<Item> itens;
@@ -31,8 +32,6 @@ public class Inventario : MonoBehaviour
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
-    [HideInInspector] public ListSlice<CharacterItem> allCharacterItems;
-
     private void Awake()
     {
         itens = new List<Item>();
@@ -43,7 +42,6 @@ public class Inventario : MonoBehaviour
 
     void Start()
     {
-        allCharacterItems = inventory.GetAllCharacterItems();
         setarQtdItensAtual(0);
         setarPesoAtual(0);
         foreach (Item item in itens) //Ativando os itens que tem quantidade no inventario e desativando os que nao tem quantidade
@@ -177,7 +175,7 @@ public class Inventario : MonoBehaviour
             Debug.Log("Peso maximo do inventario atingido");
             return false;
         }
-        else
+        else //ADICIONANDO UM NOVO ITEM, POIS NAO TINHA NENHUM NA MAO
         {
             GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
             novoObjeto.transform.SetParent(contentItensMochila.transform);
@@ -188,6 +186,7 @@ public class Inventario : MonoBehaviour
             Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
             itens.Add(novoItem);
             AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
+            inventory.AddItemIdentifierAmount(novoItem.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
             return true;
         }
     }
