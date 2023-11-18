@@ -24,7 +24,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     [SerializeField] Camera cam;
     [SerializeField] [HideInInspector] PlayerController playerController;
-    [SerializeField] [HideInInspector] PlayerMovement playerMovimentController;
     [SerializeField] [HideInInspector] Inventario inventario;
     [SerializeField] [HideInInspector] Animator animator;
 
@@ -34,7 +33,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         PV = GetComponentInParent<PhotonView>();
         playerController = GetComponentInParent<PlayerController>();
-        playerMovimentController = GetComponentInParent<PlayerMovement>();
         animator = GetComponentInParent<Animator>();
     }
 
@@ -55,7 +53,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         objRig.angularDrag = rigSaveGrabed.y;
         rigSaveGrabed = Vector2.zero;
         grabedObj = null;
-        playerMovimentController.pesoGrab = 0;
+        playerController.pesoGrab = 0;
     }
 
     private void OnDrawGizmos()
@@ -131,7 +129,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             objRig.drag = 2.5f;
             objRig.angularDrag = 2.5f;
             objRig.AddForce(-(grabedObj.transform.position - posGrab).normalized * calc, ForceMode.Impulse);
-            playerMovimentController.pesoGrab = objRig.mass;
+            playerController.pesoGrab = objRig.mass;
 
             if (Input.GetMouseButtonUp(1) || objRig.velocity.magnitude >= 20 || dist >= 10 )
             {
@@ -140,7 +138,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         }
         else
         {
-            playerMovimentController.pesoGrab = 0;
+            playerController.pesoGrab = 0;
         }
     }
 

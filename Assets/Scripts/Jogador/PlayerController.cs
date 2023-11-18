@@ -35,7 +35,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Item.NomeItem nomeItemColetando;
 	[SerializeField] [HideInInspector] public GameController gameController;
 
-	
+	[HideInInspector] public bool canMove = true;
+	public float pesoGrab = 0.0f;
+
 
 	PhotonView PV;
 
