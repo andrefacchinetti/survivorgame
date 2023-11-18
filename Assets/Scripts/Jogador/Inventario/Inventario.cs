@@ -5,13 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 using Obi;
 using Opsive.UltimateCharacterController.Inventory;
-using Opsive.Shared.Inventory;
+using Opsive.Shared.Utility;
+using Opsive.UltimateCharacterController.Items;
 
 public class Inventario : MonoBehaviour
 {
 
     [SerializeField] public Inventory inventory;
-    [SerializeField] public ItemDefinitionBase definitionBase;
     [SerializeField] public int pesoCapacidadeMaxima, qtdItensMaximo;
     [SerializeField] public TMP_Text txPesoInventario, txQtdItensInventario;
     [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
@@ -31,6 +31,8 @@ public class Inventario : MonoBehaviour
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
+    [HideInInspector] public ListSlice<CharacterItem> allCharacterItems;
+
     private void Awake()
     {
         itens = new List<Item>();
@@ -39,23 +41,9 @@ public class Inventario : MonoBehaviour
         craftMaos = GetComponent<CraftMaos>();
     }
 
-    public void setarPesoAtual(int valor)
-    {
-        pesoAtual = valor;
-        txPesoInventario.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? "Peso: " : "Weight: ";
-        txPesoInventario.text += pesoAtual + "/" + pesoCapacidadeMaxima;
-    }
-
-    public void setarQtdItensAtual(int valor)
-    {
-        qtdItensAtual = valor;
-        txQtdItensInventario.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? "Itens: " : "Items: ";
-        txQtdItensInventario.text += qtdItensAtual + "/" + qtdItensMaximo;
-        craftMaos.LimparTodosSlotsCraft();
-    }
-
     void Start()
     {
+        allCharacterItems = inventory.GetAllCharacterItems();
         setarQtdItensAtual(0);
         setarPesoAtual(0);
         foreach (Item item in itens) //Ativando os itens que tem quantidade no inventario e desativando os que nao tem quantidade
@@ -87,6 +75,21 @@ public class Inventario : MonoBehaviour
             FecharInventario();
         }
         VerificarCordaPartindo();
+    }
+
+    public void setarPesoAtual(int valor)
+    {
+        pesoAtual = valor;
+        txPesoInventario.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? "Peso: " : "Weight: ";
+        txPesoInventario.text += pesoAtual + "/" + pesoCapacidadeMaxima;
+    }
+
+    public void setarQtdItensAtual(int valor)
+    {
+        qtdItensAtual = valor;
+        txQtdItensInventario.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? "Itens: " : "Items: ";
+        txQtdItensInventario.text += qtdItensAtual + "/" + qtdItensMaximo;
+        craftMaos.LimparTodosSlotsCraft();
     }
 
     public void ToggleInventario()

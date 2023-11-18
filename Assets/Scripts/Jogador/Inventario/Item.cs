@@ -7,12 +7,14 @@ using UnityEngine.EventSystems;
 using Opsive.UltimateCharacterController.Items;
 using Opsive.Shared.Inventory;
 using Opsive.Shared.Utility;
+using Opsive.UltimateCharacterController.Inventory;
 
 public class Item : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField] public Item.NomeItem nomeItem;
+    [SerializeField] public ItemDefinitionBase itemDefinitionBase;
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int quantidade = 0, peso, clicks;
     [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
@@ -231,6 +233,7 @@ public class Item : MonoBehaviourPunCallbacks
         public ItemObjMao itemObjMao;
         public Texture textureImgItem;
         public GameObject objInventario;
+        public ItemDefinitionBase itemDefinitionBase;
     }
 
     public Item setupItemFromItemStruct(ItemStruct itemResponse)
@@ -238,6 +241,7 @@ public class Item : MonoBehaviourPunCallbacks
         nomeItem = itemResponse.nomeItemEnum;
         nomePortugues = itemResponse.nomePortugues;
         nomeIngles = itemResponse.nomeIngles;
+        itemDefinitionBase = itemResponse.itemDefinitionBase;
         isConsumivel = itemResponse.isConsumivel;
         quantidade = 1;
         peso = itemResponse.peso;
@@ -332,6 +336,7 @@ public class Item : MonoBehaviourPunCallbacks
         {
             if (itemObjMao != null)
             {
+                EquiparItemInventory();
                 inventario.itemNaMao = this;
                 itemObjMao.gameObject.SetActive(true);
                 if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
@@ -349,27 +354,27 @@ public class Item : MonoBehaviourPunCallbacks
             inventario.AcoesRenovarCordaEstourada(false);
         }
 
-        bool isPlayerArmado = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null;
-        bool isPlayerArmadoPistola = inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Pistola);
-        inventario.playerController.animator.SetBool("isPlayerArmado", isPlayerArmado);
-        inventario.playerController.animator.SetBool("isPlayerArmadoPistola", isPlayerArmadoPistola);
-
-
-        var allItems = inventario.inventory.GetAllCharacterItems();
-        for (int i = allItems.Count - 1; i >= 0; --i)
-        {
-            var characterItem = allItems[i];
-            var itemIdentifier = characterItem.ItemIdentifier;
-            var slotID = characterItem.SlotID;
-            if (itemIdentifier.GetItemDefinition().Equals(inventario.definitionBase))
-            {
-                allItems[i].Equip(true);
-            }
-        }
-
     }
 
-    [SerializeField] ItemDefinitionBase definitionBase;
+    public void EquiparItemInventory()
+    {
+        Debug.Log("equipando item inventory");
+        
+
+        var allCharItems = inventario.inventory.GetAllCharacterItems();
+        for (int i = allCharItems.Count - 1; i >= 0; --i)
+        {
+            var characterItem = allCharItems[i];
+            var itemIdentifier = characterItem.ItemIdentifier;
+            var slotID = characterItem.SlotID;
+            if (itemIdentifier.GetItemDefinition().Equals(itemDefinitionBase))
+            {
+                Debug.Log("equipou com sucesso");
+                inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifier, -1, true, true);
+                break;
+            }
+        }
+    }
 
     public void DroparItem()
     {
