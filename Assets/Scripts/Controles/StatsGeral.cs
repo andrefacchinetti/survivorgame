@@ -42,7 +42,7 @@ public class StatsGeral : MonoBehaviour
 
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
-        Debug.Log(health.HealthValue+" Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
+        Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
         AcoesTomouDano();
     }
 
