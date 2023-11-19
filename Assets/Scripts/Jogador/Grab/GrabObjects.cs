@@ -10,7 +10,6 @@ using Opsive.Shared.Inventory;
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
-    private int cLayer, prLayer, fLayer, ptLayer;
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimal = "Animal", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
     private string tagKeypagButton = "KeypadButton", tagNote = "Note";
@@ -220,15 +219,16 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             && (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemKnife.name)))
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
-            if (objPai != null && objPai.isDead)
+            if (objPai != null && !objPai.health.IsAlive())
             {
                 interacaoDissecar(objPai);
             }
         }
-        else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name) && hit.transform.GetComponentInParent<AnimalController>() != null)
+        else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null 
+            && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name) && hit.transform.GetComponentInParent<AnimalController>() != null)
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
-            if (objPai != null && !objPai.isDead)
+            if (objPai != null && objPai.health.IsAlive())
             {
                 AnimalController animalController = objPai.gameObject.GetComponent<AnimalController>();
                 if (playerController.animalCapturado == null && animalController.objRopePivot != null)
@@ -274,7 +274,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else if (hit.transform.tag == "Player")
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
-            if (objPai != null && objPai.isDead)
+            if (objPai != null && !objPai.health.IsAlive())
             {
                 interacaoReanimar(objPai);
             }

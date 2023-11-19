@@ -13,7 +13,7 @@ public class CollisorTriggerCausaDano : MonoBehaviour
         if (collisorSofreDano != null)
         {
             GameObject objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>().gameObject;
-            objPai.GetComponent<StatsGeral>().TakeDamage(damage);
+            objPai.GetComponent<StatsGeral>().AcoesTomouDano();
         }
     }
 

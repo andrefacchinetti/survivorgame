@@ -30,7 +30,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Update()
     {
-        if (statsGeral.isDead) return;
+        if (!statsGeral.health.IsAlive()) return;
         movimentacaoAlfa();
         resetAgentDestination();
         verificarProximoComida();
@@ -79,7 +79,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             return;
         }
        
-        if (targetInimigo.isDead) 
+        if (!targetInimigo.health.IsAlive()) 
         {
             targetInimigo = null;
         }
@@ -321,10 +321,10 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (targetInimigo != null || statsGeral.isDead) return;
+        if (targetInimigo != null || !statsGeral.health.IsAlive()) return;
         if (other.gameObject.tag == "Player")
         {
-            if (targetInimigo == null && other.GetComponent<StatsGeral>() != null  && !other.GetComponent<StatsGeral>().isDead)
+            if (targetInimigo == null && other.GetComponent<StatsGeral>() != null  && other.GetComponent<StatsGeral>().health.IsAlive())
             {
                 Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
                 targetInimigo = other.GetComponent<StatsGeral>();
@@ -334,7 +334,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
         {
             StatsGeral objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>();
-            if (objPai.gameObject.GetComponent<AnimalController>() != null && !objPai.isDead)
+            if (objPai.gameObject.GetComponent<AnimalController>() != null && objPai.health.IsAlive())
             {
                 Debug.Log("LOBISOMEM ACHOU ANIMAL");
                 targetComida = null;

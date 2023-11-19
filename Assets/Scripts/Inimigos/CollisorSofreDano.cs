@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using Opsive.UltimateCharacterController.Inventory;
 using Opsive.Shared.Inventory;
+using Opsive.Shared.Events;
+using Opsive.UltimateCharacterController.Items.Actions.Impact;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CollisorSofreDano : MonoBehaviourPunCallbacks
@@ -17,8 +19,14 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        EventHandler.RegisterEvent<ImpactCallbackContext>(gameObject, "OnObjectImpact", OnImpact);
         statsGeral = GetComponentInParent<StatsGeral>();
         PV = GetComponentInParent<PhotonView>();
+    }
+
+    private void OnImpact(ImpactCallbackContext ctx)
+    {
+        Debug.Log("Event received " + name + " impacted by " + ctx.ImpactCollisionData.SourceGameObject + " on collider " + ctx.ImpactCollisionData.ImpactCollider + ".");
     }
 
     public float CalcularDanoPorArmaCausandoDano(ItemObjMao itemNaMao, float damage)

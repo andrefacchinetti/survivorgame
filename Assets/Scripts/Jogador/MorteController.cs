@@ -20,11 +20,11 @@ public class MorteController : MonoBehaviour
 
     void Update()
     {
-        if (statsGeral.isDead && !hudMorte.activeSelf) // Checa se o jogador está morto e inicia o temporizador
+        if (!playerController.characterHealth.IsAlive() && !hudMorte.activeSelf) // Checa se o jogador está morto e inicia o temporizador
         {
             AttHudJogadorMorreu();
         }
-        if (hudMorte.activeSelf && statsGeral.isDead)
+        if (hudMorte.activeSelf && !playerController.characterHealth.IsAlive())
         {
             if (Input.GetButtonDown("Use"))
             {

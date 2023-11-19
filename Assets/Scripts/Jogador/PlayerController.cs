@@ -11,6 +11,8 @@ using System.IO;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Opsive.Shared.Inventory;
 using Opsive.UltimateCharacterController.Inventory;
+using Opsive.UltimateCharacterController.Traits;
+using Opsive.UltimateCharacterController.Character;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -28,6 +30,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public TMP_Text txMsgAlerta;
 
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
+	[SerializeField] [HideInInspector] public UltimateCharacterLocomotion characterLocomotion;
+	[SerializeField] [HideInInspector] public CharacterHealth characterHealth;
+	[SerializeField] [HideInInspector] public CharacterAttributeManager characterAttributeManager;
 	[SerializeField] [HideInInspector] public StatsGeral statsGeral;
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando, corpoReanimando, objCapturado;
@@ -49,6 +54,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (gc != null) gameController = gc.GetComponent<GameController>();
 		statsJogador = GetComponent<StatsJogador>();
 		statsGeral = GetComponent<StatsGeral>();
+		characterHealth = GetComponent<CharacterHealth>();
 		txMsgAlerta.text = "";
 	}
 
@@ -62,11 +68,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (PV == null) return;
 		if (!PV.IsMine)
 			return;
-
-		if (transform.position.y < -40f) // Die if you fall out of the world
-		{
-			statsGeral.TakeDamage(9999);
-		}
 
 		if (!inventario.canvasInventario.activeSelf && canMove)
 		{
@@ -309,7 +310,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	public bool podeSeMexer()
 	{
-		return canMove && !statsGeral.isDead;
+		return canMove && characterHealth.IsAlive();
 	}
 
 	public void AlertarJogadorComMensagem(string texto)

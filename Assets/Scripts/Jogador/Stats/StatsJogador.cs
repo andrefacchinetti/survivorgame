@@ -1,11 +1,14 @@
+using Opsive.UltimateCharacterController.Traits;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Opsive.Shared.Events;
 
 public class StatsJogador : MonoBehaviour
 {
 
-    [SerializeField][HideInInspector] public PlayerController playerController;
+    [SerializeField] [HideInInspector] public PlayerController playerController;
+    [SerializeField] [HideInInspector] public CharacterAttributeManager characterAttributeManager;
     [SerializeField] [HideInInspector] public StatsGeral statsGeral;
     [SerializeField] HudJogador hudJogador;
 
@@ -21,11 +24,12 @@ public class StatsJogador : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         statsGeral = GetComponent<StatsGeral>();
+        characterAttributeManager = GetComponent<CharacterAttributeManager>();
     }
 
     private void Start()
     {
-        setarVidaAtual(statsGeral.vidaMaxima);
+        AtualizarImgVida();
         setarFomeAtual(fomeMaxima);
         setarSedeAtual(sedeMaxima);
         setarEnergiaAtual(energiaMaxima);
@@ -38,17 +42,31 @@ public class StatsJogador : MonoBehaviour
         setarSedeAtual(sedeAtual - valorDiminuiSedePorTempo);
         if(sedeAtual <= 0 || fomeAtual <= 0)
         {
-            statsGeral.TakeDamage(10);
+            TakeDamageHealth(10);
         }
     }
 
 
-    public void setarVidaAtual(float valor)
+    public void TakeDamageHealth(float value)
     {
-        if (valor > statsGeral.vidaMaxima) valor = statsGeral.vidaMaxima;
-        if (valor < 0) valor = 0;
-        statsGeral.vidaAtual = valor;
-        hudJogador.atualizarImgVida(statsGeral.vidaAtual, statsGeral.vidaMaxima);
+        playerController.characterHealth.Damage(value);
+        AtualizarImgVida();
+    }
+
+    public void TakeHealHealth(float value)
+    {
+        playerController.characterHealth.Heal(value);
+        AtualizarImgVida();
+    }
+
+    public void AtualizarImgVida()
+    {
+        hudJogador.atualizarImgVida(playerController.characterHealth.HealthValue, ObterVidaMaximaHealth());
+    }
+
+    public float ObterVidaMaximaHealth()
+    {
+        return playerController.characterAttributeManager.GetAttribute(playerController.characterHealth.HealthAttributeName).MaxValue;
     }
 
     public void setarFomeAtual(float valor)
@@ -75,29 +93,18 @@ public class StatsJogador : MonoBehaviour
         hudJogador.atualizarImgEnergia(energiaAtual, energiaMaxima);
     }
 
-    public void AcoesTomouDano()
-    {
-        playerController.animator.SetTrigger("Hit");
-        Debug.Log("player tomou hit. Vida: " + statsGeral.vidaAtual);
-    }
-
     public void AcoesMorreu()
     {
         //TODO: DROPAR MOCHILA
-        playerController.animator.SetBool("isDead", true);
-        statsGeral.isDead = true;
         playerController.canMove = false;
-        setarVidaAtual(0);
     }
 
     public void AcoesReviveu()
     {
-        playerController.animator.SetBool("isDead", false);
-        statsGeral.isDead = false;
         playerController.canMove = true;
         playerController.corpoDissecando = null;
         playerController.animalCapturado = null;
-        setarVidaAtual(statsGeral.vidaMaxima * 0.20f);
+        TakeHealHealth(playerController.characterAttributeManager.GetAttribute(playerController.characterHealth.HealthAttributeName).MaxValue * 0.20f); //CURA 20% DA VIDA MAXIMA
     }
 
 }

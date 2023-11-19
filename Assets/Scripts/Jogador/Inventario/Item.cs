@@ -220,7 +220,7 @@ public class Item : MonoBehaviourPunCallbacks
         ItemObjMao itemObjMao = inventario.ObterGameObjectItemNaMao();
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + itemObjMao.curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + itemObjMao.curaFome);
-        inventario.statsJogador.setarVidaAtual(inventario.statsJogador.statsGeral.vidaAtual + itemObjMao.curaVida);
+        inventario.statsJogador.TakeHealHealth(itemObjMao.curaVida);
     }
 
     public void diminuirQuantidade(int valorQtd)

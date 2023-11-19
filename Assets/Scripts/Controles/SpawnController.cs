@@ -37,7 +37,7 @@ public class SpawnController : MonoBehaviour
     {
         Debug.Log("Spawnando lobisomens");
         lobosInGame.RemoveAll(lobo => {
-            if (lobo.isDead || lobo.GetComponent<LobisomemController>().estouLongeDeAlgumJogador())
+            if (!lobo.health.IsAlive() || lobo.GetComponent<LobisomemController>().estouLongeDeAlgumJogador())
             {
                 Destroy(lobo.gameObject);
                 return true;
@@ -52,7 +52,7 @@ public class SpawnController : MonoBehaviour
     {
         Debug.Log("Spawnando animais agressivos");
         animaisAgressivosInGame.RemoveAll(animal => {
-            if (animal.isDead)
+            if (!animal.health.IsAlive())
             {
                 Destroy(animal.gameObject);
                 return true;
@@ -68,7 +68,7 @@ public class SpawnController : MonoBehaviour
     {
         Debug.Log("Spawnando animais passivos");
         animaisPassivosInGame.RemoveAll(animal => {
-            if (animal.isDead)
+            if (!animal.health.IsAlive())
             {
                 Destroy(animal.gameObject);
                 return true;

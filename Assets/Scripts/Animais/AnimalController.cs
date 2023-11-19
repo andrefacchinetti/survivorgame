@@ -52,7 +52,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (!statsGeral.isDead)
+        if (statsGeral.health.IsAlive())
         {
             if (animalStats.estaFugindo)
             {
@@ -263,7 +263,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     void OnTriggerStay(Collider other)
     {
-        if (targetInimigo != null || statsGeral.isDead || animalStats.estaFugindo) return;
+        if (targetInimigo != null || !statsGeral.health.IsAlive() || animalStats.estaFugindo) return;
         if (other.gameObject.tag == "ItemDrop" && other.gameObject.GetComponent<Consumivel>() != null)
         {
             FindFood(other.gameObject);
@@ -279,7 +279,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
         if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID)
         {
             StatsGeral objPai = collisorSofreDano.statsGeral;
-            if ((objPai.gameObject.GetComponent<AnimalController>() != null || objPai.gameObject.GetComponent<LobisomemController>() != null) && !objPai.isDead)
+            if ((objPai.gameObject.GetComponent<AnimalController>() != null || objPai.gameObject.GetComponent<LobisomemController>() != null) && statsGeral.health.IsAlive())
             {
                 if(objPai.gameObject.GetComponent<AnimalController>() != null)
                 {
@@ -330,7 +330,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (targetInimigo.isDead)
+        if (!targetInimigo.health.IsAlive())
         {
             targetInimigo = null;
         }

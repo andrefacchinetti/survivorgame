@@ -38,7 +38,7 @@ public class CheckGroundedContact : MonoBehaviourPunCallbacks
                 int damage = Mathf.RoundToInt((fallenHeight - heightBeforeFall) * fallDamageMultiplier);
 
                 // Aplica dano ao jogador
-                characterController.GetComponent<StatsGeral>().TakeDamage(damage);
+                characterController.GetComponent<StatsGeral>().AcoesTomouDano();
             }
         }
     }

@@ -69,7 +69,7 @@ public class Inventario : MonoBehaviour
         {
             ToggleInventario();
         }
-        if (Input.GetKeyDown(KeyCode.Escape) || playerController.statsGeral.isDead)
+        if (Input.GetKeyDown(KeyCode.Escape) || !playerController.characterHealth.IsAlive())
         {
             FecharInventario();
         }

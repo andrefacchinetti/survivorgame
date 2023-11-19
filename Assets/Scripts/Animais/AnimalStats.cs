@@ -35,13 +35,11 @@ public class AnimalStats : MonoBehaviourPunCallbacks
     {
         animalController.animator.SetTrigger("isHit");
         animalController.AcoesTomouDano();
-        Debug.Log("vida animal: " + statsGeral.vidaAtual);
     }
 
     public void AcoesMorreu()
     {
-        Debug.Log("animal morreu");
-        statsGeral.isDead = true;
+        Debug.Log("animal morreu");        
         animalController.agent.speed = 0;
         animalController.agent.isStopped = true;
     }

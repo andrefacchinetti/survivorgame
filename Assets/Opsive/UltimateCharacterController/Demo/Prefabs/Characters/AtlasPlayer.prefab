@@ -1780,7 +1780,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8954487944268855782}
-  sceneViewId: 8
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &8954487944268855782
@@ -2066,7 +2066,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 17
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &4840381181586769962
@@ -2476,7 +2476,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 915188364473788697}
-  sceneViewId: 20
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &915188364473788697
@@ -5664,7 +5664,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 16
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &3687545092646618943
@@ -7247,7 +7247,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1880120249554076190}
-  sceneViewId: 6
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &1880120249554076190
@@ -12779,7 +12779,7 @@ Transform:
   m_GameObject: {fileID: 846522164062439504}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0.43, z: 0.398}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14866,7 +14866,7 @@ Transform:
   m_GameObject: {fileID: 1138372460463781578}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1011.8428, y: -1.33, z: -371.84125}
+  m_LocalPosition: {x: 0, y: 1.839, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14957,11 +14957,12 @@ MonoBehaviour:
   m_AnchorOffset: {x: 0, y: 1.8, z: 0}
   m_ViewTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Camera.ViewTypes.Combat
   m_FirstPersonViewTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Camera.ViewTypes.Combat
-  m_ThirdPersonViewTypeFullName: Opsive.UltimateCharacterController.Camera.ViewTypes.Transition
+  m_ThirdPersonViewTypeFullName: Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTypes.Combat
   m_ViewTypes:
   - rid: 368926159479505030
   - rid: 368926159479505032
-  m_CanChangePerspectives: 1
+  - rid: 368926176517292603
+  m_CanChangePerspectives: 0
   m_CanZoom: 1
   m_ZoomState: Zoom
   m_StateAppendItemIdentifierName: 0
@@ -15083,6 +15084,70 @@ MonoBehaviour:
         m_CollisionRadius: 0.05
         m_RotateWithHead: 0
         m_VerticalOffsetLerpSpeed: 0.2
+    - rid: 368926176517292603
+      type: {class: Combat, ns: Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTypes, asm: Opsive.UltimateCharacterController}
+      data:
+        m_States:
+        - m_Name: Default
+          m_Preset: {fileID: 0}
+          m_BlockList: []
+          m_Default: 1
+        m_FieldOfView: 70
+        m_FieldOfViewDamping: 0.2
+        m_LookDirectionDistance: 100
+        m_ForwardAxis: {x: 0, y: 0, z: 1}
+        m_LookOffset: {x: 0.5, y: 0, z: -2.5}
+        m_LookOffsetSmoothing: 0.05
+        m_CollisionRadius: 0.05
+        m_CollisionAnchorOffset: {x: 0, y: 0, z: 0}
+        m_RotationSpeed: 0.6
+        m_SecondaryRotationSpeed: 0.8
+        m_HorizontalPivotFreedom: 0
+        m_ObstructionPositionSmoothing: 0.04
+        m_PositionSpring:
+          m_Stiffness: 0.2
+          m_Damping: 0.25
+          m_VelocityFadeInLength: 1
+          m_MaxSoftForceFrames: 120
+          m_MinVelocity: 0.00001
+          m_MaxVelocity: 10000
+          m_MinValue: {x: -10000, y: -10000, z: -10000}
+          m_MaxValue: {x: 10000, y: 10000, z: 10000}
+        m_RotationSpring:
+          m_Stiffness: 0.2
+          m_Damping: 0.25
+          m_VelocityFadeInLength: 1
+          m_MaxSoftForceFrames: 120
+          m_MinVelocity: 0.00001
+          m_MaxVelocity: 10000
+          m_MinValue: {x: -10000, y: -10000, z: -10000}
+          m_MaxValue: {x: 10000, y: 10000, z: 10000}
+        m_SecondaryPositionSpring:
+          m_Stiffness: 0.2
+          m_Damping: 0.25
+          m_VelocityFadeInLength: 1
+          m_MaxSoftForceFrames: 120
+          m_MinVelocity: 0.00001
+          m_MaxVelocity: 10000
+          m_MinValue: {x: -10000, y: -10000, z: -10000}
+          m_MaxValue: {x: 10000, y: 10000, z: 10000}
+        m_SecondaryRotationSpring:
+          m_Stiffness: 0.2
+          m_Damping: 0.25
+          m_VelocityFadeInLength: 1
+          m_MaxSoftForceFrames: 120
+          m_MinVelocity: 0.00001
+          m_MaxVelocity: 10000
+          m_MinValue: {x: -10000, y: -10000, z: -10000}
+          m_MaxValue: {x: 10000, y: 10000, z: 10000}
+        m_StepZoomInputName: Mouse ScrollWheel
+        m_StepZoomSensitivity: 0
+        m_StepZoomLimit:
+          m_MinValue: 0
+          m_MaxValue: 1
+        m_PitchLimit:
+          m_MinValue: -72
+          m_MaxValue: 72
 --- !u!114 &7759980840225069188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24770,7 +24835,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 576900144626641576}
-  sceneViewId: 12
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &576900144626641576
@@ -32738,8 +32803,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2151485853805832937}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09768672, y: -0.1327, z: -0.03838125, w: 0.98558354}
-  m_LocalPosition: {x: 2.7676072, y: -2.4300838, z: 3.4911678}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32747,7 +32812,7 @@ Transform:
   - {fileID: 3073094800483989332}
   - {fileID: 4541674252147609333}
   m_Father: {fileID: 1449078749294036458}
-  m_LocalEulerAnglesHint: {x: 71.761, y: -120.873, z: -125.13}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2159040291588346299
 GameObject:
   m_ObjectHideFlags: 0
@@ -33203,7 +33268,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 13
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &1184770811105243261
@@ -39909,7 +39974,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4439285284754789626}
-  sceneViewId: 29
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &4439285284754789626
@@ -40909,14 +40974,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2550364506940328832}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.05212784, y: 0.9944107, z: -0.09109616, w: 0.011477068}
-  m_LocalPosition: {x: 0.8727834, y: 1.8622638, z: 1.8257654}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 5.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8910934699679773214}
   m_Father: {fileID: 5554101710995208868}
-  m_LocalEulerAnglesHint: {x: 0, y: 163.341, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!20 &4379256385755602728
 Camera:
   m_ObjectHideFlags: 0
@@ -43251,7 +43316,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7347800183098409361}
-  sceneViewId: 21
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &7347800183098409361
@@ -49187,13 +49252,11 @@ MonoBehaviour:
     m_BlockList: []
     m_Default: 1
   m_Invincible: 0
-  m_TimeInvincibleAfterSpawn: 0
+  m_TimeInvincibleAfterSpawn: 1
   m_HealthAttributeName: Health
   m_ShieldAttributeName: 
   m_Hitboxes:
   - m_Collider: {fileID: 2227289671457255736}
-    m_DamageMultiplier: 1
-  - m_Collider: {fileID: 0}
     m_DamageMultiplier: 1
   m_MaxHitboxCollisionCount: 10
   m_SpawnedObjectsOnDeath: []
@@ -49222,7 +49285,7 @@ MonoBehaviour:
   m_OnDeathEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ApplyFallDamage: 0
+  m_ApplyFallDamage: 1
   m_MinFallDamageHeight: 3
   m_MinFallDamage: 1
   m_MaxFallDamage: 50
@@ -49349,6 +49412,7 @@ MonoBehaviour:
   kitModoConstrucao: {fileID: 486021830943348111}
   txMsgAlerta: {fileID: 8877347410587701538}
   statsJogador: {fileID: 0}
+  characterHealth: {fileID: 0}
   statsGeral: {fileID: 0}
   itemsDropsPosDissecar: []
   corpoDissecando: {fileID: 0}
@@ -49386,7 +49450,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 59
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &2477271173865655306
@@ -49402,6 +49466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
+  characterAttributeManager: {fileID: 0}
   statsGeral: {fileID: 0}
   hudJogador: {fileID: 3748803356913914604}
   fomeMaxima: 100
@@ -49552,7 +49617,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 14
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &473667038756670494
@@ -49764,7 +49829,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8189105240873948885}
-  sceneViewId: 58
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &8189105240873948885
@@ -75846,7 +75911,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8492773520873434120}
-  sceneViewId: 22
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &8492773520873434120
@@ -76942,7 +77007,7 @@ Transform:
   m_GameObject: {fileID: 5340893333319773805}
   serializedVersion: 2
   m_LocalRotation: {x: -0.41846123, y: 0.41083628, z: -0.5234328, w: 0.6181601}
-  m_LocalPosition: {x: 0.065741, y: 1.0368083, z: -0.6160115}
+  m_LocalPosition: {x: 0.164, y: 0.098, z: 0.063}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -87510,7 +87575,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8918138629669936839}
-  sceneViewId: 23
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &8918138629669936839
@@ -88192,7 +88257,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 18
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &6442156647156674531
@@ -106579,7 +106644,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 19
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &3780675504710000654
@@ -115329,7 +115394,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 15
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &7300539461360307954

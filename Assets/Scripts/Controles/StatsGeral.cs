@@ -3,76 +3,83 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Opsive.Shared.Inventory;
+using Opsive.Shared.Events;
+using Opsive.UltimateCharacterController.Traits;
 
 public class StatsGeral : MonoBehaviour
 {
-    [SerializeField] public float vidaMaxima = 100, damage = 20;
-    [SerializeField] public float vidaAtual = 100f; // pontos de vida
 
-    [SerializeField] public bool isDead = false;
+    [SerializeField] public float damage;
     [SerializeField] public GameObject objPaiParaDestruir;
-
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
     [SerializeField] public GameObject dropPosition;
     [HideInInspector] public bool isAttacking;
 
+    [HideInInspector] public Health health;
+    [HideInInspector] public AttributeManager attributeManager;
     [HideInInspector] public StatsJogador jogadorStats;
     LobisomemStats lobisomemStats;
     AnimalStats animalStats;
     DropaRecursosStats dropaRecursosStats;
     ReconstruivelStats reconstruivelStats;
-
     [SerializeField] public ItemDefinitionBase itemRepairHammer, itemDemolitionHammer;
 
     PhotonView PV;
 
     private void Awake()
     {
+        EventHandler.RegisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
         PV = GetComponent<PhotonView>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         animalStats = GetComponentInParent<AnimalStats>();
         dropaRecursosStats = GetComponentInParent<DropaRecursosStats>();
         jogadorStats = GetComponentInParent<StatsJogador>();
         reconstruivelStats = GetComponentInParent<ReconstruivelStats>();
+        health = GetComponentInParent<Health>();
+        attributeManager = GetComponentInParent<AttributeManager>();
         if (dropPosition == null) dropPosition = this.gameObject;
     }
 
-    private void Start()
+    private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
-        vidaAtual = vidaMaxima;
+        Debug.Log(health.HealthValue+" Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
+        AcoesTomouDano();
     }
 
-    public void TakeCura(float damage)
+    public void OnDestroy()
     {
-        if (jogadorStats != null) jogadorStats.setarVidaAtual(vidaAtual + damage);
-        else
-        {
-            vidaAtual += damage;
-            if (vidaAtual > vidaMaxima) vidaAtual = vidaMaxima;
-        }
-        Debug.Log("alvo curado: " + vidaAtual);
+        EventHandler.UnregisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
     }
 
-    public void TakeDamage(float damage)
+    public float ObterVidaMaximaHealth()
     {
-        Debug.Log("Tomando dano");
-        if (jogadorStats != null) jogadorStats.setarVidaAtual(vidaAtual - damage);
-        else
+        if (jogadorStats != null) return jogadorStats.ObterVidaMaximaHealth();
+        else return attributeManager.GetAttribute(health.HealthAttributeName).MaxValue;
+    }
+
+    public void TakeCura(float curaValue)
+    {
+        if (jogadorStats != null) //jogador
         {
-            vidaAtual -= damage;
-            if (vidaAtual < 0) vidaAtual = 0;
+            jogadorStats.TakeHealHealth(curaValue);
         }
+        else //outros
+        {
+            GetComponent<Health>().Heal(curaValue);
+        }
+    }
+
+    public void AcoesTomouDano()
+    {
         
-
-        if (vidaAtual > 0)
+        if (GetComponent<Health>().HealthValue > 0) //SOBREVIVEU
         {
             if (animalStats != null) animalStats.AcoesTomouDano();
             else if (lobisomemStats != null) lobisomemStats.AcoesTomouDano();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesTomouDano();
-            else if (jogadorStats != null) jogadorStats.AcoesTomouDano();
             else if (reconstruivelStats != null) reconstruivelStats.AcoesTomouDano();
         }
-        else
+        else //MORREU
         {
             if (animalStats != null) animalStats.AcoesMorreu();
             else if (lobisomemStats != null) lobisomemStats.AcoesMorreu();
@@ -142,5 +149,7 @@ public class StatsGeral : MonoBehaviour
             return transform;
         }
     }
+
+
 
 }

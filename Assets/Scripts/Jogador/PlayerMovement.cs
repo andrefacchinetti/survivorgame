@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	void Update()
 	{
 		if (PV == null) return;
-		if (!PV.IsMine || playerController.statsGeral.isDead) return;
+		if (!PV.IsMine || !playerController.characterHealth.IsAlive()) return;
 
 		characterController.Move(moveDirection * Time.deltaTime);
 		Move();
@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 			isPulando = false;
 		}
 
-		if (playerController.statsGeral.isDead) canMove = false;
+		if (!playerController.characterHealth.IsAlive()) canMove = false;
 	}
 
 	void OnMouseEnter()

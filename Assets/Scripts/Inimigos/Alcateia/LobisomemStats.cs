@@ -33,12 +33,11 @@ public class LobisomemStats : MonoBehaviour
 
     public void AcoesMorreu()
     {
-        if (lobisomemController.statsGeral.isDead) return;
+        if (!lobisomemController.statsGeral.health.IsAlive()) return;
         lobisomemController.lobisomemMovimentacao.animator.SetBool("isDead", true);
         lobisomemController.lobisomemMovimentacao.agent.isStopped = true;
         lobisomemController.lobisomemMovimentacao.agent.speed = 0;
         colliderCorpo.isTrigger = true;
-        statsGeral.isDead = true;
         Debug.Log("Lobisomen morreu");
     }
 

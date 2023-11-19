@@ -145,7 +145,7 @@ namespace Opsive.UltimateCharacterController.Traits
         protected override void Awake()
         {
             base.Awake();
-
+            
             m_GameObject = gameObject;
             m_Transform = transform;
             m_ForceObject = m_GameObject.GetCachedComponent<IForceObject>();
@@ -423,8 +423,11 @@ namespace Opsive.UltimateCharacterController.Traits
                 // Play any take damage audio if the object did not die. If the object died then the death audio will play.
                 m_TakeDamageAudioClipSet.PlayAudioClip(m_GameObject);
             }
+            Debug.Log("health tomou dano");
         }
-        
+
+      
+
         /// <summary>
         /// Is the object currently alive?
         /// </summary>
@@ -616,5 +619,7 @@ namespace Opsive.UltimateCharacterController.Traits
         {
             EventHandler.UnregisterEvent(m_GameObject, "OnRespawn", OnRespawn);
         }
+
     }
+
 }

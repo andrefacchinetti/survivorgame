@@ -27,7 +27,7 @@ public class ReconstruivelStats : MonoBehaviour
 
     public void ConsertarReconstruivel()
     {
-        reconstruivelInteiro.GetComponent<StatsGeral>().vidaAtual = reconstruivelInteiro.GetComponent<StatsGeral>().vidaMaxima;
+        reconstruivelInteiro.GetComponent<StatsGeral>().health.Heal(reconstruivelInteiro.GetComponent<StatsGeral>().ObterVidaMaximaHealth());
         reconstruivelInteiro.SetActive(true);
         reconstruivelQuebrado.SetActive(false);
     }
