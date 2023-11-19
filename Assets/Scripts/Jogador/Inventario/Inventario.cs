@@ -33,7 +33,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
-    [SerializeField] public ItemDefinitionBase itemPeixeCru, itemBottle, itemPanela, itemTigela, itemRepairHammer, itemFaca, itemRope, itemFishingRod, itemFlashlight, itemKnife;
+    [SerializeField] public ItemDefinitionBase itemBody, itemPeixeCru, itemBottle, itemPanela, itemTigela, itemRepairHammer, itemRope, itemFishingRod, itemFlashlight, itemKnife;
 
     private void Awake()
     {

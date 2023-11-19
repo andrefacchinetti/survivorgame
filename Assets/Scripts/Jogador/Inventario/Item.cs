@@ -182,10 +182,13 @@ public class Item : MonoBehaviourPunCallbacks
         inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
     }
 
+    
     private void UnequipItemInventory()
     {
         Debug.Log("unequipou com sucesso");
         inventario.inventory.GetComponent<ItemSetManagerBase>().UnEquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
+        IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;
+        inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdBody, groupIndex, true, true);
     }
 
     public void DroparItem()
