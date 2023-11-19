@@ -44481,18 +44481,11 @@ MonoBehaviour:
   m_ThirdPersonStateName: ThirdPerson
   m_MovingStateName: Moving
   m_AirborneStateName: Airborne
-  m_MovementTypeFullName: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes.Adventure
+  m_MovementTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Character.MovementTypes.Combat
   m_FirstPersonMovementTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Character.MovementTypes.Combat
-  m_ThirdPersonMovementTypeFullName: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes.Adventure
+  m_ThirdPersonMovementTypeFullName: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes.Combat
   m_MovementTypes:
-  - rid: 1246164547599597586
-  - rid: 1246164865691156480
-  - rid: 1246164865691156482
-  - rid: 1246164865691156483
-  - rid: 1246164865691156484
-  - rid: 1246164865691156481
   - rid: 1246164547599597587
-  - rid: 1246164865691156485
   m_Abilities:
   - rid: 3024401404359081994
   - rid: 3024401404359081985
@@ -44745,7 +44738,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 1
+        m_Enabled: 0
         m_StartType: 0
         m_StopType: 0
         m_InputNames: []
@@ -44980,14 +44973,6 @@ MonoBehaviour:
         m_MaxSpeedChangeValue: 2
         m_SpeedParameterValue: 2
         m_RequireMovement: 1
-    - rid: 1246164547599597586
-      type: {class: Adventure, ns: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
     - rid: 1246164547599597587
       type: {class: Combat, ns: Opsive.UltimateCharacterController.FirstPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
       data:
@@ -45221,76 +45206,6 @@ MonoBehaviour:
         m_AbilityMessageText: 
         m_AbilityMessageIcon: {fileID: 0}
         m_InspectorDescription: 
-    - rid: 1246164865691156480
-      type: {class: Combat, ns: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-    - rid: 1246164865691156481
-      type: {class: PointClick, ns: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_ClickButtonName: Fire1
-        m_MinPointClickDistance: 1
-        m_MoveSpeed:
-          m_MinValue: 1
-          m_MaxValue: 2
-        m_RunMaxSquaredDistance: 140
-    - rid: 1246164865691156482
-      type: {class: RPG, ns: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_RotateInputName: Fire3
-        m_TurnInputName: Horizontal
-        m_TurnMultiplier: 1.5
-        m_AutoMoveInputName: Action
-    - rid: 1246164865691156483
-      type: {class: TopDown, ns: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_RelativeCameraMovement: 1
-        m_LookInMoveDirection: 0
-        m_Head: {fileID: 0}
-    - rid: 1246164865691156484
-      type: {class: Pseudo3D, ns: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_AllowDepthMovement: 0
-        m_LookInMoveDirection: 0
-        m_LookRotateBuffer: 0.2
-        m_Path: {fileID: 0}
-    - rid: 1246164865691156485
-      type: {class: FreeLook, ns: Opsive.UltimateCharacterController.FirstPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: FirstPersonFreeLook
-          m_Preset: {fileID: 11400000, guid: 3a1e6db72e50edb4da48e88b52243f0b, type: 2}
-          m_BlockList: []
-          m_Default: 0
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_RotateWithCameraOnAim: 0
     - rid: 1246164927924404226
       type: {class: AlignToGround, ns: Opsive.UltimateCharacterController.Character.Abilities, asm: Opsive.UltimateCharacterController}
       data:
@@ -47560,7 +47475,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 1
+        m_Enabled: 0
         m_StartType: 2
         m_StopType: 1
         m_InputNames:
@@ -47622,7 +47537,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 1
+        m_Enabled: 0
         m_StartType: 2
         m_StopType: 1
         m_InputNames:
@@ -47684,7 +47599,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 1
+        m_Enabled: 0
         m_StartType: 7
         m_StopType: 1
         m_InputNames:
@@ -57569,10 +57484,9 @@ MonoBehaviour:
   m_AnchorOffset: {x: 0, y: 1.8, z: 0}
   m_ViewTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Camera.ViewTypes.Combat
   m_FirstPersonViewTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Camera.ViewTypes.Combat
-  m_ThirdPersonViewTypeFullName: Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTypes.Adventure
+  m_ThirdPersonViewTypeFullName: Opsive.UltimateCharacterController.Camera.ViewTypes.Transition
   m_ViewTypes:
   - rid: 368926159479505030
-  - rid: 368926159479505031
   - rid: 368926159479505032
   m_CanChangePerspectives: 1
   m_CanZoom: 1
@@ -57605,79 +57519,6 @@ MonoBehaviour:
         m_ThirdToFirstTransitionDuration: 0.1
         m_EndFirstPersonCameraOffset: {x: 0, y: 0, z: -0.4}
         m_ThirdToThirdTransitionDuration: 0.1
-    - rid: 368926159479505031
-      type: {class: Adventure, ns: Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTypes, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Zoom
-          m_Preset: {fileID: 11400000, guid: da67cc4518129ec40bc4e49daeff5c3a, type: 2}
-          m_BlockList: []
-          m_Default: 0
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_FieldOfView: 70
-        m_FieldOfViewDamping: 0.2
-        m_LookDirectionDistance: 100
-        m_ForwardAxis: {x: 0, y: 0, z: 1}
-        m_LookOffset: {x: 0.5, y: 0, z: -2.5}
-        m_LookOffsetSmoothing: 0.05
-        m_CollisionRadius: 0.05
-        m_CollisionAnchorOffset: {x: 0, y: 0, z: 0}
-        m_RotationSpeed: 0.6
-        m_SecondaryRotationSpeed: 0.8
-        m_HorizontalPivotFreedom: 0
-        m_ObstructionPositionSmoothing: 0.04
-        m_PositionSpring:
-          m_Stiffness: 0.2
-          m_Damping: 0.25
-          m_VelocityFadeInLength: 1
-          m_MaxSoftForceFrames: 120
-          m_MinVelocity: 0.00001
-          m_MaxVelocity: 10000
-          m_MinValue: {x: -10000, y: -10000, z: -10000}
-          m_MaxValue: {x: 10000, y: 10000, z: 10000}
-        m_RotationSpring:
-          m_Stiffness: 0.2
-          m_Damping: 0.25
-          m_VelocityFadeInLength: 1
-          m_MaxSoftForceFrames: 120
-          m_MinVelocity: 0.00001
-          m_MaxVelocity: 10000
-          m_MinValue: {x: -10000, y: -10000, z: -10000}
-          m_MaxValue: {x: 10000, y: 10000, z: 10000}
-        m_SecondaryPositionSpring:
-          m_Stiffness: 0.2
-          m_Damping: 0.25
-          m_VelocityFadeInLength: 1
-          m_MaxSoftForceFrames: 120
-          m_MinVelocity: 0.00001
-          m_MaxVelocity: 10000
-          m_MinValue: {x: -10000, y: -10000, z: -10000}
-          m_MaxValue: {x: 10000, y: 10000, z: 10000}
-        m_SecondaryRotationSpring:
-          m_Stiffness: 0.2
-          m_Damping: 0.25
-          m_VelocityFadeInLength: 1
-          m_MaxSoftForceFrames: 120
-          m_MinVelocity: 0.00001
-          m_MaxVelocity: 10000
-          m_MinValue: {x: -10000, y: -10000, z: -10000}
-          m_MaxValue: {x: 10000, y: 10000, z: 10000}
-        m_StepZoomInputName: Mouse ScrollWheel
-        m_StepZoomSensitivity: 0
-        m_StepZoomLimit:
-          m_MinValue: 0
-          m_MaxValue: 1
-        m_PitchLimit:
-          m_MinValue: -72
-          m_MaxValue: 72
-        m_YawLimit:
-          m_MinValue: -180
-          m_MaxValue: 180
-        m_YawLimitLerpSpeed: 0.7
-        m_RotateWithCharacter: 0
     - rid: 368926159479505032
       type: {class: Combat, ns: Opsive.UltimateCharacterController.FirstPersonController.Camera.ViewTypes, asm: Opsive.UltimateCharacterController}
       data:
