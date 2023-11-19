@@ -1,3 +1,4 @@
+using Opsive.UltimateCharacterController.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class AreaDeColeta : MonoBehaviour
     [SerializeField] GameObject objColetavel;
     [SerializeField] public bool isAreaAtiva = true;
     [SerializeField] float tempoPraReativarArea = 60 * 2;
-    [SerializeField] public Item.NomeItem itemColetavel;
+    [SerializeField] public Item itemColetavel;
 
     private void Start()
     {

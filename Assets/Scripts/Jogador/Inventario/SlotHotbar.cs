@@ -62,7 +62,6 @@ public class SlotHotbar : MonoBehaviour
                 Debug.LogWarning("resetando pq achou igual");
             }
         }
-        Debug.LogWarning("item do slot: " + txNomeItem.text + ". item chegando no slot: " + itemResponse.nomeItem);
         item = itemResponse;
         txNomeItem.text = item.obterNomeItemTraduzido();
         txQuantidade.text = item.quantidade + "";
@@ -86,7 +85,6 @@ public class SlotHotbar : MonoBehaviour
                 slot.ResetSlotHotbar();
             }
         }
-        Debug.LogWarning("item do slot: " + txNomeItem.text + ". item chegando no slot: " + itemResponse.nomeItem);
         qtdItemNoSlot = countItens;
         item = itemResponse;
         txNomeItem.text = item.obterNomeItemTraduzido();
@@ -165,7 +163,7 @@ public class SlotHotbar : MonoBehaviour
         }
         else
         {
-            Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaResultado.nomeItemResultado);
+            Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaResultado.itemResultado);
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemStruct.nomePortugues : itemStruct.nomeIngles;
             txQuantidade.text = "";
             txTeclaAtalho.text = "";

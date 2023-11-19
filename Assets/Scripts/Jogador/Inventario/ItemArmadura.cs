@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-
+using Opsive.UltimateCharacterController.Inventory;
 
 public class ItemArmadura : MonoBehaviour
 {
 
-    [SerializeField] public List<Item.NomeItem> itensPermitidosNoSlot;
+    [SerializeField] public ItemIdentifierAmount[] itemsIdentifierAmountPermitidosNoSlot;
     [SerializeField][HideInInspector] public Item item;
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
@@ -66,9 +66,9 @@ public class ItemArmadura : MonoBehaviour
         bordaSelecionado.SetActive(false);
         armaduras.slotItemArmaduraSelecionada = null;
         armaduras.estaSelecionandoSlotArmadura = false;
-        foreach (Item.NomeItem nomeItem in itensPermitidosNoSlot)
+        foreach (ItemIdentifierAmount identifierAmount in itemsIdentifierAmountPermitidosNoSlot)
         {
-            if (nomeItem.Equals(itemResponse.nomeItem))
+            if (identifierAmount.ItemDefinition.name.Equals(itemResponse.itemIdentifierAmount.ItemDefinition.name))
             {
                 SetupItemNoSlot(itemResponse);
                 return true;
@@ -97,11 +97,12 @@ public class ItemArmadura : MonoBehaviour
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
             txQuantidade.text = itemResponse.quantidade + "";
             imagemItem.texture = itemResponse.imagemItem.texture;
-            if (itemResponse.nomeItem.Equals(Item.NomeItem.Lanterna))
+            if (itemResponse.itemIdentifierAmount.ItemDefinition.name.Equals(armaduras.inventario.itemFlashlight.name))
             {
                 objEquipLanterna.SetActive(true);
                 armaduras.slotLanterna = this;
-                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Lanterna) && !armaduras.inventario.VerificarQtdItem(Item.NomeItem.Lanterna, 2, false))
+                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(armaduras.inventario.itemFlashlight.name) 
+                    && !armaduras.inventario.VerificarQtdItem(armaduras.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, 2, false))
                 {
                     armaduras.inventario.itemNaMao.DeselecionarItem();
                 }

@@ -35,7 +35,7 @@ public class ConsumivelCozinha : MonoBehaviour
         gameObject.SetActive(false);
         // Ativa o novo objeto
         newState.gameObject.SetActive(true);
-        slotConsumivelPanela.nomeItemNoSlot = newState.nomeItem;
+        slotConsumivelPanela.itemDefinitionNoSlot = newState.item;
     }
 
 }

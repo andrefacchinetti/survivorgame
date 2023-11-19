@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Opsive.UltimateCharacterController.Inventory;
+using Opsive.Shared.Inventory;
 
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
@@ -148,12 +150,12 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
         if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela)
         {
-            if (hit.transform.tag == tagObjGrab && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Corda))
+            if (hit.transform.tag == tagObjGrab && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Rope"))
             {
                 interacaoCapturarObjeto(hit);
             }
-            else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Panela) || hit.transform.GetComponent<ItemDrop>().nomeItem.Equals(Item.NomeItem.Tigela))
-                && inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<ConsumivelCozinha>() != null && hit.transform.GetComponent<Panela>().fogueira != null)
+            else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().item.name.Equals(inventario.itemPanela.name) || hit.transform.GetComponent<ItemDrop>().item.name.Equals(inventario.itemTigela.name))
+                && inventario.itemNaMao != null && inventario.ObterGameObjectItemNaMao() != null && inventario.ObterGameObjectItemNaMao().GetComponent<ConsumivelCozinha>() != null && hit.transform.GetComponent<Panela>().fogueira != null)
             {
                 interacaoPanelas(hit);
             }
@@ -175,11 +177,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         destruirObjetoDaCena = false;
                         return;
                     }
-                    if (hit.transform.tag == tagItemDrop && (itemDrop.nomeItem.Equals(Item.NomeItem.Panela) || itemDrop.nomeItem.Equals(Item.NomeItem.Tigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
+                    if (hit.transform.tag == tagItemDrop && (itemDrop.item.name.Equals(inventario.itemPanela.name) || itemDrop.item.name.Equals(inventario.itemTigela.name)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
                     {
                         Panela panela = itemDrop.gameObject.GetComponent<Panela>();
-                        Item.NomeItem itemNaPanela = panela.ObterConsumivelDaPanela();
-                        if (!itemNaPanela.Equals(Item.NomeItem.Nenhum))
+                        ItemDefinitionBase itemNaPanela = panela.ObterConsumivelDaPanela();
+                        if (!itemNaPanela.Equals(null))
                         {
                             if (inventario.AdicionarItemAoInventario(null, itemNaPanela, 1))
                             {
@@ -198,7 +200,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         destruirObjetoDaCena = false;
                     }
                     
-                    if (inventario.AdicionarItemAoInventario(itemDrop, itemDrop.nomeItem, 1)) //adicionou ao inventario do jogador
+                    if (inventario.AdicionarItemAoInventario(itemDrop, itemDrop.item, 1)) //adicionou ao inventario do jogador
                     {
                         if (destruirObjetoDaCena)
                         {
@@ -215,7 +217,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
         }
         else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null
-            && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Faca)))
+            && (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemFaca.name)))
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
             if (objPai != null && objPai.isDead)
@@ -223,7 +225,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 interacaoDissecar(objPai);
             }
         }
-        else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Corda) && hit.transform.GetComponentInParent<AnimalController>() != null)
+        else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name) && hit.transform.GetComponentInParent<AnimalController>() != null)
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
             if (objPai != null && !objPai.isDead)
@@ -245,11 +247,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoBeberAgua(hit);
         }
-        else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Garrafa))
+        else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemBottle.name))
         {
             interacaoEncherGarrafa(hit);
         }
-        else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.VaraDePesca))
+        else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemFishingRod.name))
         {
             interacaoPesca(hit);
         }
@@ -265,7 +267,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoIncendiaveis(hit);
         }
-        else if (hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.MarteloReparador))
+        else if (hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRepairHammer.name))
         {
             interacaoReconstruivelQuebrado(hit);
         }
@@ -300,7 +302,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (inventario.itemNaMao != null)
         {
-            if (inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Panela) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Tigela)))
+            if (inventario.itemNaMao != null && (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemPanela.name) || inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemTigela.name)))
             {
                 if (Input.GetButtonDown("Use"))
                 {
@@ -373,7 +375,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir Pescar
         {
             transferOwnerPV(hit.transform.gameObject);
-            playerController.nomeItemColetando = hit.transform.gameObject.GetComponent<AreaDeColeta>().itemColetavel;
+            playerController.itemColetando = hit.transform.gameObject.GetComponent<AreaDeColeta>().itemColetavel;
             animator.SetTrigger("coletandoBaixo");
         }
         possibleInteraction = true;
@@ -484,7 +486,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private void pegarConsumivelNaPanela(RaycastHit hit)
     {
-        Item.NomeItem itemNaPanela = hit.transform.gameObject.GetComponent<ConsumivelCozinha>().slotConsumivelPanela.nomeItemNoSlot;
+        ItemDefinitionBase itemNaPanela = hit.transform.gameObject.GetComponent<ConsumivelCozinha>().slotConsumivelPanela.itemDefinitionNoSlot;
         if (inventario.AdicionarItemAoInventario(null, itemNaPanela, 1))
         {
             hit.transform.gameObject.GetComponent<ConsumivelCozinha>().panela.RetirarConsumivelDoSlot(hit.transform.gameObject.GetComponent<ConsumivelCozinha>().slotConsumivelPanela);

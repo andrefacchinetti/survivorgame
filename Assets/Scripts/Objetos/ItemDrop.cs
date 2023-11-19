@@ -5,19 +5,13 @@ using System;
 using Photon.Pun;
 using System.IO;
 using Opsive.Shared.Inventory;
+using Opsive.UltimateCharacterController.Inventory;
 
 public class ItemDrop : MonoBehaviourPunCallbacks
 {
 
-    [SerializeField] public Item.NomeItem nomeItem;
-    [SerializeField][HideInInspector] public string nomeId;
-    [SerializeField] public float damageQuandoColide;
+    [SerializeField] public ItemDefinitionBase item;
     public bool estaSendoComido = false;
-
-    private void Awake()
-    {
-        nomeId = Item.ObterNomeIdPorTipoItem(nomeItem);
-    }
 
     public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, int viewID)
     {

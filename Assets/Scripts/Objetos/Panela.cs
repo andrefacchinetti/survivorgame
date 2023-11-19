@@ -1,3 +1,4 @@
+using Opsive.Shared.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class Panela : MonoBehaviour
         {
             if (!slot.gameObject.activeSelf)
             {
-                slot.AtivarSlotPorNomeItem(item.nomeItem);
+                slot.AtivarSlotPorNomeItem(item.itemIdentifierAmount.ItemDefinition);
                 slot.gameObject.SetActive(true);
                 return true;
             }
@@ -42,16 +43,16 @@ public class Panela : MonoBehaviour
         slot.gameObject.SetActive(false);
     }
 
-    public Item.NomeItem ObterConsumivelDaPanela()
+    public ItemDefinitionBase ObterConsumivelDaPanela()
     {
         foreach (SlotConsumivelPanela slot in slotsConsumiveis)
         {
             if (slot.gameObject.activeSelf)
             {
-                return slot.nomeItemNoSlot;
+                return slot.itemDefinitionNoSlot;
             }
         }
-        return Item.NomeItem.Nenhum;
+        return null;
     }
 
 }

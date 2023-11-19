@@ -32,11 +32,11 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                 GameObject objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>().gameObject;
                 if (collisorSofreDano.isConstrucao)
                 {
-                    if(this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().nomeItem.Equals(Item.NomeItem.MarteloReparador))
+                    if(this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemRepairHammer.name))
                     {
                         objPai.GetComponent<StatsGeral>().TakeCura(damage);
                     }
-                    else if(this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().nomeItem.Equals(Item.NomeItem.MarteloDemolidor))
+                    else if(this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemDemolitionHammer.name))
                     {
                         objPai.GetComponent<ConstrucoesController>().DemolirConstrucao();
                     }
@@ -52,10 +52,6 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                 }
                 statsGeral.isAttacking = false;
-                if (statsGeral.gameObject.tag == "Player")
-                {
-                    statsGeral.gameObject.GetComponent<Animator>().SetTrigger("ferramentaFrenteExit");
-                }
             }
         }
     }

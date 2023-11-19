@@ -103,11 +103,11 @@ public class ArrastarItensInventario : MonoBehaviour
 
     public void SoltarItemNoPlayer(){
         if (item == null) return;
-        if(item.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Armadura.ToString())){
+        if(item.tipoItem.Equals(Item.TiposItems.Armadura.ToString())){
             foreach(ItemArmadura armadura in slotsArmaduras){
                 armadura.ColocarItemNoSlot(item);
             }
-        } else if(item.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Municao.ToString())){
+        } else if(item.tipoItem.Equals(Item.TiposItems.Municao.ToString())){
             slotMunicoes.ColocarItemNoSlot(item);
         } else{
             item.SelecionarItem();

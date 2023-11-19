@@ -7,6 +7,7 @@ using Obi;
 using Opsive.UltimateCharacterController.Inventory;
 using Opsive.Shared.Utility;
 using Opsive.UltimateCharacterController.Items;
+using Opsive.Shared.Inventory;
 
 public class Inventario : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class Inventario : MonoBehaviour
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
+    [SerializeField] public ItemDefinitionBase itemPeixeCru, itemBottle, itemPanela, itemTigela, itemRepairHammer, itemFaca, itemRope, itemFishingRod, itemFlashlight, itemKnife;
+
     private void Awake()
     {
         itens = new List<Item>();
@@ -43,12 +46,10 @@ public class Inventario : MonoBehaviour
     void Start()
     {
         setarQtdItensAtual(0);
-        setarPesoAtual(0);
         foreach (Item item in itens) //Ativando os itens que tem quantidade no inventario e desativando os que nao tem quantidade
         {
             if (item.quantidade > 0)
             {
-                setarPesoAtual(pesoAtual + item.peso);
                 setarQtdItensAtual(qtdItensAtual + 1);
                 item.gameObject.SetActive(true);
             }
@@ -73,13 +74,6 @@ public class Inventario : MonoBehaviour
             FecharInventario();
         }
         VerificarCordaPartindo();
-    }
-
-    public void setarPesoAtual(int valor)
-    {
-        pesoAtual = valor;
-        txPesoInventario.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? "Peso: " : "Weight: ";
-        txPesoInventario.text += pesoAtual + "/" + pesoCapacidadeMaxima;
     }
 
     public void setarQtdItensAtual(int valor)
@@ -128,19 +122,18 @@ public class Inventario : MonoBehaviour
         playerController.canMove = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-        //playerMovement.anim.SetBool("")
     }
 
-    public bool AdicionarItemAoInventarioPorNome(Item.NomeItem nomeItem, int quantidadeResponse)
+    public bool AdicionarItemAoInventarioPorNome(ItemDefinitionBase itemDefinition, int quantidadeResponse)
     {
-        return AdicionarItemAoInventario(null, nomeItem, quantidadeResponse);
+        return AdicionarItemAoInventario(null, itemDefinition, quantidadeResponse);
     }
 
-    public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.NomeItem nomeItem, int quantidadeResponse)
+    public bool AdicionarItemAoInventario(ItemDrop itemDrop, ItemDefinitionBase itemDefinition, int quantidadeResponse)
     {
         foreach(Item.ItemStruct itemStruct in itensStruct)
         {
-            if(itemStruct.nomeItemEnum == nomeItem)
+            if(itemStruct.itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
             {
                 return AdicionarItemAoInventario(itemDrop, itemStruct, quantidadeResponse);
             }
@@ -150,52 +143,36 @@ public class Inventario : MonoBehaviour
 
     public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
-        if (itemDrop == null || !itemDrop.nomeItem.Equals(Item.NomeItem.Garrafa)) //itens que nao stackam
+        if (itemDrop == null || !itemDrop.item.name.Equals(itemBottle.name)) //itens que nao stackam
         {
             foreach (Item item in itens)
             {
-                if (item.nomeItem.Equals(itemStructResponse.nomeItemEnum))
+                if (item.itemIdentifierAmount.ItemDefinition.name.Equals(itemStructResponse.itemIdentifierAmount.ItemDefinition.name))
                 {
-                    if (pesoAtual + item.peso * quantidadeResponse > pesoCapacidadeMaxima)
-                    {
-                        Debug.Log("Peso maximo do inventario atingido");
-                        return false;
-                    }
-                    else
-                    {
-                        return item.aumentarQuantidade(quantidadeResponse); //stackando item
-                    }
+                    return item.aumentarQuantidade(quantidadeResponse); //stackando item
                 }
             }
         }
 
         //Adiciona um novo item na mochila
-        if (pesoAtual + itemStructResponse.peso * quantidadeResponse > pesoCapacidadeMaxima)
+        GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
+        novoObjeto.transform.SetParent(contentItensMochila.transform);
+        if (itemDrop != null && itemDrop.item.name.Equals(itemBottle.name))
         {
-            Debug.Log("Peso maximo do inventario atingido");
-            return false;
+            novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
         }
-        else //ADICIONANDO UM NOVO ITEM, POIS NAO TINHA NENHUM NA MAO
-        {
-            GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
-            novoObjeto.transform.SetParent(contentItensMochila.transform);
-            if (itemDrop != null && itemDrop.nomeItem.Equals(Item.NomeItem.Garrafa))
-            {
-                novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
-            }
-            Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
-            itens.Add(novoItem);
-            AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
-            inventory.AddItemIdentifierAmount(novoItem.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
-            return true;
-        }
+        Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
+        itens.Add(novoItem);
+        AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
+        inventory.AddItemIdentifierAmount(novoItem.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
+        return true;
     }
 
-    public void RemoverItemDoInventarioPorNome(Item.NomeItem nomeItemResponse, int quantidadeResponse)
+    public void RemoverItemDoInventarioPorNome(ItemDefinitionBase itemDefinition, int quantidadeResponse)
     {
         foreach (Item item in itens)
         {
-            if (item.nomeItem.Equals(nomeItemResponse))
+            if (item.itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
             {
                 item.diminuirQuantidade(quantidadeResponse, false);
                 return;
@@ -219,7 +196,7 @@ public class Inventario : MonoBehaviour
        
         foreach (Item item in itens)
         {
-            if (item.nomeItem.Equals(itemNaMao.nomeItem))
+            if (item.itemIdentifierAmount.ItemDefinition.name.Equals(itemNaMao.itemIdentifierAmount.ItemDefinition.name))
             {
                 item.diminuirQuantidade(1, isCordaPartindo);
                 return;
@@ -227,12 +204,13 @@ public class Inventario : MonoBehaviour
         }
     }
 
-    public bool VerificarQtdItem(Item.NomeItem nomeItemResponse, int quantidade, bool alertar){
+    public bool VerificarQtdItem(ItemDefinitionBase itemDefinition, int quantidade, bool alertar){
         if(quantidade<=0) return true;
         int qtdItemAtual = 0;
         string nomeItem = "";
         foreach(Item item in itens){
-            if(item.nomeItem == nomeItemResponse){
+            if(item.itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
+            {
                 qtdItemAtual = item.quantidade;
                 nomeItem = item.obterNomeItemTraduzido();
                 if(item.quantidade >= quantidade)
@@ -245,9 +223,11 @@ public class Inventario : MonoBehaviour
         return false;
     }
 
-    public Item.ItemStruct ObterItemStructPeloNome(Item.NomeItem nome){
+    public Item.ItemStruct ObterItemStructPeloNome(ItemDefinitionBase itemDefinition)
+    {
         foreach(Item.ItemStruct itemSt in itensStruct){
-            if(itemSt.nomeItemEnum == nome){
+            if(itemSt.itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
+            {
                 return itemSt;
             }
         }
@@ -376,6 +356,12 @@ public class Inventario : MonoBehaviour
     {
         txMsgLogItem.text = "";
         imgLogItem.texture = texturaTransparente;
+    }
+
+    public ItemObjMao ObterGameObjectItemNaMao()
+    {
+        //TODO: IMPLEMENTAR COM API INVENTORY
+        return null;
     }
 
 }

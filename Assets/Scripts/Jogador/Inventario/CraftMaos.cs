@@ -1,3 +1,5 @@
+using Opsive.Shared.Inventory;
+using Opsive.UltimateCharacterController.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,15 +18,15 @@ public class CraftMaos : MonoBehaviour
     [System.Serializable]
     public class ReceitaCraft
     {
-        public Item.NomeItem nomeItemResultado;
+        public ItemDefinitionBase itemResultado;
         public List<Ingrediente> ingredientes = new List<Ingrediente>();
     }
     [System.Serializable]
     public class Ingrediente
     {
-        public Item.NomeItem nomeItem;
+        public ItemDefinitionBase item;
         public int quantidade;
-        public Item.ItemStruct itemStruct;
+        [HideInInspector] public Item.ItemStruct itemStruct;
     }
 
     private void Start()
@@ -47,9 +49,9 @@ public class CraftMaos : MonoBehaviour
         if (resultadoCraft != null)
         {
             removerItensReceitaDoJogador(resultadoCraft);
-            adicionarItemCraftadoAoJogador(resultadoCraft.nomeItemResultado);
+            adicionarItemCraftadoAoJogador(resultadoCraft.itemResultado);
             limparSlots();
-            Debug.Log("Item craftado: " + resultadoCraft.nomeItemResultado);
+            Debug.Log("Item craftado: " + resultadoCraft.itemResultado);
         }
         else
         {
@@ -67,16 +69,16 @@ public class CraftMaos : MonoBehaviour
     {
         foreach (Ingrediente ingrediente in resultadoCraft.ingredientes)
         {
-            if(!ingrediente.nomeItem.Equals(Item.NomeItem.Faca)) //Itens que não perdem após craft
+            if(!ingrediente.item.name.Equals(inventario.itemKnife.name)) //Itens que não perdem após craft
             {
-                inventario.RemoverItemDoInventarioPorNome(ingrediente.nomeItem, ingrediente.quantidade);
+                inventario.RemoverItemDoInventarioPorNome(ingrediente.item, ingrediente.quantidade);
             }
         }
     }
 
-    private void adicionarItemCraftadoAoJogador(Item.NomeItem nomeItem)
+    private void adicionarItemCraftadoAoJogador(ItemDefinitionBase itemDefinition)
     {
-        inventario.AdicionarItemAoInventarioPorNome(nomeItem, 1);
+        inventario.AdicionarItemAoInventarioPorNome(itemDefinition, 1);
     }
 
     private void limparSlots()
@@ -112,7 +114,7 @@ public class CraftMaos : MonoBehaviour
 
             foreach (var slot in slotsCopy)
             {
-                if (slot.item != null && slot.item.nomeItem == ingrediente.nomeItem && slot.qtdItemNoSlot == ingrediente.quantidade)
+                if (slot.item != null && slot.item.itemIdentifierAmount.ItemDefinition.name.Equals(ingrediente.item.name) && slot.qtdItemNoSlot == ingrediente.quantidade)
                 {
                     ingredienteEncontrado = true;
                     break;
@@ -139,10 +141,10 @@ public class CraftMaos : MonoBehaviour
         {
             foreach(Ingrediente ingrediente in receitaCraft.ingredientes)
             {
-                ingrediente.itemStruct = inventario.ObterItemStructPeloNome(ingrediente.nomeItem);
+                ingrediente.itemStruct = inventario.ObterItemStructPeloNome(ingrediente.item);
             }
             GameObject novaReceita = Instantiate(prefabItemReceita, new Vector3(), new Quaternion(), contentReceitas.transform);
-            Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaCraft.nomeItemResultado);
+            Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaCraft.itemResultado);
             novaReceita.GetComponent<ItemReceitaView>().SetupReceitaView(itemStruct, receitaCraft.ingredientes);
         }
     }

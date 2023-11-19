@@ -1,3 +1,4 @@
+using Opsive.UltimateCharacterController.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,12 +17,12 @@ public class Fogueira : MonoBehaviour
         }
         else
         {
-            if (item.nomeItem.Equals(Item.NomeItem.Panela))
+            if (item.itemIdentifierAmount.ItemDefinition.name.Equals(item.inventario.itemPanela.name))
             {
                 slotPanela.SetActive(true);
                 panela = slotPanela.GetComponent<Panela>();
             }
-            if (item.nomeItem.Equals(Item.NomeItem.Tigela))
+            if (item.itemIdentifierAmount.ItemDefinition.name.Equals(item.inventario.itemTigela.name))
             {
                 slotTigela.SetActive(true);
                 panela = slotTigela.GetComponent<Panela>();

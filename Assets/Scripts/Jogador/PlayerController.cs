@@ -9,6 +9,8 @@ using UnityEngine.Audio;
 using Cinemachine;
 using System.IO;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Opsive.Shared.Inventory;
+using Opsive.UltimateCharacterController.Inventory;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando, corpoReanimando, objCapturado;
 	[SerializeField] [HideInInspector] public AnimalController animalCapturado;
 	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
-	[SerializeField] [HideInInspector] public Item.NomeItem nomeItemColetando;
+	[SerializeField] [HideInInspector] public ItemDefinitionBase itemDefinitionBaseColentando;
 	[SerializeField] [HideInInspector] public GameController gameController;
 
 	[HideInInspector] public bool canMove = true;
@@ -43,7 +45,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void Awake()
 	{
 		PV = GetComponent<PhotonView>();
-		animator = GetComponent<Animator>();
 		GameObject gc = GameObject.FindGameObjectWithTag("GameController");
 		if (gc != null) gameController = gc.GetComponent<GameController>();
 		statsJogador = GetComponent<StatsJogador>();
@@ -88,62 +89,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		//verificarAnimacoesSegurandoItem();
 	}
 
-    private void verificarAnimacoesSegurandoItem()
-    {
-		bool acendendo = false;// animator.GetCurrentAnimatorStateInfo(0).IsName("AcendendoFogueira");
-		if (!acendendo) acendedorFogueira.SetActive(false);
-		else acendedorFogueira.SetActive(true);
-
-		if(inventario.itemNaMao != null && (inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.ArcoSimples) || inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.ArcoAvancado)))
-        {
-			animator.SetBool("segurandoArcoFlecha", true);
-        }
-        else
-        {
-			animator.SetBool("segurandoArcoFlecha", false);
-		}
-		if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Besta))
-		{
-			animator.SetBool("segurandoCrossbow", true);
-		}
-		else
-		{
-			animator.SetBool("segurandoCrossbow", false);
-		}
-		if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Tocha))
-		{
-			animator.SetBool("segurandoTocha", true);
-		}
-		else
-		{
-			animator.SetBool("segurandoTocha", false);
-		}
-	}
-
 	private void ativarAnimacaoPorTipoItem(Item itemResponse)
     {
-		if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Ferramenta.ToString()))
+		if (itemResponse.tipoItem.Equals(Item.TiposItems.Ferramenta.ToString()))
 		{
-			if (itemResponse.nomeItem.Equals(Item.NomeItem.Garrafa))
+			if (itemResponse.itemIdentifierAmount.ItemDefinition.name.Equals("Bottle"))
 			{
 				animator.SetTrigger("bebendoGarrafa");
             }
-            else
-            {
-				string atkName = "atkFerramentaFrente";
-				if (itemResponse.nomeItem == Item.NomeItem.MarteloReparador)
-				{
-					atkName = "atkFerramentaMarteloFrente";
-				}
-				if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
-				{
-					animator.SetTrigger(atkName);
-				}
-			}
 		}
-		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+		else if (itemResponse.tipoItem.Equals(Item.TiposItems.Consumivel.ToString()))
         {
-            if (itemResponse.nomeItem.Equals(Item.NomeItem.KitMedico))
+            if (itemResponse.itemIdentifierAmount.ItemDefinition.name.Equals("KitMedico"))
             {
 				animator.SetTrigger("usandoKitMedico");
             }
@@ -153,54 +110,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			}
 			itemConsumindo = itemResponse;
 		}
-		else if (itemResponse.nomeItem.GetTipoItemEnum().Equals(Item.TiposItems.Arma.ToString()))
-		{
-			if (itemResponse.nomeItem == Item.NomeItem.Pistola)
-			{
-				if (Time.time > nextFireTime)
-                {
-					ApplyRecoil(); // Aplicar o recuo
-					animator.SetTrigger("usandoPistola");
-					nextFireTime = Time.time + 1 / fireRate; // Definir o próximo tempo permitido para atirar
-				}
-			}
-			else if (itemResponse.nomeItem == Item.NomeItem.Besta)
-			{
-				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoBesta"))
-				{
-					itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
-					animator.SetTrigger("usandoBesta");
-				}
-			}
-			else if (itemResponse.nomeItem == Item.NomeItem.ArcoSimples || itemResponse.nomeItem == Item.NomeItem.ArcoAvancado)
-			{
-				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("usandoArcoFlecha"))
-				{
-					itemResponse.itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
-					animator.SetTrigger("usandoArcoFlecha");
-				}
-			}
-			else if (itemResponse.nomeItem == Item.NomeItem.LancaSimples || itemResponse.nomeItem == Item.NomeItem.LancaAvancada)
-			{
-				if (!animator.GetCurrentAnimatorStateInfo(0).IsName("arremessandoLanca"))
-				{
-					animator.SetTrigger("arremessandoLanca");
-				}
-			}
-			else
-			{
-				string atkName = "atkArmaFrente";
-				if (!animator.GetCurrentAnimatorStateInfo(0).IsName(atkName))
-				{
-					animator.SetTrigger(atkName);
-				}
-			}
-		}
-	}
-
-	private void ApplyRecoil()
-	{
-		//TODO: Implementar recoil a cada tiro
 	}
 
 	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
@@ -227,7 +136,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (itemConsumindo == null) return;
 		itemConsumindo.UsarItem();
-		Debug.Log("consumiu: " + itemConsumindo.nomeItem.ToString());
+		Debug.Log("consumiu: " + itemConsumindo.itemIdentifierAmount.ItemDefinition.name.ToString());
 		itemConsumindo = null;
 	}
 
@@ -237,7 +146,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		foreach (Item.ItemDropStruct drop in itemsDropsPosDissecar)
 		{
 			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-			string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
+			string nomePrefab = drop.tipoItem + "/" + drop.itemIdentifierAmount.ItemDefinition.name;
 			ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position, corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.rotation, PV.ViewID);
         }
 		itemsDropsPosDissecar = new List<Item.ItemDropStruct>();
@@ -292,7 +201,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			Vector3 direction = hit.point - transform.position;
 			direction.Normalize();
 			
-			string nomePrefab = inventario.itemNaMao.nomeItem.GetTipoItemEnum() + "/" + inventario.itemNaMao.nomeItem.ToString();
+			string nomePrefab = inventario.itemNaMao.tipoItem + "/" + inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name;
 			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), PV.ViewID);
 			// Aplica a força na direção calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
@@ -307,7 +216,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	}
 	void AnimEventBebeuGarrafa()
 	{
-		if(inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Garrafa))
+		if(inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Bottle"))
         {
 			statsJogador.setarSedeAtual(statsJogador.sedeAtual + inventario.itemNaMao.GetComponent<Garrafa>().BeberAgua());
 		}
@@ -315,7 +224,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	void AnimEventEncheuGarrafa()
     {
-		if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(Item.NomeItem.Garrafa))
+		if (inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Garrafa"))
         {
 			inventario.itemNaMao.GetComponent<Garrafa>().EncherRepositorioComAgua();
 		}
@@ -353,66 +262,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		animatorVaraDePesca.SetTrigger("pegandoPeixe");
 		pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
 	}
+
 	public void EventPescou()
 	{
 		Debug.Log("event pescou");
 		if (pescaPescando == null) return;
 		peixeDaVara.SetActive(false);
-		inventario.AdicionarItemAoInventario(null, Item.NomeItem.PeixeCru, 1);
-	}
-
-	void AnimEventTiroArcoFlecha()
-    {
-		Debug.Log("tiro flecha");
-		if (inventario.itemNaMao == null) return;
-		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
-		Ray ray = new Ray(transform.position, transform.forward);
-		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
-		RaycastHit hit;
-		// Se o ray atingir alguma superfície, calcula a direção do arremesso
-		if (Physics.Raycast(ray, out hit))
-		{
-			Vector3 direction = hit.point - transform.position;
-			direction.Normalize();
-
-			Item flechaNaAljava = armaduras.ObterItemFlechaNaAljava();
-			if (flechaNaAljava == null || flechaNaAljava.quantidade <= 0) return; // NAO TEM FLECHA
-			string nomePrefab = flechaNaAljava.nomeItem.GetTipoItemEnum() + "/" + flechaNaAljava.nomeItem.ToString();
-			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), PV.ViewID);
-			// Aplica a força na direção calculada
-			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
-			//REMOVER ITEM DO INVENTARIO
-			inventario.RemoverItemDoInventario(flechaNaAljava, 1);
-		}
-	}
-
-	void AnimEventTiroPistola()
-	{
-		Debug.Log("tiro pistola");
-		if (inventario.itemNaMao == null) return;
-		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
-		Ray ray = new Ray(transform.position, transform.forward);
-		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
-		RaycastHit hit;
-		// Se o ray atingir alguma superfície, calcula a direção do arremesso
-		if (Physics.Raycast(ray, out hit))
-		{
-			Vector3 direction = hit.point - transform.position;
-			direction.Normalize();
-
-			Item municaoNaAljava = armaduras.ObterItemFlechaNaAljava();
-			if (municaoNaAljava == null || municaoNaAljava.quantidade <= 0 || !municaoNaAljava.nomeItem.Equals(Item.NomeItem.MunicaoPistola)) {
-				Debug.Log("NAO TEM MUNICAO APROPRIADA NO SLOT DE MUNICOES");
-				return;
-			}
-			string nomePrefab = municaoNaAljava.nomeItem.GetTipoItemEnum() + "/" + municaoNaAljava.nomeItem.ToString();
-			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), PV.ViewID);
-			meuObjLancado.GetComponent<TrailMunicao>().AtivarTrailMunicao();
-			// Aplica a força na direção calculada
-			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * (2000), ForceMode.Impulse);
-			//REMOVER ITEM DO INVENTARIO
-			inventario.RemoverItemDoInventario(municaoNaAljava, 1);
-		}
+		inventario.AdicionarItemAoInventario(null, inventario.itemPeixeCru, 1);
 	}
 
 	void AnimEventColetouFruta()
@@ -421,15 +277,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
 		foreach (Item.ItemDropStruct itemDropScruct in arvoreColetando.GetComponent<StatsGeral>().dropsItems)
 		{
-			if (itemDropScruct.nomeItemEnum.GetTipoItemEnum().Equals(Item.TiposItems.Consumivel.ToString()))
+			if (itemDropScruct.tipoItem.Equals(Item.TiposItems.Consumivel.ToString()))
 			{
 				if(itemDropScruct.qtdMaxDrops > 0)
                 {
-					Debug.Log("coletou fruta: " + itemDropScruct.nomeItemEnum.ToString());
-					inventario.AdicionarItemAoInventario(null, itemDropScruct.nomeItemEnum, 1);
+					Debug.Log("coletou fruta: " + itemDropScruct.itemIdentifierAmount.ItemDefinition.name);
+					inventario.AdicionarItemAoInventario(null, itemDropScruct.itemIdentifierAmount.ItemDefinition, 1);
 					arvoreColetando.GetComponent<ArvoreFrutifera>().DesaparecerUmaFrutaDaArvore();
 					Item.ItemDropStruct novo = new Item.ItemDropStruct();
-					novo.nomeItemEnum = itemDropScruct.nomeItemEnum;
+					novo.itemIdentifierAmount = itemDropScruct.itemIdentifierAmount;
 					novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
 					novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
 					itemDrops.Add(novo);
@@ -445,10 +301,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	void AnimEventColetouItem()
 	{
-		if (nomeItemColetando.Equals(Item.NomeItem.Nenhum)) return;
-		Debug.Log("coletou item: " + nomeItemColetando.ToString());
-		inventario.AdicionarItemAoInventario(null, nomeItemColetando, 1);
-		nomeItemColetando = Item.NomeItem.Nenhum;
+		if (itemDefinitionBaseColentando == null) return;
+		Debug.Log("coletou item: " + itemDefinitionBaseColentando.name);
+		inventario.AdicionarItemAoInventario(null, itemDefinitionBaseColentando, 1);
+		itemDefinitionBaseColentando = null;
 	}
 
 	public bool podeSeMexer()

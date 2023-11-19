@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Opsive.Shared.Inventory;
 
 public class StatsGeral : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class StatsGeral : MonoBehaviour
     AnimalStats animalStats;
     DropaRecursosStats dropaRecursosStats;
     ReconstruivelStats reconstruivelStats;
+
+    [SerializeField] public ItemDefinitionBase itemRepairHammer, itemDemolitionHammer;
+
     PhotonView PV;
 
     private void Awake()
@@ -94,7 +98,7 @@ public class StatsGeral : MonoBehaviour
         foreach (Item item in itensParaRemover)
         {
             int quantidade = item.quantidade;
-            string nomePrefab = item.nomeItem.GetTipoItemEnum() + "/" + item.nomeItem.ToString();
+            string nomePrefab = item.tipoItem + "/" + item.itemIdentifierAmount.ItemDefinition.name;
             ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, PV.ViewID);
             jogadorStats.playerController.inventario.RemoverItemDoInventario(item, quantidade);
         }
@@ -104,10 +108,10 @@ public class StatsGeral : MonoBehaviour
     {
         foreach (Item.ItemDropStruct drop in dropsItems)
         {
-            if (!Item.TiposItems.Nenhum.ToString().Equals(drop.nomeItemEnum.GetTipoItemEnum()))
+            if (!Item.TiposItems.Nenhum.ToString().Equals(drop.tipoItem))
             {
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-                string nomePrefab = drop.nomeItemEnum.GetTipoItemEnum() + "/" + drop.nomeItemEnum.ToString();
+                string nomePrefab = drop.tipoItem + "/" + drop.itemIdentifierAmount.ItemDefinition.name;
                 ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, PV.ViewID);
             }
         }

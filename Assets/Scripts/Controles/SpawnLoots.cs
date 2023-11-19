@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using Photon.Pun;
 using System.IO;
 using UnityEngine;
+using Opsive.UltimateCharacterController.Inventory;
+using Opsive.Shared.Inventory;
 
 public class SpawnLoots : MonoBehaviour
 {
 
-    public Item.NomeItem[] itensPossiveis;
+    [SerializeField] Item.TiposItems tipoItem;
+    public ItemDefinitionBase[] itens;
     private GameObject itemSpawnado;
     [SerializeField] GameController gameController;
 
@@ -43,12 +46,12 @@ public class SpawnLoots : MonoBehaviour
     {
         bool isPhotonConnected = PhotonNetwork.IsConnected;
 
-        int randomIndex = Random.Range(0, itensPossiveis.Length);
+        int randomIndex = Random.Range(0, itens.Length);
 
         Vector3 position = this.transform.position;
         Quaternion rotation = this.transform.rotation;
         
-        string nomePrefab = itensPossiveis[randomIndex].GetTipoItemEnum() + "/" + itensPossiveis[randomIndex].ToString();
+        string nomePrefab = tipoItem + "/" + itens[randomIndex].name;
         string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
 

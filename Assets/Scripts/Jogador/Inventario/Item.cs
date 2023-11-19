@@ -9,16 +9,13 @@ using Opsive.UltimateCharacterController.Inventory;
 
 public class Item : MonoBehaviourPunCallbacks
 {
-
+    [SerializeField] public TiposItems tipoItem;
     [SerializeField] public string nomePortugues, nomeIngles;
-    [SerializeField] public Item.NomeItem nomeItem;
     [SerializeField] public ItemIdentifierAmount itemIdentifierAmount;
     [SerializeField] public int groupIndex;
     [SerializeField] public bool isConsumivel;
-    [SerializeField] public int quantidade = 0, peso, clicks;
-    [SerializeField] public int durabilidadeAtual = 100, durabilidadeMaxima = 100;
+    [SerializeField] public int quantidade = 0, clicks;
 
-    [SerializeField] public ItemObjMao itemObjMao;
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
     [SerializeField] public Armaduras armaduras;
@@ -50,176 +47,13 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Municao")]
         Municao
     }
-
-    [System.Serializable]
-    public enum NomeItem
-    {
-        [EnumMember(Value = "Nenhum")]
-        Nenhum,
-        //Recurso
-        [EnumMember(Value = "Recurso")]
-        Madeira,
-        [EnumMember(Value = "Recurso")]
-        Pedra,
-        [EnumMember(Value = "Recurso")]
-        Metal,
-        [EnumMember(Value = "Recurso")]
-        Couro,
-        [EnumMember(Value = "Recurso")]
-        Osso,
-        [EnumMember(Value = "Recurso")]
-        Corda,
-        [EnumMember(Value = "Recurso")]
-        Seiva,
-        [EnumMember(Value = "Recurso")]
-        Folha,
-        [EnumMember(Value = "Recurso")]
-        Carvao,
-        [EnumMember(Value = "Recurso")]
-        Argila,
-        [EnumMember(Value = "Recurso")]
-        Graveto,
-        [EnumMember(Value = "Recurso")]
-        Veneno,
-        [EnumMember(Value = "Recurso")]
-        SementeMaca,
-        [EnumMember(Value = "Recurso")]
-        SementeBanana,
-        [EnumMember(Value = "Recurso")]
-        SementeLaranja,
-        [EnumMember(Value = "Recurso")]
-        SementeManga,
-        [EnumMember(Value = "Recurso")]
-        SementeCogumelo,
-        [EnumMember(Value = "Recurso")]
-        SementeCogumeloVenenoso,
-        //Consumivel
-        [EnumMember(Value = "Consumivel")]
-        Laranja,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloCru,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloCozido,
-        [EnumMember(Value = "Consumivel")]
-        PeixeCru,
-        [EnumMember(Value = "Consumivel")]
-        PeixeCozido,
-        [EnumMember(Value = "Consumivel")]
-        CarneCrua,
-        [EnumMember(Value = "Consumivel")]
-        CarneCozida,
-        [EnumMember(Value = "Consumivel")]
-        Manga,
-        [EnumMember(Value = "Consumivel")]
-        Maca,
-        [EnumMember(Value = "Consumivel")]
-        Banana,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloVenenosoCru,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloVenenosoCozido,
-        [EnumMember(Value = "Consumivel")]
-        CarneEstragada,
-        [EnumMember(Value = "Consumivel")]
-        PeixeEstragado,
-        [EnumMember(Value = "Consumivel")]
-        BananaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        LaranjaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        MangaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        MacaEstragada,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloEstragado,
-        [EnumMember(Value = "Consumivel")]
-        CogumeloVenenosoEstragado,
-        //Ferramenta
-        [EnumMember(Value = "Ferramenta")]
-        MachadoSimples,
-        [EnumMember(Value = "Ferramenta")]
-        MarteloReparador,
-        [EnumMember(Value = "Ferramenta")]
-        PicaretaSimples,
-        [EnumMember(Value = "Ferramenta")]
-        MachadoAvancado,
-        [EnumMember(Value = "Ferramenta")]
-        MarteloDemolidor,
-        [EnumMember(Value = "Ferramenta")]
-        PicaretaAvancada,
-        [EnumMember(Value = "Ferramenta")]
-        Faca,
-        [EnumMember(Value = "Armadura")]
-        Mochila,
-        [EnumMember(Value = "Ferramenta")]
-        Bussola,
-        [EnumMember(Value = "Ferramenta")]
-        Tocha,
-        [EnumMember(Value = "Ferramenta")]
-        Garrafa,
-        [EnumMember(Value = "Ferramenta")]
-        VaraDePesca,
-        //Arma
-        [EnumMember(Value = "Arma")]
-        LancaSimples,
-        [EnumMember(Value = "Arma")]
-        LancaAvancada,
-        [EnumMember(Value = "Arma")]
-        ArcoSimples,
-        [EnumMember(Value = "Arma")]
-        ArcoAvancado,
-        [EnumMember(Value = "Arma")]
-        EspadaSimples,
-        [EnumMember(Value = "Arma")]
-        EspadaAvancada,
-        [EnumMember(Value = "Arma")]
-        Besta,
-        //Municao
-        [EnumMember(Value = "Municao")]
-        FlechaDeMadeira,
-        [EnumMember(Value = "Municao")]
-        FlechaDeOsso,
-        [EnumMember(Value = "Municao")]
-        FlechaDeMetal,
-        //Armadura
-        [EnumMember(Value = "Armadura")]
-        CapaceteDeCouro,
-        [EnumMember(Value = "Armadura")]
-        CasacoDeCouro,
-        [EnumMember(Value = "Armadura")]
-        CalcaDeCouro,
-        [EnumMember(Value = "Armadura")]
-        BotasDeCouro,
-        [EnumMember(Value = "Armadura")]
-        EscudoSimples,
-        [EnumMember(Value = "Armadura")]
-        EscudoAvancado,
-        //Objeto
-        [EnumMember(Value = "Objeto")]
-        Tigela,
-        [EnumMember(Value = "Objeto")]
-        Panela,
-        [EnumMember(Value = "Consumivel")]
-        Coco,
-        [EnumMember(Value = "Arma")]
-        Pistola,
-        [EnumMember(Value = "Municao")]
-        MunicaoPistola,
-        [EnumMember(Value = "Consumivel")]
-        ComidaEnlatada,
-        [EnumMember(Value = "Ferramenta")]
-        Lanterna,
-        [EnumMember(Value = "Consumivel")]
-        KitMedico,
-        [EnumMember(Value = "Recurso")]
-        Cipo
-    }
+   
 
     [System.Serializable]
     public struct ItemDropStruct
     {
-        public Item.NomeItem nomeItemEnum;
-        public ItemDefinitionBase itemDefinitionBase;
+        public ItemIdentifierAmount itemIdentifierAmount;
+        public TiposItems tipoItem;
         public int qtdMinDrops;
         public int qtdMaxDrops;
     }
@@ -227,30 +61,24 @@ public class Item : MonoBehaviourPunCallbacks
     [System.Serializable]
     public struct ItemStruct
     {
-        public Item.NomeItem nomeItemEnum;
+        public TiposItems tipoItem;
         public ItemIdentifierAmount itemIdentifierAmount;
         public int groupIndex;
         public string nomePortugues, nomeIngles;
         public bool isConsumivel;
-        public int peso, durabilidadeAtual, durabilidadeMaxima;
-        public ItemObjMao itemObjMao;
         public Texture textureImgItem;
         public GameObject objInventario;
     }
 
     public Item setupItemFromItemStruct(ItemStruct itemResponse)
     {
-        nomeItem = itemResponse.nomeItemEnum;
+        tipoItem = itemResponse.tipoItem;
         nomePortugues = itemResponse.nomePortugues;
         nomeIngles = itemResponse.nomeIngles;
         itemIdentifierAmount = itemResponse.itemIdentifierAmount;
         groupIndex = itemResponse.groupIndex;
         isConsumivel = itemResponse.isConsumivel;
         quantidade = 1;
-        peso = itemResponse.peso;
-        durabilidadeAtual = itemResponse.durabilidadeAtual;
-        durabilidadeMaxima = itemResponse.durabilidadeMaxima;
-        itemObjMao = itemResponse.itemObjMao;
         imagemItem.texture = itemResponse.textureImgItem;
         inventario = itemResponse.objInventario.GetComponent<Inventario>();
         hotbar = itemResponse.objInventario.GetComponent<Hotbar>();
@@ -259,11 +87,6 @@ public class Item : MonoBehaviourPunCallbacks
         txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
         txQuantidade.text = quantidade + "";
         return this;
-    }
-
-    public static string ObterNomeIdPorTipoItem(NomeItem nomeItemResponse)
-    {
-        return nomeItemResponse.ToString();
     }
 
     public string obterNomeItemTraduzido()
@@ -309,9 +132,8 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void DeselecionarItem()
     {
-        if(itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
-        if (nomeItem.Equals(NomeItem.Corda))
+        if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name))
         {
             inventario.UngrabAnimalCapturado(false);
             inventario.UngrabObjetoCapturado();
@@ -323,7 +145,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if (inventario.itemNaMao != null)
         {
-            if (inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
+            if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(this.itemIdentifierAmount.ItemDefinition.name))
             {
                 inventario.itemNaMao.DeselecionarItem();
                 return;
@@ -336,22 +158,18 @@ public class Item : MonoBehaviourPunCallbacks
 
         if(quantidade > 0)
         {
-            if (itemObjMao != null)
+            inventario.itemNaMao = this;
+            EquipItemInventory();
+            if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemFishingRod.name)) inventario.playerController.peixeDaVara.SetActive(false);
+            if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemFlashlight.name) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false)
+                && armaduras.slotLanterna.item != null)
             {
-                inventario.itemNaMao = this;
-                EquipItemInventory();
-                itemObjMao.gameObject.SetActive(true);
-                if (nomeItem.Equals(NomeItem.ArcoSimples) || nomeItem.Equals(NomeItem.ArcoAvancado) || nomeItem.Equals(NomeItem.Besta)) itemObjMao.GetComponent<TipoFlechaNoArco>().AtivarTipoFlechaNoArco();
-                if (nomeItem.Equals(NomeItem.VaraDePesca)) inventario.playerController.peixeDaVara.SetActive(false);
-                if (nomeItem.Equals(NomeItem.Lanterna) && !inventario.VerificarQtdItem(NomeItem.Lanterna, 2, false) && armaduras.slotLanterna.item != null && armaduras.slotLanterna.item.nomeItem.Equals(NomeItem.Lanterna))
-                {
-                    armaduras.slotLanterna.objEquipLanterna.SetActive(false);
-                    armaduras.slotLanterna.item = null;
-                }
+                armaduras.slotLanterna.objEquipLanterna.SetActive(false);
+                armaduras.slotLanterna.item = null;
             }
         }
 
-        if (nomeItem.Equals(NomeItem.Corda))
+        if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name))
         {
             inventario.AcoesRenovarCordaEstourada(false);
         }
@@ -373,10 +191,10 @@ public class Item : MonoBehaviourPunCallbacks
     public void DroparItem()
     {
         int quantidade = 1;
-        if (this.nomeItem.GetTipoItemEnum().Equals(TiposItems.Nenhum)) return;
-        string nomePrefab = this.nomeItem.GetTipoItemEnum() + "/"+ this.nomeItem.ToString();
+        if (this.tipoItem.Equals(TiposItems.Nenhum)) return;
+        string nomePrefab = this.tipoItem + "/"+ this.itemIdentifierAmount.ItemDefinition.name.ToString();
         GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
-        if (this.nomeItem.Equals(NomeItem.Garrafa))
+        if (this.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemBottle.name))
         {
             objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
         }
@@ -392,19 +210,11 @@ public class Item : MonoBehaviourPunCallbacks
             aplicarEfeitoConsumivel();
             diminuirQuantidade(1);
         }
-        else
-        {
-            durabilidadeAtual--;
-            if (durabilidadeAtual <= 0)
-            {
-                durabilidadeAtual = 0;
-                diminuirQuantidade(1);
-            }
-        }
     }
 
     private void aplicarEfeitoConsumivel()
     {
+        ItemObjMao itemObjMao = inventario.ObterGameObjectItemNaMao();
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + itemObjMao.curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + itemObjMao.curaFome);
         inventario.statsJogador.setarVidaAtual(inventario.statsJogador.statsGeral.vidaAtual + itemObjMao.curaVida);
@@ -416,10 +226,9 @@ public class Item : MonoBehaviourPunCallbacks
     }
     public void diminuirQuantidade(int quantidadeResponse, bool isCordaPartindo)
     {
-        inventario.setarPesoAtual(inventario.pesoAtual - peso * quantidadeResponse);
         quantidade -= quantidadeResponse;
 
-        if (inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(NomeItem.Corda))
+        if (inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name))
         {
             inventario.ToggleGrabUngrabCorda(isCordaPartindo);
             inventario.UngrabObjetoCapturado();
@@ -428,19 +237,15 @@ public class Item : MonoBehaviourPunCallbacks
         if (quantidade <= 0)
         {
             quantidade = 0;
-            if (inventario.itemNaMao != null && inventario.itemNaMao.itemObjMao != null && inventario.itemNaMao.itemObjMao.GetComponent<TipoFlechaNoArco>() != null)
-            {
-                inventario.itemNaMao.itemObjMao.GetComponent<TipoFlechaNoArco>().DesativarTipoFlechaNoArco();
-            }
             inventario.setarQtdItensAtual(inventario.qtdItensAtual - 1);
             desativarOuAtivarUsoItemDaHotbar(true);
-            if(inventario.itemNaMao != null && inventario.itemNaMao.nomeItem.Equals(this.nomeItem))
+            if(inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(this.itemIdentifierAmount.ItemDefinition.name))
             {
                 SetarItemNaMaoNull();
             }
         }
         
-        if (armaduras.slotAljava.item != null && nomeItem.Equals(armaduras.slotAljava.item.nomeItem))
+        if (armaduras.slotAljava.item != null && this.itemIdentifierAmount.ItemDefinition.name.Equals(armaduras.slotAljava.item.itemIdentifierAmount.ItemDefinition.name))
         {
             armaduras.slotAljava.SetupItemNoSlot(this);
         }
@@ -455,9 +260,9 @@ public class Item : MonoBehaviourPunCallbacks
 
     private void SetarItemNaMaoNull()
     {
-        if (itemObjMao != null) itemObjMao.gameObject.SetActive(false);
         inventario.itemNaMao = null;
         if (inventario.objObiRope != null) inventario.objObiRope.SetActive(false);
+        UnequipItemInventory();
     }
 
     private void RemoverItemDaMochila()
@@ -482,7 +287,6 @@ public class Item : MonoBehaviourPunCallbacks
                 desativarOuAtivarUsoItemDaHotbar(false);
                 gameObject.transform.SetAsLastSibling();
             }
-            inventario.setarPesoAtual(inventario.pesoAtual + peso);
             inventario.setarQtdItensAtual(inventario.qtdItensAtual + quantidadeResponse);
             quantidade += quantidadeResponse;
             txQuantidade.text = quantidade + "";
@@ -496,7 +300,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         foreach (SlotHotbar slot in hotbar.slots)
         {
-            if (slot.item != null && slot.item.nomeItem.Equals(this.nomeItem))
+            if (slot.item != null && slot.item.itemIdentifierAmount.ItemDefinition.name.Equals(this.itemIdentifierAmount.ItemDefinition.name))
             {
                 slot.objEmbacarImg.SetActive(isDesativando);
             }
