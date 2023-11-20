@@ -322,15 +322,19 @@ public class LobisomemMovimentacao : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (targetInimigo != null || !statsGeral.health.IsAlive()) return;
-        if (other.gameObject.tag == "Player")
+        Debug.Log("procurando alvo");
+        if (other.gameObject.tag == "PlayerCollider")
         {
-            if (targetInimigo == null && other.GetComponent<StatsGeral>() != null  && other.GetComponent<StatsGeral>().health.IsAlive())
+            Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
+            StatsGeral statsGeral = other.transform.GetComponentInParent<StatsGeral>();
+            if (targetInimigo == null && statsGeral != null && statsGeral.health.IsAlive())
             {
-                Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
-                targetInimigo = other.GetComponent<StatsGeral>();
+                Debug.Log("LOBISOMEM ACHOU statsGeral");
+                targetInimigo = statsGeral;
                 targetComida = null;
             }
         }
+
         if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
         {
             StatsGeral objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>();
@@ -382,7 +386,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     void AnimEventComeu()
     {
-        if (targetComida != null && targetComida.tag != "Player") { 
+        if (targetComida != null && targetComida.tag != "PlayerCollider") { 
             Destroy(targetComida.gameObject); 
         }
     }

@@ -24,11 +24,6 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
             if (!(GetComponentInParent<LobisomemController>() != null && other.gameObject.GetComponentInParent<LobisomemController>() != null)) //Verificar que um lobo nao esta batendo em outro lobo
             {
                 float damage = statsGeral.damage;
-                ItemObjMao itemObjMao = GetComponent<ItemObjMao>();
-                if (itemObjMao != null)
-                {
-                    damage = collisorSofreDano.CalcularDanoPorArmaCausandoDano(itemObjMao, statsGeral.damage);
-                }
                 GameObject objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>().gameObject;
                 if (collisorSofreDano.isConstrucao)
                 {
@@ -43,13 +38,13 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     else
                     {
                         bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
-                        objPai.GetComponent<StatsGeral>().AcoesTomouDano();
+                        objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                     }
                 }
                 else
                 {
                     bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
-                    objPai.GetComponent<StatsGeral>().AcoesTomouDano();
+                    objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                 }
                 statsGeral.isAttacking = false;
             }

@@ -66,7 +66,7 @@ public class StatsJogador : MonoBehaviour
 
     public float ObterVidaMaximaHealth()
     {
-        return playerController.characterAttributeManager.GetAttribute(playerController.characterHealth.HealthAttributeName).MaxValue;
+        return playerController.characterAttributeManager.GetAttribute("Health").MaxValue;
     }
 
     public void setarFomeAtual(float valor)

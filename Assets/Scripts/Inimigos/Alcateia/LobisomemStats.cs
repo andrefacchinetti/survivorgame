@@ -17,7 +17,6 @@ public class LobisomemStats : MonoBehaviour
 
     [SerializeField][HideInInspector] public LobisomemController lobisomemController;
     [SerializeField] StatsGeral statsGeral;
-    [SerializeField] Collider colliderCorpo;
 
 
     private void Awake()
@@ -33,11 +32,10 @@ public class LobisomemStats : MonoBehaviour
 
     public void AcoesMorreu()
     {
-        if (!lobisomemController.statsGeral.health.IsAlive()) return;
+        if (lobisomemController.statsGeral.health.IsAlive()) return;
         lobisomemController.lobisomemMovimentacao.animator.SetBool("isDead", true);
         lobisomemController.lobisomemMovimentacao.agent.isStopped = true;
         lobisomemController.lobisomemMovimentacao.agent.speed = 0;
-        colliderCorpo.isTrigger = true;
         Debug.Log("Lobisomen morreu");
     }
 

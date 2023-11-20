@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		statsJogador = GetComponent<StatsJogador>();
 		statsGeral = GetComponent<StatsGeral>();
 		characterHealth = GetComponent<CharacterHealth>();
+		characterAttributeManager = GetComponent<CharacterAttributeManager>();
 		txMsgAlerta.text = "";
 	}
 

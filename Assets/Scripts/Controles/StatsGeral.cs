@@ -69,7 +69,19 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
-    public void AcoesTomouDano()
+    public void TakeDamage(float damageValue) //Dano causado pro fatores externos (sem ser por dano de arma do player)
+    {
+        if (jogadorStats != null) //jogador
+        {
+            jogadorStats.TakeDamageHealth(damageValue);
+        }
+        else //outros
+        {
+            GetComponent<Health>().Damage(damageValue);
+        }
+    }
+
+    public void AcoesTomouDano() //É chamado no event invocado apos o Health receber o Damage()
     {
         
         if (GetComponent<Health>().HealthValue > 0) //SOBREVIVEU

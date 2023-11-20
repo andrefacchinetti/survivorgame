@@ -22,7 +22,7 @@ public class LobisomemController : MonoBehaviour
 
     private void Start()
     {
-        jogadores = GameObject.FindGameObjectsWithTag("Player");
+        jogadores = GameObject.FindGameObjectsWithTag("PlayerCollider");
     }
 
     public bool estouLongeDeAlgumJogador()
