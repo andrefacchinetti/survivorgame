@@ -322,7 +322,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (targetInimigo != null || !statsGeral.health.IsAlive()) return;
-        Debug.Log("procurando alvo");
+        Debug.Log("procurando alvo: "+ other.gameObject.tag);
         if (other.gameObject.tag == "PlayerCollider")
         {
             Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
