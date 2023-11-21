@@ -322,36 +322,34 @@ public class LobisomemMovimentacao : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (targetInimigo != null || !statsGeral.health.IsAlive()) return;
-        Debug.Log("procurando alvo: "+ other.gameObject.tag);
-        if (other.gameObject.tag == "PlayerCollider")
+        if (other.transform.tag == "PlayerCollider")
         {
             Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
             StatsGeral statsGeral = other.transform.GetComponentInParent<StatsGeral>();
             if (targetInimigo == null && statsGeral != null && statsGeral.health.IsAlive())
             {
-                Debug.Log("LOBISOMEM ACHOU statsGeral");
+                Debug.Log("LOBISOMEM ACHOU statsGeral do player");
                 targetInimigo = statsGeral;
                 targetComida = null;
             }
         }
-
-        if (other.gameObject.GetComponent<CollisorSofreDano>() != null)
+        if (other.transform.tag == "AnimalCollider")
         {
-            StatsGeral objPai = other.gameObject.GetComponent<CollisorSofreDano>().GetComponentInParent<StatsGeral>();
-            if (objPai.gameObject.GetComponent<AnimalController>() != null && objPai.health.IsAlive())
+            StatsGeral statsGeral = other.gameObject.GetComponentInParent<StatsGeral>();
+            if (statsGeral.gameObject.GetComponent<AnimalController>() != null && statsGeral.health.IsAlive())
             {
                 Debug.Log("LOBISOMEM ACHOU ANIMAL");
                 targetComida = null;
-                if (objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)
+                if (statsGeral.gameObject.GetComponent<AnimalController>().isPequenoPorte)
                 {
-                    if (objPai.gameObject.GetComponent<AnimalController>().isAnimalAgressivo)
+                    if (statsGeral.gameObject.GetComponent<AnimalController>().isAnimalAgressivo)
                     {
                         Fugir();
                     }
                 }
                 else
                 {
-                    targetInimigo = objPai;
+                    targetInimigo = statsGeral;
                 }
             }
         }

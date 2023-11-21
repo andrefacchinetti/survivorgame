@@ -18,6 +18,14 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
     void OnTriggerEnter(Collider other)
     {
         if (!statsGeral.isAttacking) return;
+
+        if(other.transform.tag == "PlayerCollider")
+        {
+            Debug.Log("bateu no player collider");
+            bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
+            other.GetComponentInParent<StatsGeral>().TakeDamage(statsGeral.damage);
+            statsGeral.isAttacking = false;
+        }
         CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
         if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID) //VERIFICA SE NAO ESTA BATENDO EM SI PROPRIO
         {
@@ -37,7 +45,6 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     }
                     else
                     {
-                        bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
                         objPai.GetComponent<StatsGeral>().TakeDamage(damage);
                     }
                 }
