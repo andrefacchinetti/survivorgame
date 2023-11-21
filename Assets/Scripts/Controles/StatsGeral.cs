@@ -65,7 +65,7 @@ public class StatsGeral : MonoBehaviour
         }
         else //outros
         {
-            GetComponent<Health>().Heal(curaValue);
+            health.Heal(curaValue);
         }
     }
 
@@ -77,14 +77,14 @@ public class StatsGeral : MonoBehaviour
         }
         else //outros
         {
-            GetComponent<Health>().Damage(damageValue);
+            health.Damage(damageValue);
         }
     }
 
     public void AcoesTomouDano() //É chamado no event invocado apos o Health receber o Damage()
     {
         
-        if (GetComponent<Health>().HealthValue > 0) //SOBREVIVEU
+        if (health.HealthValue > 0) //SOBREVIVEU
         {
             if (animalStats != null) animalStats.AcoesTomouDano();
             else if (lobisomemStats != null) lobisomemStats.AcoesTomouDano();
