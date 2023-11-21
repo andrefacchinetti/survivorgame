@@ -1,3 +1,15 @@
+1.0.4
+
+Added:
+- Slider in the UI to expand the layers list, making all of them visible.
+
+Changed:
+- Improved Gradient noise modifier, now guaranteed to provide a smooth gradient
+- Improved error handling when any assign terrain layer assets went missing
+
+Fixed:
+- Noise modifier only seeming to have an effect when the tiling value was around 100.
+
 1.0.3
 
 Changed:

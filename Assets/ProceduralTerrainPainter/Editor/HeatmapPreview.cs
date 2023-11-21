@@ -53,7 +53,7 @@ namespace sc.terrain.proceduralpainter
         
         public static void Draw(Terrain terrain, TerrainLayer layer, Texture alphaMap, bool contour, bool tilingPreview)
         {
-            if (!terrain) return;
+            if (!terrain || !layer) return;
             
             if (!heatmapMat) heatmapMat = new Material(Shader.Find("Hidden/TerrainPainter/Heatmap"));
             

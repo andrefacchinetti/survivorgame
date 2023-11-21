@@ -16,7 +16,7 @@ namespace sc.terrain.proceduralpainter
     [ExecuteInEditMode]
     public partial class TerrainPainter : MonoBehaviour
     {
-        public const string Version = "1.0.3";
+        public const string Version = "1.0.4";
         public static TerrainPainter Current;
 
         public Terrain[] terrains;
@@ -172,8 +172,6 @@ namespace sc.terrain.proceduralpainter
 
         public void CreateSettingsForLayer(TerrainLayer layer)
         {
-            if (layer == null) return;
-            
             LayerSettings s = new LayerSettings();
             s.layer = layer;
             s.modifierStack = new List<Modifier>();

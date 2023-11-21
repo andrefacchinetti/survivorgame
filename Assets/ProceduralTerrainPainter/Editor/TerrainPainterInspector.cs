@@ -190,11 +190,8 @@ namespace sc.terrain.proceduralpainter
         
         public override void OnInspectorGUI()
         {
-            Rect versionRect = EditorGUILayout.GetControlRect();
-            versionRect.y -= versionRect.height + 5;
-            versionRect.x = 240f;
-            GUI.Label(versionRect, "Version " + TerrainPainter.Version, EditorStyles.miniLabel);
-            GUILayout.Space(-17f);
+            EditorGUILayout.LabelField("Version " + TerrainPainter.Version, EditorStyles.centeredGreyMiniLabel);
+            GUILayout.Space(5f);
             
             //Terrains not yet assigned? Force settings tab
             if (terrains.arraySize > 0 && !hasMissingTerrains)
@@ -245,6 +242,18 @@ namespace sc.terrain.proceduralpainter
             #if __MICROSPLAT__
             if(requiresConfigRebuild && script.msTexArray) TextureArrayConfigEditor.CompileConfig(script.msTexArray);
             #endif
+
+            EditorGUILayout.Space();
+            
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();   
+                if(GUILayout.Button(new GUIContent(" Force Repaint ", "Trigger a complete repaint operation. Typically needed if the terrain was modified in some way, yet not changes are made in the Terrain Painter component")))
+                {
+                    requiresRepaint = true;
+                }
+                GUILayout.FlexibleSpace();
+            }
             
             if (requiresRepaint)
             {
@@ -387,6 +396,13 @@ namespace sc.terrain.proceduralpainter
         }
         
         #region Layers
+        private float previewScaleMultiplier 
+        {
+            get => EditorPrefs.GetFloat("PTP_UI_LAYER_COUNT", 4f);
+            set => EditorPrefs.SetFloat("PTP_UI_LAYER_COUNT", value);
+        }
+        private Rect sliderRect;
+        
         private void DrawLayers()
         {
 #if __MICROSPLAT__
@@ -394,8 +410,14 @@ namespace sc.terrain.proceduralpainter
 #else
             EditorGUILayout.Space();
 #endif
+
+            sliderRect = EditorGUILayout.GetControlRect();
+            sliderRect.x += (EditorGUIUtility.currentViewWidth * 0.75f);
+            sliderRect.width *= 0.2f;
             
-            scrollview = EditorGUILayout.BeginScrollView(scrollview, GUILayout.Height((kElementHeight * 4f) + 5f));
+            previewScaleMultiplier = GUI.HorizontalSlider(sliderRect, previewScaleMultiplier, 4f, m_LayerList.count);
+            
+            scrollview = EditorGUILayout.BeginScrollView(scrollview, GUILayout.Height((kElementHeight * previewScaleMultiplier) + 3f));
 
             m_LayerList.DoLayoutList();
             
@@ -529,20 +551,23 @@ namespace sc.terrain.proceduralpainter
                 m_PickedLayer = (TerrainLayer) EditorGUIUtility.GetObjectPickerObject();
                 m_layerPickerWindowID = -1;
 
-                if (m_PickedLayer == null) return;
-
-                var exists = false;
-
-                foreach (LayerSettings s in script.layerSettings)
+                if (m_PickedLayer)
                 {
-                    if (s.layer == m_PickedLayer) exists = true;
-                }
 
-                if (exists)
-                {
-                    EditorUtility.DisplayDialog("Terrain Painter", "Terrain layer already exists", "Ok");
-                    return;
+                    var exists = false;
+
+                    foreach (LayerSettings s in script.layerSettings)
+                    {
+                        if (s.layer == m_PickedLayer) exists = true;
+                    }
+
+                    if (exists)
+                    {
+                        EditorUtility.DisplayDialog("Terrain Painter", "Terrain layer already exists", "Ok");
+                        return;
+                    }
                 }
+                
                 script.CreateSettingsForLayer(m_PickedLayer);
                 
                 MicroSplatAdd(m_PickedLayer);

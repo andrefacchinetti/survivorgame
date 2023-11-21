@@ -173,30 +173,9 @@ MonoBehaviour:
   opacity: 100
   passIndex: 4
   noiseType: 0
-  noiseScale: 4
+  noiseScale: 32.11
   noiseOffset: {x: 0, y: 0}
   levels: {x: 0.21428573, y: 1}
---- !u!114 &185008859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e07d49e90874d70b9937cb753327a2d, type: 3}
-  m_Name: Noise mask
-  m_EditorClassIdentifier: 
-  enabled: 0
-  label: Noise mask
-  blendMode: 0
-  opacity: 100
-  passIndex: 4
-  noiseType: 0
-  noiseScale: 6.03
-  noiseOffset: {x: 0, y: 0}
-  levels: {x: 0.21978022, y: 1}
 --- !u!1 &299400019
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +216,6 @@ MonoBehaviour:
   - enabled: 1
     layer: {fileID: 8574412962073106934, guid: 3d81b9bfeafeb1f40b4d3c7d03d1e108, type: 2}
     modifierStack:
-    - {fileID: 185008859}
     - {fileID: 502591979}
     - {fileID: 2052956326}
   - enabled: 1
@@ -247,18 +225,18 @@ MonoBehaviour:
     - {fileID: 1603295467}
     - {fileID: 1551988373}
   - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: eb742adf8ec7a8b4684109a139de6019, type: 2}
+    modifierStack:
+    - {fileID: 420022578}
+    - {fileID: 24849214}
+    - {fileID: 1405098487}
+  - enabled: 1
     layer: {fileID: 8574412962073106934, guid: a026f67c6452bb7488422ec75c67c660, type: 2}
     modifierStack:
     - {fileID: 462142356}
     - {fileID: 509100270}
     - {fileID: 1901885561}
     - {fileID: 1499765328}
-  - enabled: 1
-    layer: {fileID: 8574412962073106934, guid: eb742adf8ec7a8b4684109a139de6019, type: 2}
-    modifierStack:
-    - {fileID: 420022578}
-    - {fileID: 24849214}
-    - {fileID: 1405098487}
   - enabled: 1
     layer: {fileID: 8574412962073106934, guid: 0cb80391d22817b42a6231c64293ae96, type: 2}
     modifierStack:
@@ -267,9 +245,12 @@ MonoBehaviour:
   - enabled: 1
     layer: {fileID: 8574412962073106934, guid: 69debc15b685aef4aa7bb2783ddd8a2b, type: 2}
     modifierStack: []
+  autoRepaint: 0
+  terrainListeners: []
   bounds:
     m_Center: {x: 0, y: 258.71924, z: 0}
     m_Extent: {x: 1024, y: 186.18867, z: 1024}
+  refreshVegetationOnPaint: 0
   msTexArray: {fileID: 0}
   filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!4 &299400021
@@ -303,8 +284,8 @@ MonoBehaviour:
   blendMode: 0
   opacity: 100
   passIndex: 1
-  minMax: {x: 0, y: 5.9823112}
-  minFalloff: 45.8
+  minMax: {x: 0, y: 13.387375}
+  minFalloff: 25.8
   maxFalloff: 0.001
 --- !u!114 &437419768
 MonoBehaviour:
@@ -323,10 +304,10 @@ MonoBehaviour:
   blendMode: 0
   opacity: 100
   passIndex: 2
-  minMax: {x: 0, y: 0.0040873885}
-  radius: 9.44
-  minFalloff: 0.25
-  maxFalloff: 0.231
+  minMax: {x: 0, y: 0}
+  radius: 1
+  minFalloff: 0.126
+  maxFalloff: 0.528
 --- !u!114 &462142356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,9 +326,9 @@ MonoBehaviour:
   opacity: 70
   passIndex: 4
   noiseType: 0
-  noiseScale: 96.16
+  noiseScale: 50.94
   noiseOffset: {x: 0, y: 0}
-  levels: {x: 0, y: 1}
+  levels: {x: 0.11392405, y: 1}
 --- !u!1 &468788685
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,7 +389,7 @@ Terrain:
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 1
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 3000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 0
   m_DrawHeightmap: 1
@@ -443,7 +424,7 @@ MonoBehaviour:
   passIndex: 1
   minMax: {x: 0, y: 0}
   minFalloff: 0.001
-  maxFalloff: 2
+  maxFalloff: 4.8
 --- !u!114 &509100270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,7 +459,7 @@ GameObject:
   - component: {fileID: 797091070}
   - component: {fileID: 797091069}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Scale Reference
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -553,8 +534,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 797091068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -48, y: 94.042, z: 262}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -325.5, y: 171.936, z: 750.6}
+  m_LocalScale: {x: 0.66, y: 0.9, z: 0.66}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -591,8 +572,8 @@ ReflectionProbe:
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
-  m_BoxSize: {x: 2048, y: 300, z: 2048}
-  m_BoxOffset: {x: 0, y: 0, z: 0}
+  m_BoxSize: {x: 2048, y: 412.60815, z: 2048}
+  m_BoxOffset: {x: 0, y: 56.304077, z: 0}
   m_NearClip: 0.3
   m_FarClip: 1000
   m_ShadowDistance: 100
@@ -683,7 +664,7 @@ Terrain:
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 1
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 3000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 0
   m_DrawHeightmap: 1
@@ -759,7 +740,7 @@ Terrain:
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 1
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 3000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 0
   m_DrawHeightmap: 1
@@ -811,7 +792,7 @@ MonoBehaviour:
   enabled: 1
   label: Height range
   blendMode: 0
-  opacity: 100
+  opacity: 93
   passIndex: 0
   min: 0
   minFalloff: 0.001
@@ -877,7 +858,7 @@ MonoBehaviour:
   passIndex: 1
   minMax: {x: 0, y: 0}
   minFalloff: 0.001
-  maxFalloff: 8.6
+  maxFalloff: 12.8
 --- !u!114 &1690880832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -895,8 +876,8 @@ MonoBehaviour:
   blendMode: 0
   opacity: 100
   passIndex: 1
-  minMax: {x: 4.9390244, y: 90}
-  minFalloff: 23.7
+  minMax: {x: 26.584595, y: 90}
+  minFalloff: 21.6
   maxFalloff: 0.001
 --- !u!1 &1889588237
 GameObject:
@@ -927,7 +908,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.97569555, b: 0.9103774, a: 1}
-  m_Intensity: 1.34
+  m_Intensity: 1.45
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1030,7 +1011,7 @@ MonoBehaviour:
   passIndex: 0
   min: 0
   minFalloff: 1
-  max: 209.1
+  max: 132.8
   maxFalloff: 11
 --- !u!1 &2082284929
 GameObject:
@@ -1092,7 +1073,7 @@ Terrain:
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 1
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 3000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 0
   m_DrawHeightmap: 1

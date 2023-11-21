@@ -30,7 +30,6 @@ Shader "Hidden/TerrainPainter/Modifier"
 	
 	sampler2D _MainTex;
 	sampler2D _MaskTexture;
-	//TODO: Mask texture UV
 	
 	sampler2D _Heightmap;
 	float4 _Heightmap_ST;
@@ -201,7 +200,7 @@ Shader "Hidden/TerrainPainter/Modifier"
 
 				if(_NoiseType == 1)
 				{
-					mask = GradientNoise(coords);
+					mask = GradientNoise(coords) * 0.5 + 0.5;
 
 				}
 				if(_NoiseType == 0)

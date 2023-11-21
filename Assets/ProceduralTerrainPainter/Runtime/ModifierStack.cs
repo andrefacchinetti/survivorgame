@@ -83,7 +83,7 @@ namespace sc.terrain.proceduralpainter
         public static void ProcessSingleLayer(Terrain terrain, LayerSettings settings)
         {
             //Disable or with no settings (result in a fill with black)
-            if (settings.enabled == false) return;
+            if (settings.enabled == false || settings.layer == false) return;
             
             Graphics.SetRenderTarget(alphaMap);
             
