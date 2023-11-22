@@ -97,6 +97,29 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				armaduras.slotLanterna.TurnOffOnLanterna();
 			}
 
+			if (swimAbility.IsActive)
+			{
+				// Se o personagem está nadando, desequipe todos os itens
+				if (jaSaiuDaAgua)
+				{
+					Debug.Log("Entrou na água: desequipando items");
+					GetComponent<ItemSetManagerBase>().UnEquipAllItems(true, true);
+					jaSaiuDaAgua = false;
+				}
+			}
+			else
+			{
+				// Se o personagem não está nadando, equipe o item apenas uma vez quando ele sair da água
+				if (!jaSaiuDaAgua)
+				{
+					IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;
+					GetComponent<ItemSetManagerBase>().EquipItem(itemIdBody, -1, true, true);
+					Debug.Log("Saiu da água: equipando body");
+					jaSaiuDaAgua = true;
+				}
+			}
+
+
 			if (swimAbility.IsActive) // Se o personagem está nadando, desequipe todos os itens
 			{
 				if (jaSaiuDaAgua)
