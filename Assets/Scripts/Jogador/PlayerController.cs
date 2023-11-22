@@ -13,6 +13,10 @@ using Opsive.Shared.Inventory;
 using Opsive.UltimateCharacterController.Inventory;
 using Opsive.UltimateCharacterController.Traits;
 using Opsive.UltimateCharacterController.Character;
+using Opsive.UltimateCharacterController.Character.Abilities;
+using Opsive.UltimateCharacterController.AddOns.Swimming;
+using Opsive.UltimateCharacterController.Character.Abilities.Items;
+using Opsive.UltimateCharacterController.Inventory;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -40,6 +44,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
 	[SerializeField] [HideInInspector] public ItemDefinitionBase itemDefinitionBaseColentando;
 	[SerializeField] [HideInInspector] public GameController gameController;
+	[SerializeField] [HideInInspector] public Swim swimAbility; 
+
 
 	[HideInInspector] public bool canMove = true;
 	public float pesoGrab = 0.0f;
@@ -57,6 +63,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		characterHealth = GetComponent<CharacterHealth>();
 		characterAttributeManager = GetComponent<CharacterAttributeManager>();
 		txMsgAlerta.text = "";
+		characterLocomotion = GetComponent<UltimateCharacterLocomotion>();
+		swimAbility = characterLocomotion.GetAbility<Swim>();
 	}
 
 	void Start()
@@ -64,6 +72,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (PV == null) return;
 	}
 
+	bool jaSaiuDaAgua = true, tt=false;
 	void Update()
 	{
 		if (PV == null) return;
@@ -83,10 +92,31 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					inventario.itemNaMao.DroparItem();
 				}
 			}
-            if (Input.GetButtonDown("Action"))
+            if (Input.GetButtonDown("Use"))
             {
 				armaduras.slotLanterna.TurnOffOnLanterna();
 			}
+
+			if (swimAbility.IsActive) // Se o personagem está nadando, desequipe todos os itens
+			{
+				if (jaSaiuDaAgua)
+				{
+					Debug.Log("Entrou na água: desequipando items");
+					GetComponent<ItemSetManagerBase>().UnEquipAllItems(true, true);
+					jaSaiuDaAgua = false;
+				}
+			}
+			else // Se o personagem parou de nadar, equipe o item body
+			{
+				if (!jaSaiuDaAgua)
+				{
+					IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;
+					GetComponent<ItemSetManagerBase>().EquipItem(itemIdBody, -1, true, true);
+					Debug.Log("Saiu da água: equipando body");
+					jaSaiuDaAgua = true;
+				}
+			}
+
 		}
 		//verificarAnimacoesSegurandoItem();
 	}
