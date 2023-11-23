@@ -44,7 +44,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
 	[SerializeField] [HideInInspector] public ItemDefinitionBase itemDefinitionBaseColentando;
 	[SerializeField] [HideInInspector] public GameController gameController;
-	[SerializeField] [HideInInspector] public Swim swimAbility; 
+	[SerializeField] [HideInInspector] public Swim swimAbility;
+	[SerializeField] [HideInInspector] public ClimbFromWater climbWaterAbility;
 
 
 	[HideInInspector] public bool canMove = true;
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		txMsgAlerta.text = "";
 		characterLocomotion = GetComponent<UltimateCharacterLocomotion>();
 		swimAbility = characterLocomotion.GetAbility<Swim>();
+		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();
 	}
 
 	void Start()
@@ -97,7 +99,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				armaduras.slotLanterna.TurnOffOnLanterna();
 			}
 
-			if (swimAbility.IsActive)
+			if (swimAbility.IsActive || climbWaterAbility.IsActive)
 			{
 				// Se o personagem está nadando, desequipe todos os itens
 				if (jaSaiuDaAgua)
@@ -110,27 +112,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			else
 			{
 				// Se o personagem não está nadando, equipe o item apenas uma vez quando ele sair da água
-				if (!jaSaiuDaAgua)
-				{
-					IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;
-					GetComponent<ItemSetManagerBase>().EquipItem(itemIdBody, -1, true, true);
-					Debug.Log("Saiu da água: equipando body");
-					jaSaiuDaAgua = true;
-				}
-			}
-
-
-			if (swimAbility.IsActive) // Se o personagem está nadando, desequipe todos os itens
-			{
-				if (jaSaiuDaAgua)
-				{
-					Debug.Log("Entrou na água: desequipando items");
-					GetComponent<ItemSetManagerBase>().UnEquipAllItems(true, true);
-					jaSaiuDaAgua = false;
-				}
-			}
-			else // Se o personagem parou de nadar, equipe o item body
-			{
 				if (!jaSaiuDaAgua)
 				{
 					IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;

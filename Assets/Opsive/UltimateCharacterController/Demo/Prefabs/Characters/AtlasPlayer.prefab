@@ -45545,16 +45545,23 @@ MonoBehaviour:
   - rid: 368926224600793144
   m_Abilities:
   - rid: 1246164547599597590
+  - rid: 368926206858625272
+  - rid: 3024402045362241564
+  - rid: 3024402045362241569
+  - rid: 3024402045362241578
+  - rid: 1246165063816446069
+  - rid: 3024402045362241584
+  - rid: 1246164547599597593
   - rid: 368926223688270828
   - rid: 368926223688270827
+  - rid: 1246165063816445987
   - rid: 368926223688270829
+  - rid: 368926223688270825
   - rid: 368926223688270823
   - rid: 368926223688270824
-  - rid: 368926223688270825
   - rid: 368926223688270826
   - rid: 1246164547599597589
   - rid: 368926223688270830
-  - rid: 1246165063816445987
   - rid: 368926206858625273
   - rid: 3024401404359081994
   - rid: 3024401404359081985
@@ -45562,13 +45569,6 @@ MonoBehaviour:
   - rid: 1151095698550423566
   - rid: 3024402045362241555
   - rid: 1151095348643233793
-  - rid: 1246164547599597593
-  - rid: 368926206858625272
-  - rid: 3024402045362241564
-  - rid: 3024402045362241569
-  - rid: 3024402045362241578
-  - rid: 1246165063816446069
-  - rid: 3024402045362241584
   - rid: 1246164547599597592
   - rid: 1151095772050096325
   - rid: 1246165063816446059
@@ -45827,8 +45827,8 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 1
-        m_StartType: 2
+        m_Enabled: 0
+        m_StartType: 0
         m_StopType: 1
         m_InputNames:
         - Jump
@@ -45843,7 +45843,7 @@ MonoBehaviour:
           m_AutoUpdateStartDelay: 1
           m_AutoUpdateInterval: 0.1
           m_AutoUpdateDuration: -1
-        m_State: 
+        m_State: Climb
         m_StateAppendItemIdentifierName: 0
         m_AbilityIndexParameter: 303
         m_StartAudioClipSet:
@@ -45863,17 +45863,17 @@ MonoBehaviour:
         m_AnimatorMotion: {fileID: 0}
         m_StartEffectName: 
         m_StartEffectIndex: -1
-        m_AllowEquippedSlotsMask: 0
+        m_AllowEquippedSlotsMask: 3
         m_AllowItemDefinitions: []
-        m_ImmediateUnequip: 1
-        m_ReequipSlots: 0
+        m_ImmediateUnequip: 0
+        m_ReequipSlots: 1
         m_AbilityMessageText: Press Jump to Climb Out
         m_AbilityMessageIcon: {fileID: 0}
         m_InspectorDescription: 
-        m_ObjectDetection: -1
+        m_ObjectDetection: 4
         m_DetectLayers:
           serializedVersion: 2
-          m_Bits: 2415919067
+          m_Bits: 1
         m_UseLookPosition: 0
         m_UseLookDirection: 0
         m_AngleThreshold: 360
@@ -45913,7 +45913,7 @@ MonoBehaviour:
           m_AutoUpdateStartDelay: 1
           m_AutoUpdateInterval: 0.1
           m_AutoUpdateDuration: -1
-        m_State: 
+        m_State: Dive
         m_StateAppendItemIdentifierName: 0
         m_AbilityIndexParameter: 302
         m_StartAudioClipSet:
@@ -45943,7 +45943,7 @@ MonoBehaviour:
         m_ObjectID: -1
         m_LayerMask:
           serializedVersion: 2
-          m_Bits: 4294967295
+          m_Bits: 0
         m_GroundNormalSensitivity: 0.5
         m_AngleThreshold: 180
         m_MoveWithObject: 0
@@ -45953,11 +45953,12 @@ MonoBehaviour:
         m_Frames: 40
         m_WillEnterWaterDistance: 2
         m_EntranceSplash:
-          m_ParticlePrefab: {fileID: 0}
+          m_ParticlePrefab: {fileID: 1758623073433558, guid: 154090138d7b25942a3c6b8f01771697, type: 3}
           m_Location: {fileID: 0}
           m_AudioClipSet:
             m_AudioConfig: {fileID: 0}
-            m_AudioClips: []
+            m_AudioClips:
+            - {fileID: 8300000, guid: 26acae2eb70abcb478ca2fb402424617, type: 3}
           m_MinVelocity: 0
         m_RetainedGravityAmount: 0.28
     - rid: 368926223688270825
@@ -45983,7 +45984,7 @@ MonoBehaviour:
           m_AutoUpdateStartDelay: 1
           m_AutoUpdateInterval: 0.1
           m_AutoUpdateDuration: -1
-        m_State: 
+        m_State: Drown
         m_StateAppendItemIdentifierName: 0
         m_AbilityIndexParameter: 304
         m_StartAudioClipSet:
@@ -46220,7 +46221,7 @@ MonoBehaviour:
         m_ObjectDetection: 2
         m_DetectLayers:
           serializedVersion: 2
-          m_Bits: 2415919067
+          m_Bits: 131072
         m_UseLookPosition: 0
         m_UseLookDirection: 1
         m_AngleThreshold: 360
@@ -46258,7 +46259,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 0
+        m_Enabled: 1
         m_StartType: 2
         m_StopType: 4
         m_InputNames:
@@ -46304,8 +46305,8 @@ MonoBehaviour:
         m_ObjectDetection: 2
         m_DetectLayers:
           serializedVersion: 2
-          m_Bits: 2348941275
-        m_UseLookPosition: 1
+          m_Bits: 262144
+        m_UseLookPosition: 0
         m_UseLookDirection: 1
         m_AngleThreshold: 360
         m_ObjectID: -1
@@ -46315,7 +46316,7 @@ MonoBehaviour:
         m_TriggerInteraction: 1
         m_SpherecastRadius: 0.5
         m_MaxTriggerObjectCount: 1
-        m_MoveWithObject: 0
+        m_MoveWithObject: 1
         m_AirborneAutoStart: 1
         m_AllowedMovements: -1
         m_AirborneMoveTowardsSpeed: 0.2
@@ -46328,7 +46329,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 0
+        m_Enabled: 1
         m_StartType: 2
         m_StopType: 1
         m_InputNames:
@@ -46374,7 +46375,7 @@ MonoBehaviour:
         m_ObjectDetection: 2
         m_DetectLayers:
           serializedVersion: 2
-          m_Bits: 2415919067
+          m_Bits: 524288
         m_UseLookPosition: 0
         m_UseLookDirection: 0
         m_AngleThreshold: 360
@@ -47226,7 +47227,7 @@ MonoBehaviour:
         m_MinCeilingJumpHeight: 0.05
         m_GroundedGracePeriod: 0.05
         m_PreventSlopeLimitJump: 1
-        m_Force: 0.2
+        m_Force: 0.5
         m_SidewaysForceMultiplier: 0.8
         m_BackwardsForceMultiplier: 0.7
         m_Frames: 1
@@ -47930,7 +47931,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 0
+        m_Enabled: 1
         m_StartType: 1
         m_StopType: 1
         m_InputNames: []
@@ -49878,7 +49879,7 @@ MonoBehaviour:
     m_Bits: 1879048230
   m_SolidObjectLayers:
     serializedVersion: 2
-    m_Bits: 2415919051
+    m_Bits: 136264649
 --- !u!54 &4279088124074405316
 Rigidbody:
   m_ObjectHideFlags: 0
