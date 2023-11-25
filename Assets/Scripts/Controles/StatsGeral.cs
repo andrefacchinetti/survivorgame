@@ -15,13 +15,13 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public GameObject dropPosition;
     [HideInInspector] public bool isAttacking;
 
-    [HideInInspector] public Health health;
+    [SerializeField] public Health health;
     [HideInInspector] public AttributeManager attributeManager;
     [HideInInspector] public StatsJogador jogadorStats;
-    LobisomemStats lobisomemStats;
-    AnimalStats animalStats;
-    DropaRecursosStats dropaRecursosStats;
-    ReconstruivelStats reconstruivelStats;
+    [HideInInspector] public LobisomemStats lobisomemStats;
+    [HideInInspector] public AnimalStats animalStats;
+    [HideInInspector] public DropaRecursosStats dropaRecursosStats;
+    [HideInInspector] public ReconstruivelStats reconstruivelStats;
     [SerializeField] public ItemDefinitionBase itemRepairHammer, itemDemolitionHammer;
 
     PhotonView PV;
@@ -35,7 +35,7 @@ public class StatsGeral : MonoBehaviour
         dropaRecursosStats = GetComponentInParent<DropaRecursosStats>();
         jogadorStats = GetComponentInParent<StatsJogador>();
         reconstruivelStats = GetComponentInParent<ReconstruivelStats>();
-        health = GetComponentInParent<Health>();
+        if(health == null) health = GetComponentInParent<Health>();
         attributeManager = GetComponentInParent<AttributeManager>();
         if (dropPosition == null) dropPosition = this.gameObject;
     }
@@ -77,13 +77,17 @@ public class StatsGeral : MonoBehaviour
         }
         else //outros
         {
+            Debug.Log("take damage");
             health.Damage(damageValue);
         }
     }
 
     public void AcoesTomouDano() //É chamado no event invocado apos o Health receber o Damage()
     {
-        
+        if (jogadorStats != null)
+        {
+            jogadorStats.AtualizarImgVida();
+        }
         if (health.HealthValue > 0) //SOBREVIVEU
         {
             if (animalStats != null) animalStats.AcoesTomouDano();

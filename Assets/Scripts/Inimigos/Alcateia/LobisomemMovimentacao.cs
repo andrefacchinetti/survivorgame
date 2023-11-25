@@ -87,7 +87,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))  // Ataca o alvo
             {
-                Debug.Log("Atacando inimigo");
                 atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
             }
             else
@@ -322,38 +321,19 @@ public class LobisomemMovimentacao : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (targetInimigo != null || !statsGeral.health.IsAlive()) return;
-        if (other.transform.tag == "PlayerCollider")
+        Debug.Log("procurando");
+        if (other.tag == "PlayerCollider" || other.tag == "AnimalCollider")
         {
-            Debug.Log("LOBISOMEM ACHOU player e setou seu alvo");
-            StatsGeral statsGeral = other.transform.GetComponentInParent<StatsGeral>();
-            if (targetInimigo == null && statsGeral != null && statsGeral.health.IsAlive())
+            Debug.Log("LOBISOMEM ACHOU ENEMY");
+            StatsGeral statsGeralEnemy = other.transform.GetComponentInParent<StatsGeral>();
+            if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive())
             {
-                Debug.Log("LOBISOMEM ACHOU statsGeral do player");
-                targetInimigo = statsGeral;
+                targetInimigo = statsGeralEnemy;
                 targetComida = null;
             }
         }
-        if (other.transform.tag == "AnimalCollider")
-        {
-            StatsGeral statsGeral = other.gameObject.GetComponentInParent<StatsGeral>();
-            if (statsGeral.gameObject.GetComponent<AnimalController>() != null && statsGeral.health.IsAlive())
-            {
-                Debug.Log("LOBISOMEM ACHOU ANIMAL");
-                targetComida = null;
-                if (statsGeral.gameObject.GetComponent<AnimalController>().isPequenoPorte)
-                {
-                    if (statsGeral.gameObject.GetComponent<AnimalController>().isAnimalAgressivo)
-                    {
-                        Fugir();
-                    }
-                }
-                else
-                {
-                    targetInimigo = statsGeral;
-                }
-            }
-        }
-        if (targetInimigo == null && other.tag == "ItemDrop")
+       
+        if (other.tag == "ItemDrop")
         {
             if (other.GetComponent<Consumivel>() != null && other.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
             {
