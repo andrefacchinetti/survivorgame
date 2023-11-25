@@ -26,36 +26,46 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
             other.GetComponentInParent<StatsGeral>().TakeDamage(statsGeral.damage);
             statsGeral.isAttacking = false;
         }
-        CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
-        if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID) //VERIFICA SE NAO ESTA BATENDO EM SI PROPRIO
+        if(other.transform.tag == "AnimalCollider" || other.transform.tag == "ConstrucaoCollider")
         {
-            if (!(GetComponentInParent<LobisomemController>() != null && other.gameObject.GetComponentInParent<LobisomemController>() != null)) //Verificar que um lobo nao esta batendo em outro lobo
+            Debug.Log("bateu no animal collider");
+            CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
+            if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID) //VERIFICA SE NAO ESTA BATENDO EM SI PROPRIO
             {
-                float damage = statsGeral.damage;
-                StatsGeral objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>();
-                if (collisorSofreDano.isConstrucao)
+                if (!(GetComponentInParent<LobisomemController>() != null && other.gameObject.GetComponentInParent<LobisomemController>() != null)) //Verificar que um lobo nao esta batendo em outro lobo
                 {
-                    if(this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemRepairHammer.name))
+                    Debug.Log("lobo nao ta batendo em outro lobo amigo");
+                    float damage = statsGeral.damage;
+                    StatsGeral objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>();
+                    if (collisorSofreDano.isConstrucao)
                     {
-                        objPai.TakeCura(damage);
-                    }
-                    else if(this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemDemolitionHammer.name))
-                    {
-                        objPai.GetComponent<ConstrucoesController>().DemolirConstrucao();
+                        if (this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemRepairHammer.name))
+                        {
+                            Debug.Log("curando construcao");
+                            objPai.TakeCura(damage);
+                        }
+                        else if (this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemDemolitionHammer.name))
+                        {
+                            Debug.Log("demolindo contrucao");
+                            objPai.GetComponent<ConstrucoesController>().DemolirConstrucao();
+                        }
+                        else
+                        {
+                            Debug.Log("dando dano em construcao");
+                            objPai.TakeDamage(damage);
+                        }
                     }
                     else
                     {
+                        Debug.Log("dando dano take damake");
+                        bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
                         objPai.TakeDamage(damage);
                     }
+                    statsGeral.isAttacking = false;
                 }
-                else
-                {
-                    bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
-                    objPai.TakeDamage(damage);
-                }
-                statsGeral.isAttacking = false;
             }
         }
+        
     }
 
 }
