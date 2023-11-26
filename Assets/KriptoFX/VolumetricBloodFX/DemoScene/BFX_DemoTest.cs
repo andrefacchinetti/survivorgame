@@ -44,7 +44,7 @@ public class BFX_DemoTest : MonoBehaviour
     int effectIdx;
     int activeBloods;
 
-    public void SangrarAlvo(Collider colliderAlvo, Collider colliderArma)
+    public void SangrarAlvo(Collider colliderAlvo, Vector3 colliderArma)
     {
         Debug.Log("Sangrando alvo" + colliderAlvo.gameObject.tag);
 
@@ -55,7 +55,7 @@ public class BFX_DemoTest : MonoBehaviour
         Vector3 spawnPosition = colliderAlvo.transform.position;
 
         // Direção do jorro de sangue - ajuste conforme necessário
-        Vector3 bloodDirection = (colliderArma.transform.position - spawnPosition).normalized;
+        Vector3 bloodDirection = (colliderArma - spawnPosition).normalized;
 
         // Instancia um efeito de sangue na posição do hit
         if (effectIdx == BloodFX.Length) effectIdx = 0;

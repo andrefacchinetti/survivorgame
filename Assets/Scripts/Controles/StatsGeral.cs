@@ -24,6 +24,8 @@ public class StatsGeral : MonoBehaviour
     [HideInInspector] public ReconstruivelStats reconstruivelStats;
     [SerializeField] public ItemDefinitionBase itemRepairHammer, itemDemolitionHammer;
 
+    BFX_DemoTest bloodController;
+
     PhotonView PV;
 
     private void Awake()
@@ -38,11 +40,13 @@ public class StatsGeral : MonoBehaviour
         if(health == null) health = GetComponentInParent<Health>();
         attributeManager = GetComponentInParent<AttributeManager>();
         if (dropPosition == null) dropPosition = this.gameObject;
+        bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
     }
 
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
         Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
+        if(hitCollider != null) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
         AcoesTomouDano();
     }
 

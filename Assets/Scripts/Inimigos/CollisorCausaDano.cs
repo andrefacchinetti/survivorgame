@@ -6,13 +6,11 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
 
     StatsGeral statsGeral;
     PhotonView PV;
-    BFX_DemoTest bloodController;
 
     private void Awake()
     {
         statsGeral = GetComponentInParent<StatsGeral>();
         PV = GetComponentInParent<PhotonView>();
-        bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -22,7 +20,6 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
         if(other.transform.tag == "PlayerCollider")
         {
             Debug.Log("bateu no player collider");
-            bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
             other.GetComponentInParent<StatsGeral>().TakeDamage(statsGeral.damage);
             statsGeral.isAttacking = false;
         }
@@ -58,7 +55,6 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     else
                     {
                         Debug.Log("dando dano take damake");
-                        bloodController.SangrarAlvo(other, this.GetComponent<Collider>());
                         objPai.TakeDamage(damage);
                     }
                     statsGeral.isAttacking = false;
