@@ -3570,6 +3570,7 @@ GameObject:
   - component: {fileID: 2783007857009532064}
   - component: {fileID: 743651547859760374}
   - component: {fileID: 6183133605150566596}
+  - component: {fileID: 663469908509777658}
   m_Layer: 0
   m_Name: Atlas
   m_TagString: Untagged
@@ -3842,6 +3843,20 @@ MonoBehaviour:
   m_AnimatorSpeed: 1
   m_YawMultiplier: 7
   m_MovingSpeedParameterValue: 1
+--- !u!114 &663469908509777658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369256755024982330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd8221effe5a3645a190b31e23b8071, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 5210577174366718764}
+  throwForce: 300
 --- !u!1 &418185465068133454
 GameObject:
   m_ObjectHideFlags: 0
@@ -15526,6 +15541,7 @@ MonoBehaviour:
   playerController: {fileID: 5210577174366718764}
   inventario: {fileID: 7866029698388542841}
   animator: {fileID: 8507485304979829654}
+  animatorFirstPerson: {fileID: 8789299872015511544}
 --- !u!1 &1153450651406376258
 GameObject:
   m_ObjectHideFlags: 0
@@ -50140,12 +50156,12 @@ MonoBehaviour:
     m_Preset: {fileID: 0}
     m_BlockList: []
     m_Default: 1
-  m_PositioningMode: 2
+  m_PositioningMode: 0
   m_Grouping: -1
   m_MinRespawnTime: 3
   m_MaxRespawnTime: 5
-  m_ScheduleRespawnOnDeath: 1
-  m_ScheduleRespawnOnDisable: 0
+  m_ScheduleRespawnOnDeath: 0
+  m_ScheduleRespawnOnDisable: 1
   m_RespawnAudioClipSet:
     m_AudioConfig: {fileID: 0}
     m_AudioClips: []
@@ -50235,7 +50251,6 @@ MonoBehaviour:
   canMove: 1
   pesoGrab: 0
   PV: {fileID: 629841567634017983}
-  throwForce: 600
 --- !u!114 &629841567634017983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51951,7 +51966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7175b88c136c01842b87893e8b6dd55f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  eventsAnimJogador: {fileID: 663469908509777658}
 --- !u!1 &3221499524183508851
 GameObject:
   m_ObjectHideFlags: 0
@@ -108203,7 +108218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7175b88c136c01842b87893e8b6dd55f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  eventsAnimJogador: {fileID: 0}
 --- !u!1 &7140426807324854924
 GameObject:
   m_ObjectHideFlags: 0

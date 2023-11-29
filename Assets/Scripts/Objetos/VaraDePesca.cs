@@ -5,13 +5,13 @@ using UnityEngine;
 public class VaraDePesca : MonoBehaviour
 {
 
-    [SerializeField] public PlayerController playerController;
+    [SerializeField] public EventsAnimJogador eventsAnimJogador;
 
 
 	void AnimEventPescou()
 	{
 		Debug.Log("pescouvara");
-		playerController.EventPescou();
+		eventsAnimJogador.EventPescou();
 	}
 
 }

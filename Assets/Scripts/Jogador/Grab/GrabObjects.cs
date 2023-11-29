@@ -26,7 +26,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     [SerializeField] Camera cam;
     [SerializeField] PlayerController playerController;
     [SerializeField] Inventario inventario;
-    [SerializeField] Animator animator;
+    [SerializeField] Animator animator, animatorFirstPerson;
 
     PhotonView PV;
 
@@ -387,6 +387,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             transferOwnerPV(objPai.gameObject);
             animator.SetTrigger("dissecando");
+            animatorFirstPerson.SetTrigger("dissecando");
             playerController.itemsDropsPosDissecar = objPai.dropsItems;
             playerController.corpoDissecando = objPai.gameObject;
         }

@@ -50,6 +50,80 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &-4061904450493700784
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: dissecando
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -827009078426998300}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1107 &-1378173476712968721
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: InteracoesFullBody
+  m_ChildStates:
+  - serializedVersion: 1
+    m_State: {fileID: -827009078426998300}
+    m_Position: {x: 380, y: 0, z: 0}
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: -827009078426998300}
+--- !u!1102 &-827009078426998300
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Dissecando
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions:
+  - {fileID: 6330770077903991443}
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 8ab4c4d3d684524459fbb833db564399, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -64,133 +138,139 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: ForwardMovement
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Pitch
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Yaw
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Speed
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Height
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Moving
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Aiming
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: MovementSetID
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: AbilityIndex
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: AbilityChange
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: AbilityIntData
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: AbilityFloatData
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot0ItemID
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot0ItemStateIndex
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot0ItemStateIndexChange
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot0ItemSubstateIndex
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot1ItemID
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot1ItemStateIndex
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot1ItemStateIndexChange
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Slot1ItemSubstateIndex
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: LegIndex
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
+  - m_Name: dissecando
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -924,8 +1004,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -1643,8 +1722,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -2221,8 +2299,7 @@ AnimatorStateTransition:
     m_ConditionEvent: AbilityIntData
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102314581603169776, guid: 7a3c9dbb86c183646bfccf5b0a2f9dbc,
-    type: 2}
+  m_DstState: {fileID: 1102314581603169776, guid: 7a3c9dbb86c183646bfccf5b0a2f9dbc, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -2471,8 +2548,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -2550,8 +2626,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -3117,8 +3192,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -3702,8 +3776,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102157611873211878, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102157611873211878, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -3802,8 +3875,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -4117,8 +4189,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -4770,8 +4841,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -4892,8 +4962,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -5005,8 +5074,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -5395,8 +5463,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102201128668152002, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102201128668152002, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -5505,8 +5572,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -5689,8 +5755,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -5718,8 +5783,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -5747,8 +5811,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -5856,8 +5919,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -7113,8 +7175,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -7482,8 +7543,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -7651,8 +7711,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions: []
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102727175345489708, guid: 7a3c9dbb86c183646bfccf5b0a2f9dbc,
-    type: 2}
+  m_DstState: {fileID: 1102727175345489708, guid: 7a3c9dbb86c183646bfccf5b0a2f9dbc, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -7937,8 +7996,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -9233,8 +9291,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -9563,8 +9620,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -9866,8 +9922,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102157611873211878, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102157611873211878, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -10035,8 +10090,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -10170,8 +10224,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -10199,8 +10252,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -10328,8 +10380,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -10900,8 +10951,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -11032,8 +11082,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -11151,8 +11200,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -11348,8 +11396,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -11875,8 +11922,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -11904,8 +11950,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -12141,8 +12186,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -12353,8 +12397,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102853892600037886, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102853892600037886, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -12587,8 +12630,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102853892600037886, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102853892600037886, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -12653,8 +12695,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -12840,8 +12881,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -13171,8 +13211,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -13899,8 +13938,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -14595,8 +14633,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102033453458004440, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -15448,8 +15485,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -15685,8 +15721,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -15960,8 +15995,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -16117,8 +16151,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -16146,8 +16179,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102123484451117984, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102123484451117984, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -16265,8 +16297,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -16418,8 +16449,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -16886,8 +16916,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -18112,8 +18141,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102257445517183872, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -18456,8 +18484,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19150,8 +19177,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19216,8 +19242,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19267,8 +19292,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19464,8 +19488,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19518,8 +19541,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19761,8 +19783,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102471751364373204, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19843,8 +19864,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102201128668152002, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102201128668152002, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19931,8 +19951,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102955685433314332, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19960,8 +19979,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -19989,8 +20007,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -20192,8 +20209,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -20221,8 +20237,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102416111580456692, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -20250,8 +20265,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102968324100123734, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -20679,8 +20693,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -21074,8 +21087,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102448284577904080, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -21178,8 +21190,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102940876748982750, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -21841,8 +21852,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102123484451117984, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102123484451117984, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -22048,8 +22058,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102271937767391740, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -22102,8 +22111,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102093684021239562, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -22153,8 +22161,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 102
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102263353077844930, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -22509,8 +22516,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Slot0ItemSubstateIndex
     m_EventTreshold: 103
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6,
-    type: 2}
+  m_DstState: {fileID: 1102745484600533044, guid: e567772a993c11f448f9b69023c6cef6, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -29153,6 +29159,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_StateMachine: {fileID: 1107983794105021096}
     m_Position: {x: 744, y: 240, z: 0}
+  - serializedVersion: 1
+    m_StateMachine: {fileID: -1378173476712968721}
+    m_Position: {x: 250, y: 260, z: 0}
   m_AnyStateTransitions:
   - {fileID: 1101844577568564970}
   - {fileID: 1101499322650689658}
@@ -29220,6 +29229,7 @@ AnimatorStateMachine:
   - {fileID: 1101681043849343898}
   - {fileID: 1101123544688472626}
   - {fileID: 1101979264760947978}
+  - {fileID: -4061904450493700784}
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
@@ -29601,6 +29611,28 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
+--- !u!1101 &6330770077903991443
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions: []
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 0}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 1
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.9625
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &8113893186812967196
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

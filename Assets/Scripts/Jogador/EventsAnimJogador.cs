@@ -1,0 +1,186 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+
+public class EventsAnimJogador : MonoBehaviourPunCallbacks
+{
+
+	[SerializeField] PlayerController playerController;
+
+	void AnimEventComeu()
+	{
+		if (playerController.itemConsumindo == null) return;
+		playerController.itemConsumindo.UsarItem();
+		Debug.Log("consumiu: " + playerController.itemConsumindo.itemIdentifierAmount.ItemDefinition.name.ToString());
+		playerController.itemConsumindo = null;
+	}
+
+	void AnimEventDissecado()
+	{
+		Debug.Log("dissecou");
+		foreach (Item.ItemDropStruct drop in playerController.itemsDropsPosDissecar)
+		{
+			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
+			string nomePrefab = drop.tipoItem + "/" + drop.itemIdentifierAmount.ItemDefinition.name;
+			ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.rotation, playerController.PV.ViewID);
+		}
+		playerController.itemsDropsPosDissecar = new List<Item.ItemDropStruct>();
+		if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(playerController.corpoDissecando);
+		else GameObject.Destroy(playerController.corpoDissecando);
+		playerController.corpoDissecando = null;
+	}
+
+	void AnimEventCapturou()
+	{
+		Debug.Log("capturou");
+		if (playerController.animalCapturado == null) return;
+		playerController.animalCapturado.isCapturado = true;
+		playerController.animalCapturado.targetCapturador = this.gameObject;
+		playerController.animalCapturado.objColeiraRope.SetActive(true);
+		playerController.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+	}
+
+	void AnimEventReanimouJogador()
+	{
+		if (playerController.corpoReanimando != null)
+		{
+			playerController.corpoReanimando.GetComponent<MorteController>().ReanimarJogador();
+		}
+	}
+
+	void AnimEventConsertado()
+	{
+		Debug.Log("consertou");
+		playerController.objConsertando.GetComponent<ReconstruivelQuebrado>().ConsertarReconstruivel();
+		playerController.objConsertando = null;
+	}
+
+	void AnimEventArremessoLanca()
+	{
+		Debug.Log("arremessou lança");
+		ArremessarItemNaMao();
+	}
+
+	// Força do arremesso
+	public float throwForce = 300f;
+	private void ArremessarItemNaMao() // Função que arremessa o objeto na direção da câmera
+	{
+		if (playerController.inventario.itemNaMao == null) return;
+		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
+		Ray ray = new Ray(transform.position, transform.forward);
+		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
+		RaycastHit hit;
+		// Se o ray atingir alguma superfície, calcula a direção do arremesso
+		if (Physics.Raycast(ray, out hit))
+		{
+			Vector3 direction = hit.point - transform.position;
+			direction.Normalize();
+
+			string nomePrefab = playerController.inventario.itemNaMao.tipoItem + "/" + playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name;
+			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), playerController.PV.ViewID);
+			// Aplica a força na direção calculada
+			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
+			//REMOVER ITEM DA MAO
+			playerController.inventario.RemoverItemDaMao();
+		}
+	}
+
+	void AnimEventBebeuAgua()
+	{
+		playerController.statsJogador.setarSedeAtual(playerController.statsJogador.sedeAtual + 100);
+	}
+	void AnimEventBebeuGarrafa()
+	{
+		if (playerController.inventario.itemNaMao != null && playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Bottle"))
+		{
+			playerController.statsJogador.setarSedeAtual(playerController.statsJogador.sedeAtual + playerController.inventario.itemNaMao.GetComponent<Garrafa>().BeberAgua());
+		}
+	}
+
+	void AnimEventEncheuGarrafa()
+	{
+		if (playerController.inventario.itemNaMao != null && playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Garrafa"))
+		{
+			playerController.inventario.itemNaMao.GetComponent<Garrafa>().EncherRepositorioComAgua();
+		}
+	}
+
+	void AnimEventAcendendoFogueira()
+	{
+		if (playerController.fogueiraAcendendo == null) return;
+		playerController.fogueiraAcendendo.GetComponent<Fogueira>().AcenderFogueira();
+		playerController.fogueiraAcendendo = null;
+	}
+
+	void AnimEventApagandoFogueira()
+	{
+		if (playerController.fogueiraAcendendo == null) return;
+		playerController.fogueiraAcendendo.GetComponent<Fogueira>().ApagarFogueira();
+		playerController.fogueiraAcendendo = null;
+	}
+
+	void AnimEventApareceAcendedorFogueira()
+	{
+		playerController.acendedorFogueira.SetActive(true);
+		playerController.acendedorFogueira.GetComponent<Animator>().Play("default");
+	}
+
+	void AnimEventDesapareceAcendedorFogueira()
+	{
+		playerController.acendedorFogueira.SetActive(false);
+	}
+
+	void AnimEventAtivarPegandoPeixe()
+	{
+		Debug.Log("pegando peixe");
+		playerController.peixeDaVara.SetActive(true);
+		playerController.animatorVaraDePesca.SetTrigger("pegandoPeixe");
+		playerController.pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
+	}
+
+	public void EventPescou()
+	{
+		Debug.Log("event pescou");
+		if (playerController.pescaPescando == null) return;
+		playerController.peixeDaVara.SetActive(false);
+		playerController.inventario.AdicionarItemAoInventario(null, playerController.inventario.itemPeixeCru, 1);
+	}
+
+	void AnimEventColetouFruta()
+	{
+		if (playerController.arvoreColetando == null) return;
+		List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
+		foreach (Item.ItemDropStruct itemDropScruct in playerController.arvoreColetando.GetComponent<StatsGeral>().dropsItems)
+		{
+			if (itemDropScruct.tipoItem.Equals(Item.TiposItems.Consumivel.ToString()))
+			{
+				if (itemDropScruct.qtdMaxDrops > 0)
+				{
+					Debug.Log("coletou fruta: " + itemDropScruct.itemIdentifierAmount.ItemDefinition.name);
+					playerController.inventario.AdicionarItemAoInventario(null, itemDropScruct.itemIdentifierAmount.ItemDefinition, 1);
+					playerController.arvoreColetando.GetComponent<ArvoreFrutifera>().DesaparecerUmaFrutaDaArvore();
+					Item.ItemDropStruct novo = new Item.ItemDropStruct();
+					novo.itemIdentifierAmount = itemDropScruct.itemIdentifierAmount;
+					novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
+					novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
+					itemDrops.Add(novo);
+				}
+			}
+			else
+			{
+				itemDrops.Add(itemDropScruct);
+			}
+		}
+		playerController.arvoreColetando.GetComponent<StatsGeral>().dropsItems = itemDrops;
+	}
+
+	void AnimEventColetouItem()
+	{
+		if (playerController.itemDefinitionBaseColentando == null) return;
+		Debug.Log("coletou item: " + playerController.itemDefinitionBaseColentando.name);
+		playerController.inventario.AdicionarItemAoInventario(null, playerController.itemDefinitionBaseColentando, 1);
+		playerController.itemDefinitionBaseColentando = null;
+	}
+
+}
