@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1050030564143955096}
   - component: {fileID: 6852244312215705360}
   - component: {fileID: 3668300920688359481}
-  - component: {fileID: 4110320025488779134}
   - component: {fileID: 1296640205358749410}
   m_Layer: 11
   m_Name: Osso
@@ -32,13 +31,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3010870368859697472}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.2, y: 0.63, z: 0}
   m_LocalScale: {x: 3.9552977, y: 3.9552977, z: 3.9552977}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4236079322720312859
 MeshFilter:
@@ -65,6 +64,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -185,23 +186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15022b58aaf9a7e4499948d5529d9bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItem: 5
-  nomeId: Madeira
-  damageQuandoColide: 0
+  item: {fileID: 1460890667258715926, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   estaSendoComido: 0
---- !u!114 &4110320025488779134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3010870368859697472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af9e60bf041c0f049a3193cbd0acf897, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PV: {fileID: 0}
 --- !u!65 &1296640205358749410
 BoxCollider:
   m_ObjectHideFlags: 0

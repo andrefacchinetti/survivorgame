@@ -143,6 +143,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void SelecionarItem()
     {
+        if (this.itemIdentifierAmount.ItemDefinition.GetItemCategory().name.Equals("NaoEquipavel")) return; //Esse tipo de item não pode ser equipado
         if (inventario.itemNaMao != null)
         {
             if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(this.itemIdentifierAmount.ItemDefinition.name))
