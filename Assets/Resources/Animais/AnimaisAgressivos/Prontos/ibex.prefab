@@ -626,6 +626,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4089906418821846}
+  - {fileID: 4664162632000427318}
   m_Father: {fileID: 4298219620970334}
   m_LocalEulerAnglesHint: {x: 3.1512067e-15, y: -175.74255, z: -180}
 --- !u!54 &6021580848466671121
@@ -1240,26 +1241,14 @@ MonoBehaviour:
   objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - itemIdentifierAmount:
-      ItemDefinition: {fileID: 0}
+      ItemDefinition: {fileID: 114053257604410210, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
-    tipoItem: 0
+    tipoItem: 7
     qtdMinDrops: 1
     qtdMaxDrops: 3
-  - itemIdentifierAmount:
-      ItemDefinition: {fileID: 0}
-      Amount: 0
-    tipoItem: 0
-    qtdMinDrops: 5
-    qtdMaxDrops: 10
-  - itemIdentifierAmount:
-      ItemDefinition: {fileID: 0}
-      Amount: 0
-    tipoItem: 0
-    qtdMinDrops: 2
-    qtdMaxDrops: 4
-  dropPosition: {fileID: 0}
+  dropPosition: {fileID: 1923746619653220992}
   isAttacking: 0
-  health: {fileID: 0}
+  health: {fileID: 1388995483838132972}
   attributeManager: {fileID: 0}
   jogadorStats: {fileID: 0}
   lobisomemStats: {fileID: 0}
@@ -2523,3 +2512,86 @@ Transform:
   - {fileID: 4203472497906428}
   m_Father: {fileID: 4177911481601998}
   m_LocalEulerAnglesHint: {x: -80.246635, y: -0.28545684, z: 91.92441}
+--- !u!1 &1923746619653220992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4664162632000427318}
+  - component: {fileID: 4152185615148082824}
+  - component: {fileID: 5454801708157638117}
+  m_Layer: 11
+  m_Name: ColliderCorpoMorto
+  m_TagString: AnimalCollider
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4664162632000427318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923746619653220992}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0006695902, y: -0.026409332, z: -0.034995504, w: 0.9990382}
+  m_LocalPosition: {x: -0.0021, y: -0.0056, z: 0.0042}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4155782503723878}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4152185615148082824
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923746619653220992}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.23
+  m_Height: 1.1
+  m_Direction: 0
+  m_Center: {x: 0.05, y: 0, z: 0}
+--- !u!54 &5454801708157638117
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923746619653220992}
+  serializedVersion: 4
+  m_Mass: 5
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

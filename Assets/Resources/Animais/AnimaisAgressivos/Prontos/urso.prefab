@@ -290,26 +290,14 @@ MonoBehaviour:
   objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - itemIdentifierAmount:
-      ItemDefinition: {fileID: 0}
+      ItemDefinition: {fileID: 114053257604410210, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
-    tipoItem: 0
-    qtdMinDrops: 10
-    qtdMaxDrops: 20
-  - itemIdentifierAmount:
-      ItemDefinition: {fileID: 0}
-      Amount: 0
-    tipoItem: 0
-    qtdMinDrops: 10
-    qtdMaxDrops: 20
-  - itemIdentifierAmount:
-      ItemDefinition: {fileID: 0}
-      Amount: 0
-    tipoItem: 0
-    qtdMinDrops: 4
-    qtdMaxDrops: 6
-  dropPosition: {fileID: 0}
+    tipoItem: 7
+    qtdMinDrops: 1
+    qtdMaxDrops: 3
+  dropPosition: {fileID: 2469989063643746812}
   isAttacking: 0
-  health: {fileID: 0}
+  health: {fileID: 2161848908664624229}
   attributeManager: {fileID: 0}
   jogadorStats: {fileID: 0}
   lobisomemStats: {fileID: 0}
@@ -2057,6 +2045,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4725025889025000}
+  - {fileID: 3424477985904393037}
   m_Father: {fileID: 4994162722649638}
   m_LocalEulerAnglesHint: {x: 0.6762096, y: 170.83548, z: -173.98085}
 --- !u!54 &3815353241086479514
@@ -2329,3 +2318,86 @@ CapsuleCollider:
   m_Height: 0.43
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2469989063643746812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3424477985904393037}
+  - component: {fileID: 4137249448656853652}
+  - component: {fileID: 595533234881524612}
+  m_Layer: 11
+  m_Name: ColliderCorpoMorto
+  m_TagString: AnimalCollider
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3424477985904393037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469989063643746812}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0006695902, y: -0.026409332, z: -0.034995504, w: 0.9990382}
+  m_LocalPosition: {x: -0.0021, y: -0.0056, z: 0.0042}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4490018490652056}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4137249448656853652
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469989063643746812}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.37
+  m_Height: 1.79
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &595533234881524612
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469989063643746812}
+  serializedVersion: 4
+  m_Mass: 5
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
