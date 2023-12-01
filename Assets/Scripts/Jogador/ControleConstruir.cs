@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using Opsive.UltimateCharacterController.Inventory;
+using Opsive.Shared.Utility;
+using Opsive.UltimateCharacterController.Items;
+using Opsive.Shared.Inventory;
 
 public class ControleConstruir : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
-    [SerializeField] ItemIdentifierAmount itemIdentifierAmountMadeira, itemIdentifierAmountPedra, itemIdentifierAmountRepairHammer;
+    [SerializeField] public ItemDefinitionBase itemMadeira, itemPedra, itemMarteloReparador;
     public bool isAtivo = false, podeJuntar, isConectado, podeConstruir, isMadeira;
     public float distanciaMax, rotacao, velRotacao;
-    public ConstrucoesController construcaoControllerHit;
+    [HideInInspector] public ConstrucoesController construcaoControllerHit;
     public GameObject objeto;
     public GameObject constructionUI, menuPrebfab, abaPrefab, butConsPrefab;
     public RectTransform indicadorHud;
@@ -166,14 +169,14 @@ public class ControleConstruir : MonoBehaviour
                 rotacao = rotacao%360;
             }
             if(Input.GetButtonDown("Fire1")){
-                if(inventario.VerificarQtdItem(isMadeira ? itemIdentifierAmountMadeira.ItemDefinition : itemIdentifierAmountPedra.ItemDefinition, construcao.custo, true) && (podeConstruir && VerificarSePodeConstruir())){
+                if(inventario.VerificarQtdItem(isMadeira ? itemMadeira : itemPedra, construcao.custo, true) && (podeConstruir && VerificarSePodeConstruir())){
                     playerController.animator.SetTrigger("construindoAcao");
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
                     {
                         construcaoControllerHit.inserirConstrucaoNaPlataforma(instanciado.GetComponentInChildren<ConstrucoesController>());
                     }
-                    inventario.RemoverItemDoInventarioPorNome(isMadeira ? itemIdentifierAmountMadeira.ItemDefinition : itemIdentifierAmountPedra.ItemDefinition, construcao.custo);
+                    inventario.RemoverItemDoInventarioPorNome(isMadeira ? itemMadeira : itemPedra, construcao.custo);
                     try{
                         instanciado.GetComponent<Construcao>().disativarPlaceHolder(hit.collider.gameObject);
                     }
@@ -193,7 +196,7 @@ public class ControleConstruir : MonoBehaviour
 
     private void ToggleModoConstrucao(bool toggle)
     {
-        if(!isAtivo && !playerController.inventario.VerificarQtdItem(itemIdentifierAmountRepairHammer.ItemDefinition, 1, false))
+        if(!isAtivo && !playerController.inventario.VerificarQtdItem(itemMarteloReparador, 1, false))
         {
             playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaNaoPossuiMartelo());
         }
