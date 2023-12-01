@@ -45564,6 +45564,7 @@ MonoBehaviour:
   - rid: 1246164547599597587
   - rid: 368926224600793144
   m_Abilities:
+  - rid: 368926426650116476
   - rid: 1246164547599597590
   - rid: 368926206858625272
   - rid: 3024402045362241564
@@ -45588,7 +45589,6 @@ MonoBehaviour:
   - rid: 1151095698550423566
   - rid: 3024402045362241555
   - rid: 1151095348643233793
-  - rid: 1151095772050096325
   - rid: 1246165063816446059
   - rid: 1246165063816446121
   - rid: 1246165063816446092
@@ -45601,7 +45601,6 @@ MonoBehaviour:
   - rid: 1246164927924404226
   - rid: 1108267100579037201
   - rid: 368926206858625274
-  - rid: 368926426650116476
   m_ItemAbilities:
   - rid: 3024401449937797169
   - rid: 3024401449937797183
@@ -46426,8 +46425,8 @@ MonoBehaviour:
           m_BlockList: []
           m_Default: 1
         m_Enabled: 1
-        m_StartType: 2
-        m_StopType: 4
+        m_StartType: 1
+        m_StopType: 1
         m_InputNames:
         - Crouch
         m_LongPressDuration: 0.5
@@ -46821,62 +46820,6 @@ MonoBehaviour:
           m_WaitForAnimationEvent: 1
           m_Duration: 0.2
         m_ReequipItemAfterMount: 1
-    - rid: 1151095772050096325
-      type: {class: SpeedChange, ns: Opsive.UltimateCharacterController.Character.Abilities, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Enabled: 1
-        m_StartType: 3
-        m_StopType: 2
-        m_InputNames:
-        - Change Speeds
-        m_LongPressDuration: 0.5
-        m_WaitForLongPressRelease: 0
-        m_AbilityStarter:
-          rid: -2
-        m_AttributeModifier:
-          m_AttributeName: 
-          m_Amount: 0
-          m_AutoUpdate: 0
-          m_AutoUpdateStartDelay: 1
-          m_AutoUpdateInterval: 0.1
-          m_AutoUpdateDuration: -1
-        m_State: Run
-        m_StateAppendItemIdentifierName: 1
-        m_AbilityIndexParameter: -1
-        m_StartAudioClipSet:
-          m_AudioConfig: {fileID: 0}
-          m_AudioClips: []
-        m_StopAudioClipSet:
-          m_AudioConfig: {fileID: 0}
-          m_AudioClips: []
-        m_AllowPositionalInput: 1
-        m_AllowRotationalInput: 1
-        m_UseGravity: 0
-        m_UseRootMotionPosition: 0
-        m_UseRootMotionRotation: 0
-        m_DetectHorizontalCollisions: 0
-        m_DetectVerticalCollisions: 0
-        m_DetectGroundCollisions: 0
-        m_AnimatorMotion: {fileID: 0}
-        m_StartEffectName: 
-        m_StartEffectIndex: -1
-        m_AllowEquippedSlotsMask: -1
-        m_AllowItemDefinitions: []
-        m_ImmediateUnequip: 0
-        m_ReequipSlots: 1
-        m_AbilityMessageText: 
-        m_AbilityMessageIcon: {fileID: 0}
-        m_InspectorDescription: 
-        m_SpeedChangeMultiplier: 2
-        m_MinSpeedChangeValue: -2
-        m_MaxSpeedChangeValue: 2
-        m_SpeedParameterValue: 2
-        m_RequireMovement: 1
     - rid: 1246164547599597587
       type: {class: Combat, ns: Opsive.UltimateCharacterController.FirstPersonController.Character.MovementTypes, asm: Opsive.UltimateCharacterController}
       data:
@@ -46957,7 +46900,7 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 1
+        m_Enabled: 0
         m_StartType: 1
         m_StopType: 1
         m_InputNames: []

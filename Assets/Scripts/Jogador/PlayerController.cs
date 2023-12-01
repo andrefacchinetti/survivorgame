@@ -80,15 +80,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
 			if (Input.GetButtonDown("Crouch"))
 			{
-				if (!heightChange.IsActive) heightChange.StartAbility();
-				else
-				{
-					heightChange.StopAbility();
-					if(animator.GetInteger("AbilityIndex") == 3)
-                    {
-						animator.SetInteger("AbilityIndex", 0);
-					}
-				}
+				if (heightChange.IsActive) heightChange.StopAbility(true);
+                else heightChange.StartAbility();
 			}
 
 			if (inventario.itemNaMao != null)
