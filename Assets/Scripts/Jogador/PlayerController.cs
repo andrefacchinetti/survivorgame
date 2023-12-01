@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public GameController gameController;
 	[SerializeField] [HideInInspector] public Swim swimAbility;
 	[SerializeField] [HideInInspector] public ClimbFromWater climbWaterAbility;
+	[SerializeField] [HideInInspector] public HeightChange heightChange;
 
 
 	[HideInInspector] public bool canMove = true;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		characterLocomotion = GetComponent<UltimateCharacterLocomotion>();
 		swimAbility = characterLocomotion.GetAbility<Swim>();
 		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();
+		heightChange = characterLocomotion.GetAbility<HeightChange>();
 	}
 
 	void Start()
@@ -76,7 +78,20 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 		if (!inventario.canvasInventario.activeSelf && canMove)
 		{
-			if(inventario.itemNaMao != null)
+			if (Input.GetButtonDown("Crouch"))
+			{
+				if (!heightChange.IsActive) heightChange.StartAbility();
+				else
+				{
+					heightChange.StopAbility();
+					if(animator.GetInteger("AbilityIndex") == 3)
+                    {
+						animator.SetInteger("AbilityIndex", 0);
+					}
+				}
+			}
+
+			if (inventario.itemNaMao != null)
             {
 				if (Input.GetMouseButtonDown(0))
 				{
