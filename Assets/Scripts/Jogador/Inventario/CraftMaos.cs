@@ -69,7 +69,7 @@ public class CraftMaos : MonoBehaviour
     {
         foreach (Ingrediente ingrediente in resultadoCraft.ingredientes)
         {
-            if(!ingrediente.item.name.Equals(inventario.itemKnife.name)) //Itens que não perdem após craft
+            if(!ingrediente.item.Equals(inventario.itemFaca)) //Itens que não perdem após craft
             {
                 inventario.RemoverItemDoInventarioPorNome(ingrediente.item, ingrediente.quantidade);
             }

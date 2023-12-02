@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
 	[SerializeField] public ControleConstruir controleConstruir;
-	[SerializeField] public Animator animator, animatorVaraDePesca;
+	[SerializeField] public Animator animator, animatorVaraDePesca, animatorFirstPerson;
 	[SerializeField] public PointRopeFollow ropeGrab;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara, kitModoConstrucao;
 	[SerializeField] public TMP_Text txMsgAlerta;
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 			if (inventario.itemNaMao != null)
             {
-				if (Input.GetMouseButtonDown(0))
+				if (Input.GetButtonDown("Fire1"))
 				{
 					ativarAnimacaoPorTipoItem(inventario.itemNaMao);
 				}
@@ -130,21 +130,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (itemResponse.tipoItem.Equals(Item.TiposItems.Ferramenta.ToString()))
 		{
-			if (itemResponse.itemIdentifierAmount.ItemDefinition.name.Equals("Bottle"))
+			if (itemResponse.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
 			{
 				animator.SetTrigger("bebendoGarrafa");
-            }
+				animatorFirstPerson.SetTrigger("bebendoGarrafa");
+
+			}
 		}
 		else if (itemResponse.tipoItem.Equals(Item.TiposItems.Consumivel.ToString()))
         {
-            if (itemResponse.itemIdentifierAmount.ItemDefinition.name.Equals("KitMedico"))
-            {
-				animator.SetTrigger("usandoKitMedico");
-            }
-            else
-            {
-				animator.SetTrigger("comendoEmPe"); 
-			}
+			animator.SetTrigger("comendoEmPe");
+			animatorFirstPerson.SetTrigger("comendoEmPe");
 			itemConsumindo = itemResponse;
 		}
 	}

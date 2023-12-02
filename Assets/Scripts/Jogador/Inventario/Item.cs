@@ -133,7 +133,7 @@ public class Item : MonoBehaviourPunCallbacks
     public void DeselecionarItem()
     {
         inventario.itemNaMao = null;
-        if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name))
+        if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
             inventario.UngrabAnimalCapturado(false);
             inventario.UngrabObjetoCapturado();
@@ -146,7 +146,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (this.itemIdentifierAmount.ItemDefinition.GetItemCategory().name.Equals("NaoEquipavel")) return; //Esse tipo de item não pode ser equipado
         if (inventario.itemNaMao != null)
         {
-            if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(this.itemIdentifierAmount.ItemDefinition.name))
+            if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(this.itemIdentifierAmount.ItemDefinition))
             {
                 inventario.itemNaMao.DeselecionarItem();
                 return;
@@ -161,8 +161,8 @@ public class Item : MonoBehaviourPunCallbacks
         {
             inventario.itemNaMao = this;
             EquipItemInventory();
-            if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemFishingRod.name)) inventario.playerController.peixeDaVara.SetActive(false);
-            if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemFlashlight.name) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false)
+            if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemVaraDePesca)) inventario.playerController.peixeDaVara.SetActive(false);
+            if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false)
                 && armaduras.slotLanterna.item != null)
             {
                 armaduras.slotLanterna.objEquipLanterna.SetActive(false);
@@ -170,7 +170,7 @@ public class Item : MonoBehaviourPunCallbacks
             }
         }
 
-        if (itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name))
+        if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
             inventario.AcoesRenovarCordaEstourada(false);
         }
@@ -198,7 +198,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (this.tipoItem.Equals(TiposItems.Nenhum)) return;
         string nomePrefab = this.tipoItem + "/"+ this.itemIdentifierAmount.ItemDefinition.name.ToString();
         GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, PV.ViewID);
-        if (this.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemBottle.name))
+        if (this.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
         {
             objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
         }
@@ -232,7 +232,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         quantidade -= quantidadeResponse;
 
-        if (inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name))
+        if (inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
             inventario.ToggleGrabUngrabCorda(isCordaPartindo);
             inventario.UngrabObjetoCapturado();

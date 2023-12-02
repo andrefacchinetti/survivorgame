@@ -97,11 +97,11 @@ public class ItemArmadura : MonoBehaviour
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
             txQuantidade.text = itemResponse.quantidade + "";
             imagemItem.texture = itemResponse.imagemItem.texture;
-            if (itemResponse.itemIdentifierAmount.ItemDefinition.name.Equals(armaduras.inventario.itemFlashlight.name))
+            if (itemResponse.itemIdentifierAmount.ItemDefinition.Equals(armaduras.inventario.itemLanterna))
             {
                 objEquipLanterna.SetActive(true);
                 armaduras.slotLanterna = this;
-                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(armaduras.inventario.itemFlashlight.name) 
+                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(armaduras.inventario.itemLanterna) 
                     && !armaduras.inventario.VerificarQtdItem(armaduras.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, 2, false))
                 {
                     armaduras.inventario.itemNaMao.DeselecionarItem();

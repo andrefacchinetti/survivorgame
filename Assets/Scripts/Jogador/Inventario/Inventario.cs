@@ -33,7 +33,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
-    [SerializeField] public ItemDefinitionBase itemBody, itemPeixeCru, itemBottle, itemPanela, itemTigela, itemRepairHammer, itemRope, itemFishingRod, itemFlashlight, itemKnife;
+    [SerializeField] public ItemDefinitionBase itemBody, itemPeixeCru, itemGarrafa, itemPanela, itemTigela, itemMarteloReparador, itemCorda, itemVaraDePesca, itemLanterna, itemFaca;
 
     private void Awake()
     {
@@ -143,7 +143,7 @@ public class Inventario : MonoBehaviour
 
     public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
-        if (itemDrop == null || !itemDrop.item.name.Equals(itemBottle.name)) //itens que nao stackam
+        if (itemDrop == null || !itemDrop.item.Equals(itemGarrafa)) //itens que nao stackam
         {
             foreach (Item item in itens)
             {
@@ -157,7 +157,7 @@ public class Inventario : MonoBehaviour
         //Adiciona um novo item na mochila
         GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
         novoObjeto.transform.SetParent(contentItensMochila.transform);
-        if (itemDrop != null && itemDrop.item.name.Equals(itemBottle.name))
+        if (itemDrop != null && itemDrop.item.Equals(itemGarrafa))
         {
             novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
         }

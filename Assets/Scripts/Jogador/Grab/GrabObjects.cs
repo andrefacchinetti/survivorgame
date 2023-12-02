@@ -216,7 +216,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
         }
         else if (hit.transform.tag == tagAnimalCollider && inventario.itemNaMao != null
-            && (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemKnife.name)))
+            && (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemFaca)))
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
             if (objPai != null && !objPai.health.IsAlive())
@@ -225,7 +225,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
         }
         else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null 
-            && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRope.name) && hit.transform.GetComponentInParent<AnimalController>() != null)
+            && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda) && hit.transform.GetComponentInParent<AnimalController>() != null)
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
             if (objPai != null && objPai.health.IsAlive())
@@ -247,11 +247,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoBeberAgua(hit);
         }
-        else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemBottle.name))
+        else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
         {
             interacaoEncherGarrafa(hit);
         }
-        else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemFishingRod.name))
+        else if (hit.transform.tag == tagPesca && hit.transform.gameObject.GetComponent<Pesca>().isAreaDePescaAtiva && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemVaraDePesca))
         {
             interacaoPesca(hit);
         }
@@ -267,7 +267,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoIncendiaveis(hit);
         }
-        else if (hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemRepairHammer.name))
+        else if (hit.transform.tag == tagReconstruivelQuebrado && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemMarteloReparador))
         {
             interacaoReconstruivelQuebrado(hit);
         }
