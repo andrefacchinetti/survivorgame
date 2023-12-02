@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037727452607170277}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.09960937, y: -0.13263011, z: -0.20348588, w: 0.9649252}
   m_LocalPosition: {x: -0.00034605572, y: 0.000196, z: -0.000021104643}
   m_LocalScale: {x: 0.005263158, y: 0.005263158, z: 0.005263158}
@@ -36,7 +37,6 @@ Transform:
   - {fileID: 6391476596041293386}
   - {fileID: 5067840326854421003}
   m_Father: {fileID: 4825343220575316500}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 7.947, y: -17.42, z: -25.036}
 --- !u!114 &8379919364308496705
 MonoBehaviour:
@@ -50,13 +50,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c867cd2ac84a484681d85d925f79cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItemNoSlot: 0
+  itemDefinitionNoSlot: {fileID: 0}
   slotCarneCrua: {fileID: 9142271037532307044}
   slotCarneCozida: {fileID: 1692116709173691983}
   slotCogumeloCru: {fileID: 2715939448532351777}
   slotCogumeloCozido: {fileID: 832713763887543973}
   slotPeixeCru: {fileID: 3455458359205531993}
   slotPeixeCozido: {fileID: 3536384421644248344}
+  itemCarneCrua: {fileID: 0}
+  itemCarneCozida: {fileID: 0}
+  itemCogumeloCru: {fileID: 0}
+  itemCogumeloCozido: {fileID: 0}
+  itemPeixeCru: {fileID: 0}
+  itemPeixeCozido: {fileID: 0}
 --- !u!1 &1487937716565127794
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,6 +86,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1487937716565127794}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.271, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -88,7 +95,6 @@ Transform:
   - {fileID: 4783331668083101185}
   - {fileID: 4825343220575316500}
   m_Father: {fileID: 6245547607071768354}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2444314942964740145
 GameObject:
@@ -116,6 +122,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2444314942964740145}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.093, y: -0.993, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -125,7 +132,6 @@ Transform:
   - {fileID: 2368267354903832956}
   - {fileID: 2248655060055851060}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6003517589710175234
 MonoBehaviour:
@@ -200,7 +206,6 @@ GameObject:
   - component: {fileID: 1331990574690569418}
   - component: {fileID: 4897194585426306882}
   - component: {fileID: 3316398797883295851}
-  - component: {fileID: 1292225301807511680}
   - component: {fileID: 6449914875889244095}
   - component: {fileID: 416581985628175402}
   - component: {fileID: 2989177385009151675}
@@ -219,6 +224,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3829917613960610066}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.417, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
@@ -229,7 +235,6 @@ Transform:
   - {fileID: 7899986347115830001}
   - {fileID: 3225573531456311420}
   m_Father: {fileID: 2248655060055851060}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2543273757233212705
 Rigidbody:
@@ -326,23 +331,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15022b58aaf9a7e4499948d5529d9bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItem: 68
-  nomeId: Madeira
-  damageQuandoColide: 0
+  item: {fileID: -4939794906696453617, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   estaSendoComido: 0
---- !u!114 &1292225301807511680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3829917613960610066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af9e60bf041c0f049a3193cbd0acf897, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PV: {fileID: 0}
 --- !u!114 &6449914875889244095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +368,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -449,7 +441,6 @@ GameObject:
   - component: {fileID: 1363166296285047007}
   - component: {fileID: 4855032541600432983}
   - component: {fileID: 3355438983585639550}
-  - component: {fileID: 1258816329398443157}
   - component: {fileID: 1253736264161738741}
   - component: {fileID: 1116240952155398488}
   - component: {fileID: 7471689985733123165}
@@ -468,6 +459,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3868670281608406279}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0249, y: -0.1206, z: 0}
   m_LocalScale: {x: 190, y: 190, z: 190}
@@ -476,7 +468,6 @@ Transform:
   - {fileID: 2001255358750022076}
   - {fileID: 8008823186024736879}
   m_Father: {fileID: 2248655060055851060}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2584319450500434228
 Rigidbody:
@@ -573,23 +564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15022b58aaf9a7e4499948d5529d9bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItem: 67
-  nomeId: Madeira
-  damageQuandoColide: 0
+  item: {fileID: 1843338250270300900, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   estaSendoComido: 0
---- !u!114 &1258816329398443157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3868670281608406279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af9e60bf041c0f049a3193cbd0acf897, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PV: {fileID: 0}
 --- !u!114 &1253736264161738741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,6 +599,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -702,6 +680,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4013977764007707965}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.19829266, y: 0.9571556, z: -0.10958357, w: 0.180346}
   m_LocalPosition: {x: 0.000428, y: 0.000196, z: -0.000021}
   m_LocalScale: {x: 0.005263158, y: 0.005263158, z: 0.005263158}
@@ -714,7 +693,6 @@ Transform:
   - {fileID: 3003180750896928087}
   - {fileID: 4593254033257910012}
   m_Father: {fileID: 4825343220575316500}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 7.947, y: 156.892, z: -25.036}
 --- !u!114 &6349912511845124890
 MonoBehaviour:
@@ -728,13 +706,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c867cd2ac84a484681d85d925f79cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItemNoSlot: 0
+  itemDefinitionNoSlot: {fileID: 0}
   slotCarneCrua: {fileID: 8092143374577082419}
   slotCarneCozida: {fileID: 5370930950075782388}
   slotCogumeloCru: {fileID: 1542619060321575006}
   slotCogumeloCozido: {fileID: 1616067918470092188}
   slotPeixeCru: {fileID: 6839322909154646596}
   slotPeixeCozido: {fileID: 5258466299460043247}
+  itemCarneCrua: {fileID: 0}
+  itemCarneCozida: {fileID: 0}
+  itemCogumeloCru: {fileID: 0}
+  itemCogumeloCozido: {fileID: 0}
+  itemPeixeCru: {fileID: 0}
+  itemPeixeCozido: {fileID: 0}
 --- !u!1 &6876112456234420696
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,6 +743,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6876112456234420696}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.012192424, y: 0.6492737, z: -0.250735, w: 0.71793246}
   m_LocalPosition: {x: 0.155, y: 0.545, z: 0.063}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -771,7 +756,6 @@ Transform:
   - {fileID: 8998966125809052843}
   - {fileID: 9037726457556575800}
   m_Father: {fileID: 4783331668083101185}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 17.944, y: 80.526, z: -23.27}
 --- !u!114 &4778529061733964870
 MonoBehaviour:
@@ -785,13 +769,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c867cd2ac84a484681d85d925f79cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItemNoSlot: 0
+  itemDefinitionNoSlot: {fileID: 0}
   slotCarneCrua: {fileID: 7243659216260905884}
   slotCarneCozida: {fileID: 5135233385291985159}
   slotCogumeloCru: {fileID: 1562416764192448786}
   slotCogumeloCozido: {fileID: 1597611237648946459}
   slotPeixeCru: {fileID: 839242980941702072}
   slotPeixeCozido: {fileID: 732718244067354923}
+  itemCarneCrua: {fileID: 0}
+  itemCarneCozida: {fileID: 0}
+  itemCogumeloCru: {fileID: 0}
+  itemCogumeloCozido: {fileID: 0}
+  itemPeixeCru: {fileID: 0}
+  itemPeixeCozido: {fileID: 0}
 --- !u!1 &7492273070594330269
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,6 +806,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7492273070594330269}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.17544518, y: -0.08432152, z: -0.1795432, w: 0.9642993}
   m_LocalPosition: {x: -0.093, y: 0.545, z: -0.027}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -828,7 +819,6 @@ Transform:
   - {fileID: 9034663693669937473}
   - {fileID: 7690334956741214368}
   m_Father: {fileID: 4783331668083101185}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 17.944, y: -13.719, z: -23.27}
 --- !u!114 &7146580102060203683
 MonoBehaviour:
@@ -842,13 +832,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c867cd2ac84a484681d85d925f79cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItemNoSlot: 0
+  itemDefinitionNoSlot: {fileID: 0}
   slotCarneCrua: {fileID: 9173186012429915118}
   slotCarneCozida: {fileID: 7773928162347449183}
   slotCogumeloCru: {fileID: 9059740110098415423}
   slotCogumeloCozido: {fileID: 8742123487770118572}
   slotPeixeCru: {fileID: 731489464551652946}
   slotPeixeCozido: {fileID: 2161404486362222515}
+  itemCarneCrua: {fileID: 0}
+  itemCarneCozida: {fileID: 0}
+  itemCogumeloCru: {fileID: 0}
+  itemCogumeloCozido: {fileID: 0}
+  itemPeixeCru: {fileID: 0}
+  itemPeixeCozido: {fileID: 0}
 --- !u!1 &8153308847259165927
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,6 +869,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8153308847259165927}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.17544518, y: -0.08432152, z: -0.1795432, w: 0.9642993}
   m_LocalPosition: {x: -0.093, y: 0.545, z: 0.1195}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -885,7 +882,6 @@ Transform:
   - {fileID: 4357398246946844923}
   - {fileID: 3861252238226950318}
   m_Father: {fileID: 4783331668083101185}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 17.944, y: -13.719, z: -23.27}
 --- !u!114 &8534784830214239505
 MonoBehaviour:
@@ -899,13 +895,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c867cd2ac84a484681d85d925f79cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItemNoSlot: 0
+  itemDefinitionNoSlot: {fileID: 0}
   slotCarneCrua: {fileID: 5295157576835374352}
   slotCarneCozida: {fileID: 4977584244964244575}
   slotCogumeloCru: {fileID: 830057132138196802}
   slotCogumeloCozido: {fileID: 2306665154379165551}
   slotPeixeCru: {fileID: 5422265327909552104}
   slotPeixeCozido: {fileID: 4815117091963733949}
+  itemCarneCrua: {fileID: 0}
+  itemCarneCozida: {fileID: 0}
+  itemCogumeloCru: {fileID: 0}
+  itemCogumeloCozido: {fileID: 0}
+  itemPeixeCru: {fileID: 0}
+  itemPeixeCozido: {fileID: 0}
 --- !u!1 &8585199683743825401
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +932,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8585199683743825401}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.17544518, y: -0.08432152, z: -0.1795432, w: 0.9642993}
   m_LocalPosition: {x: -0.093, y: 0.545, z: -0.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -942,7 +945,6 @@ Transform:
   - {fileID: 565562880822975490}
   - {fileID: 4943724050755636681}
   m_Father: {fileID: 4783331668083101185}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 17.944, y: -13.719, z: -23.27}
 --- !u!114 &6863120076339378739
 MonoBehaviour:
@@ -956,13 +958,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c867cd2ac84a484681d85d925f79cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItemNoSlot: 0
+  itemDefinitionNoSlot: {fileID: 0}
   slotCarneCrua: {fileID: 5393258953724587551}
   slotCarneCozida: {fileID: 5585256444143543587}
   slotCogumeloCru: {fileID: 9083182623714929556}
   slotCogumeloCozido: {fileID: 4759473933110685992}
   slotPeixeCru: {fileID: 8114958186144043793}
   slotPeixeCozido: {fileID: 3737132120028627674}
+  itemCarneCrua: {fileID: 0}
+  itemCarneCozida: {fileID: 0}
+  itemCogumeloCru: {fileID: 0}
+  itemCogumeloCozido: {fileID: 0}
+  itemPeixeCru: {fileID: 0}
+  itemPeixeCozido: {fileID: 0}
 --- !u!1001 &307742492254393164
 PrefabInstance:
   m_ObjectHideFlags: 0

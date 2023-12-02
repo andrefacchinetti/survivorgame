@@ -14,6 +14,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public ItemIdentifierAmount itemIdentifierAmount;
     [SerializeField] public int groupIndex;
     [SerializeField] public bool isConsumivel;
+    [SerializeField] public int curaSede, curaFome, curaVida;
     [SerializeField] public int quantidade = 0, clicks;
 
     [SerializeField] public Inventario inventario;
@@ -45,7 +46,9 @@ public class Item : MonoBehaviourPunCallbacks
         [EnumMember(Value = "Objeto")]
         Objeto,
         [EnumMember(Value = "Municao")]
-        Municao
+        Municao,
+        [EnumMember(Value = "ConsumivelCozinha")]
+        ConsumivelCozinha
     }
    
 
@@ -66,6 +69,7 @@ public class Item : MonoBehaviourPunCallbacks
         public int groupIndex;
         public string nomePortugues, nomeIngles;
         public bool isConsumivel;
+        public int curaSede, curaFome, curaVida;
         public Texture textureImgItem;
         public GameObject objInventario;
     }
@@ -78,6 +82,9 @@ public class Item : MonoBehaviourPunCallbacks
         itemIdentifierAmount = itemResponse.itemIdentifierAmount;
         groupIndex = itemResponse.groupIndex;
         isConsumivel = itemResponse.isConsumivel;
+        curaSede = itemResponse.curaSede;
+        curaFome = itemResponse.curaFome;
+        curaVida = itemResponse.curaVida;
         quantidade = 1;
         imagemItem.texture = itemResponse.textureImgItem;
         inventario = itemResponse.objInventario.GetComponent<Inventario>();
@@ -218,10 +225,9 @@ public class Item : MonoBehaviourPunCallbacks
 
     private void aplicarEfeitoConsumivel()
     {
-        ItemObjMao itemObjMao = inventario.ObterGameObjectItemNaMao();
-        inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + itemObjMao.curaSede);
-        inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + itemObjMao.curaFome);
-        inventario.statsJogador.TakeHealHealth(itemObjMao.curaVida);
+        inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + curaSede);
+        inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + curaFome);
+        inventario.statsJogador.TakeHealHealth(curaVida);
     }
 
     public void diminuirQuantidade(int valorQtd)

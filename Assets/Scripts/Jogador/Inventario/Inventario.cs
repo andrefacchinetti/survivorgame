@@ -358,10 +358,4 @@ public class Inventario : MonoBehaviour
         imgLogItem.texture = texturaTransparente;
     }
 
-    public ItemObjMao ObterGameObjectItemNaMao()
-    {
-        //TODO: IMPLEMENTAR COM API INVENTORY
-        return null;
-    }
-
 }

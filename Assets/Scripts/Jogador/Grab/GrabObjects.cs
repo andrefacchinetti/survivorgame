@@ -153,8 +153,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 interacaoCapturarObjeto(hit);
             }
-            else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().item.name.Equals(inventario.itemPanela.name) || hit.transform.GetComponent<ItemDrop>().item.name.Equals(inventario.itemTigela.name))
-                && inventario.itemNaMao != null && inventario.ObterGameObjectItemNaMao() != null && inventario.ObterGameObjectItemNaMao().GetComponent<ConsumivelCozinha>() != null && hit.transform.GetComponent<Panela>().fogueira != null)
+            else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().item.Equals(inventario.itemPanela) || hit.transform.GetComponent<ItemDrop>().item.Equals(inventario.itemTigela))
+                && inventario.itemNaMao != null && inventario.itemNaMao.GetTipoItemEnum().Equals(Item.TiposItems.ConsumivelCozinha) && hit.transform.GetComponent<Panela>().fogueira != null)
             {
                 interacaoPanelas(hit);
             }
@@ -176,7 +176,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                         destruirObjetoDaCena = false;
                         return;
                     }
-                    if (hit.transform.tag == tagItemDrop && (itemDrop.item.name.Equals(inventario.itemPanela.name) || itemDrop.item.name.Equals(inventario.itemTigela.name)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
+                    if (hit.transform.tag == tagItemDrop && (itemDrop.item.Equals(inventario.itemPanela) || itemDrop.item.Equals(inventario.itemTigela)) && itemDrop.gameObject.GetComponent<Panela>().fogueira != null) //PANELA NA FOGUEIRA
                     {
                         Panela panela = itemDrop.gameObject.GetComponent<Panela>();
                         ItemDefinitionBase itemNaPanela = panela.ObterConsumivelDaPanela();
