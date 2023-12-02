@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 482242383785524713}
   - component: {fileID: 6285686137343759969}
   - component: {fileID: 4236582786131573064}
-  - component: {fileID: 370283263206869411}
   - component: {fileID: 8628611413334903695}
   m_Layer: 11
   m_Name: Tocha
@@ -30,6 +29,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2444314942964740145}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.093, y: -0.993, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -37,7 +37,6 @@ Transform:
   m_Children:
   - {fileID: 8150073864137238147}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4001145609682721794
 Rigidbody:
@@ -134,23 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15022b58aaf9a7e4499948d5529d9bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItem: 48
-  nomeId: Madeira
-  damageQuandoColide: 0
+  item: {fileID: 5200202225135701032, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   estaSendoComido: 0
---- !u!114 &370283263206869411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2444314942964740145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af9e60bf041c0f049a3193cbd0acf897, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PV: {fileID: 0}
 --- !u!136 &8628611413334903695
 CapsuleCollider:
   m_ObjectHideFlags: 0
