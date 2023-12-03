@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
 	[SerializeField] public ControleConstruir controleConstruir;
-	[SerializeField] public Animator animator, animatorVaraDePesca;
+	[SerializeField] public Animator animator, animatorVaraDePesca, animatorFP;
 	[SerializeField] public PointRopeFollow ropeGrab;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara, kitModoConstrucao;
 	[SerializeField] public TMP_Text txMsgAlerta;
@@ -133,12 +133,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			if (itemResponse.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
 			{
 				animator.SetTrigger("bebendoGarrafa");
+				animatorFP.SetTrigger("bebendoGarrafa");
 
 			}
 		}
 		else if (itemResponse.tipoItem.Equals(Item.TiposItems.Consumivel))
         {
 			animator.SetTrigger("comendoEmPe");
+			animatorFP.SetTrigger("comendoEmPe");
 			itemConsumindo = itemResponse;
 		}
 	}
@@ -146,6 +148,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
     {
 		animator.SetBool("construindoIdle", construcaoAtiva);
+		animatorFP.SetBool("construindoIdle", construcaoAtiva);
 		if (construcaoAtiva)
 		{
 			inventario.GuardarItemDaMao();
