@@ -20,14 +20,14 @@ public class EmotesController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F5)) { desativarAnimacoesDeBraco("animationF5"); animator.SetBool("animationF5", !animator.GetBool("animationF5")); }
         else if (Input.GetKeyDown(KeyCode.F6)) { desativarAnimacoesDeBraco("animationF6"); animator.SetBool("animationF6", !animator.GetBool("animationF6")); }*/
 
-        if (!animator.GetBool("isPlayerParado"))
+       /* if (!animator.GetBool("isPlayerParado"))
         {
             desativarAnimacoesDePerna("");
         }
         if (animator.GetBool("isPlayerArmado"))
         {
             desativarAnimacoesDeBraco("");
-        }
+        }*/
         
     }
 

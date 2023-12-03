@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public List<Item.ItemDropStruct> itemsDropsPosDissecar;
 	[SerializeField] [HideInInspector] public GameObject corpoDissecando, fogueiraAcendendo, pescaPescando, arvoreColetando, objConsertando, corpoReanimando, objCapturado;
 	[SerializeField] [HideInInspector] public AnimalController animalCapturado;
-	[SerializeField] [HideInInspector] public Item itemConsumindo, itemColetando;
+	[SerializeField] [HideInInspector] public Item itemColetando;
 	[SerializeField] [HideInInspector] public ItemDefinitionBase itemDefinitionBaseColentando;
 	[SerializeField] [HideInInspector] public GameController gameController;
 	[SerializeField] [HideInInspector] public Swim swimAbility;
@@ -86,10 +86,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 			if (inventario.itemNaMao != null)
             {
-				if (Input.GetButtonDown("Fire1"))
-				{
-					ativarAnimacaoPorTipoItem(inventario.itemNaMao);
-				}
 				if (Input.GetButtonDown("Dropar"))
 				{
 					inventario.itemNaMao.DroparItem();
@@ -122,26 +118,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				}
 			}
 
-		}
-		//verificarAnimacoesSegurandoItem();
-	}
-
-	private void ativarAnimacaoPorTipoItem(Item itemResponse)
-    {
-		if (itemResponse.tipoItem.Equals(Item.TiposItems.Ferramenta))
-		{
-			if (itemResponse.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
-			{
-				animator.SetTrigger("bebendoGarrafa");
-				animatorFP.SetTrigger("bebendoGarrafa");
-
-			}
-		}
-		else if (itemResponse.tipoItem.Equals(Item.TiposItems.Consumivel))
-        {
-			animator.SetTrigger("comendoEmPe");
-			animatorFP.SetTrigger("comendoEmPe");
-			itemConsumindo = itemResponse;
 		}
 	}
 

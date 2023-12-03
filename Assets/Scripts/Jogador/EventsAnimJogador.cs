@@ -10,10 +10,13 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 
 	void AnimEventComeu()
 	{
-		if (playerController.itemConsumindo == null) return;
-		playerController.itemConsumindo.UsarItem();
-		Debug.Log("consumiu: " + playerController.itemConsumindo.itemIdentifierAmount.ItemDefinition.name.ToString());
-		playerController.itemConsumindo = null;
+		if (playerController.inventario.itemNaMao == null)
+		{
+			Debug.LogWarning("nenhum item consumindo setado");
+			return;
+		}
+		Debug.Log("consumiu: " + playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.ToString());
+		playerController.inventario.itemNaMao.UsarItem();
 	}
 
 	void AnimEventDissecado()
