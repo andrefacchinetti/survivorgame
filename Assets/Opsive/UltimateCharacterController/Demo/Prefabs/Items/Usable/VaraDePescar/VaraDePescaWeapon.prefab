@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5357830186684567509}
   - component: {fileID: 8279177992464018412}
   - component: {fileID: 8465601134622801532}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: VaraDePescaWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ MonoBehaviour:
     m_Default: 1
   m_ItemDefinition: {fileID: -656139888275776808, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   m_SlotID: 0
-  m_AnimatorItemID: 22
+  m_AnimatorItemID: 71
   m_AnimatorMovementSetID: 1
   m_DominantItem: 1
   m_AllowCameraZoom: 0
@@ -164,12 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_States:
-  - m_Name: SwordShield
-    m_Preset: {fileID: 11400000, guid: 1d25b15fcd7076e44af7f0a0b7b59a40, type: 2}
-    m_BlockList: []
-    m_Default: 0
   - m_Name: Run
-    m_Preset: {fileID: 11400000, guid: ffbae82e4cd930a44b52bb67277802b7, type: 2}
+    m_Preset: {fileID: 11400000, guid: 1f8a3c69aa5a1444ab6320ac42afb20d, type: 2}
     m_BlockList: []
     m_Default: 0
   - m_Name: Default
@@ -178,12 +174,12 @@ MonoBehaviour:
     m_Default: 1
   m_Object: {fileID: 0}
   m_SpawnParent:
-    m_ID: 50022001
+    m_ID: 50041001
     m_Object: {fileID: 0}
-  m_LocalSpawnPosition: {x: 0.118, y: 0.129, z: -0.134}
-  m_LocalSpawnRotation: {x: -4.411, y: -0.315, z: -47.707}
+  m_LocalSpawnPosition: {x: 0.004, y: 0.18, z: 0.019}
+  m_LocalSpawnRotation: {x: -4.241, y: -82.516, z: 103.647}
   m_LocalSpawnScale: {x: 1, y: 1, z: 1}
-  m_FirstPersonBaseObjectID: 0
+  m_FirstPersonBaseObjectID: 3
   m_VisibleItem: {fileID: 9045306455384652054}
   m_AdditionalControlObjects: []
   m_PositionSpring:
@@ -195,9 +191,9 @@ MonoBehaviour:
     m_MaxVelocity: 10000
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
-  m_BasePositionOffset: {x: 0, y: 0, z: 0}
-  m_PositionOffset: {x: -0.4, y: 0.2, z: -0.27}
-  m_PositionExitOffset: {x: -0.4, y: -0.05, z: -0.2}
+  m_BasePositionOffset: {x: 0, y: -0.46, z: 0}
+  m_PositionOffset: {x: 0, y: 0, z: 0}
+  m_PositionExitOffset: {x: 0, y: -0.2, z: 0}
   m_PositionFallImpact: 0.2
   m_PositionFallImpactSoftness: 10
   m_PositionFallRetract: 2
@@ -206,7 +202,7 @@ MonoBehaviour:
   m_PositionInputVelocityScale: 1
   m_PositionMaxInputVelocity: 25
   m_RotationSpring:
-    m_Stiffness: 0.5
+    m_Stiffness: 0.05
     m_Damping: 0.2
     m_VelocityFadeInLength: 1
     m_MaxSoftForceFrames: 120
@@ -215,12 +211,12 @@ MonoBehaviour:
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
   m_RotationOffset: {x: 0, y: 0, z: 0}
-  m_RotationExitOffset: {x: 40, y: 0, z: 0}
-  m_RotationFallImpact: 0.05
+  m_RotationExitOffset: {x: 0, y: 0, z: 0}
+  m_RotationFallImpact: 10
   m_RotationFallImpactSoftness: 5
-  m_RotationLookSway: {x: 20, y: 20, z: 0}
-  m_RotationStrafeSway: {x: 0, y: 1, z: 0}
-  m_RotationVerticalSway: {x: -200, y: 0, z: 0}
+  m_RotationLookSway: {x: 0, y: 0, z: 0}
+  m_RotationStrafeSway: {x: 0, y: 0, z: 0}
+  m_RotationVerticalSway: {x: 0, y: 0, z: 0}
   m_RotationPlatformSway: {x: 0, y: 0, z: 0}
   m_RotationGroundSwayMultiplier: 0.5
   m_RotationInputVelocityScale: 1
@@ -234,7 +230,7 @@ MonoBehaviour:
     m_MaxVelocity: 10000
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
-  m_PivotPositionOffset: {x: 0.3, y: -0.2, z: 0.2}
+  m_PivotPositionOffset: {x: 0, y: 0, z: 0}
   m_PivotRotationSpring:
     m_Stiffness: 0.05
     m_Damping: 0.2
@@ -245,11 +241,11 @@ MonoBehaviour:
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
   m_PivotRotationOffset: {x: 0, y: 0, z: 0}
-  m_ShakeSpeed: 0.15
-  m_ShakeAmplitude: {x: 4, y: 2, z: 1}
+  m_ShakeSpeed: 0.1
+  m_ShakeAmplitude: {x: 20, y: 4, z: 15}
   m_BobPositionalRate: {x: 0.7, y: 1.4, z: 0}
   m_BobPositionalAmplitude: {x: 0.7, y: 2.1, z: 0}
-  m_BobRotationalRate: {x: 0.7, y: 0, z: 0}
+  m_BobRotationalRate: {x: 1.4, y: 0, z: 0}
   m_BobRotationalAmplitude: {x: 400, y: 0, z: 0}
   m_BobInputVelocityScale: 1
   m_BobMaxInputVelocity: 100
@@ -1339,9 +1335,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5956950225663161518}
     m_Modifications:
+    - target: {fileID: 982090734880200630, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1187679193814896218, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
     - target: {fileID: 3242218835451033995, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_Name
       value: ThirdPersonVaraDePesca
+      objectReference: {fileID: 0}
+    - target: {fileID: 3242218835451033995, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 3306110524097559154, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 3415192415145497890, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1382,6 +1394,10 @@ PrefabInstance:
     - target: {fileID: 3415192415145497890, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -41.887
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077270572756652027, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 8221411923157135624, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_IsTrigger
@@ -1454,9 +1470,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -41.887
       objectReference: {fileID: 0}
+    - target: {fileID: 3308676995676068708, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5038028399538881411, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5175166350798862933, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
     - target: {fileID: 7877099179958694176, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8942160186819870379, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

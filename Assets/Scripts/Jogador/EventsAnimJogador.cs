@@ -148,6 +148,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		if (playerController.pescaPescando == null) return;
 		playerController.peixeDaVara.SetActive(false);
 		playerController.inventario.AdicionarItemAoInventario(null, playerController.inventario.itemPeixeCru, 1);
+		playerController.characterLocomotion.TryStopAbility(playerController.pescarAbility);
 	}
 
 	void AnimEventColetouFruta()

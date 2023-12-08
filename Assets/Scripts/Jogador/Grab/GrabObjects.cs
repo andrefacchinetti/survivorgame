@@ -258,10 +258,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoAreaDeColeta(hit);
         }
-        else if (hit.transform.tag == tagArvore && hit.transform.gameObject.GetComponent<ArvoreFrutifera>() != null)
-        {
-            interacaoArvore(hit);
-        }
         else if (hit.transform.tag == tagIncendiavel && hit.transform.GetComponent<Fogueira>() != null)
         {
             interacaoIncendiaveis(hit);
@@ -352,7 +348,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             transferOwnerPV(hit.transform.gameObject);
             playerController.peixeDaVara.SetActive(false);
             playerController.pescaPescando = hit.transform.gameObject;
-            //playerController.animator.SetTrigger("pescando");
+            playerController.characterLocomotion.TryStartAbility(playerController.pescarAbility);
             playerController.animatorVaraDePesca.SetTrigger("pescando");
         }
         possibleInteraction = true;
@@ -448,17 +444,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             //playerController.animator.SetTrigger("reanimando");
             playerController.corpoReanimando = objPai.gameObject;
-        }
-        possibleInteraction = true;
-    }
-
-    private void interacaoArvore(RaycastHit hit)
-    {
-        if (Input.GetButtonDown("Use"))
-        {
-            transferOwnerPV(hit.transform.gameObject);
-            playerController.arvoreColetando = hit.transform.gameObject;
-            playerController.ativarAbilityColetarFrutas();
         }
         possibleInteraction = true;
     }
