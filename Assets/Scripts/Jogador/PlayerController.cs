@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
 	[SerializeField] public ControleConstruir controleConstruir;
-	[SerializeField] public Animator animator, animatorVaraDePesca, animatorFP;
+	[SerializeField] public Animator animatorVaraDePesca;
 	[SerializeField] public PointRopeFollow ropeGrab;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara, kitModoConstrucao;
 	[SerializeField] public TMP_Text txMsgAlerta;
@@ -123,8 +123,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
     {
-		animator.SetBool("construindoIdle", construcaoAtiva);
-		animatorFP.SetBool("construindoIdle", construcaoAtiva);
 		if (construcaoAtiva)
 		{
 			inventario.GuardarItemDaMao();

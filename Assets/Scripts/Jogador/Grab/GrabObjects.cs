@@ -321,13 +321,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 playerController.fogueiraAcendendo = hit.transform.gameObject;
                 if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
                 {
-                    playerController.animator.SetTrigger("acendendoFogueira");
-                    playerController.animatorFP.SetTrigger("acendendoFogueira");
+                    //playerController.animator.SetTrigger("acendendoFogueira");
                 }
                 else
                 {
-                    playerController.animator.SetTrigger("apagandoFogueira");
-                    playerController.animatorFP.SetTrigger("apagandoFogueira");
+                    //playerController.animator.SetTrigger("apagandoFogueira");
                 }
             }
             possibleInteraction = true;
@@ -354,8 +352,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             transferOwnerPV(hit.transform.gameObject);
             playerController.peixeDaVara.SetActive(false);
             playerController.pescaPescando = hit.transform.gameObject;
-            playerController.animator.SetTrigger("pescando");
-            playerController.animatorFP.SetTrigger("pescando");
+            //playerController.animator.SetTrigger("pescando");
             playerController.animatorVaraDePesca.SetTrigger("pescando");
         }
         possibleInteraction = true;
@@ -367,8 +364,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.objConsertando = hit.transform.gameObject;
-            playerController.animator.SetTrigger("consertando");
-            playerController.animatorFP.SetTrigger("consertando");
+            //playerController.animator.SetTrigger("consertando");
         }
         possibleInteraction = true;
     }
@@ -379,8 +375,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.itemColetando = hit.transform.gameObject.GetComponent<AreaDeColeta>().itemColetavel;
-            playerController.animator.SetTrigger("coletandoBaixo");
-            playerController.animatorFP.SetTrigger("coletandoBaixo");
+            //playerController.animator.SetTrigger("coletandoBaixo");
         }
         possibleInteraction = true;
     }
@@ -390,8 +385,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir Dissecar
         {
             transferOwnerPV(objPai.gameObject);
-            playerController.animator.SetTrigger("dissecando");
-            playerController.animatorFP.SetTrigger("dissecando");
+            //playerController.animator.SetTrigger("dissecando");
             playerController.itemsDropsPosDissecar = objPai.dropsItems;
             playerController.corpoDissecando = objPai.gameObject;
         }
@@ -403,8 +397,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(animalController.gameObject);
-            playerController.animator.SetTrigger("capturando");
-            playerController.animatorFP.SetTrigger("capturando");
+            //playerController.animator.SetTrigger("capturando");
             playerController.animalCapturado = animalController;
             playerController.inventario.ToggleGrabUngrabCorda(false);
         }
@@ -453,8 +446,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (Input.GetButtonDown("Use")) 
         {
-            playerController.animator.SetTrigger("reanimando");
-            playerController.animatorFP.SetTrigger("reanimando");
+            //playerController.animator.SetTrigger("reanimando");
             playerController.corpoReanimando = objPai.gameObject;
         }
         possibleInteraction = true;
@@ -466,8 +458,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.arvoreColetando = hit.transform.gameObject;
-            playerController.animator.SetTrigger("coletandoFrutas");
-            playerController.animatorFP.SetTrigger("coletandoFrutas");
+            //playerController.animator.SetTrigger("coletandoFrutas");
         }
         possibleInteraction = true;
     }
@@ -477,8 +468,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir BeberAgua
         {
             transferOwnerPV(hit.transform.gameObject);
-            playerController.animator.SetTrigger("bebendoAguaBaixo");
-            playerController.animatorFP.SetTrigger("bebendoAguaBaixo");
+            //playerController.animator.SetTrigger("bebendoAguaBaixo");
         }
         possibleInteraction = true;
     }
@@ -488,8 +478,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir EncherGarrafa
         {
             transferOwnerPV(hit.transform.gameObject);
-            playerController.animator.SetTrigger("enchendoGarrafa");
-            playerController.animatorFP.SetTrigger("enchendoGarrafa");
+            //playerController.animator.SetTrigger("enchendoGarrafa");
         }
         possibleInteraction = true;
     }

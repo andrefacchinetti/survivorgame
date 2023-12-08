@@ -170,8 +170,6 @@ public class ControleConstruir : MonoBehaviour
             }
             if(Input.GetButtonDown("Fire1")){
                 if(inventario.VerificarQtdItem(isMadeira ? itemMadeira : itemPedra, construcao.custo, true) && (podeConstruir && VerificarSePodeConstruir())){
-                    playerController.animator.SetTrigger("construindoAcao");
-                    playerController.animatorFP.SetTrigger("construindoAcao");
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
                     {
