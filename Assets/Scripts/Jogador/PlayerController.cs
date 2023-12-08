@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
 	[SerializeField] public ControleConstruir controleConstruir;
-	[SerializeField] public Animator animatorVaraDePesca;
+	[SerializeField] public Animator animatorVaraDePesca, animatorJogador;
 	[SerializeField] public PointRopeFollow ropeGrab;
 	[SerializeField] public GameObject acendedorFogueira, peixeDaVara, kitModoConstrucao;
 	[SerializeField] public TMP_Text txMsgAlerta;
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Swim swimAbility;
 	[SerializeField] [HideInInspector] public ClimbFromWater climbWaterAbility;
 	[SerializeField] [HideInInspector] public HeightChange heightChange;
+	[SerializeField] [HideInInspector] public ColetarFrutas coletarFrutas;
 
 
 	[HideInInspector] public bool canMove = true;
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		swimAbility = characterLocomotion.GetAbility<Swim>();
 		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();
 		heightChange = characterLocomotion.GetAbility<HeightChange>();
+		coletarFrutas = characterLocomotion.GetAbility<ColetarFrutas>();
 	}
 
 	void Start()
@@ -118,6 +120,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				}
 			}
 
+            if (animatorJogador.GetBool("Moving"))
+            {
+				PararAbilitysQuandoSeMovimenta();
+            }
+
 		}
 	}
 
@@ -145,6 +152,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void SumirAlerta()
     {
 		txMsgAlerta.text = "";
+    }
+
+	public void ativarAbilityColetarFrutas()
+    {
+		coletarFrutas.StartAbility();
+	}
+
+	public void PararAbilitysQuandoSeMovimenta()
+    {
+		if (coletarFrutas.IsActive) coletarFrutas.StopAbility();
     }
 
 }

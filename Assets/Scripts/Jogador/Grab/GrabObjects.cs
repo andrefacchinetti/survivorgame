@@ -458,7 +458,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             transferOwnerPV(hit.transform.gameObject);
             playerController.arvoreColetando = hit.transform.gameObject;
-            //playerController.animator.SetTrigger("coletandoFrutas");
+            playerController.ativarAbilityColetarFrutas();
         }
         possibleInteraction = true;
     }
