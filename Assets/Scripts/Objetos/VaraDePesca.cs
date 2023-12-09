@@ -14,8 +14,19 @@ public class VaraDePesca : MonoBehaviour
 		peixeDaVara.SetActive(false);
 		if (eventsAnimJogador != null)
         {
-			eventsAnimJogador.TerminouDePescar();
+			eventsAnimJogador.TerminouDePescarComSucesso();
 		}
+	}
+
+	public void IniciarPesca()
+    {
+		animator.SetTrigger("pescando");
+		peixeDaVara.SetActive(false);
+	}
+
+	public void FinalizarPesca()
+    {
+		animator.SetTrigger("parouDePescar");
 	}
 
 }

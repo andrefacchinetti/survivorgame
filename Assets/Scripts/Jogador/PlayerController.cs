@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		heightChange = characterLocomotion.GetAbility<HeightChange>();
 		pescarAbility = characterLocomotion.GetAbility<Pescar>();
 
+		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
 
 	void Start()
@@ -159,5 +160,28 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		if (pescarAbility.IsActive) pescarAbility.StopAbility();
     }
+
+	private void OnAbilityActive(Ability ability, bool activated)
+	{
+		Debug.Log(ability + " activated: " + activated);
+		if(ability.AbilityIndexParameter == pescarAbility.AbilityIndexParameter)
+        {
+            if (activated)
+            {
+				varaDePescaTP.IniciarPesca();
+				varaDePescaFP.IniciarPesca();
+            }
+            else
+            {
+				varaDePescaTP.FinalizarPesca();
+				varaDePescaFP.FinalizarPesca();
+			}
+		}
+	}
+
+	public void OnDestroy()
+	{
+		EventHandler.UnregisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
+	}
 
 }

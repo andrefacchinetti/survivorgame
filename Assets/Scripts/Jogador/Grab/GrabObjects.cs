@@ -349,10 +349,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 transferOwnerPV(hit.transform.gameObject);
                 playerController.characterLocomotion.TryStartAbility(playerController.pescarAbility);
-                playerController.varaDePescaTP.animator.SetTrigger("pescando");
-                playerController.varaDePescaTP.peixeDaVara.SetActive(false);
-                playerController.varaDePescaFP.animator.SetTrigger("pescando");
-                playerController.varaDePescaFP.peixeDaVara.SetActive(false);
                 playerController.pescaPescando = hit.transform.gameObject;
             }
             else

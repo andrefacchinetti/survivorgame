@@ -144,7 +144,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		playerController.pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
 	}
 
-	public void TerminouDePescar()
+	public void TerminouDePescarComSucesso()
 	{
 		Debug.Log("terminou de pescar");
 		if (playerController.pescaPescando == null) return;
