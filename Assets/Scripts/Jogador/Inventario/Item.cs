@@ -168,7 +168,16 @@ public class Item : MonoBehaviourPunCallbacks
         {
             inventario.itemNaMao = this;
             EquipItemInventory();
-            if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemVaraDePesca)) inventario.playerController.peixeDaVara.SetActive(false);
+            if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemVaraDePesca)) {
+                inventario.playerController.varaDePescaTP = inventario.playerController.contentItemsTP.GetComponentInChildren<VaraDePesca>();
+                inventario.playerController.varaDePescaFP = inventario.playerController.contentItemsFP.GetComponentInChildren<VaraDePesca>();
+                if (inventario.playerController.varaDePescaTP != null && inventario.playerController.varaDePescaFP != null)
+                {
+                    Debug.Log("setou as varas ok");
+                    inventario.playerController.varaDePescaTP.peixeDaVara.SetActive(false); 
+                    inventario.playerController.varaDePescaFP.peixeDaVara.SetActive(false);
+                }
+            }
             if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false)
                 && armaduras.slotLanterna.item != null)
             {

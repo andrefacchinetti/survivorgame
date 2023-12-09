@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public ControleConstruir controleConstruir;
 	[SerializeField] public Animator animatorVaraDePesca, animatorJogador;
 	[SerializeField] public PointRopeFollow ropeGrab;
-	[SerializeField] public GameObject acendedorFogueira, peixeDaVara, kitModoConstrucao;
+	[SerializeField] public GameObject acendedorFogueira, kitModoConstrucao;
+	[SerializeField] public GameObject contentItemsTP, contentItemsFP;
 	[SerializeField] public TMP_Text txMsgAlerta;
 
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
@@ -41,11 +42,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public ClimbFromWater climbWaterAbility;
 	[SerializeField] [HideInInspector] public HeightChange heightChange;
 	[SerializeField] [HideInInspector] public Pescar pescarAbility;
-
+	[HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
 
 	[HideInInspector] public bool canMove = true;
 	public float pesoGrab = 0.0f;
-
 
 	public PhotonView PV;
 

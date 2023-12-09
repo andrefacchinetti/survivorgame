@@ -137,8 +137,10 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 	void AnimEventAtivarPegandoPeixe()
 	{
 		Debug.Log("pegando peixe");
-		playerController.peixeDaVara.SetActive(true);
-		playerController.animatorVaraDePesca.SetTrigger("pegandoPeixe");
+		playerController.varaDePescaTP.peixeDaVara.SetActive(true);
+		playerController.varaDePescaFP.peixeDaVara.SetActive(true);
+		playerController.varaDePescaTP.animator.SetTrigger("pegandoPeixe");
+		playerController.varaDePescaFP.animator.SetTrigger("pegandoPeixe");
 		playerController.pescaPescando.GetComponent<Pesca>().DesativarAreaDePesca();
 	}
 
@@ -146,7 +148,8 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 	{
 		Debug.Log("event pescou");
 		if (playerController.pescaPescando == null) return;
-		playerController.peixeDaVara.SetActive(false);
+		playerController.varaDePescaTP.peixeDaVara.SetActive(false);
+		playerController.varaDePescaFP.peixeDaVara.SetActive(false);
 		playerController.inventario.AdicionarItemAoInventario(null, playerController.inventario.itemPeixeCru, 1);
 		playerController.characterLocomotion.TryStopAbility(playerController.pescarAbility);
 	}

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2050075007122224127}
   - component: {fileID: 5357830186684567509}
   - component: {fileID: 8279177992464018412}
-  - component: {fileID: 8465601134622801532}
   m_Layer: 29
   m_Name: VaraDePescaWeapon
   m_TagString: Untagged
@@ -176,8 +175,8 @@ MonoBehaviour:
   m_SpawnParent:
     m_ID: 50041001
     m_Object: {fileID: 0}
-  m_LocalSpawnPosition: {x: 0.004, y: 0.18, z: 0.019}
-  m_LocalSpawnRotation: {x: -4.241, y: -82.516, z: 103.647}
+  m_LocalSpawnPosition: {x: -0.019, y: 0.156, z: 0.058}
+  m_LocalSpawnRotation: {x: -58.336, y: -90.723, z: 114.273}
   m_LocalSpawnScale: {x: 1, y: 1, z: 1}
   m_FirstPersonBaseObjectID: 3
   m_VisibleItem: {fileID: 9045306455384652054}
@@ -1053,280 +1052,6 @@ MonoBehaviour:
             m_SingleHit: 0
             m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
         m_Density: 3
---- !u!114 &8465601134622801532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406335933095568599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f6d480ccdb49194188daa8223df2f68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_States:
-  - m_Name: Default
-    m_Preset: {fileID: 0}
-    m_BlockList: []
-    m_Default: 1
-  m_ID: 2
-  m_ActionName: In Air
-  m_ActionDescription: 
-  m_DebugLogger:
-    m_DebugAction: 0
-    m_CharacterItemActionDebugModuleType: 1
-  m_UseRate: 0.1
-  m_FaceTarget: 1
-  m_StopUseAbilityOnCompleteDelay: 0
-  m_UseEvent:
-    m_WaitForAnimationEvent: 0
-    m_Duration: 0.14
-    m_WaitForSlotEvent: 0
-  m_UseCompleteEvent:
-    m_WaitForAnimationEvent: 1
-    m_Duration: 0.05
-    m_WaitForSlotEvent: 0
-  m_ForceRootMotionPosition: 0
-  m_ForceRootMotionRotation: 0
-  m_TriggerActionModuleGroup:
-    m_Modules:
-    - rid: 5031970333275193378
-  m_UsableActionModuleGroup:
-    m_Modules: []
-  m_AttackModuleGroup:
-    m_Modules:
-    - rid: 3
-  m_CollisionModuleGroup:
-    m_Modules:
-    - rid: 5031970333275193363
-  m_AttackEffectsModuleGroup:
-    m_Modules:
-    - rid: 5031970493140303875
-  m_ImpactModuleGroup:
-    m_Modules:
-    - rid: 7
-  m_RecoilModuleGroup:
-    m_Modules:
-    - rid: 6
-  m_ExtraModuleGroup:
-    m_Modules: []
-  references:
-    version: 2
-    RefIds:
-    - rid: 3
-      type: {class: SimpleAttack, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_ID: 0
-        m_Name: 
-        m_ActiveAttackStartEventTrigger:
-          m_WaitForAnimationEvent: 0
-          m_Duration: 0
-          m_WaitForSlotEvent: 0
-        m_ActiveAttackCompleteEventTrigger:
-          m_WaitForAnimationEvent: 0
-          m_Duration: 0.2
-          m_WaitForSlotEvent: 0
-        m_AllowChainAttackEventTrigger:
-          m_WaitForAnimationEvent: 0
-          m_Duration: 0.2
-          m_WaitForSlotEvent: 0
-        m_SingleHit: 0
-    - rid: 6
-      type: {class: SimpleRecoil, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 0
-        m_ID: 0
-        m_Name: 
-        m_SubstateIndexPriority: 500
-        m_RecoilAnimatorAudioStateSet:
-          m_AnimatorAudioStateSelector:
-            rid: 10
-          m_States: []
-    - rid: 7
-      type: {class: GenericMeleeImpactModule, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_ID: 0
-        m_Name: 
-        m_SubstateIndex: -1
-        m_AttackID: -1
-        m_Conditions:
-          m_ImpactActionConditions:
-          - rid: 1000
-        m_ImpactActions:
-          m_ImpactActions:
-          - rid: 707337210847559715
-        m_FailImpactActions:
-          m_ImpactActions: []
-    - rid: 10
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
-      data:
-        m_ResetDelay: -1
-    - rid: 1000
-      type: {class: CheckTargetImpactConditionBehaviour, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-    - rid: 707337210847559715
-      type: {class: SimpleDamage, ns: Opsive.UltimateCharacterController.Items.Actions.Impact, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_Delay: 0
-        m_AllowMultiHits: 0
-        m_UseContextData: 0
-        m_SetDamageImpactData: 1
-        m_InvokeOnObjectImpact: 0
-        m_DamageProcessor: {fileID: 0}
-        m_DamageAmount: 10
-        m_ImpactForce: 2
-        m_ImpactForceFrames: 15
-        m_ImpactRadius: 0
-        m_ScaleDamageByImpactStrength: 0
-    - rid: 5031970333275193363
-      type: {class: SphereOverlapCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Sword_Collision_SphereOverlap
-          m_Preset: {fileID: 11400000, guid: 5d91fb0d3f667ed4f86ae3d23d292fec, type: 2}
-          m_BlockList: []
-          m_Default: 0
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_ID: 1
-        m_Name: 
-        m_GizmoSettings:
-          DrawGizmo: 0
-          DrawGizmoOnSelected: 1
-          Color1: {r: 1, g: 0, b: 0, a: 1}
-          Color2: {r: 1, g: 0.1, b: 0.1, a: 0.3}
-          Color3: {r: 1, g: 0, b: 1, a: 1}
-        m_MultiHitFrameCount: 50
-        m_ImpactLayers:
-          serializedVersion: 2
-          m_Bits: 3758096345
-        m_TriggerInteraction: 1
-        m_MaxCollisionCount: 100
-        m_ForwardShieldSensitivity: -0.75
-        m_SphereCenter: {x: 0, y: 1, z: 1}
-        m_SphereRadius: 1
-    - rid: 5031970333275193378
-      type: {class: InAir, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_ID: -1
-        m_Name: 
-        m_PlayAudioOnStartUse: 0
-        m_SubstateIndexData:
-          m_Additive: 0
-          m_Index: 0
-          m_Priority: 100
-        m_UseAnimatorAudioStateSet:
-          m_AnimatorAudioStateSelector:
-            rid: 5031970333275193379
-          m_States:
-          - m_States:
-            - m_Name: Default
-              m_Preset: {fileID: 0}
-              m_BlockList: []
-              m_Default: 1
-            m_Enabled: 1
-            m_AllowDuringMovement: 1
-            m_RequireGrounded: 0
-            m_StateName: 
-            m_ItemSubstateIndex: 10
-            m_AudioClipSet:
-              m_AudioConfig: {fileID: 0}
-              m_AudioClips: []
-        m_CanStopIfInputStop: 0
-        m_CanStopSubstateIndexAddition: 10
-        m_RequireInAirAbilityInAir: 1
-    - rid: 5031970333275193379
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
-      data:
-        m_ResetDelay: -1
-    - rid: 5031970493140303875
-      type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_ID: -1
-        m_Name: 
-        m_OnStartAttack: 1
-        m_OnCompleteAttack: 0
-        m_SubstateIndex: -1
-        m_AttackID: -1
-        m_EffectGroup:
-          m_Effects:
-          - rid: 5031970493140303876
-    - rid: 5031970493140303876
-      type: {class: PlayAudioClip, ns: Opsive.UltimateCharacterController.Items.Actions.Effect, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_Delay: 0
-        m_AudioClipSet:
-          m_AudioConfig: {fileID: 11400000, guid: 847b10eacbc0e1d4bb9e7ff99e026d6f, type: 2}
-          m_AudioClips: []
 --- !u!1001 &3501763337728089880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1335,25 +1060,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5956950225663161518}
     m_Modifications:
-    - target: {fileID: 982090734880200630, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+    - target: {fileID: 111200805606760435, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
-    - target: {fileID: 1187679193814896218, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+    - target: {fileID: 280633467351690361, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 669963394937501214, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1606126461019801754, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101624529769049485, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217482632997650893, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2554956528830048434, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899796150121201951, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 3242218835451033995, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_Name
       value: ThirdPersonVaraDePesca
-      objectReference: {fileID: 0}
-    - target: {fileID: 3242218835451033995, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
-      propertyPath: m_Layer
-      value: 29
-      objectReference: {fileID: 0}
-    - target: {fileID: 3306110524097559154, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
-      propertyPath: m_Layer
-      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 3415192415145497890, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1395,13 +1136,53 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -41.887
       objectReference: {fileID: 0}
-    - target: {fileID: 8077270572756652027, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+    - target: {fileID: 4396562081156274808, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
-    - target: {fileID: 8221411923157135624, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
+    - target: {fileID: 4782182874637191098, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5849261142120938906, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077493747617508620, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 6482302788611356372, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 6486909683884316420, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536794598490992454, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 6747945307010940813, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 7039993748780410555, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639925056719608819, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8391291511100841672, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 9152884819550299787, guid: b443e938ffa1108479043e54fd8dc940, type: 3}
+      propertyPath: m_Layer
+      value: 29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1426,6 +1207,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5956950225663161518}
     m_Modifications:
+    - target: {fileID: 2877856108610068, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 281006096479186516, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 822569642735232771, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471675502999869831, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065834678217977962, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217252729894814688, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315968213478127073, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
     - target: {fileID: 2680672000535922728, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
       propertyPath: m_Name
       value: FirstPersonVaraDePesca
@@ -1470,23 +1279,55 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -41.887
       objectReference: {fileID: 0}
-    - target: {fileID: 3308676995676068708, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+    - target: {fileID: 3827606714307653254, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
-    - target: {fileID: 5038028399538881411, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+    - target: {fileID: 4491573546980132651, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
-    - target: {fileID: 5175166350798862933, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+    - target: {fileID: 4649339600619606036, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
-    - target: {fileID: 7877099179958694176, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
+    - target: {fileID: 4960017007073565005, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
       objectReference: {fileID: 0}
-    - target: {fileID: 8942160186819870379, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+    - target: {fileID: 5126891637628696733, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5158624020900298975, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5293938927233008277, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5479896951865283075, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880929335759661091, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072293008253405458, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589579196848582993, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585609553613223018, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8976611086911850786, guid: 024da5fdbe75e9445993442a6d6078c3, type: 3}
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}

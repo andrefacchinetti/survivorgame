@@ -345,11 +345,21 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (Input.GetButtonDown("Use")) //Interagir Pescar
         {
-            transferOwnerPV(hit.transform.gameObject);
-            playerController.peixeDaVara.SetActive(false);
-            playerController.pescaPescando = hit.transform.gameObject;
-            playerController.characterLocomotion.TryStartAbility(playerController.pescarAbility);
-            playerController.animatorVaraDePesca.SetTrigger("pescando");
+            if(playerController.varaDePescaTP != null && playerController.varaDePescaFP != null)
+            {
+                transferOwnerPV(hit.transform.gameObject);
+                playerController.characterLocomotion.TryStartAbility(playerController.pescarAbility);
+                playerController.varaDePescaTP.animator.SetTrigger("pescando");
+                playerController.varaDePescaTP.peixeDaVara.SetActive(false);
+                playerController.varaDePescaFP.animator.SetTrigger("pescando");
+                playerController.varaDePescaFP.peixeDaVara.SetActive(false);
+                playerController.pescaPescando = hit.transform.gameObject;
+            }
+            else
+            {
+                Debug.Log("nao achou a vara");
+                playerController.characterLocomotion.TryStopAbility(playerController.pescarAbility);
+            }
         }
         possibleInteraction = true;
     }
