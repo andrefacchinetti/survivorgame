@@ -153,7 +153,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 interacaoCapturarObjeto(hit);
             }
             else if (hit.transform.tag == tagItemDrop && (hit.transform.GetComponent<ItemDrop>().item.Equals(inventario.itemPanela) || hit.transform.GetComponent<ItemDrop>().item.Equals(inventario.itemTigela))
-                && inventario.itemNaMao != null && inventario.itemNaMao.GetTipoItemEnum().Equals(Item.TiposItems.ConsumivelCozinha) && hit.transform.GetComponent<Panela>().fogueira != null)
+                && inventario.itemNaMao != null && inventario.itemNaMao.tipoItem.Equals(Item.TiposItems.ConsumivelCozinha) && hit.transform.GetComponent<Panela>().fogueira != null)
             {
                 interacaoPanelas(hit);
             }

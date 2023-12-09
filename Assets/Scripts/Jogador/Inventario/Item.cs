@@ -31,26 +31,16 @@ public class Item : MonoBehaviourPunCallbacks
 
     public enum TiposItems
     {
-        [EnumMember(Value = "Nenhum")]
         Nenhum,
-        [EnumMember(Value = "Ferramenta")]
         Ferramenta,
-        [EnumMember(Value = "Arma")]
         Arma,
-        [EnumMember(Value = "Consumivel")]
         Consumivel,
-        [EnumMember(Value = "Recurso")]
         Recurso,
-        [EnumMember(Value = "Armadura")]
         Armadura,
-        [EnumMember(Value = "Objeto")]
         Objeto,
-        [EnumMember(Value = "Municao")]
         Municao,
-        [EnumMember(Value = "ConsumivelCozinha")]
         ConsumivelCozinha
     }
-   
 
     [System.Serializable]
     public struct ItemDropStruct
