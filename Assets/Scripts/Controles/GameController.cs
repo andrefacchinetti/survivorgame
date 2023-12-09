@@ -108,16 +108,21 @@ public class GameController : MonoBehaviour
         objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);
     }
 
+    private float targetRotation = 0f;
+    private float rotationVelocity = 0f;
     void AtualizarRotacaoDoSol()
     {
         // Mapeia gameHour, gameMinute e gameSegundos para o intervalo desejado (-190, -90, 20)
         float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
 
-        // Use deltaTime diretamente para calcular a rotação
-        float rotationAngle = Mathf.Repeat(deltaTime * multiplicadorVelocidade, 360f);
+        // Define o novo ângulo de rotação
+        float targetAngle = mappedHour + Mathf.Repeat(deltaTime * multiplicadorVelocidade, 360f);
 
-        // Atribui a rotação ao pivô do sol
-        pivotDoSol.transform.rotation = Quaternion.Euler(mappedHour + rotationAngle, 0, 0f);
+        // Suaviza a transição entre as posições
+        float smoothTime = 1.0f; // Ajuste conforme necessário
+        targetRotation = Mathf.SmoothDamp(targetRotation, targetAngle, ref rotationVelocity, smoothTime);
+
+        pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
     }
 
     // Fun��o para mapear valores de um intervalo para outro
