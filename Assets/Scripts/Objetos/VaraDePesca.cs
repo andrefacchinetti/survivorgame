@@ -26,7 +26,9 @@ public class VaraDePesca : MonoBehaviour
 
 	public void FinalizarPesca()
     {
+		Debug.Log("vara de pesca parou de pescar");
 		animator.SetTrigger("parouDePescar");
+		peixeDaVara.SetActive(false);
 	}
 
 }

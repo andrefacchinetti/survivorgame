@@ -122,12 +122,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				}
 			}
 
-            if (animatorJogador.GetBool("Moving"))
-            {
-				PararAbilitys();
-            }
-
 		}
+
+		if (characterLocomotion.Moving)
+		{
+			PararAbilitys();
+		}
+
 	}
 
 	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
@@ -158,12 +159,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	public void PararAbilitys()
     {
-		if (pescarAbility.IsActive) pescarAbility.StopAbility();
-    }
+		PararAbilityPesca();
+	}
+
+	public void PararAbilityPesca()
+    {
+		if (pescarAbility.IsActive)
+        {
+			pescarAbility.StopAbility();
+        }
+	}
 
 	private void OnAbilityActive(Ability ability, bool activated)
 	{
-		Debug.Log(ability + " activated: " + activated);
 		if(ability.AbilityIndexParameter == pescarAbility.AbilityIndexParameter)
         {
             if (activated)
@@ -173,8 +181,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
             else
             {
-				varaDePescaTP.FinalizarPesca();
-				varaDePescaFP.FinalizarPesca();
+				if (varaDePescaFP != null && varaDePescaTP != null)
+				{
+					varaDePescaTP.FinalizarPesca();
+					varaDePescaFP.FinalizarPesca();
+				}
 			}
 		}
 	}
