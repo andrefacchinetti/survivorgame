@@ -8,8 +8,7 @@ using Opsive.UltimateCharacterController.Traits;
 using Opsive.UltimateCharacterController.Character;
 using Opsive.UltimateCharacterController.Character.Abilities;
 using Opsive.UltimateCharacterController.AddOns.Swimming;
-using Opsive.UltimateCharacterController.Character.Abilities.Items;
-using Opsive.UltimateCharacterController.Inventory;
+using Opsive.Shared.Events;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -21,6 +20,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public Armaduras armaduras;
 	[SerializeField] public GrabObjects grabObjects;
 	[SerializeField] public ControleConstruir controleConstruir;
+	[SerializeField] public EventsAnimJogador eventsAnimJogador;
 	[SerializeField] public Animator animatorVaraDePesca, animatorJogador;
 	[SerializeField] public PointRopeFollow ropeGrab;
 	[SerializeField] public GameObject acendedorFogueira, kitModoConstrucao;
@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();
 		heightChange = characterLocomotion.GetAbility<HeightChange>();
 		pescarAbility = characterLocomotion.GetAbility<Pescar>();
+
 	}
 
 	void Start()

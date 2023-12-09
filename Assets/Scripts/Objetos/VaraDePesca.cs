@@ -7,11 +7,15 @@ public class VaraDePesca : MonoBehaviour
 
 	[SerializeField] public Animator animator;
 	[SerializeField] public GameObject peixeDaVara;
+	public EventsAnimJogador eventsAnimJogador;
 
 	void AnimEventPescou()
 	{
-		Debug.Log("pescouvara");
-		GetComponentInParent<EventsAnimJogador>().EventPescou();
+		peixeDaVara.SetActive(false);
+		if (eventsAnimJogador != null)
+        {
+			eventsAnimJogador.TerminouDePescar();
+		}
 	}
 
 }

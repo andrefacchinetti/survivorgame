@@ -174,6 +174,7 @@ public class Item : MonoBehaviourPunCallbacks
                 if (inventario.playerController.varaDePescaTP != null && inventario.playerController.varaDePescaFP != null)
                 {
                     Debug.Log("setou as varas ok");
+                    inventario.playerController.varaDePescaTP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
                     inventario.playerController.varaDePescaTP.peixeDaVara.SetActive(false); 
                     inventario.playerController.varaDePescaFP.peixeDaVara.SetActive(false);
                 }

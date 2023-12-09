@@ -1,7 +1,7 @@
 using Opsive.UltimateCharacterController.Character.Abilities;
 using UnityEngine;
 
-public class Pescar : DetectObjectAbilityBase
+public class Pescar : Ability
 {
    
 }
