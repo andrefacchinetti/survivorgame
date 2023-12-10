@@ -69,8 +69,10 @@ MonoBehaviour:
     highQualityLineRenderingMemoryBudget: 128
     msaaSampleCount: 1
     supportMotionVectors: 1
-    supportRuntimeAOVAPI: 0
+    supportScreenSpaceLensFlare: 1
+    supportDataDrivenLensFlare: 1
     supportDitheringCrossFade: 1
+    supportRuntimeAOVAPI: 0
     supportTerrainHole: 0
     lightProbeSystem: 0
     oldLightProbeSystem: 0
@@ -116,7 +118,8 @@ MonoBehaviour:
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 32
-      shadowFilteringQuality: 1
+      punctualShadowFilteringQuality: 1
+      directionalShadowFilteringQuality: 1
       areaShadowFilteringQuality: 0
       punctualLightShadowAtlas:
         shadowAtlasResolution: 4096
@@ -151,6 +154,10 @@ MonoBehaviour:
       drawDistance: 1000
       atlasWidth: 4096
       atlasHeight: 4096
+      transparentTextureResolution:
+        m_Values: 000100000002000000040000
+        m_SchemaId:
+          m_Id: With3Levels
       perChannelMask: 0
     postProcessSettings:
       m_LutSize: 32
@@ -166,8 +173,6 @@ MonoBehaviour:
       DLSSSharpness: 0.5
       fsrOverrideSharpness: 0
       fsrSharpness: 0.92
-      stpQuality: 1
-      stpResponsive: 1
       maxPercentage: 100
       minPercentage: 100
       dynResType: 1
@@ -176,7 +181,6 @@ MonoBehaviour:
       forcedPercentage: 100
       lowResTransparencyMinimumThreshold: 0
       rayTracingHalfResThreshold: 50
-      dynamicResolutionStepSize: 25
     lowresTransparentSettings:
       enabled: 1
       checkerboardDepthBuffer: 1
@@ -284,8 +288,14 @@ MonoBehaviour:
       RTRFullResolution: 000001
       RTRRayMaxIterations: 200000003000000040000000
       RTRDenoise: 010101
-      RTRDenoiserRadius: 080000000c00000010000000
-      RTRSmoothDenoising: 010000
+      RTRDenoiserRadiusDimmer:
+      - 0.75
+      - 0.75
+      - 1
+      RTRDenoiserAntiFlicker:
+      - 1
+      - 1
+      - 1
       Fog_ControlMode: 000000000000000000000000
       Fog_Budget:
       - 0.166
@@ -317,13 +327,16 @@ MonoBehaviour:
   availableMaterialQualityLevels: -1
   m_DefaultMaterialQualityLevel: 4
   diffusionProfileSettings: {fileID: 0}
+  m_VolumeProfile: {fileID: 0}
   virtualTexturingSettings:
     streamingCpuCacheSizeInMegaBytes: 256
+    streamingMipPreloadTexturesPerFrame: 0
+    streamingPreloadMipCount: 1
     streamingGpuCacheSettings:
     - format: 0
       sizeInMegaBytes: 128
   m_UseRenderGraph: 1
-  m_Version: 23
+  m_Version: 24
   m_ObsoleteFrameSettings:
     overrides: 0
     enableShadow: 0
