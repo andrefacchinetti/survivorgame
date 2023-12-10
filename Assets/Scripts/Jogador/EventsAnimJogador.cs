@@ -25,7 +25,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		foreach (Item.ItemDropStruct drop in playerController.itemsDropsPosDissecar)
 		{
 			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-			string nomePrefab = drop.tipoItem + "/" + drop.itemIdentifierAmount.ItemDefinition.name;
+			string nomePrefab = drop.tipoItem + "/" + drop.itemDefinition.name;
 			ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.rotation, playerController.PV.ViewID);
 		}
 		playerController.itemsDropsPosDissecar = new List<Item.ItemDropStruct>();
@@ -162,11 +162,11 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 			{
 				if (itemDropScruct.qtdMaxDrops > 0)
 				{
-					Debug.Log("coletou fruta: " + itemDropScruct.itemIdentifierAmount.ItemDefinition.name);
-					playerController.inventario.AdicionarItemAoInventario(null, itemDropScruct.itemIdentifierAmount.ItemDefinition, 1);
+					Debug.Log("coletou fruta: " + itemDropScruct.itemDefinition.name);
+					playerController.inventario.AdicionarItemAoInventario(null, itemDropScruct.itemDefinition, 1);
 					playerController.arvoreColetando.GetComponent<ArvoreFrutifera>().DesaparecerUmaFrutaDaArvore();
 					Item.ItemDropStruct novo = new Item.ItemDropStruct();
-					novo.itemIdentifierAmount = itemDropScruct.itemIdentifierAmount;
+					novo.itemDefinition = itemDropScruct.itemDefinition;
 					novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
 					novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
 					itemDrops.Add(novo);

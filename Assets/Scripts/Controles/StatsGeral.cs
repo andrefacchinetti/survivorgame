@@ -138,7 +138,7 @@ public class StatsGeral : MonoBehaviour
             if (!Item.TiposItems.Nenhum.ToString().Equals(drop.tipoItem))
             {
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-                string nomePrefab = drop.tipoItem + "/" + drop.itemIdentifierAmount.ItemDefinition.name;
+                string nomePrefab = drop.tipoItem + "/" + drop.itemDefinition.name;
                 ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, PV.ViewID);
             }
         }

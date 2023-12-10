@@ -45,7 +45,7 @@ public class Item : MonoBehaviourPunCallbacks
     [System.Serializable]
     public struct ItemDropStruct
     {
-        public ItemIdentifierAmount itemIdentifierAmount;
+        public ItemDefinitionBase itemDefinition;
         public TiposItems tipoItem;
         public int qtdMinDrops;
         public int qtdMaxDrops;
