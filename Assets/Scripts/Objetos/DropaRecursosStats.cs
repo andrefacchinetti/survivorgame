@@ -33,6 +33,7 @@ public class DropaRecursosStats : MonoBehaviour
         //TODO: Mostrar dano visual
     }
 
+    public float forcaEmpurraArvore = 2;
     public void AcoesMorreu()
     {
         if (isParteQuebravel)
@@ -45,7 +46,7 @@ public class DropaRecursosStats : MonoBehaviour
                 Rigidbody rbArvore = arvorePrincipal.GetComponent<Rigidbody>();
                 rbArvore.isKinematic = false;
                 Vector3 direcao = (rbArvore.transform.position - transform.position).normalized;
-                rbArvore.AddForce(direcao * 1, ForceMode.Impulse);
+                rbArvore.AddForce(direcao * forcaEmpurraArvore, ForceMode.Impulse);
             }
             this.gameObject.SetActive(false);
         }
@@ -59,14 +60,16 @@ public class DropaRecursosStats : MonoBehaviour
 
     private bool verificarTodasPartesQuebraram()
     {
-        foreach(DropaRecursosStats parteArvore in partesArvore)
+        int qtdQuebrados = 0;
+        foreach(DropaRecursosStats parteArvore in arvorePrincipal.partesArvore)
         {
-            if (!parteArvore.isPedacoQuebrado)
+            if (parteArvore.isPedacoQuebrado)
             {
-                return false;
+                qtdQuebrados++;
+                if (qtdQuebrados >= arvorePrincipal.partesArvore.Count / 2) return true;
             }
         }
-        return true;
+        return false;
     }
 
 }
