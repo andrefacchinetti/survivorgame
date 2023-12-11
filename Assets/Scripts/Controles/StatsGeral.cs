@@ -13,7 +13,7 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public GameObject objPaiParaDestruir;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
     [SerializeField] public GameObject dropPosition;
-    [HideInInspector] public bool isAttacking;
+    [HideInInspector] public bool isAttacking, isInvulneravel = false;
 
     [SerializeField] public Health health;
     [HideInInspector] public AttributeManager attributeManager;
@@ -46,7 +46,12 @@ public class StatsGeral : MonoBehaviour
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
         Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
-        if(hitCollider != null) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
+        if(hitCollider != null && dropaRecursosStats == null) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
+        PlayerController pc = attacker.GetComponentInParent<PlayerController>();
+        if(pc != null)
+        {
+            pc.animatorJogador.SetTrigger("acertouAtaque");
+        }
         AcoesTomouDano();
     }
 
@@ -82,7 +87,10 @@ public class StatsGeral : MonoBehaviour
         else //outros
         {
             Debug.Log("take damage");
-            health.Damage(damageValue);
+            if (!isInvulneravel)
+            {
+                health.Damage(damageValue);
+            }
         }
     }
 
