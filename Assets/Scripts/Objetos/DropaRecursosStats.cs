@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Opsive.UltimateCharacterController.Traits;
 using UnityEngine;
 
 public class DropaRecursosStats : MonoBehaviour
@@ -22,7 +23,7 @@ public class DropaRecursosStats : MonoBehaviour
     {
         if(arvorePrincipal != null)
         {
-            arvorePrincipal.GetComponent<StatsGeral>().isInvulneravel = true;
+            arvorePrincipal.GetComponent<Health>().Invincible = true;
         }
     }
 
@@ -40,10 +41,13 @@ public class DropaRecursosStats : MonoBehaviour
             isPedacoQuebrado = true;
             if (verificarTodasPartesQuebraram())
             {
-                arvorePrincipal.GetComponent<StatsGeral>().isInvulneravel = false;
-                arvorePrincipal.GetComponent<Rigidbody>().isKinematic = false;
-                arvorePrincipal.GetComponent<Rigidbody>().AddForce(this.transform.forward, ForceMode.Impulse);
+                arvorePrincipal.GetComponent<Health>().Invincible = false;
+                Rigidbody rbArvore = arvorePrincipal.GetComponent<Rigidbody>();
+                rbArvore.isKinematic = false;
+                Vector3 direcao = (rbArvore.transform.position - transform.position).normalized;
+                rbArvore.AddForce(direcao * 1, ForceMode.Impulse);
             }
+            this.gameObject.SetActive(false);
         }
         else
         {
