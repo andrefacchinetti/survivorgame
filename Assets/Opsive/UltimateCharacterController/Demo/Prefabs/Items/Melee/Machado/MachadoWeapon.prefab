@@ -57,7 +57,7 @@ MonoBehaviour:
     m_Default: 1
   m_ItemDefinition: {fileID: 3189386700851253806, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   m_SlotID: 0
-  m_AnimatorItemID: 72
+  m_AnimatorItemID: 22
   m_AnimatorMovementSetID: 1
   m_DominantItem: 1
   m_AllowCameraZoom: 0
@@ -164,8 +164,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_States:
+  - m_Name: SwordShield
+    m_Preset: {fileID: 11400000, guid: 1d25b15fcd7076e44af7f0a0b7b59a40, type: 2}
+    m_BlockList: []
+    m_Default: 0
   - m_Name: Run
-    m_Preset: {fileID: 11400000, guid: 1f8a3c69aa5a1444ab6320ac42afb20d, type: 2}
+    m_Preset: {fileID: 11400000, guid: ffbae82e4cd930a44b52bb67277802b7, type: 2}
     m_BlockList: []
     m_Default: 0
   - m_Name: Default
@@ -174,12 +178,12 @@ MonoBehaviour:
     m_Default: 1
   m_Object: {fileID: 0}
   m_SpawnParent:
-    m_ID: 50041001
+    m_ID: 50022001
     m_Object: {fileID: 0}
-  m_LocalSpawnPosition: {x: -0.145, y: 0.179, z: 0.027}
-  m_LocalSpawnRotation: {x: -180.666, y: -3.734009, z: 16.479}
+  m_LocalSpawnPosition: {x: 0.025, y: -0.002, z: 0.148}
+  m_LocalSpawnRotation: {x: 249.899, y: 93.943, z: -0.2940063}
   m_LocalSpawnScale: {x: 1, y: 1, z: 1}
-  m_FirstPersonBaseObjectID: 3
+  m_FirstPersonBaseObjectID: 0
   m_VisibleItem: {fileID: 5316769507000729773}
   m_AdditionalControlObjects: []
   m_PositionSpring:
@@ -191,9 +195,9 @@ MonoBehaviour:
     m_MaxVelocity: 10000
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
-  m_BasePositionOffset: {x: 0, y: -1.62, z: -0.24}
-  m_PositionOffset: {x: 0, y: 0, z: 0}
-  m_PositionExitOffset: {x: 0, y: -0.2, z: 0}
+  m_BasePositionOffset: {x: 0, y: 0, z: 0}
+  m_PositionOffset: {x: -0.4, y: 0.2, z: -0.27}
+  m_PositionExitOffset: {x: -0.4, y: -0.05, z: -0.2}
   m_PositionFallImpact: 0.2
   m_PositionFallImpactSoftness: 10
   m_PositionFallRetract: 2
@@ -202,7 +206,7 @@ MonoBehaviour:
   m_PositionInputVelocityScale: 1
   m_PositionMaxInputVelocity: 25
   m_RotationSpring:
-    m_Stiffness: 0.05
+    m_Stiffness: 0.5
     m_Damping: 0.2
     m_VelocityFadeInLength: 1
     m_MaxSoftForceFrames: 120
@@ -211,12 +215,12 @@ MonoBehaviour:
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
   m_RotationOffset: {x: 0, y: 0, z: 0}
-  m_RotationExitOffset: {x: 0, y: 0, z: 0}
-  m_RotationFallImpact: 10
+  m_RotationExitOffset: {x: 40, y: 0, z: 0}
+  m_RotationFallImpact: 0.05
   m_RotationFallImpactSoftness: 5
-  m_RotationLookSway: {x: 0, y: 0, z: 0}
-  m_RotationStrafeSway: {x: 0, y: 0, z: 0}
-  m_RotationVerticalSway: {x: 0, y: 0, z: 0}
+  m_RotationLookSway: {x: 20, y: 20, z: 0}
+  m_RotationStrafeSway: {x: 0, y: 1, z: 0}
+  m_RotationVerticalSway: {x: -200, y: 0, z: 0}
   m_RotationPlatformSway: {x: 0, y: 0, z: 0}
   m_RotationGroundSwayMultiplier: 0.5
   m_RotationInputVelocityScale: 1
@@ -230,7 +234,7 @@ MonoBehaviour:
     m_MaxVelocity: 10000
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
-  m_PivotPositionOffset: {x: 0, y: 0, z: 0}
+  m_PivotPositionOffset: {x: 0.3, y: -0.2, z: 0.2}
   m_PivotRotationSpring:
     m_Stiffness: 0.05
     m_Damping: 0.2
@@ -241,11 +245,11 @@ MonoBehaviour:
     m_MinValue: {x: -10000, y: -10000, z: -10000}
     m_MaxValue: {x: 10000, y: 10000, z: 10000}
   m_PivotRotationOffset: {x: 0, y: 0, z: 0}
-  m_ShakeSpeed: 0.1
-  m_ShakeAmplitude: {x: 20, y: 4, z: 15}
+  m_ShakeSpeed: 0.15
+  m_ShakeAmplitude: {x: 4, y: 2, z: 1}
   m_BobPositionalRate: {x: 0.7, y: 1.4, z: 0}
   m_BobPositionalAmplitude: {x: 0.7, y: 2.1, z: 0}
-  m_BobRotationalRate: {x: 1.4, y: 0, z: 0}
+  m_BobRotationalRate: {x: 0.7, y: 0, z: 0}
   m_BobRotationalAmplitude: {x: 400, y: 0, z: 0}
   m_BobInputVelocityScale: 1
   m_BobMaxInputVelocity: 100
@@ -610,8 +614,6 @@ MonoBehaviour:
   m_CollisionModuleGroup:
     m_Modules:
     - rid: 5876176267361910787
-    - rid: 5876176267361910788
-    - rid: 5876176267361910789
   m_AttackEffectsModuleGroup:
     m_Modules:
     - rid: 5031970493140303902
@@ -1129,7 +1131,7 @@ MonoBehaviour:
           m_Default: 1
         m_Bindings:
           m_Bindings: []
-        m_Enabled: 0
+        m_Enabled: 1
         m_ID: 0
         m_Name: 
         m_GizmoSettings:
@@ -1147,7 +1149,7 @@ MonoBehaviour:
         m_ForwardShieldSensitivity: -0.75
         m_Hitboxes:
           m_FirstPerson:
-          - m_Collider: {fileID: 0}
+          - m_Collider: {fileID: 1714291526158254292}
             m_DamageMultiplier: 1
             m_ColliderObjectID: -1
             m_MinimumYOffset: 0
@@ -1156,7 +1158,7 @@ MonoBehaviour:
             m_SingleHit: 0
             m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
           m_ThirdPerson:
-          - m_Collider: {fileID: 0}
+          - m_Collider: {fileID: 7555794908783022076}
             m_DamageMultiplier: 1
             m_ColliderObjectID: -1
             m_MinimumYOffset: 0
@@ -1164,88 +1166,6 @@ MonoBehaviour:
             m_RequireMovement: 0
             m_SingleHit: 0
             m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
-    - rid: 5876176267361910788
-      type: {class: SphereOverlapCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Sword_Collision_SphereOverlap
-          m_Preset: {fileID: 11400000, guid: 5d91fb0d3f667ed4f86ae3d23d292fec, type: 2}
-          m_BlockList: []
-          m_Default: 0
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 0
-        m_ID: 1
-        m_Name: 
-        m_GizmoSettings:
-          DrawGizmo: 0
-          DrawGizmoOnSelected: 1
-          Color1: {r: 1, g: 0, b: 0, a: 1}
-          Color2: {r: 1, g: 0.1, b: 0.1, a: 0.3}
-          Color3: {r: 1, g: 0, b: 1, a: 1}
-        m_MultiHitFrameCount: 50
-        m_ImpactLayers:
-          serializedVersion: 2
-          m_Bits: 3758096345
-        m_TriggerInteraction: 1
-        m_MaxCollisionCount: 100
-        m_ForwardShieldSensitivity: -0.75
-        m_SphereCenter: {x: 0, y: 1, z: 1}
-        m_SphereRadius: 0.8
-    - rid: 5876176267361910789
-      type: {class: LerpedHitboxCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Sword_Collision_LerpedHitbox
-          m_Preset: {fileID: 11400000, guid: 566f56286e2306d40a23502ee52c5e56, type: 2}
-          m_BlockList: []
-          m_Default: 0
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 0
-        m_ID: 2
-        m_Name: 
-        m_GizmoSettings:
-          DrawGizmo: 0
-          DrawGizmoOnSelected: 1
-          Color1: {r: 1, g: 0, b: 0, a: 1}
-          Color2: {r: 1, g: 0.1, b: 0.1, a: 0.3}
-          Color3: {r: 1, g: 0, b: 1, a: 1}
-        m_MultiHitFrameCount: 50
-        m_ImpactLayers:
-          serializedVersion: 2
-          m_Bits: 3758096345
-        m_TriggerInteraction: 1
-        m_MaxCollisionCount: 100
-        m_ForwardShieldSensitivity: -0.75
-        m_Hitboxes:
-          m_FirstPerson:
-          - m_Collider: {fileID: 0}
-            m_DamageMultiplier: 1
-            m_ColliderObjectID: -1
-            m_MinimumYOffset: 0
-            m_MinimumZOffset: 0
-            m_RequireMovement: 0
-            m_SingleHit: 0
-            m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
-          m_ThirdPerson:
-          - m_Collider: {fileID: 0}
-            m_DamageMultiplier: 1
-            m_ColliderObjectID: -1
-            m_MinimumYOffset: 0
-            m_MinimumZOffset: 0
-            m_RequireMovement: 0
-            m_SingleHit: 0
-            m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
-        m_Density: 3
 --- !u!1001 &1928598345505750772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1313,6 +1233,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3242218835451033995, guid: b3e3d251694f404498a314fdc6b105b7, type: 3}
   m_PrefabInstance: {fileID: 1928598345505750772}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &7555794908783022076 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 8221411923157135624, guid: b3e3d251694f404498a314fdc6b105b7, type: 3}
+  m_PrefabInstance: {fileID: 1928598345505750772}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7852972944273688709
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1370,6 +1295,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08e8b2d30a286df4b8d7182606e72d61, type: 3}
+--- !u!65 &1714291526158254292 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 8876944812034476113, guid: 08e8b2d30a286df4b8d7182606e72d61, type: 3}
+  m_PrefabInstance: {fileID: 7852972944273688709}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5316769507000729773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2680672000535922728, guid: 08e8b2d30a286df4b8d7182606e72d61, type: 3}

@@ -13,7 +13,7 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public GameObject objPaiParaDestruir;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
     [SerializeField] public GameObject dropPosition;
-    [HideInInspector] public bool isAttacking, isInvulneravel = false;
+    [HideInInspector] public bool isAttacking;
 
     [SerializeField] public Health health;
     [HideInInspector] public AttributeManager attributeManager;
@@ -87,10 +87,7 @@ public class StatsGeral : MonoBehaviour
         else //outros
         {
             Debug.Log("take damage");
-            if (!isInvulneravel)
-            {
-                health.Damage(damageValue);
-            }
+            health.Damage(damageValue);
         }
     }
 
