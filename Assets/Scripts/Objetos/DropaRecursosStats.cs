@@ -36,6 +36,14 @@ public class DropaRecursosStats : MonoBehaviour
     public void AcoesTomouDano()
     {
         Debug.Log("dropa recursos tomou dano");
+        if (isParteQuebravel)
+        {
+            Rigidbody rbParte = GetComponent<Rigidbody>();
+            rbParte.isKinematic = false;
+            //rbParte.AddForce(transform.forward * forcaEmpurraArvore, ForceMode.Impulse);
+            Rigidbody rbArvore = arvorePrincipal.GetComponent<Rigidbody>();
+            rbArvore.isKinematic = false;
+        }
         //TODO: Mostrar dano visual
     }
 
@@ -46,15 +54,15 @@ public class DropaRecursosStats : MonoBehaviour
         {
             Debug.Log("parte arvore quebrou");
             isPedacoQuebrado = true;
-            if (verificarTodasPartesQuebraram())
+            /*if (verificarTodasPartesQuebraram())
             {
                 arvorePrincipal.GetComponent<Health>().Invincible = false;
                 Rigidbody rbArvore = arvorePrincipal.GetComponent<Rigidbody>();
                 rbArvore.isKinematic = false;
                 Vector3 direcao = (rbArvore.transform.position - transform.position).normalized;
                 rbArvore.AddForce(direcao * forcaEmpurraArvore, ForceMode.Impulse);
-            }
-            this.gameObject.SetActive(false);
+            }*/
+            //this.gameObject.SetActive(false);
         }
         else
         {
