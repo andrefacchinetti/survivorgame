@@ -11,6 +11,7 @@ public class DropaRecursosStats : MonoBehaviour
     //Opcoes da arvore
     [SerializeField] bool isParteQuebravel = false;
     [SerializeField] DropaRecursosStats arvorePrincipal;
+    [SerializeField] GameObject contentQuebraveis;
     [SerializeField] List<DropaRecursosStats> partesArvore;
     [HideInInspector] public bool isPedacoQuebrado = false;
 
@@ -24,6 +25,11 @@ public class DropaRecursosStats : MonoBehaviour
         if(arvorePrincipal != null)
         {
             arvorePrincipal.GetComponent<Health>().Invincible = true;
+        }
+        partesArvore = new List<DropaRecursosStats>();
+        foreach (DropaRecursosStats gameObject in contentQuebraveis.GetComponentsInChildren<DropaRecursosStats>())
+        {
+            partesArvore.Add(gameObject);
         }
     }
 
