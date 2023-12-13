@@ -47,10 +47,13 @@ public class StatsGeral : MonoBehaviour
     {
         Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
         if(hitCollider != null && dropaRecursosStats == null) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
-        PlayerController pc = attacker.GetComponentInParent<PlayerController>();
-        if(pc != null)
+        if(attacker != null)
         {
-            pc.animatorJogador.SetTrigger("acertouAtaque");
+            PlayerController pc = attacker.GetComponentInParent<PlayerController>();
+            if (pc != null)
+            {
+                pc.animatorJogador.SetTrigger("acertouAtaque");
+            }
         }
         AcoesTomouDano();
     }

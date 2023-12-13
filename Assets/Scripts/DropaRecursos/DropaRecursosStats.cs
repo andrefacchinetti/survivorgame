@@ -9,10 +9,8 @@ public class DropaRecursosStats : MonoBehaviour
     StatsGeral statsGeral;
 
     //Opcoes da arvore
-    [SerializeField] bool isParteQuebravel = false;
-    [SerializeField] DropaRecursosStats arvorePrincipal;
-    [SerializeField] GameObject contentQuebraveis;
-    [SerializeField] List<DropaRecursosStats> partesArvore;
+    [SerializeField] bool isParteQuebravel = false, souObjInteiro = false, souObjRachado = false;
+    [SerializeField] ArvoreQuebravel arvoreQuebravelBase;
     [HideInInspector] public bool isPedacoQuebrado = false;
 
     private void Awake()
@@ -22,38 +20,29 @@ public class DropaRecursosStats : MonoBehaviour
 
     private void Start()
     {
-        if(arvorePrincipal != null)
+        if(arvoreQuebravelBase != null)
         {
-            arvorePrincipal.GetComponent<Health>().Invincible = true;
+            arvoreQuebravelBase.arvorePrincipal.GetComponent<Health>().Invincible = true;
         }
-        partesArvore = new List<DropaRecursosStats>();
-        foreach (DropaRecursosStats gameObject in contentQuebraveis.GetComponentsInChildren<DropaRecursosStats>())
-        {
-            partesArvore.Add(gameObject);
-        }
+       
     }
 
     public void AcoesTomouDano()
     {
         Debug.Log("dropa recursos tomou dano");
-        if (isParteQuebravel)
-        {
-            Rigidbody rbParte = GetComponent<Rigidbody>();
-            rbParte.isKinematic = false;
-            //rbParte.AddForce(transform.forward * forcaEmpurraArvore, ForceMode.Impulse);
-            Rigidbody rbArvore = arvorePrincipal.GetComponent<Rigidbody>();
-            rbArvore.isKinematic = false;
-        }
+        AcoesPartesArvoreTomamDano();
         //TODO: Mostrar dano visual
     }
 
     public float forcaEmpurraArvore = 2;
     public void AcoesMorreu()
     {
+        AcoesPartesArvoreTomamDano();
         if (isParteQuebravel)
         {
             Debug.Log("parte arvore quebrou");
             isPedacoQuebrado = true;
+            //TODO: SUMIR PEDACO DEPOIS DE UM TEMPO
             /*if (verificarTodasPartesQuebraram())
             {
                 arvorePrincipal.GetComponent<Health>().Invincible = false;
@@ -72,18 +61,25 @@ public class DropaRecursosStats : MonoBehaviour
         }
     }
 
-    private bool verificarTodasPartesQuebraram()
+    private void AcoesPartesArvoreTomamDano()
     {
-        int qtdQuebrados = 0;
-        foreach(DropaRecursosStats parteArvore in arvorePrincipal.partesArvore)
+        if (isParteQuebravel)
         {
-            if (parteArvore.isPedacoQuebrado)
-            {
-                qtdQuebrados++;
-                if (qtdQuebrados >= arvorePrincipal.partesArvore.Count / 2) return true;
-            }
+            Rigidbody rbParte = GetComponent<Rigidbody>();
+            rbParte.isKinematic = false;
+            rbParte.drag = 5; 
+            //rbParte.AddForce(transform.forward * forcaEmpurraArvore, ForceMode.Impulse);
+            Rigidbody rbArvore = arvoreQuebravelBase.arvorePrincipal.GetComponent<Rigidbody>();
+            rbArvore.isKinematic = false;
         }
-        return false;
+        else if (souObjInteiro)
+        {
+            arvoreQuebravelBase.SetarFaseArvore(ArvoreQuebravel.FaseArvore.Rachada);
+        }
+        else if (souObjRachado)
+        {
+            arvoreQuebravelBase.SetarFaseArvore(ArvoreQuebravel.FaseArvore.Pedacos);
+        }
     }
 
 }
