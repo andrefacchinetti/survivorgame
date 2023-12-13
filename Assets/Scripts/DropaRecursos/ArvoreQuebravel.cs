@@ -8,7 +8,8 @@ public class ArvoreQuebravel : MonoBehaviour
     public FaseArvore faseArvore;
     public DropaRecursosStats arvorePrincipal;
     public GameObject objArvoreInteira, objArvoreRachada, objArvorePedacos;
-    [HideInInspector] List<DropaRecursosStats> partesArvore;
+    public FileiraQuebravel[] fileirasQuebraveis;
+    
     public enum FaseArvore
     {
         Inteira,
@@ -19,12 +20,6 @@ public class ArvoreQuebravel : MonoBehaviour
     private void Awake()
     {
         SetarFaseArvore(faseArvore);
-
-        partesArvore = new List<DropaRecursosStats>();
-        foreach (DropaRecursosStats dr in objArvorePedacos.GetComponentsInChildren<DropaRecursosStats>())
-        {
-            partesArvore.Add(dr);
-        }
     }
 
     public void SetarFaseArvore(FaseArvore fase)
@@ -34,18 +29,21 @@ public class ArvoreQuebravel : MonoBehaviour
         objArvorePedacos.SetActive(FaseArvore.Pedacos.Equals(fase));
     }
 
-    private bool verificarPercentualPartesQuebraram()
+    public float forcaDeQueda = 1000f;
+    public void ativarFileirasGravidadeApartirDeIndex(int index)
     {
-        int qtdQuebrados = 0;
-        foreach (DropaRecursosStats parteArvore in partesArvore)
+        for(int i=0;i < fileirasQuebraveis.Length; i++)
         {
-            if (parteArvore.isPedacoQuebrado)
+            if (fileirasQuebraveis[i].meuIndex >= index)
             {
-                qtdQuebrados++;
-                if (qtdQuebrados >= partesArvore.Count / 2) return true;
+                if (!fileirasQuebraveis[i].jaAtivou)
+                {
+                    fileirasQuebraveis[i].AtivarGravidadePartes();
+                }
             }
         }
-        return false;
+        arvorePrincipal.rb.isKinematic = false;
+        arvorePrincipal.rb.AddForce(Vector3.forward * forcaDeQueda);
     }
 
 }
