@@ -18,25 +18,25 @@ public class ItemDrop : MonoBehaviourPunCallbacks
         GameObject objInstanciado = null;
         string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
         Debug.Log(prefabPath);
-        for(int i=0; i < quantidade; i++)
+
+        for (int i = 0; i < quantidade; i++)
         {
             float alturaObjetoExistente = objInstanciado != null ? objInstanciado.GetComponent<Collider>().bounds.size.y : 0;
-            position = objInstanciado != null ? objInstanciado.transform.position : position;
 
-            if (direcao == 'x') position = position + new Vector3(alturaObjetoExistente, 0, 0);
-            else if (direcao == 'y') position = position + new Vector3(0, alturaObjetoExistente, 0);
-            else position = position + new Vector3(0, 0, alturaObjetoExistente);
-            
+            // Atualiza a posição considerando a rotação e a altura do objeto existente
+            position += rotation * new Vector3(0, alturaObjetoExistente, 0);
+
             if (PhotonNetwork.IsConnected)
             {
-                objInstanciado = PhotonNetwork.Instantiate(prefabPath, position, objInstanciado.transform.rotation, 0, new object[] { viewID });
+                objInstanciado = PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID });
             }
             else
             {
                 GameObject prefab = Resources.Load<GameObject>(prefabPath);
-                objInstanciado = Instantiate(prefab, position, prefab.transform.rotation); 
+                objInstanciado = Instantiate(prefab, position, rotation);
             }
         }
+
         return objInstanciado;
     }
 
