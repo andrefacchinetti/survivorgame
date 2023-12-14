@@ -135,7 +135,7 @@ public class StatsGeral : MonoBehaviour
         {
             int quantidade = item.quantidade;
             string nomePrefab = item.tipoItem + "/" + item.itemIdentifierAmount.ItemDefinition.name;
-            ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, direcaoDrop, PV.ViewID);
+            ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, null, PV.ViewID);
             jogadorStats.playerController.inventario.RemoverItemDoInventario(item, quantidade);
         }
     }
@@ -148,7 +148,7 @@ public class StatsGeral : MonoBehaviour
             {
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
                 string nomePrefab = drop.tipoItem + "/" + drop.itemDefinition.name;
-                ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, direcaoDrop, PV.ViewID);
+                ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
             }
         }
     }

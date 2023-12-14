@@ -47,6 +47,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         public ItemDefinitionBase itemDefinition;
         public TiposItems tipoItem;
+        public Material materialPersonalizado;
         public int qtdMinDrops;
         public int qtdMaxDrops;
     }
@@ -206,7 +207,8 @@ public class Item : MonoBehaviourPunCallbacks
         int quantidade = 1;
         if (this.tipoItem.Equals(TiposItems.Nenhum)) return;
         string nomePrefab = this.tipoItem + "/"+ this.itemIdentifierAmount.ItemDefinition.name.ToString();
-        GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, 'y', PV.ViewID);
+        GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, new Vector3(transform.root.position.x, 
+            transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, null, PV.ViewID);
         if (this.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
         {
             objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());

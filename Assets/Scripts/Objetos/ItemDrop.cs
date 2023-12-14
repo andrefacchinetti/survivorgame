@@ -13,7 +13,7 @@ public class ItemDrop : MonoBehaviourPunCallbacks
     [SerializeField] public ItemDefinitionBase item;
     public bool estaSendoComido = false;
 
-    public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, char direcao, int viewID)
+    public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, Material materialPersonalizado, int viewID)
     {
         GameObject objInstanciado = null;
         string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
@@ -23,7 +23,6 @@ public class ItemDrop : MonoBehaviourPunCallbacks
         {
             float alturaObjetoExistente = objInstanciado != null ? objInstanciado.GetComponent<Collider>().bounds.size.y : 0;
 
-            // Atualiza a posição considerando a rotação e a altura do objeto existente
             position += rotation * new Vector3(0, alturaObjetoExistente, 0);
 
             if (PhotonNetwork.IsConnected)
@@ -34,6 +33,10 @@ public class ItemDrop : MonoBehaviourPunCallbacks
             {
                 GameObject prefab = Resources.Load<GameObject>(prefabPath);
                 objInstanciado = Instantiate(prefab, position, rotation);
+            }
+            if (materialPersonalizado != null)
+            {
+                objInstanciado.GetComponent<MeshRenderer>().material = materialPersonalizado;
             }
         }
 
