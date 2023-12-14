@@ -13,7 +13,7 @@ public class ItemDrop : MonoBehaviourPunCallbacks
     [SerializeField] public ItemDefinitionBase item;
     public bool estaSendoComido = false;
 
-    public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, int viewID)
+    public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, char direcao, int viewID)
     {
         GameObject objInstanciado = null;
         string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
@@ -22,15 +22,19 @@ public class ItemDrop : MonoBehaviourPunCallbacks
         {
             float alturaObjetoExistente = objInstanciado != null ? objInstanciado.GetComponent<Collider>().bounds.size.y : 0;
             position = objInstanciado != null ? objInstanciado.transform.position : position;
-            position = position + new Vector3(0, alturaObjetoExistente, 0);
+
+            if (direcao == 'x') position = position + new Vector3(alturaObjetoExistente, 0, 0);
+            else if (direcao == 'y') position = position + new Vector3(0, alturaObjetoExistente, 0);
+            else position = position + new Vector3(0, 0, alturaObjetoExistente);
+            
             if (PhotonNetwork.IsConnected)
             {
-                objInstanciado = PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { viewID });
+                objInstanciado = PhotonNetwork.Instantiate(prefabPath, position, objInstanciado.transform.rotation, 0, new object[] { viewID });
             }
             else
             {
                 GameObject prefab = Resources.Load<GameObject>(prefabPath);
-                objInstanciado = Instantiate(prefab, position, rotation); 
+                objInstanciado = Instantiate(prefab, position, prefab.transform.rotation); 
             }
         }
         return objInstanciado;

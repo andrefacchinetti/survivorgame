@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Opsive.UltimateCharacterController.Traits;
 using UnityEngine;
 
 public class ArvoreQuebravel : MonoBehaviour
@@ -29,7 +30,7 @@ public class ArvoreQuebravel : MonoBehaviour
         objArvorePedacos.SetActive(FaseArvore.Pedacos.Equals(fase));
     }
 
-    public float forcaDeQueda = 1000f;
+    public float forcaDeQueda = 800F;
     public void ativarFileirasGravidadeApartirDeIndex(int index)
     {
         for(int i=0;i < fileirasQuebraveis.Length; i++)
@@ -43,7 +44,8 @@ public class ArvoreQuebravel : MonoBehaviour
             }
         }
         arvorePrincipal.rb.isKinematic = false;
-        arvorePrincipal.rb.AddForce(Vector3.forward * forcaDeQueda);
+        arvorePrincipal.rb.AddForce((-Vector3.forward) * forcaDeQueda); 
+        arvorePrincipal.GetComponent<AttributeManager>().GetAttribute(arvorePrincipal.GetComponent<Health>().HealthAttributeName).Value = 20;
     }
 
 }

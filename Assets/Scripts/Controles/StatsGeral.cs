@@ -13,6 +13,7 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public GameObject objPaiParaDestruir;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
     [SerializeField] public GameObject dropPosition;
+    [SerializeField] public char direcaoDrop = 'y';
     [HideInInspector] public bool isAttacking;
 
     [SerializeField] public Health health;
@@ -49,7 +50,7 @@ public class StatsGeral : MonoBehaviour
         if(hitCollider != null && dropaRecursosStats == null) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
         if(attacker != null)
         {
-            PlayerController pc = attacker.GetComponentInParent<PlayerController>();
+            PlayerController pc = attacker.GetComponentInParent<PlayerController>(); //TODO: OTIMIZAR ISSO
             if (pc != null)
             {
                 pc.animatorJogador.SetTrigger("acertouAtaque");
@@ -134,7 +135,7 @@ public class StatsGeral : MonoBehaviour
         {
             int quantidade = item.quantidade;
             string nomePrefab = item.tipoItem + "/" + item.itemIdentifierAmount.ItemDefinition.name;
-            ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, PV.ViewID);
+            ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, direcaoDrop, PV.ViewID);
             jogadorStats.playerController.inventario.RemoverItemDoInventario(item, quantidade);
         }
     }
@@ -147,7 +148,7 @@ public class StatsGeral : MonoBehaviour
             {
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
                 string nomePrefab = drop.tipoItem + "/" + drop.itemDefinition.name;
-                ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, PV.ViewID);
+                ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, direcaoDrop, PV.ViewID);
             }
         }
     }

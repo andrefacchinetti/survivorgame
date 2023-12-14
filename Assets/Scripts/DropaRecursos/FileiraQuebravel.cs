@@ -28,6 +28,7 @@ public class FileiraQuebravel : MonoBehaviour
     {
         if (maioriaPartesDaFileiraQuebraram())
         {
+            Debug.LogWarning("ATIVOU A GRAVIDADE DE TODAS FILEIRAS");
             if (fileiraAcima != null) arvoreQuebravelBase.ativarFileirasGravidadeApartirDeIndex(meuIndex);
             else arvoreQuebravelBase.arvorePrincipal.rb.isKinematic = false;
         }
@@ -38,9 +39,11 @@ public class FileiraQuebravel : MonoBehaviour
         int qtdQuebrados = 0;
         foreach (DropaRecursosStats parteArvore in partesArvore)
         {
-            qtdQuebrados++;
-            Debug.LogWarning("qtdQuebrados: " + qtdQuebrados);
-            if (qtdQuebrados >= partesArvore.Count / 2) return true;
+            if (parteArvore.isPedacoQuebrado)
+            {
+                qtdQuebrados++;
+            }
+            if (qtdQuebrados >= partesArvore.Count / 1.3F) return true;
         }
         return false;
     }
@@ -49,8 +52,11 @@ public class FileiraQuebravel : MonoBehaviour
     {
         foreach (DropaRecursosStats parteArvore in partesArvore)
         {
-            parteArvore.rb.isKinematic = false;
-            parteArvore.isPedacoQuebrado = true;
+            if (!parteArvore.isPedacoQuebrado)
+            {
+                parteArvore.rb.isKinematic = false;
+                parteArvore.isPedacoQuebrado = true;
+            }
         }
         jaAtivou = true;
     }

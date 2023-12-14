@@ -42,7 +42,7 @@ public class DropaRecursosStats : MonoBehaviour
     {
         if (isParteQuebravel)
         {
-            isPedacoQuebrado = true;
+            isPedacoQuebrado = true; 
             rb.isKinematic = false;
             minhaFileira.VerificarSeAtivaGravidadeFileiraDeCima();
         }
