@@ -195,6 +195,7 @@ public class Item : MonoBehaviourPunCallbacks
 
             if (inventario.playerController.cordaWeaponFP != null && inventario.playerController.cordaWeaponTP != null)
             {
+                Debug.LogWarning("equipando corda 1");
                 inventario.playerController.cordaWeaponTP.playerController = inventario.playerController;
                 inventario.playerController.cordaWeaponFP.playerController = inventario.playerController;
                 inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);

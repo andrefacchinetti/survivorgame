@@ -258,13 +258,16 @@ public class Inventario : MonoBehaviour
 
     public void UngrabAnimalCapturado(bool isCordaPartindo)
     {
-        Debug.Log("UngrabAnimalCapturado");
+        Debug.LogWarning("UngrabAnimalCapturado 4");
         if (!isCordaPartindo)
         {
             if (playerController.cordaWeaponTP != null)
             {
-                playerController.cordaWeaponTP.objObiRope.SetActive(false);
-                playerController.cordaWeaponFP.objObiRope.SetActive(false);
+                if(playerController.cordaWeaponTP.objObiRope != null)
+                {
+                    playerController.cordaWeaponTP.objObiRope.SetActive(false);
+                    playerController.cordaWeaponFP.objObiRope.SetActive(false);
+                }
                 playerController.cordaWeaponFP.objCordaMaos.SetActive(true);
                 playerController.cordaWeaponTP.objCordaMaos.SetActive(true);
             }
@@ -286,7 +289,7 @@ public class Inventario : MonoBehaviour
 
     public void UngrabObjetoCapturado()
     {
-        Debug.Log("UngrabObjetoCapturado");
+        Debug.LogWarning("UngrabObjetoCapturado");
         if (playerController.objCapturado != null)
         {
             playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
@@ -301,7 +304,7 @@ public class Inventario : MonoBehaviour
 
     public void SumirObjRopeStart()
     {
-        Debug.Log("SumirObjRopeStart");
+        Debug.LogWarning("SumirObjRopeStart");
         if (playerController.cordaWeaponFP != null && playerController.cordaWeaponTP != null)
         {
             playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);

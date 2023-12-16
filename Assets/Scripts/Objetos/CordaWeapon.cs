@@ -24,7 +24,7 @@ public class CordaWeapon : MonoBehaviour
     {
         if (ropeEstoura.isCordaPartida && !ropeEstoura.isCordaEstourou)
         {
-            Debug.Log("VerificarCordaPartindo");
+            Debug.LogWarning("VerificarCordaPartindo");
             if (isThirdPerson)
             {
                 playerController.inventario.ConsumirItemDaMao(true);
@@ -37,13 +37,16 @@ public class CordaWeapon : MonoBehaviour
 
     public void AcoesRenovarCordaEstourada(bool isCordaPartindo)
     {
-        Debug.Log("sumindo corda");
+        Debug.LogWarning("AcoesRenovarCordaEstourada 2");
         CancelInvoke("SumirObjRopeStart");
         Transform positionRope = objObiRope.gameObject.transform;
         GameObject novaCorda = Instantiate(prefabCorda, positionRope.position, positionRope.rotation, objObiSolver.transform);
         ropeEstoura = novaCorda.GetComponent<RopeEstoura>();
         ropeEstoura.playerController = playerController;
-
+        if(ropeEstoura != null)
+        {
+            Debug.LogWarning("rope estoura setado 3");
+        }
         ObiParticleAttachment[] attachs = novaCorda.GetComponents<ObiParticleAttachment>();
         foreach (ObiParticleAttachment attach in attachs)
         {

@@ -223,7 +223,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 interacaoDissecar(objPai);
             }
         }
-        else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null 
+        else if (hit.transform.tag == tagAnimalCollider && inventario.itemNaMao != null 
             && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
