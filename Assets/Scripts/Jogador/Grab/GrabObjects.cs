@@ -297,7 +297,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (inventario.itemNaMao != null)
         {
-            if (inventario.itemNaMao != null && (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemPanela.name) || inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemTigela.name)))
+            if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemPanela.name) || inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(inventario.itemTigela.name))
             {
                 if (Input.GetButtonDown("Use"))
                 {
@@ -309,22 +309,30 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
                 possibleInteraction = true;
             }
-        }
-        else
-        {
-            if (Input.GetButtonDown("Use"))
+            else if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemAcendedorFogueira))
             {
                 playerController.fogueiraAcendendo = hit.transform.gameObject;
                 if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
                 {
-                    playerController.characterLocomotion.TryStartAbility(playerController.acenderFogueira);
-                }
-                else
-                {
-                    playerController.characterLocomotion.TryStartAbility(playerController.apagarFogueira);
+                    if (Input.GetButtonDown("Use"))
+                    {
+                        playerController.characterLocomotion.TryStartAbility(playerController.acenderFogueira);
+                    }
+                    possibleInteraction = true;
                 }
             }
-            possibleInteraction = true;
+            else if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemApagadorFogueira))
+            {
+                playerController.fogueiraAcendendo = hit.transform.gameObject;
+                if (hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
+                {
+                    if (Input.GetButtonDown("Use"))
+                    {
+                        playerController.characterLocomotion.TryStartAbility(playerController.apagarFogueira);
+                    }
+                    possibleInteraction = true;
+                }
+            }
         }
     }
 

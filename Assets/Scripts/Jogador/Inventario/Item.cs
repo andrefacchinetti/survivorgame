@@ -165,6 +165,7 @@ public class Item : MonoBehaviourPunCallbacks
                 if (inventario.playerController.varaDePescaTP != null && inventario.playerController.varaDePescaFP != null)
                 {
                     inventario.playerController.varaDePescaTP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
+                    inventario.playerController.varaDePescaFP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
                     inventario.playerController.varaDePescaTP.peixeDaVara.SetActive(false); 
                     inventario.playerController.varaDePescaFP.peixeDaVara.SetActive(false);
                 }
@@ -176,8 +177,10 @@ public class Item : MonoBehaviourPunCallbacks
                 if (inventario.playerController.acendedorFogueiraTP != null && inventario.playerController.acendedorFogueiraFP != null)
                 {
                     inventario.playerController.acendedorFogueiraTP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
+                    inventario.playerController.acendedorFogueiraFP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
                 }
-            }else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false)
+            }
+            else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false) 
                 && armaduras.slotLanterna.item != null)
             {
                 armaduras.slotLanterna.objEquipLanterna.SetActive(false);
@@ -198,7 +201,6 @@ public class Item : MonoBehaviourPunCallbacks
         inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
         inventario.playerController.PararAbilitys();
     }
-
     
     private void UnequipItemInventory()
     {

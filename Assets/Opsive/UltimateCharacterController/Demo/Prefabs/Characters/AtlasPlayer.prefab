@@ -32985,7 +32985,6 @@ Transform:
   m_Children:
   - {fileID: 8037607465927068310}
   - {fileID: 3073094800483989332}
-  - {fileID: 4541674252147609333}
   m_Father: {fileID: 1449078749294036458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2156798597406104186
@@ -49093,8 +49092,6 @@ MonoBehaviour:
   animatorVaraDePesca: {fileID: 2283471778980926120}
   animatorJogador: {fileID: 8507485304979829654}
   ropeGrab: {fileID: 9182887873430320537}
-  acendedorFogueira: {fileID: 846522164062439504}
-  kitModoConstrucao: {fileID: 486021830943348111}
   contentItemsTP: {fileID: 3458675772696488040}
   contentItemsFP: {fileID: 6159343131731135748}
   txMsgAlerta: {fileID: 8877347410587701538}
@@ -49117,6 +49114,8 @@ MonoBehaviour:
   gameController: {fileID: 0}
   varaDePescaTP: {fileID: 0}
   varaDePescaFP: {fileID: 0}
+  acendedorFogueiraTP: {fileID: 0}
+  acendedorFogueiraFP: {fileID: 0}
   canMove: 1
   pesoGrab: 0
   PV: {fileID: 629841567634017983}
@@ -85705,6 +85704,8 @@ MonoBehaviour:
   itemVaraDePesca: {fileID: -656139888275776808, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   itemLanterna: {fileID: 114346260507904370, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   itemFaca: {fileID: 114099228593570972, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  itemAcendedorFogueira: {fileID: -4259321514581051041, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  itemApagadorFogueira: {fileID: -852962457841106072, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   objObiSolver: {fileID: 7009726882270135608}
   objObiRope: {fileID: 8241194373171611895}
   objCordaMao: {fileID: 9063490672162161602}
@@ -129974,71 +129975,4 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4962630599575025857, guid: e88266b54de15624ab3bb0c2b6251323, type: 3}
   m_PrefabInstance: {fileID: 2847845019727671711}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &7937505019439336973
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 5554101710995208868}
-    m_Modifications:
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.43
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.398
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7320844937944106589, guid: f242f758a4d304f409bd526d92254848, type: 3}
-      propertyPath: m_Name
-      value: FIRESTICK
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f242f758a4d304f409bd526d92254848, type: 3}
---- !u!1 &846522164062439504 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7320844937944106589, guid: f242f758a4d304f409bd526d92254848, type: 3}
-  m_PrefabInstance: {fileID: 7937505019439336973}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4541674252147609333 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5845930056412823800, guid: f242f758a4d304f409bd526d92254848, type: 3}
-  m_PrefabInstance: {fileID: 7937505019439336973}
   m_PrefabAsset: {fileID: 0}

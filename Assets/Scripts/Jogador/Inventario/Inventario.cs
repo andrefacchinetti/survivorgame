@@ -34,7 +34,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] Texture texturaTransparente;
 
     [SerializeField] public ItemDefinitionBase itemBody, itemPeixeCru, itemGarrafa, itemPanela, itemTigela, itemMarteloReparador, 
-        itemCorda, itemVaraDePesca, itemLanterna, itemFaca, itemAcendedorFogueira;
+        itemCorda, itemVaraDePesca, itemLanterna, itemFaca, itemAcendedorFogueira, itemApagadorFogueira;
 
     private void Awake()
     {
