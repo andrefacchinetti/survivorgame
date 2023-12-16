@@ -18,7 +18,7 @@ public class Inventario : MonoBehaviour
     [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
     [SerializeField] public GameObject canvasInventario, cameraInventario;
     [SerializeField] GameObject contentItensMochila;
-    [SerializeField] public GameObject prefabItem, prefabCorda;
+    [SerializeField] public GameObject prefabItem;
     [SerializeField] public Hotbar hotbar;
 
     [SerializeField] public List<Item.ItemStruct> itensStruct;
@@ -74,7 +74,6 @@ public class Inventario : MonoBehaviour
         {
             FecharInventario();
         }
-        VerificarCordaPartindo();
     }
 
     public void setarQtdItensAtual(int valor)
@@ -235,13 +234,15 @@ public class Inventario : MonoBehaviour
         return itensStruct[0];
     }
 
-    [SerializeField] public GameObject objObiSolver, objObiRope, objCordaMao, objCordaSemGrab;
+    
     public void ToggleGrabUngrabCorda(bool isCordaPartindo)
     {
-        if (!objObiRope.activeSelf) //Grabando Animal
+        if (!playerController.cordaWeaponFP.objObiRope.activeSelf) //Grabando Animal
         {
-            objCordaMao.SetActive(false);
-            objObiRope.SetActive(true);
+            playerController.cordaWeaponFP.objCordaMaos.SetActive(false);
+            playerController.cordaWeaponTP.objCordaMaos.SetActive(false);
+            playerController.cordaWeaponFP.objObiRope.SetActive(true);
+            playerController.cordaWeaponTP.objObiRope.SetActive(true);
         }
         else //Ungrab Animal
         {
@@ -260,8 +261,13 @@ public class Inventario : MonoBehaviour
         Debug.Log("UngrabAnimalCapturado");
         if (!isCordaPartindo)
         {
-            objObiRope.SetActive(false);
-            objCordaMao.SetActive(true);
+            if (playerController.cordaWeaponTP != null)
+            {
+                playerController.cordaWeaponTP.objObiRope.SetActive(false);
+                playerController.cordaWeaponFP.objObiRope.SetActive(false);
+                playerController.cordaWeaponFP.objCordaMaos.SetActive(true);
+                playerController.cordaWeaponTP.objCordaMaos.SetActive(true);
+            }
         }
         if (playerController.animalCapturado != null)
         {
@@ -270,7 +276,11 @@ public class Inventario : MonoBehaviour
             playerController.animalCapturado.targetCapturador = null;
             playerController.animalCapturado.agent.ResetPath();
             playerController.animalCapturado = null;
-            playerController.ropeGrab.objFollowed = null;
+            if(playerController.cordaWeaponTP != null)
+            {
+                playerController.cordaWeaponTP.ropeGrab.objFollowed = null;
+                playerController.cordaWeaponFP.ropeGrab.objFollowed = null;
+            }
         }
     }
 
@@ -281,54 +291,21 @@ public class Inventario : MonoBehaviour
         {
             playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
             playerController.objCapturado = null;
-            objCordaSemGrab.SetActive(true);
+            if (playerController.cordaWeaponTP != null)
+            {
+                playerController.cordaWeaponFP.objCordaSemGrab.SetActive(true);
+                playerController.cordaWeaponTP.objCordaSemGrab.SetActive(true);
+            }
         }
     }
 
     public void SumirObjRopeStart()
     {
         Debug.Log("SumirObjRopeStart");
-        AcoesRenovarCordaEstourada(true);
-    }
-
-    public void AcoesRenovarCordaEstourada(bool isCordaPartindo)
-    {
-        Debug.Log("sumindo corda");
-        CancelInvoke("SumirObjRopeStart");
-        Transform positionRope = objObiRope.gameObject.transform;
-        GameObject novaCorda = Instantiate(prefabCorda, positionRope.position, positionRope.rotation, objObiSolver.transform);
-        ropeEstoura = novaCorda.GetComponent<RopeEstoura>();
-        ropeEstoura.playerController = playerController;
-    
-        ObiParticleAttachment[] attachs = novaCorda.GetComponents<ObiParticleAttachment>();
-        foreach(ObiParticleAttachment attach in attachs)
+        if (playerController.cordaWeaponFP != null && playerController.cordaWeaponTP != null)
         {
-            if(attach.particleGroup.name == "START1")
-            {
-                attach.target = pivotRopeStart.transform;
-            }
-            else
-            {
-                attach.target = pivotRopeEnd.transform;
-            }
-        }
-        Destroy(objObiRope.gameObject);
-        objObiRope = novaCorda;
-        objObiRope.SetActive(false);
-        UngrabCoisasCapturadasComCorda(isCordaPartindo);
-    }
-
-    [SerializeField] public RopeEstoura ropeEstoura;
-    [SerializeField] public GameObject pivotRopeStart, pivotRopeEnd;
-    private void VerificarCordaPartindo()
-    {
-        if (ropeEstoura.isCordaPartida && !ropeEstoura.isCordaEstourou)
-        {
-            Debug.Log("VerificarCordaPartindo");
-            ConsumirItemDaMao(true);
-            ropeEstoura.isCordaEstourou = true;
-            Invoke("SumirObjRopeStart", 1f);
-            //TODO: Sound de corda partindo
+            playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);
+            playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false);
         }
     }
 

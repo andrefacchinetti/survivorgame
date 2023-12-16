@@ -42,7 +42,11 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		playerController.animalCapturado.isCapturado = true;
 		playerController.animalCapturado.targetCapturador = this.gameObject;
 		playerController.animalCapturado.objColeiraRope.SetActive(true);
-		playerController.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+		if(playerController.cordaWeaponTP != null)
+        {
+			playerController.cordaWeaponTP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+			playerController.cordaWeaponFP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+		}
 	}
 
 	void AnimEventReanimouJogador()

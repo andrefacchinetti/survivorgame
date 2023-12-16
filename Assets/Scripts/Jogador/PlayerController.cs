@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public ControleConstruir controleConstruir;
 	[SerializeField] public EventsAnimJogador eventsAnimJogador;
 	[SerializeField] public Animator animatorVaraDePesca, animatorJogador;
-	[SerializeField] public PointRopeFollow ropeGrab;
 	[SerializeField] public GameObject contentItemsTP, contentItemsFP;
 	[SerializeField] public TMP_Text txMsgAlerta;
 
@@ -41,11 +40,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public ClimbFromWater climbWaterAbility;
 	[SerializeField] [HideInInspector] public HeightChange heightChange;
 	[SerializeField] [HideInInspector] public Pescar pescarAbility;
-	[SerializeField] [HideInInspector] public AcenderFogueira acenderFogueira;
-	[SerializeField] [HideInInspector] public ApagarFogueira apagarFogueira;
+	[SerializeField] [HideInInspector] public AcenderFogueira acenderFogueiraAbility;
+	[SerializeField] [HideInInspector] public ApagarFogueira apagarFogueiraAbility; 
+	[SerializeField] [HideInInspector] public Capturar capturarAbility;
 
 	[HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
 	[HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
+	[HideInInspector] public CordaWeapon cordaWeaponFP, cordaWeaponTP;
 
 	[HideInInspector] public bool canMove = true;
 	public float pesoGrab = 0.0f;
@@ -67,8 +68,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();
 		heightChange = characterLocomotion.GetAbility<HeightChange>();
 		pescarAbility = characterLocomotion.GetAbility<Pescar>();
-		acenderFogueira = characterLocomotion.GetAbility<AcenderFogueira>();
-		apagarFogueira = characterLocomotion.GetAbility<ApagarFogueira>();
+		acenderFogueiraAbility = characterLocomotion.GetAbility<AcenderFogueira>();
+		apagarFogueiraAbility = characterLocomotion.GetAbility<ApagarFogueira>();
+		capturarAbility = characterLocomotion.GetAbility<Capturar>();
 
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
@@ -165,8 +167,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	public void PararAbilitys()
     {
 		PararAbility(pescarAbility);
-		PararAbility(acenderFogueira);
-		PararAbility(apagarFogueira);
+		PararAbility(acenderFogueiraAbility);
+		PararAbility(apagarFogueiraAbility);
 	}
 
 	public void PararAbility(Ability abilidade)
@@ -194,7 +196,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					varaDePescaFP.FinalizarPesca();
 				}
 			}
-		}else if (ability.AbilityIndexParameter == acenderFogueira.AbilityIndexParameter)
+		}
+		else if (ability.AbilityIndexParameter == acenderFogueiraAbility.AbilityIndexParameter)
 		{
 			if (activated)
 			{
@@ -207,6 +210,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				{
 					acendedorFogueiraTP.FinalizaAcendedorFogueira();
 					acendedorFogueiraFP.FinalizaAcendedorFogueira();
+				}
+			}
+		}
+		else if (ability.AbilityIndexParameter == capturarAbility.AbilityIndexParameter)
+		{
+			if (activated)
+			{
+				cordaWeaponFP.objCordaMaos.SetActive(false);
+				cordaWeaponTP.objCordaMaos.SetActive(false);
+			}
+			else
+			{
+				if (acendedorFogueiraTP != null && acendedorFogueiraFP != null)
+				{
+					cordaWeaponFP.objCordaMaos.SetActive(true);
+					cordaWeaponTP.objCordaMaos.SetActive(true);
 				}
 			}
 		}

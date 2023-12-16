@@ -190,7 +190,16 @@ public class Item : MonoBehaviourPunCallbacks
 
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
-            inventario.AcoesRenovarCordaEstourada(false);
+            inventario.playerController.cordaWeaponFP = inventario.playerController.contentItemsTP.GetComponentInChildren<CordaWeapon>();
+            inventario.playerController.cordaWeaponTP = inventario.playerController.contentItemsFP.GetComponentInChildren<CordaWeapon>();
+
+            if (inventario.playerController.cordaWeaponFP != null && inventario.playerController.cordaWeaponTP != null)
+            {
+                inventario.playerController.cordaWeaponTP.playerController = inventario.playerController;
+                inventario.playerController.cordaWeaponFP.playerController = inventario.playerController;
+                inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);
+                inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false);
+            }
         }
 
     }
@@ -284,7 +293,11 @@ public class Item : MonoBehaviourPunCallbacks
     private void SetarItemNaMaoNull()
     {
         inventario.itemNaMao = null;
-        if (inventario.objObiRope != null) inventario.objObiRope.SetActive(false);
+        if (inventario.playerController.cordaWeaponTP.objObiRope != null)
+        {
+            inventario.playerController.cordaWeaponTP.objObiRope.SetActive(false);
+            inventario.playerController.cordaWeaponFP.objObiRope.SetActive(false);
+        }
         UnequipItemInventory();
     }
 

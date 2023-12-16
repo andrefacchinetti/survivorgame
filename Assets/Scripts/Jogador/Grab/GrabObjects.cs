@@ -148,7 +148,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
         if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela)
         {
-            if (hit.transform.tag == tagObjGrab && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Rope"))
+            if (hit.transform.tag == tagObjGrab && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
             {
                 interacaoCapturarObjeto(hit);
             }
@@ -224,22 +224,24 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             }
         }
         else if (hit.transform.GetComponent<CollisorSofreDano>() != null && inventario.itemNaMao != null 
-            && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda) && hit.transform.GetComponentInParent<AnimalController>() != null)
+            && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();
-            if (objPai != null && objPai.health.IsAlive())
+            if(objPai != null && objPai.health.IsAlive())
             {
                 AnimalController animalController = objPai.gameObject.GetComponent<AnimalController>();
-                if (playerController.animalCapturado == null && animalController.objRopePivot != null)
+                if (animalController != null)
                 {
-                    interacaoCapturar(animalController);
-                    
+                    if (playerController.animalCapturado == null && animalController.objRopePivot != null)
+                    {
+                        interacaoCapturar(animalController);
+
+                    }
+                    else if (playerController.animalCapturado != null && animalController.PV.ViewID == playerController.animalCapturado.PV.ViewID)
+                    {
+                        interacaoDescapturarAnimal(animalController);
+                    }
                 }
-                else if(playerController.animalCapturado != null && animalController.PV.ViewID == playerController.animalCapturado.PV.ViewID)
-                {
-                    interacaoDescapturarAnimal(animalController);
-                }
-                
             }
         }
         else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
@@ -316,7 +318,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 {
                     if (Input.GetButtonDown("Use"))
                     {
-                        playerController.characterLocomotion.TryStartAbility(playerController.acenderFogueira);
+                        playerController.characterLocomotion.TryStartAbility(playerController.acenderFogueiraAbility);
                     }
                     possibleInteraction = true;
                 }
@@ -328,7 +330,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 {
                     if (Input.GetButtonDown("Use"))
                     {
-                        playerController.characterLocomotion.TryStartAbility(playerController.apagarFogueira);
+                        playerController.characterLocomotion.TryStartAbility(playerController.apagarFogueiraAbility);
                     }
                     possibleInteraction = true;
                 }
@@ -407,7 +409,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(animalController.gameObject);
-            //playerController.animator.SetTrigger("capturando");
+            playerController.characterLocomotion.TryStartAbility(playerController.capturarAbility);
             playerController.animalCapturado = animalController;
             playerController.inventario.ToggleGrabUngrabCorda(false);
         }
@@ -422,7 +424,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
                 playerController.objCapturado = null;
-                inventario.objCordaSemGrab.SetActive(true);
+                playerController.cordaWeaponTP.objCordaSemGrab.SetActive(true);
+                playerController.cordaWeaponFP.objCordaSemGrab.SetActive(true);
             }
             else
             {
@@ -430,8 +433,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     playerController.objCapturado = hit.transform.gameObject;
-                    inventario.objCordaSemGrab.SetActive(false);
-                    hit.transform.gameObject.GetComponent<ObjetoGrab>().AtivarCordaGrab(inventario.pivotRopeStart);
+                    playerController.cordaWeaponTP.objCordaSemGrab.SetActive(false);
+                    playerController.cordaWeaponFP.objCordaSemGrab.SetActive(false);
+                    hit.transform.gameObject.GetComponent<ObjetoGrab>().AtivarCordaGrab(playerController.cordaWeaponFP.pivotRopeStart);
+                    //TODO: FAZER PRA FP E TD... hit.transform.gameObject.GetComponent<ObjetoGrab>().AtivarCordaGrab(playerController.cordaWeaponTP.pivotRopeStart);
                 }
                 else //O objeto ja esta sendo capturado por outro jogador
                 {
