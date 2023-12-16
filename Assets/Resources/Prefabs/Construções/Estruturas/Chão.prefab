@@ -140,7 +140,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4bbe21dca462c3342b06276c9209056e, type: 2}
+  - {fileID: 2100000, guid: c273eee13cff7b840971d7c8a20c0605, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -344,15 +344,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 100
   damage: 0
-  vidaAtual: 100
-  isDead: 0
   objPaiParaDestruir: {fileID: 506855759919215743}
   dropsItems: []
   dropPosition: {fileID: 0}
+  direcaoDrop: 121
   isAttacking: 0
+  health: {fileID: 0}
+  attributeManager: {fileID: 0}
   jogadorStats: {fileID: 0}
+  lobisomemStats: {fileID: 0}
+  animalStats: {fileID: 0}
+  dropaRecursosStats: {fileID: 0}
+  reconstruivelStats: {fileID: 0}
+  itemRepairHammer: {fileID: 0}
+  itemDemolitionHammer: {fileID: 0}
 --- !u!54 &3725810257155737841
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -392,7 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeItemFerramentasRecomendadas: 
+  itemIdentifierAmountFerramentasRecomendadas: []
   isApenasFerramentaRecomendadaCausaDano: 0
   statsGeral: {fileID: 0}
   isConstrucao: 1

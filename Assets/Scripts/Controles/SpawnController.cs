@@ -15,6 +15,7 @@ public class SpawnController : MonoBehaviour
     [SerializeField] SpawnArea[] spawnAnimaisAgressivos, spawnAnimaisPassivos;
 
     [SerializeField][HideInInspector] List<StatsGeral> lobosInGame, animaisAgressivosInGame, animaisPassivosInGame;
+    
 
     PhotonView PV;
 
@@ -22,7 +23,8 @@ public class SpawnController : MonoBehaviour
     public struct SpawnArea
     {
         public string[] nomesPrefab;
-        public Transform[] spawnPoints;
+        public GameObject contentSpawnPoints;
+        [HideInInspector] public Transform[] spawnPoints;
     }
 
     private void Awake()
@@ -31,6 +33,15 @@ public class SpawnController : MonoBehaviour
         lobosInGame = new List<StatsGeral>();
         animaisAgressivosInGame = new List<StatsGeral>();
         animaisPassivosInGame = new List<StatsGeral>();
+        spawnLobos.spawnPoints = spawnLobos.contentSpawnPoints.GetComponentsInChildren<Transform>(true);
+        for(int i = 0; i < spawnAnimaisAgressivos.Length; i++)
+        {
+            spawnAnimaisAgressivos[i].spawnPoints = spawnAnimaisAgressivos[i].contentSpawnPoints.GetComponentsInChildren<Transform>(true);
+        }
+        for (int i = 0; i < spawnAnimaisPassivos.Length; i++)
+        {
+            spawnAnimaisPassivos[i].spawnPoints = spawnAnimaisPassivos[i].contentSpawnPoints.GetComponentsInChildren<Transform>(true);
+        }
     }
 
     public void SpawnarLobisomens(int diaAtual)

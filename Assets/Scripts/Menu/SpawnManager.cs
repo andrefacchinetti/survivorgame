@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Opsive.UltimateCharacterController.Game;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +7,12 @@ public class SpawnManager : MonoBehaviour
 {
 	public static SpawnManager Instance;
 
-	Spawnpoint[] spawnpoints;
+	SpawnPoint[] spawnpoints; //NAO PRECISA USAR ESSE SCRIPT, PODEMOS USAR O SPAWN DO OPSIVE
 
 	void Awake()
 	{
 		Instance = this;
-		spawnpoints = GetComponentsInChildren<Spawnpoint>();
+		spawnpoints = GetComponentsInChildren<SpawnPoint>();
 	}
 
 	public Transform GetSpawnpoint()

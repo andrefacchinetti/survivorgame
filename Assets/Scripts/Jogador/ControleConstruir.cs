@@ -168,7 +168,7 @@ public class ControleConstruir : MonoBehaviour
                 }
                 rotacao = rotacao%360;
             }
-            if(Input.GetButtonDown("Fire1")){
+            if(Input.GetButtonDown("Use")){
                 if(inventario.VerificarQtdItem(isMadeira ? itemMadeira : itemPedra, construcao.custo, true) && (podeConstruir && VerificarSePodeConstruir())){
                     GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
