@@ -12,8 +12,18 @@ public class CordaWeapon : MonoBehaviour
     [SerializeField] public PointRopeFollow ropeGrab;
     [SerializeField] public GameObject pivotRopeStart, pivotRopeEnd;
     [SerializeField] public GameObject prefabCorda;
+
+    [SerializeField] Material materialInvisivel;
     
     [HideInInspector] public PlayerController playerController;
+
+    private void Start()
+    {
+        foreach(MeshRenderer mesh in GetComponentsInChildren<MeshRenderer>())
+        {
+            mesh.material = materialInvisivel;
+        }
+    }
 
     private void Update()
     {
@@ -41,6 +51,10 @@ public class CordaWeapon : MonoBehaviour
         CancelInvoke("SumirObjRopeStart");
         Transform positionRope = objObiRope.gameObject.transform;
         GameObject novaCorda = Instantiate(prefabCorda, positionRope.position, positionRope.rotation, objObiSolver.transform);
+        foreach (MeshRenderer mesh in novaCorda.GetComponentsInChildren<MeshRenderer>())
+        {
+            mesh.material = materialInvisivel;
+        }
         ropeEstoura = novaCorda.GetComponent<RopeEstoura>();
         ropeEstoura.playerController = playerController;
         if(ropeEstoura != null)
