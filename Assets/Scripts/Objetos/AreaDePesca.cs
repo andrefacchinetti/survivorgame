@@ -13,7 +13,7 @@ public class AreaDePesca : MonoBehaviour
             PlayerController pc = other.GetComponentInParent<PlayerController>();
             if(pc != null)
             {
-                pc.PararAbilityPesca();
+                pc.PararAbility(pc.pescarAbility);
             }
         }
     }

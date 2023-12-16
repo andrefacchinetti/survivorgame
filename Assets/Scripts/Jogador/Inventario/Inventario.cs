@@ -33,7 +33,8 @@ public class Inventario : MonoBehaviour
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
-    [SerializeField] public ItemDefinitionBase itemBody, itemPeixeCru, itemGarrafa, itemPanela, itemTigela, itemMarteloReparador, itemCorda, itemVaraDePesca, itemLanterna, itemFaca;
+    [SerializeField] public ItemDefinitionBase itemBody, itemPeixeCru, itemGarrafa, itemPanela, itemTigela, itemMarteloReparador, 
+        itemCorda, itemVaraDePesca, itemLanterna, itemFaca, itemAcendedorFogueira;
 
     private void Awake()
     {
@@ -185,12 +186,12 @@ public class Inventario : MonoBehaviour
         itemResponse.diminuirQuantidade(quantidadeResponse, false);
     }
 
-    public void RemoverItemDaMao()
+    public void ConsumirItemDaMao()
     {
-        RemoverItemDaMao(false);
+        ConsumirItemDaMao(false);
     }
 
-    public void RemoverItemDaMao(bool isCordaPartindo)
+    public void ConsumirItemDaMao(bool isCordaPartindo)
     {
         if (itemNaMao == null) return;
        
@@ -324,7 +325,7 @@ public class Inventario : MonoBehaviour
         if (ropeEstoura.isCordaPartida && !ropeEstoura.isCordaEstourou)
         {
             Debug.Log("VerificarCordaPartindo");
-            RemoverItemDaMao(true);
+            ConsumirItemDaMao(true);
             ropeEstoura.isCordaEstourou = true;
             Invoke("SumirObjRopeStart", 1f);
             //TODO: Sound de corda partindo

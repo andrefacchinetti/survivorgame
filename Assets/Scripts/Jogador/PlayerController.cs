@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public EventsAnimJogador eventsAnimJogador;
 	[SerializeField] public Animator animatorVaraDePesca, animatorJogador;
 	[SerializeField] public PointRopeFollow ropeGrab;
-	[SerializeField] public GameObject acendedorFogueira, kitModoConstrucao;
 	[SerializeField] public GameObject contentItemsTP, contentItemsFP;
 	[SerializeField] public TMP_Text txMsgAlerta;
 
@@ -42,7 +41,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public ClimbFromWater climbWaterAbility;
 	[SerializeField] [HideInInspector] public HeightChange heightChange;
 	[SerializeField] [HideInInspector] public Pescar pescarAbility;
+	[SerializeField] [HideInInspector] public AcenderFogueira acenderFogueira;
+	[SerializeField] [HideInInspector] public ApagarFogueira apagarFogueira;
+
 	[HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
+	[HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
 
 	[HideInInspector] public bool canMove = true;
 	public float pesoGrab = 0.0f;
@@ -64,6 +67,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();
 		heightChange = characterLocomotion.GetAbility<HeightChange>();
 		pescarAbility = characterLocomotion.GetAbility<Pescar>();
+		acenderFogueira = characterLocomotion.GetAbility<AcenderFogueira>();
+		apagarFogueira = characterLocomotion.GetAbility<ApagarFogueira>();
 
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
@@ -137,7 +142,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
 			inventario.GuardarItemDaMao();
 		}
-		kitModoConstrucao.SetActive(construcaoAtiva);
+		//kitModoConstrucao.SetActive(construcaoAtiva);
 	}
 
 	public bool podeSeMexer()
@@ -159,14 +164,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	public void PararAbilitys()
     {
-		PararAbilityPesca();
+		PararAbility(pescarAbility);
+		PararAbility(acenderFogueira);
+		PararAbility(apagarFogueira);
 	}
 
-	public void PararAbilityPesca()
+	public void PararAbility(Ability abilidade)
     {
-		if (pescarAbility.IsActive)
+		if (abilidade.IsActive)
         {
-			pescarAbility.StopAbility();
+			abilidade.StopAbility();
         }
 	}
 
@@ -185,6 +192,21 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				{
 					varaDePescaTP.FinalizarPesca();
 					varaDePescaFP.FinalizarPesca();
+				}
+			}
+		}else if (ability.AbilityIndexParameter == acenderFogueira.AbilityIndexParameter)
+		{
+			if (activated)
+			{
+				acendedorFogueiraTP.IniciarAcendedorFogueira();
+				acendedorFogueiraFP.IniciarAcendedorFogueira();
+			}
+			else
+			{
+				if (acendedorFogueiraTP != null && acendedorFogueiraFP != null)
+				{
+					acendedorFogueiraTP.FinalizaAcendedorFogueira();
+					acendedorFogueiraFP.FinalizaAcendedorFogueira();
 				}
 			}
 		}

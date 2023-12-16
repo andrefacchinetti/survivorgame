@@ -86,7 +86,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 			// Aplica a força na direção calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
 			//REMOVER ITEM DA MAO
-			playerController.inventario.RemoverItemDaMao();
+			playerController.inventario.ConsumirItemDaMao();
 		}
 	}
 
@@ -115,6 +115,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		if (playerController.fogueiraAcendendo == null) return;
 		playerController.fogueiraAcendendo.GetComponent<Fogueira>().AcenderFogueira();
 		playerController.fogueiraAcendendo = null;
+		playerController.inventario.ConsumirItemDaMao();
 	}
 
 	void AnimEventApagandoFogueira()
@@ -122,17 +123,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		if (playerController.fogueiraAcendendo == null) return;
 		playerController.fogueiraAcendendo.GetComponent<Fogueira>().ApagarFogueira();
 		playerController.fogueiraAcendendo = null;
-	}
-
-	void AnimEventApareceAcendedorFogueira()
-	{
-		playerController.acendedorFogueira.SetActive(true);
-		playerController.acendedorFogueira.GetComponent<Animator>().Play("default");
-	}
-
-	void AnimEventDesapareceAcendedorFogueira()
-	{
-		playerController.acendedorFogueira.SetActive(false);
 	}
 
 	void AnimEventAtivarPegandoPeixe()

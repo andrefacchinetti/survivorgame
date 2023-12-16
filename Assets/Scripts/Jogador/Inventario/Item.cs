@@ -164,13 +164,20 @@ public class Item : MonoBehaviourPunCallbacks
                 inventario.playerController.varaDePescaFP = inventario.playerController.contentItemsFP.GetComponentInChildren<VaraDePesca>();
                 if (inventario.playerController.varaDePescaTP != null && inventario.playerController.varaDePescaFP != null)
                 {
-                    Debug.Log("setou as varas ok");
                     inventario.playerController.varaDePescaTP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
                     inventario.playerController.varaDePescaTP.peixeDaVara.SetActive(false); 
                     inventario.playerController.varaDePescaFP.peixeDaVara.SetActive(false);
                 }
             }
-            if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false)
+            else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemAcendedorFogueira))
+            {
+                inventario.playerController.acendedorFogueiraTP = inventario.playerController.contentItemsTP.GetComponentInChildren<AcendedorFogueira>();
+                inventario.playerController.acendedorFogueiraFP = inventario.playerController.contentItemsFP.GetComponentInChildren<AcendedorFogueira>();
+                if (inventario.playerController.acendedorFogueiraTP != null && inventario.playerController.acendedorFogueiraFP != null)
+                {
+                    inventario.playerController.acendedorFogueiraTP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
+                }
+            }else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false)
                 && armaduras.slotLanterna.item != null)
             {
                 armaduras.slotLanterna.objEquipLanterna.SetActive(false);

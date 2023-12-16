@@ -304,7 +304,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     Fogueira fogueira = hit.transform.GetComponent<Fogueira>();
                     if (fogueira.ColocarPanelaTigela(inventario.itemNaMao))
                     {
-                        inventario.RemoverItemDaMao();
+                        inventario.ConsumirItemDaMao();
                     }
                 }
                 possibleInteraction = true;
@@ -317,11 +317,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 playerController.fogueiraAcendendo = hit.transform.gameObject;
                 if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
                 {
-                    //playerController.animator.SetTrigger("acendendoFogueira");
+                    playerController.characterLocomotion.TryStartAbility(playerController.acenderFogueira);
                 }
                 else
                 {
-                    //playerController.animator.SetTrigger("apagandoFogueira");
+                    playerController.characterLocomotion.TryStartAbility(playerController.apagarFogueira);
                 }
             }
             possibleInteraction = true;
@@ -335,7 +335,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             Panela panela = hit.transform.GetComponent<ItemDrop>().GetComponent<Panela>();
             if (panela.ColocarConsumivelNaPanela(inventario.itemNaMao))
             {
-                inventario.RemoverItemDaMao();
+                inventario.ConsumirItemDaMao();
             }
         }
         possibleInteraction = true;
