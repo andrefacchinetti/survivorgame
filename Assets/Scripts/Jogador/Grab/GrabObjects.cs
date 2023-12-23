@@ -397,7 +397,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir Dissecar
         {
             transferOwnerPV(objPai.gameObject);
-            //playerController.animator.SetTrigger("dissecando");
+            playerController.characterLocomotion.TryStartAbility(playerController.dissecarAbility);
             playerController.itemsDropsPosDissecar = objPai.dropsItems;
             playerController.corpoDissecando = objPai.gameObject;
         }
