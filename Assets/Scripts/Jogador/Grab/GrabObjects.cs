@@ -318,7 +318,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 {
                     if (Input.GetButtonDown("Use"))
                     {
-                        playerController.characterLocomotion.TryStartAbility(playerController.acenderFogueiraAbility);
+                        playerController.StartarAbility(playerController.acenderFogueiraAbility);
                     }
                     possibleInteraction = true;
                 }
@@ -330,7 +330,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 {
                     if (Input.GetButtonDown("Use"))
                     {
-                        playerController.characterLocomotion.TryStartAbility(playerController.apagarFogueiraAbility);
+                        playerController.StartarAbility(playerController.apagarFogueiraAbility);
                     }
                     possibleInteraction = true;
                 }
@@ -358,7 +358,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             if(playerController.varaDePescaTP != null && playerController.varaDePescaFP != null)
             {
                 transferOwnerPV(hit.transform.gameObject);
-                playerController.characterLocomotion.TryStartAbility(playerController.pescarAbility);
+                playerController.StartarAbility(playerController.pescarAbility);
                 playerController.pescaPescando = hit.transform.gameObject;
             }
             else
@@ -397,7 +397,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir Dissecar
         {
             transferOwnerPV(objPai.gameObject);
-            playerController.characterLocomotion.TryStartAbility(playerController.dissecarAbility);
+            playerController.StartarAbility(playerController.dissecarAbility);
             playerController.itemsDropsPosDissecar = objPai.dropsItems;
             playerController.corpoDissecando = objPai.gameObject;
         }
@@ -409,7 +409,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(animalController.gameObject);
-            playerController.characterLocomotion.TryStartAbility(playerController.capturarAbility);
+            playerController.StartarAbility(playerController.capturarAbility);
             playerController.animalCapturado = animalController;
             playerController.inventario.ToggleGrabUngrabCorda(false);
         }
