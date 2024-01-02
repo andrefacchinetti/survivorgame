@@ -376,7 +376,9 @@ namespace Opsive.UltimateCharacterController.Traits
                 damageData.Amount -= shieldAmount;
                 m_ShieldAttribute.Value -= shieldAmount;
             }
+            var attacker = damageData.DamageSource?.SourceOwner;
 
+            EventHandler.ExecuteEvent<float, Vector3, GameObject, Collider>(m_GameObject, "OnPreHealthDamage", damageData.Amount, damageData.Position, attacker, damageData.HitCollider);
             // Decrement the health by remaining amount after the shield has taken damage.
             if (m_HealthAttribute != null && m_HealthAttribute.Value > m_HealthAttribute.MinValue) {
                 m_HealthAttribute.Value -= Mathf.Min(damageData.Amount, m_HealthAttribute.Value - m_HealthAttribute.MinValue);
@@ -399,7 +401,7 @@ namespace Opsive.UltimateCharacterController.Traits
                 }
             }
 
-            var attacker = damageData.DamageSource?.SourceOwner;
+            
             // Let other interested objects know that the object took damage.
             EventHandler.ExecuteEvent<float, Vector3, Vector3, GameObject, Collider>(m_GameObject, "OnHealthDamage", damageData.Amount, damageData.Position, force, attacker, damageData.HitCollider);
             EventHandler.ExecuteEvent<DamageData>(m_GameObject, "OnHealthDamageWithData", damageData);

@@ -7,9 +7,7 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
 {
     
     [SerializeField] public bool isPlataforma;
-
     [HideInInspector] public ConstrucoesController plataformaPai;
-
     [HideInInspector] public List<ConstrucoesController> listaConstrucoesConectadas;
 
     private void Awake()

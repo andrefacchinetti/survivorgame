@@ -23,8 +23,9 @@ public class StatsGeral : MonoBehaviour
     [HideInInspector] public AnimalStats animalStats;
     [HideInInspector] public DropaRecursosStats dropaRecursosStats;
     [HideInInspector] public ReconstruivelStats reconstruivelStats;
-    [SerializeField] public ItemDefinitionBase itemRepairHammer, itemDemolitionHammer;
+    [HideInInspector] public ConstrucaoStats construcaoStats;
 
+    public bool isSangra = false;
     BFX_DemoTest bloodController;
 
     PhotonView PV;
@@ -32,22 +33,44 @@ public class StatsGeral : MonoBehaviour
     private void Awake()
     {
         EventHandler.RegisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
+        EventHandler.RegisterEvent<float, Vector3, GameObject, Collider>(gameObject, "OnPreHealthDamage", OnPreDamage);
         PV = GetComponent<PhotonView>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         animalStats = GetComponentInParent<AnimalStats>();
         dropaRecursosStats = GetComponentInParent<DropaRecursosStats>();
         jogadorStats = GetComponentInParent<StatsJogador>();
         reconstruivelStats = GetComponentInParent<ReconstruivelStats>();
-        if(health == null) health = GetComponentInParent<Health>();
+        construcaoStats = GetComponentInParent<ConstrucaoStats>();
+        if (health == null) health = GetComponentInParent<Health>();
         attributeManager = GetComponentInParent<AttributeManager>();
         if (dropPosition == null) dropPosition = this.gameObject;
-        bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
+        if(isSangra) bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
+    }
+
+    private void OnPreDamage(float amount, Vector3 position, GameObject attacker, Collider hitCollider)
+    {
+        //Evento que acontece antes de aplicar o damage no Health
+        Debug.Log("on pre damage");
+        if(construcaoStats != null) //Verificar se cura construcao com martelo reparador
+        {
+            PlayerController pc = attacker.GetComponentInParent<PlayerController>();
+            if (pc != null)
+            {
+                Debug.Log("on pre damage pc ok");
+                if (pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name == construcaoStats.itemMarteloReparador.name)
+                {
+                    Debug.Log("on pre take cura");
+                    TakeCura(amount*2);
+                }
+            }
+        }
     }
 
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
+        //Evento que acontece depois de aplicar o damage no Health
         Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
-        if(hitCollider != null && dropaRecursosStats == null) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
+        if(hitCollider != null && isSangra) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
         if(attacker != null)
         {
             PlayerController pc = attacker.GetComponentInParent<PlayerController>(); //TODO: OTIMIZAR ISSO
@@ -62,6 +85,7 @@ public class StatsGeral : MonoBehaviour
     public void OnDestroy()
     {
         EventHandler.UnregisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
+        EventHandler.UnregisterEvent<float, Vector3, GameObject, Collider>(gameObject, "OnPreHealthDamage", OnPreDamage);
     }
 
     public float ObterVidaMaximaHealth()
@@ -107,6 +131,7 @@ public class StatsGeral : MonoBehaviour
             else if (lobisomemStats != null) lobisomemStats.AcoesTomouDano();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesTomouDano();
             else if (reconstruivelStats != null) reconstruivelStats.AcoesTomouDano();
+            else if (construcaoStats != null) construcaoStats.AcoesTomouDano();
         }
         else //MORREU
         {
@@ -114,10 +139,8 @@ public class StatsGeral : MonoBehaviour
             else if (lobisomemStats != null) lobisomemStats.AcoesMorreu();
             else if (dropaRecursosStats != null) dropaRecursosStats.AcoesMorreu();
             else if (jogadorStats != null) jogadorStats.AcoesMorreu();
-            else if(reconstruivelStats != null)
-            {
-                reconstruivelStats.AcoesMorreu();
-            }
+            else if(reconstruivelStats != null) reconstruivelStats.AcoesMorreu();
+            else if (construcaoStats != null) construcaoStats.AcoesMorreu();
             else
             {
                 DestruirGameObject();

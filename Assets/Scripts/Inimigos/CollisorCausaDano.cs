@@ -36,12 +36,12 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                     StatsGeral objPai = collisorSofreDano.gameObject.GetComponentInParent<StatsGeral>();
                     if (collisorSofreDano.isConstrucao)
                     {
-                        if (this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemRepairHammer.name))
+                        if (this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(objPai.construcaoStats.itemMarteloReparador.name))
                         {
                             Debug.Log("curando construcao");
                             objPai.TakeCura(damage);
                         }
-                        else if (this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(statsGeral.itemDemolitionHammer.name))
+                        else if (this.GetComponent<ItemObjMao>() != null && this.GetComponent<ItemObjMao>().itemDefinition.name.Equals(objPai.construcaoStats.itemMarteloDemolidor.name))
                         {
                             Debug.Log("demolindo contrucao");
                             objPai.GetComponent<ConstrucoesController>().DemolirConstrucao();

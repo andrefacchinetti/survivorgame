@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using Opsive.UltimateCharacterController.Inventory;
 using Opsive.Shared.Inventory;
 using Opsive.Shared.Events;
 using Opsive.UltimateCharacterController.Items.Actions.Impact;
+using Opsive.UltimateCharacterController.Items;
+
 
 [RequireComponent(typeof(Rigidbody))]
 public class CollisorSofreDano : MonoBehaviourPunCallbacks
 {
 
-    [SerializeField] ItemIdentifierAmount[] itemIdentifierAmountFerramentasRecomendadas;
+    [SerializeField] ItemDefinitionBase[] ferramentasRecomendadas;
     [SerializeField] public bool isApenasFerramentaRecomendadaCausaDano = false;
+  
     [HideInInspector] public StatsGeral statsGeral;
     [SerializeField] public bool isConstrucao;
     public PhotonView PV;
@@ -27,6 +29,17 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
     private void OnImpact(ImpactCallbackContext ctx)
     {
         Debug.Log("Event received " + name + " impacted by " + ctx.ImpactCollisionData.SourceGameObject + " on collider " + ctx.ImpactCollisionData.ImpactCollider + ".");
+        if(isConstrucao && ctx.ImpactCollisionData.SourceGameObject != null)
+        {
+            CharacterItem ci = ctx.ImpactCollisionData.SourceGameObject.GetComponent<CharacterItem>();
+            if(ci != null)
+            {
+                if(ci.ItemDefinition.name == statsGeral.construcaoStats.itemMarteloDemolidor.name)
+                {
+                    statsGeral.DestruirGameObject();
+                }
+            }
+        }
     }
 
     public float CalcularDanoPorArmaCausandoDano(ItemObjMao itemNaMao, float damage)
@@ -52,9 +65,9 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
 
     private bool estaNaListaDeFerramentas(ItemDefinitionBase itemDefinition)
     {
-        foreach(ItemIdentifierAmount itemIdentifierAmount in itemIdentifierAmountFerramentasRecomendadas)
+        foreach(ItemDefinitionBase ferramentaRecomendada in this.ferramentasRecomendadas)
         {
-            if (itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
+            if (itemDefinition.name.Equals(ferramentaRecomendada.name))
             {
                 return true;
             }

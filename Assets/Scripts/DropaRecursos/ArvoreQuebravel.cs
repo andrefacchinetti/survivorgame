@@ -8,7 +8,7 @@ public class ArvoreQuebravel : MonoBehaviour
 
     public FaseArvore faseArvore;
     public DropaRecursosStats arvorePrincipal;
-    public GameObject objArvoreInteira, objArvoreRachada, objArvorePedacos;
+    public GameObject objArvoreInteira, objArvoreRachada, objArvorePedacos, objArvorePedacosPrincipal, objArvorePedacosRaiz;
     public FileiraQuebravel[] fileirasQuebraveis;
     
     public enum FaseArvore
@@ -28,6 +28,8 @@ public class ArvoreQuebravel : MonoBehaviour
         objArvoreInteira.SetActive(FaseArvore.Inteira.Equals(fase));
         objArvoreRachada.SetActive(FaseArvore.Rachada.Equals(fase));
         objArvorePedacos.SetActive(FaseArvore.Pedacos.Equals(fase));
+        objArvorePedacosPrincipal.SetActive(FaseArvore.Pedacos.Equals(fase));
+        objArvorePedacosRaiz.SetActive(FaseArvore.Pedacos.Equals(fase));
     }
 
     public float forcaDeQueda = 800F;
