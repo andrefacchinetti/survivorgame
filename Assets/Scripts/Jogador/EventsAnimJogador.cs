@@ -98,6 +98,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 	{
 		playerController.statsJogador.setarSedeAtual(playerController.statsJogador.sedeAtual + 100);
 	}
+
 	void AnimEventBebeuGarrafa()
 	{
 		if (playerController.inventario.itemNaMao != null && playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Bottle"))
@@ -119,7 +120,8 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		if (playerController.fogueiraAcendendo == null) return;
 		playerController.fogueiraAcendendo.GetComponent<Fogueira>().AcenderFogueira();
 		playerController.fogueiraAcendendo = null;
-		playerController.inventario.ConsumirItemDaMao();
+		playerController.PararAbility(playerController.acenderFogueiraAbility);
+		//playerController.inventario.ConsumirItemDaMao();
 	}
 
 	void AnimEventApagandoFogueira()

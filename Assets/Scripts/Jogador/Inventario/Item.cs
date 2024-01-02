@@ -141,7 +141,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void SelecionarItem()
     {
-        if (this.itemIdentifierAmount.ItemDefinition.GetItemCategory().name.Equals("NaoEquipavel")) return; //Esse tipo de item não pode ser equipado
+        if (this.itemIdentifierAmount.ItemDefinition.GetItemCategory().name.Equals("NaoEquipavel")) return; //Esse tipo de item nï¿½o pode ser equipado
         if (inventario.itemNaMao != null)
         {
             if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(this.itemIdentifierAmount.ItemDefinition))
@@ -174,11 +174,6 @@ public class Item : MonoBehaviourPunCallbacks
             {
                 inventario.playerController.acendedorFogueiraTP = inventario.playerController.contentItemsTP.GetComponentInChildren<AcendedorFogueira>();
                 inventario.playerController.acendedorFogueiraFP = inventario.playerController.contentItemsFP.GetComponentInChildren<AcendedorFogueira>();
-                if (inventario.playerController.acendedorFogueiraTP != null && inventario.playerController.acendedorFogueiraFP != null)
-                {
-                    inventario.playerController.acendedorFogueiraTP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
-                    inventario.playerController.acendedorFogueiraFP.eventsAnimJogador = inventario.playerController.eventsAnimJogador;
-                }
             }
             else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false) 
                 && armaduras.slotLanterna.item != null)

@@ -206,32 +206,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				}
 			}
 		}
-		else if (ability.AbilityIndexParameter == acenderFogueiraAbility.AbilityIndexParameter)
-		{
-			if (activated)
-			{
-				acendedorFogueiraTP.IniciarAcendedorFogueira();
-				acendedorFogueiraFP.IniciarAcendedorFogueira();
-			}
-			else
-			{
-				if (acendedorFogueiraTP != null && acendedorFogueiraFP != null)
-				{
-					acendedorFogueiraTP.FinalizaAcendedorFogueira();
-					acendedorFogueiraFP.FinalizaAcendedorFogueira();
-				}
-			}
-		}
 		else if (ability.AbilityIndexParameter == capturarAbility.AbilityIndexParameter)
 		{
 			if (activated)
 			{
-				cordaWeaponFP.objCordaMaos.SetActive(false);
-				cordaWeaponTP.objCordaMaos.SetActive(false);
+				if (cordaWeaponFP != null && cordaWeaponTP != null)
+                {
+					cordaWeaponFP.objCordaMaos.SetActive(false);
+					cordaWeaponTP.objCordaMaos.SetActive(false);
+				}
 			}
 			else
 			{
-				if (acendedorFogueiraTP != null && acendedorFogueiraFP != null)
+				if (cordaWeaponFP != null && cordaWeaponTP != null)
 				{
 					cordaWeaponFP.objCordaMaos.SetActive(true);
 					cordaWeaponTP.objCordaMaos.SetActive(true);

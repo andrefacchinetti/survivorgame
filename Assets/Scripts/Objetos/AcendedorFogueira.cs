@@ -2,17 +2,21 @@ using UnityEngine;
 
 public class AcendedorFogueira : MonoBehaviour
 {
-	[SerializeField] public Animator animator;
-	public EventsAnimJogador eventsAnimJogador;
 
+	[SerializeField] public GameObject fogo;
 
-	public void IniciarAcendedorFogueira()
+    private void Start()
+    {
+		ApagarFogo();
+    }
+
+    public void AcenderFogo()
 	{
-		animator.SetTrigger("acendendo"); 
+		fogo.SetActive(true);
 	}
 
-	public void FinalizaAcendedorFogueira()
+	public void ApagarFogo()
 	{
-		animator.SetTrigger("parouAcender");
+		fogo.SetActive(false);
 	}
 }

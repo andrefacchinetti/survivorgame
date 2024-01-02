@@ -323,17 +323,17 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     possibleInteraction = true;
                 }
             }
-            else if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemApagadorFogueira))
+        }
+        else
+        {
+            if (hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
             {
-                playerController.fogueiraAcendendo = hit.transform.gameObject;
-                if (hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
+                if (Input.GetButtonDown("Use"))
                 {
-                    if (Input.GetButtonDown("Use"))
-                    {
-                        playerController.StartarAbility(playerController.apagarFogueiraAbility);
-                    }
-                    possibleInteraction = true;
+                    hit.transform.gameObject.GetComponent<Fogueira>().ApagarFogueira();
+                    //playerController.StartarAbility(playerController.apagarFogueiraAbility);
                 }
+                possibleInteraction = true;
             }
         }
     }
