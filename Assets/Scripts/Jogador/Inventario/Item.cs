@@ -294,7 +294,7 @@ public class Item : MonoBehaviourPunCallbacks
     private void SetarItemNaMaoNull()
     {
         inventario.itemNaMao = null;
-        if (inventario.playerController.cordaWeaponTP.objObiRope != null)
+        if (inventario.playerController.cordaWeaponTP != null && inventario.playerController.cordaWeaponTP.objObiRope != null)
         {
             inventario.playerController.cordaWeaponTP.objObiRope.SetActive(false);
             inventario.playerController.cordaWeaponFP.objObiRope.SetActive(false);

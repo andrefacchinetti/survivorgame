@@ -174,12 +174,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		PararAbility(dissecarAbility);
 	}
 
-	public void PararAbility(Ability abilidade)
+	public void PararAbility(Ability habilidade)
     {
-		if (abilidade.IsActive)
+		if (habilidade.IsActive)
         {
-			abilidade.StopAbility();
+			habilidade.StopAbility();
         }
+	}
+
+	public void StartarAbility(Ability habilidade)
+    {
+		characterLocomotion.TryStopAbility(heightChange, true);
+		characterLocomotion.TryStartAbility(habilidade);
 	}
 
 	private void OnAbilityActive(Ability ability, bool activated)
