@@ -10,9 +10,10 @@ public class SlotConsumivelPanela : MonoBehaviour
     [HideInInspector] public ItemDefinitionBase itemDefinitionNoSlot;
     [SerializeField] public GameObject slotCarneCrua, slotCarneCozida;
     [SerializeField] public GameObject slotCogumeloCru, slotCogumeloCozido;
+    [SerializeField] public GameObject slotCogumeloVenenosoCru, slotCogumeloVenenosoCozido;
     [SerializeField] public GameObject slotPeixeCru, slotPeixeCozido;
 
-    [SerializeField] public ItemDefinitionBase itemCarneCrua, itemCarneCozida, itemCogumeloCru, itemCogumeloCozido, itemPeixeCru, itemPeixeCozido;
+    [SerializeField] public ItemDefinitionBase itemCarneCrua, itemCarneCozida, itemCogumeloCru, itemCogumeloCozido, itemCogumeloVenenosoCru, itemCogumeloVenenosoCozido, itemPeixeCru, itemPeixeCozido;
 
     public void AtivarSlotPorNomeItem(ItemDefinitionBase itemDefinition)
     {
