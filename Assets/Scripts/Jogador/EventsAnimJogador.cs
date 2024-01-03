@@ -109,7 +109,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 
 	void AnimEventEncheuGarrafa()
 	{
-		if (playerController.inventario.itemNaMao != null && playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Garrafa"))
+		if (playerController.inventario.itemNaMao != null && playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(playerController.inventario.itemGarrafa.name))
 		{
 			playerController.inventario.itemNaMao.GetComponent<Garrafa>().EncherRepositorioComAgua();
 		}
@@ -122,6 +122,24 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		playerController.fogueiraAcendendo = null;
 		playerController.PararAbility(playerController.acenderFogueiraAbility);
 		//playerController.inventario.ConsumirItemDaMao();
+	}
+
+	void AnimEventAcenderIsqueiro()
+    {
+		if (playerController.acendedorFogueiraFP != null)
+		{
+			playerController.acendedorFogueiraFP.AcenderFogo();
+			playerController.acendedorFogueiraTP.AcenderFogo();
+		}
+	}
+
+	void AnimEventApagarIsqueiro()
+	{
+		if (playerController.acendedorFogueiraFP != null)
+		{
+			playerController.acendedorFogueiraFP.ApagarFogo();
+			playerController.acendedorFogueiraTP.ApagarFogo();
+		}
 	}
 
 	void AnimEventApagandoFogueira()

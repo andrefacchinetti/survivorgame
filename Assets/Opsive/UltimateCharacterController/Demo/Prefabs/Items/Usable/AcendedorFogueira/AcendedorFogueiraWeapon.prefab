@@ -173,8 +173,8 @@ MonoBehaviour:
   m_SpawnParent:
     m_ID: 50042001
     m_Object: {fileID: 0}
-  m_LocalSpawnPosition: {x: -0.0394, y: 0.1305, z: 0.0396}
-  m_LocalSpawnRotation: {x: -68.158, y: 33.351, z: 65.426}
+  m_LocalSpawnPosition: {x: -0.0328, y: 0.1281, z: 0.0442}
+  m_LocalSpawnRotation: {x: -72.845, y: 40.837, z: 58.362}
   m_LocalSpawnScale: {x: 1, y: 1, z: 1}
   m_FirstPersonBaseObjectID: 3
   m_VisibleItem: {fileID: 7177310866927361945}
@@ -321,67 +321,13 @@ MonoBehaviour:
   m_ForceRootMotionRotation: 0
   m_TriggerActionModuleGroup:
     m_Modules:
-    - rid: 707337207034413056
+    - rid: 6506621822281974102
   m_UsableActionModuleGroup:
     m_Modules:
     - rid: 5642451374558413373
   references:
     version: 2
     RefIds:
-    - rid: 707337207034413056
-      type: {class: Simple, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
-      data:
-        m_States:
-        - m_Name: Default
-          m_Preset: {fileID: 0}
-          m_BlockList: []
-          m_Default: 1
-        m_Bindings:
-          m_Bindings: []
-        m_Enabled: 1
-        m_ID: 0
-        m_Name: 
-        m_PlayAudioOnStartUse: 0
-        m_SubstateIndexData:
-          m_Additive: 0
-          m_Index: 0
-          m_Priority: 100
-        m_UseAnimatorAudioStateSet:
-          m_AnimatorAudioStateSelector:
-            rid: 707337207034413057
-          m_States:
-          - m_States:
-            - m_Name: Default
-              m_Preset: {fileID: 0}
-              m_BlockList: []
-              m_Default: 1
-            m_Enabled: 1
-            m_AllowDuringMovement: 1
-            m_RequireGrounded: 0
-            m_StateName: 
-            m_ItemSubstateIndex: 2
-            m_AudioClipSet:
-              m_AudioConfig: {fileID: 0}
-              m_AudioClips: []
-          - m_States:
-            - m_Name: Default
-              m_Preset: {fileID: 0}
-              m_BlockList: []
-              m_Default: 1
-            m_Enabled: 1
-            m_AllowDuringMovement: 1
-            m_RequireGrounded: 0
-            m_StateName: 
-            m_ItemSubstateIndex: 0
-            m_AudioClipSet:
-              m_AudioConfig: {fileID: 0}
-              m_AudioClips: []
-        m_CanStopIfInputStop: 0
-        m_CanStopSubstateIndexAddition: 10
-    - rid: 707337207034413057
-      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
-      data:
-        m_ResetDelay: -1
     - rid: 5642451374558413373
       type: {class: GenericItemEffects, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
       data:
@@ -392,7 +338,7 @@ MonoBehaviour:
           m_Default: 1
         m_Bindings:
           m_Bindings: []
-        m_Enabled: 1
+        m_Enabled: 0
         m_ID: -2
         m_Name: 
         m_OnStartUse: 1
@@ -418,6 +364,74 @@ MonoBehaviour:
           m_AudioConfig: {fileID: 0}
           m_AudioClips:
           - {fileID: 8300000, guid: 013c5800bb18d5145b1ce6fad8038446, type: 3}
+    - rid: 6506621822281974102
+      type: {class: Charged, ns: Opsive.UltimateCharacterController.Items.Actions.Modules, asm: Opsive.UltimateCharacterController}
+      data:
+        m_States:
+        - m_Name: Default
+          m_Preset: {fileID: 0}
+          m_BlockList: []
+          m_Default: 1
+        m_Bindings:
+          m_Bindings: []
+        m_Enabled: 1
+        m_ID: 0
+        m_Name: 
+        m_PlayAudioOnStartUse: 0
+        m_SubstateIndexData:
+          m_Additive: 0
+          m_Index: 0
+          m_Priority: 100
+        m_UseAnimatorAudioStateSet:
+          m_AnimatorAudioStateSelector:
+            rid: 6506621822281974103
+          m_States:
+          - m_States:
+            - m_Name: Default
+              m_Preset: {fileID: 0}
+              m_BlockList: []
+              m_Default: 1
+            m_Enabled: 1
+            m_AllowDuringMovement: 1
+            m_RequireGrounded: 0
+            m_StateName: 
+            m_ItemSubstateIndex: 2
+            m_AudioClipSet:
+              m_AudioConfig: {fileID: 0}
+              m_AudioClips: []
+        m_ChargeAudioClipSet:
+          m_AudioConfig: {fileID: 0}
+          m_AudioClips: []
+        m_MinChargeForce: 0.1
+        m_MaxChargeForce: 1
+        m_ChargeTimeForceNormalizer: 1
+        m_ChargeSubstateParameterValue:
+          m_Additive: 0
+          m_Index: 0
+          m_Priority: 100
+        m_MinChargeCompleteEvent:
+          m_WaitForAnimationEvent: 1
+          m_Duration: 0.2
+          m_WaitForSlotEvent: 0
+        m_MaxChargeCompleteEvent:
+          m_WaitForAnimationEvent: 1
+          m_Duration: 0.2
+          m_WaitForSlotEvent: 0
+        m_DepleteChargeSubstateParameterValue:
+          m_Additive: 0
+          m_Index: 0
+          m_Priority: 100
+        m_DepleteChargeCompleteEvent:
+          m_WaitForAnimationEvent: 1
+          m_Duration: 0.2
+          m_WaitForSlotEvent: 0
+        m_AutoFireOnFullCharge: 0
+        m_RepeatFire: 0
+        m_DepleteChargeOnStopEarly: 1
+    - rid: 6506621822281974103
+      type: {class: Sequence, ns: Opsive.UltimateCharacterController.Items.AnimatorAudioStates, asm: Opsive.UltimateCharacterController}
+      data:
+        m_ResetDelay: -1
 --- !u!1001 &5091678711116601265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -433,6 +447,42 @@ PrefabInstance:
     - target: {fileID: 793131225858421053, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
       propertyPath: m_Layer
       value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0128
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0008
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0064
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9982601
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.05896497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.00000008940686
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000020861602
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 6.761
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168732019957660723, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1483922321772469679, guid: e8ed155a3a60db74bb059ad53fae64f4, type: 3}
       propertyPath: m_Layer
@@ -568,6 +618,42 @@ PrefabInstance:
     - target: {fileID: 3415192415145497890, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -41.887
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0128
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0008
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0064
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9982601
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.05896497
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.00000008940686
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000020861602
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 6.761
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065064156993758636, guid: 8d2f9444ebfdd5149b9d455fb3769575, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
