@@ -24,7 +24,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] public List<Item.ItemStruct> itensStruct;
 
     [HideInInspector] public List<Item> itens;
-    [SerializeField][HideInInspector] public Item itemNaMao;
+    [SerializeField] public Item itemNaMao;
     [SerializeField] [HideInInspector] public PlayerController playerController;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;

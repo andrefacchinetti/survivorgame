@@ -8,6 +8,7 @@ public class Panela : MonoBehaviour
 
     [SerializeField] public Fogueira fogueira;
     [SerializeField] public SlotConsumivelPanela[] slotsConsumiveis;
+    [SerializeField] public ItemDefinitionBase[] itensPodemAssar;
 
     public bool ColocarConsumivelNaPanela(Item item)
     {
@@ -15,11 +16,30 @@ public class Panela : MonoBehaviour
         {
             if (!slot.gameObject.activeSelf)
             {
-                slot.AtivarSlotPorNomeItem(item.itemIdentifierAmount.ItemDefinition);
-                slot.gameObject.SetActive(true);
+                if (this.podeAssar(item.itemIdentifierAmount.ItemDefinition))
+                {
+                    slot.AtivarSlotPorNomeItem(item.itemIdentifierAmount.ItemDefinition);
+                    slot.gameObject.SetActive(true);
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool podeAssar(ItemDefinitionBase itemSelecionado)
+    {
+        foreach(ItemDefinitionBase itemSlot in itensPodemAssar)
+        {
+            if(itemSlot.name.Equals(itemSelecionado.name))
+            {
                 return true;
             }
         }
+        Debug.Log("NAO PODE ASSAR ESSE ITEM"); //TODO: MOSTRAR MSG: "NAO PODE ASSAR ESSE ITEM"
         return false;
     }
 
