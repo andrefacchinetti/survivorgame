@@ -101,9 +101,18 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 
 	void AnimEventBebeuGarrafa()
 	{
-		if (playerController.inventario.itemNaMao != null && playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals("Bottle"))
+		if (playerController.inventario.itemNaMao != null && playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(playerController.inventario.itemGarrafa.name))
 		{
-			playerController.statsJogador.setarSedeAtual(playerController.statsJogador.sedeAtual + playerController.inventario.itemNaMao.GetComponent<Garrafa>().BeberAgua());
+			int qtdAguaBebendo = playerController.inventario.itemNaMao.GetComponent<Garrafa>().BeberAgua();
+			if(qtdAguaBebendo == 0)
+            {
+				playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaGarrafaVazia());
+            }
+            else
+            {
+				Debug.Log("bebeu agua na garrafa");
+				playerController.statsJogador.setarSedeAtual(playerController.statsJogador.sedeAtual + qtdAguaBebendo);
+			}
 		}
 	}
 

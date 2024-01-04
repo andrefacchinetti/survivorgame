@@ -18,11 +18,14 @@ public class Garrafa : MonoBehaviour
         if(qtdAtual >= qtdPorGole)
         {
             qtdAtual -= qtdPorGole;
+            if (qtdAtual < 0) qtdAtual = 0;
             return qtdPorGole;
         }
         else
         {
-            return qtdAtual;
+            int qtd = qtdAtual;
+            qtdAtual = 0;
+            return qtd;
         }
     }
 

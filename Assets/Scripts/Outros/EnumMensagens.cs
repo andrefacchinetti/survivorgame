@@ -22,4 +22,10 @@ public static class EnumMensagens
         return "You can't do this now";
     }
 
+    public static string ObterAlertaGarrafaVazia()
+    {
+        if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "A garrafa está vazia";
+        return "The bottle is empty";
+    }
+
 }
