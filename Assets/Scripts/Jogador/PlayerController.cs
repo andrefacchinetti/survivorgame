@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public ApagarFogueira apagarFogueiraAbility; 
 	[SerializeField] [HideInInspector] public Capturar capturarAbility;
 	[SerializeField] [HideInInspector] public Dissecar dissecarAbility;
+	[SerializeField] [HideInInspector] public BeberAguaRio beberAguaRioAbility;
+	[SerializeField] [HideInInspector] public EncherGarrafaRio encherGarrafaRioAbility;
 
 	[HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
 	[HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
@@ -73,6 +75,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		apagarFogueiraAbility = characterLocomotion.GetAbility<ApagarFogueira>();
 		capturarAbility = characterLocomotion.GetAbility<Capturar>();
 		dissecarAbility = characterLocomotion.GetAbility<Dissecar>();
+		beberAguaRioAbility = characterLocomotion.GetAbility<BeberAguaRio>();
+		encherGarrafaRioAbility = characterLocomotion.GetAbility<EncherGarrafaRio>();
 
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
@@ -172,6 +176,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		PararAbility(acenderFogueiraAbility);
 		PararAbility(apagarFogueiraAbility);
 		PararAbility(dissecarAbility);
+		PararAbility(beberAguaRioAbility);
+		PararAbility(encherGarrafaRioAbility);
 	}
 
 	public void PararAbility(Ability habilidade)

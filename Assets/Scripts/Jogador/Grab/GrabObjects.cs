@@ -245,10 +245,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
             }
         }
-        else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
+        /*else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
         {
             interacaoBeberAgua(hit);
-        }
+        }*/
         else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
         {
             interacaoEncherGarrafa(hit);
@@ -473,7 +473,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir BeberAgua
         {
             transferOwnerPV(hit.transform.gameObject);
-            //playerController.animator.SetTrigger("bebendoAguaBaixo");
+            playerController.StartarAbility(playerController.beberAguaRioAbility);
         }
         possibleInteraction = true;
     }
@@ -483,7 +483,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) //Interagir EncherGarrafa
         {
             transferOwnerPV(hit.transform.gameObject);
-            //playerController.animator.SetTrigger("enchendoGarrafa");
+            playerController.StartarAbility(playerController.encherGarrafaRioAbility);
         }
         possibleInteraction = true;
     }
