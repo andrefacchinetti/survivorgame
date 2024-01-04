@@ -130,7 +130,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		playerController.fogueiraAcendendo.GetComponent<Fogueira>().AcenderFogueira();
 		playerController.fogueiraAcendendo = null;
 		playerController.PararAbility(playerController.acenderFogueiraAbility);
-		//playerController.inventario.ConsumirItemDaMao();
 	}
 
 	void AnimEventAcenderIsqueiro()
