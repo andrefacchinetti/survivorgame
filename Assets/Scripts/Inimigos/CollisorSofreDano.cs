@@ -42,23 +42,15 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
         }
     }
 
-    public float CalcularDanoPorArmaCausandoDano(ItemObjMao itemNaMao, float damage)
+    public float CalcularDanoPorArmaCausandoDano(ItemDefinitionBase itemNaMao, float damage)
     {
         if (itemNaMao == null) return damage;
         if (isApenasFerramentaRecomendadaCausaDano)
         {
-            if (estaNaListaDeFerramentas(itemNaMao.itemDefinition))
-            {
-                damage += itemNaMao.damage;
-            }
-            else
+            if (!estaNaListaDeFerramentas(itemNaMao))
             {
                 damage = 0;
             }
-        }
-        else
-        {
-            damage += itemNaMao.damage;
         }
         return damage;
     }

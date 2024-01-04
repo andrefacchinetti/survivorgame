@@ -379,10 +379,10 @@ namespace Opsive.UltimateCharacterController.Traits
             var attacker = damageData.DamageSource?.SourceOwner;
 
             EventHandler.ExecuteEvent<float, Vector3, GameObject, Collider>(m_GameObject, "OnPreHealthDamage", damageData.Amount, damageData.Position, attacker, damageData.HitCollider);
+
+
             // Decrement the health by remaining amount after the shield has taken damage.
-            if (m_HealthAttribute != null && m_HealthAttribute.Value > m_HealthAttribute.MinValue) {
-                m_HealthAttribute.Value -= Mathf.Min(damageData.Amount, m_HealthAttribute.Value - m_HealthAttribute.MinValue);
-            }
+            //AplicarDanonoHealth();
 
             var force = damageData.Direction * damageData.ForceMagnitude;
             if (damageData.ForceMagnitude > 0) {
@@ -425,7 +425,16 @@ namespace Opsive.UltimateCharacterController.Traits
                 // Play any take damage audio if the object did not die. If the object died then the death audio will play.
                 m_TakeDamageAudioClipSet.PlayAudioClip(m_GameObject);
             }
-            Debug.Log("health tomou dano");
+            Debug.Log("health foi atingido");
+        }
+
+        public void AplicarDanoNoHealth(float damage)
+        {
+            Debug.Log("Aplicando dano de: " + damage);
+            if (m_HealthAttribute != null && m_HealthAttribute.Value > m_HealthAttribute.MinValue)
+            {
+                m_HealthAttribute.Value -= Mathf.Min(damage, m_HealthAttribute.Value - m_HealthAttribute.MinValue);
+            }
         }
 
       

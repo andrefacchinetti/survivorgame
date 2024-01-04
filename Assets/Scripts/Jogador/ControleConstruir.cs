@@ -43,11 +43,16 @@ public class ControleConstruir : MonoBehaviour
     public struct Construcoes{
         [Tooltip("O nome so deixa mais facil de identificar")]
         public string nome;
-        public int custo;
+        [Tooltip("Items e quantidades necessarias para construir")]
+        public ItemIdentifierAmount[] ingredientes;
         public float altura;
         public bool podeJuntar;
+        public bool isConstrucaoMadeiraOuPedra;
         public LayerMask layerMask;
         public Texture icone;
+        [Header("Objeto")]
+        [Tooltip("Prefab da estrutura usado quando isConstrucaoMadeiraOuPedra = false")]
+        public GameObject objPrefab;
         [Header("Madeira")]
         [Tooltip("Mesh da estrutura de madeira")]
         public Mesh meshMad;
@@ -169,13 +174,20 @@ public class ControleConstruir : MonoBehaviour
                 rotacao = rotacao%360;
             }
             if(Input.GetButtonDown("Use")){
-                if(inventario.VerificarQtdItem(isMadeira ? itemMadeira : itemPedra, construcao.custo, true) && (podeConstruir && VerificarSePodeConstruir())){
-                    GameObject instanciado = Instantiate(isMadeira ? construcao.madPrefab : construcao.pedPrefab, objeto.transform.position, objeto.transform.rotation);
+                bool possuiQtdIngredientesNecessarios = false;
+                if (construcao.isConstrucaoMadeiraOuPedra) possuiQtdIngredientesNecessarios = inventario.VerificarQtdItem(isMadeira ? itemMadeira : itemPedra, isMadeira ? construcao.ingredientes[0].Amount : construcao.ingredientes[1].Amount, true);
+                else possuiQtdIngredientesNecessarios = inventario.VerificarQtdItems(construcao.ingredientes, true);
+
+                if (possuiQtdIngredientesNecessarios && (podeConstruir && VerificarSePodeConstruir())){
+                    GameObject instanciado = Instantiate(construcao.isConstrucaoMadeiraOuPedra ? isMadeira ? construcao.madPrefab : construcao.pedPrefab : construcao.objPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
                     {
                         construcaoControllerHit.inserirConstrucaoNaPlataforma(instanciado.GetComponentInChildren<ConstrucoesController>());
                     }
-                    inventario.RemoverItemDoInventarioPorNome(isMadeira ? itemMadeira : itemPedra, construcao.custo);
+
+                    if (construcao.isConstrucaoMadeiraOuPedra) inventario.RemoverItemDoInventarioPorNome(isMadeira ? itemMadeira : itemPedra, construcao.ingredientes[0].Amount);
+                    else inventario.RemoverItemsDoInventarioPorNome(construcao.ingredientes);
+                    
                     try{
                         instanciado.GetComponent<Construcao>().disativarPlaceHolder(hit.collider.gameObject);
                     }

@@ -24,6 +24,7 @@ public class StatsGeral : MonoBehaviour
     [HideInInspector] public DropaRecursosStats dropaRecursosStats;
     [HideInInspector] public ReconstruivelStats reconstruivelStats;
     [HideInInspector] public ConstrucaoStats construcaoStats;
+    [HideInInspector] public CollisorSofreDano collisorSofreDano;
 
     public bool isSangra = false;
     BFX_DemoTest bloodController;
@@ -41,13 +42,14 @@ public class StatsGeral : MonoBehaviour
         jogadorStats = GetComponentInParent<StatsJogador>();
         reconstruivelStats = GetComponentInParent<ReconstruivelStats>();
         construcaoStats = GetComponentInParent<ConstrucaoStats>();
+        collisorSofreDano = GetComponentInParent<CollisorSofreDano>();
         if (health == null) health = GetComponentInParent<Health>();
         attributeManager = GetComponentInParent<AttributeManager>();
         if (dropPosition == null) dropPosition = this.gameObject;
         if(isSangra) bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
     }
 
-    private void OnPreDamage(float amount, Vector3 position, GameObject attacker, Collider hitCollider)
+    private void OnPreDamage(float dano, Vector3 position, GameObject attacker, Collider hitCollider)
     {
         //Evento que acontece antes de aplicar o damage no Health
         Debug.Log("on pre damage");
@@ -56,14 +58,22 @@ public class StatsGeral : MonoBehaviour
             PlayerController pc = attacker.GetComponentInParent<PlayerController>();
             if (pc != null)
             {
-                Debug.Log("on pre damage pc ok");
                 if (pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name == construcaoStats.itemMarteloReparador.name)
                 {
-                    Debug.Log("on pre take cura");
-                    TakeCura(amount*2);
+                    TakeCura(dano);
+                    return;
                 }
             }
         }
+        if(collisorSofreDano != null)
+        {
+            if (collisorSofreDano.isApenasFerramentaRecomendadaCausaDano)
+            {
+                PlayerController pc = attacker.GetComponentInParent<PlayerController>();
+                dano = collisorSofreDano.CalcularDanoPorArmaCausandoDano(pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, dano);
+            }
+        }
+        health.AplicarDanoNoHealth(dano);
     }
 
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)

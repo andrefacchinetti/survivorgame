@@ -168,6 +168,14 @@ public class Inventario : MonoBehaviour
         return true;
     }
 
+    public void RemoverItemsDoInventarioPorNome(ItemIdentifierAmount[] ingredientes)
+    {
+        foreach (ItemIdentifierAmount ingrediente in ingredientes)
+        {
+            this.RemoverItemDoInventarioPorNome(ingrediente.ItemDefinition, ingrediente.Amount);
+        }
+    }
+
     public void RemoverItemDoInventarioPorNome(ItemDefinitionBase itemDefinition, int quantidadeResponse)
     {
         foreach (Item item in itens)
@@ -204,22 +212,33 @@ public class Inventario : MonoBehaviour
         }
     }
 
-    public bool VerificarQtdItem(ItemDefinitionBase itemDefinition, int quantidade, bool alertar){
-        if(quantidade<=0) return true;
+    public bool VerificarQtdItems(ItemIdentifierAmount[] ingredientes, bool alertar)
+    {
+        foreach(ItemIdentifierAmount ingrediente in ingredientes)
+        {
+            if(!VerificarQtdItem(ingrediente.ItemDefinition, ingrediente.Amount, alertar))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public bool VerificarQtdItem(ItemDefinitionBase itemDefinition, int quantidadeNecessaria, bool alertar){
+        if(quantidadeNecessaria <= 0) return true;
         int qtdItemAtual = 0;
-        string nomeItem = "";
+        string nomeItem = ObterNomeItemTraduzidoPorItemDefinition(itemDefinition);
         foreach(Item item in itens){
             if(item.itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
             {
                 qtdItemAtual = item.quantidade;
-                nomeItem = item.obterNomeItemTraduzido();
-                if(item.quantidade >= quantidade)
+                if(item.quantidade >= quantidadeNecessaria)
                 {
                     return true;
                 }
             }
         }
-        if(alertar) playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaNaoPossuiMaterialSuficiente(nomeItem, qtdItemAtual, quantidade));
+        if(alertar) playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaNaoPossuiMaterialSuficiente(nomeItem, qtdItemAtual, quantidadeNecessaria));
         return false;
     }
 
@@ -310,6 +329,18 @@ public class Inventario : MonoBehaviour
             playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);
             playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false);
         }
+    }
+
+    public string ObterNomeItemTraduzidoPorItemDefinition(ItemDefinitionBase itemDefinition)
+    {
+        foreach(Item.ItemStruct itemStruct in itensStruct)
+        {
+            if (itemDefinition.name == itemStruct.itemIdentifierAmount.ItemDefinition.name)
+            {
+                return PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemStruct.nomePortugues : itemStruct.nomeIngles;
+            }
+        }
+        return "";
     }
 
     public void AlertarJogadorComLogItem(string nomeItemTraduzido, Texture imgItem, bool isAumentandoQtd, int quantidade)

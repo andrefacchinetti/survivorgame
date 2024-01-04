@@ -24,7 +24,7 @@ public class DropaRecursosStats : MonoBehaviour
     public void AcoesTomouDano()
     {
         Debug.Log("dropa recursos tomou dano");
-        AcoesPartesArvoreTomamDano();
+        //AcoesPartesArvoreTomamDano();
         //TODO: Mostrar dano visual
     }
 
@@ -32,10 +32,10 @@ public class DropaRecursosStats : MonoBehaviour
     public void AcoesMorreu()
     {
         Debug.Log("dropa recursos morreu");
+        AcoesPartesArvoreTomamDano();
+
         statsGeral.DroparItensAoMorrer();
         statsGeral.DestruirGameObject();
-
-        AcoesPartesArvoreTomamDano();
     }
 
     private void AcoesPartesArvoreTomamDano()
