@@ -6,7 +6,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         _TextureSize("Texture Size", Vector) = (246, 246, 0, 0)
         [ToggleUI]_RotateUV("Rotate UV", Float) = 1
         [ToggleUI]Boolean_F2B1E91A("Boolean", Float) = 0
-        [NonModifiableTextureData][NoScaleOffset]_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1("Texture2D", 2D) = "white" {}
+        [NonModifiableTextureData][NoScaleOffset]_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D("Texture2D", 2D) = "white" {}
         [HideInInspector]_EmissionColor("Color", Color) = (1, 1, 1, 1)
         [HideInInspector]_RenderQueueType("Float", Float) = 1
         [HideInInspector][ToggleUI]_AddPrecomputedVelocity("Boolean", Float) = 0
@@ -35,7 +35,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         [HideInInspector]_CullModeForward("Float", Float) = 2
         [HideInInspector][Enum(Front, 1, Back, 2)]_TransparentCullMode("Float", Float) = 2
         [HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.OpaqueCullMode)]_OpaqueCullMode("Float", Float) = 2
-        [HideInInspector]_ZTestDepthEqualForOpaque("Float", Int) = 4
+        [HideInInspector]_ZTestDepthEqualForOpaque("Float", Int) = 3
         [HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)]_ZTestTransparent("Float", Float) = 4
         [HideInInspector][ToggleUI]_TransparentBackfaceEnable("Boolean", Float) = 0
         [HideInInspector][ToggleUI]_EnableBlendModePreserveSpecularLighting("Boolean", Float) = 0
@@ -44,12 +44,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         [HideInInspector]_StencilRefDepth("Float", Int) = 1
         [HideInInspector]_StencilWriteMaskDepth("Float", Int) = 9
         [HideInInspector]_StencilRefMV("Float", Int) = 33
-        [HideInInspector]_StencilWriteMaskMV("Float", Int) = 41
+        [HideInInspector]_StencilWriteMaskMV("Float", Int) = 43
         [HideInInspector]_StencilRefDistortionVec("Float", Int) = 4
         [HideInInspector]_StencilWriteMaskDistortionVec("Float", Int) = 4
-        [HideInInspector]_StencilWriteMaskGBuffer("Float", Int) = 15
-        [HideInInspector]_StencilRefGBuffer("Float", Int) = 2
-        [HideInInspector]_ZTestGBuffer("Float", Int) = 4
         [HideInInspector][NoScaleOffset]unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
@@ -61,6 +58,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             "RenderPipeline"="HDRenderPipeline"
             "RenderType"="HDUnlitShader"
             "Queue"="AlphaTest+0"
+            "DisableBatching"="False"
             "ShaderGraphShader"="true"
             "ShaderGraphTargetId"="HDUnlitSubTarget"
         }
@@ -98,7 +96,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -128,7 +125,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -225,7 +224,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -237,10 +236,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -390,7 +390,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -468,6 +468,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -512,6 +517,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -741,7 +790,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #pragma shader_feature _ EDITOR_VISUALIZATION
         #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -767,7 +815,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -804,6 +854,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             #define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
         #define RAYTRACING_SHADER_GRAPH_DEFAULT
+        #define SCENEPICKINGPASS 1
         
         
             // Following two define are a workaround introduce in 10.1.x for RaytracingQualityNode
@@ -878,7 +929,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -890,10 +941,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -909,7 +961,8 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #endif
         
             // Includes
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+        #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
         #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
         #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
         #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
@@ -951,19 +1004,17 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         struct PackedVaryingsMeshToPS
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-             float3 interp0 : INTERP0;
-             float3 interp1 : INTERP1;
-             float4 interp2 : INTERP2;
-             float4 interp3 : INTERP3;
-             float4 interp4 : INTERP4;
-             float4 interp5 : INTERP5;
+             float4 texCoord0 : INTERP0;
+             float4 texCoord1 : INTERP1;
+             float4 texCoord2 : INTERP2;
+             float4 texCoord3 : INTERP3;
+             float3 positionRWS : INTERP4;
+             float3 positionPredisplacementRWS : INTERP5;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
             #endif
@@ -974,12 +1025,12 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             PackedVaryingsMeshToPS output;
             ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
             output.positionCS = input.positionCS;
-            output.interp0.xyz =  input.positionRWS;
-            output.interp1.xyz =  input.positionPredisplacementRWS;
-            output.interp2.xyzw =  input.texCoord0;
-            output.interp3.xyzw =  input.texCoord1;
-            output.interp4.xyzw =  input.texCoord2;
-            output.interp5.xyzw =  input.texCoord3;
+            output.texCoord0.xyzw = input.texCoord0;
+            output.texCoord1.xyzw = input.texCoord1;
+            output.texCoord2.xyzw = input.texCoord2;
+            output.texCoord3.xyzw = input.texCoord3;
+            output.positionRWS.xyz = input.positionRWS;
+            output.positionPredisplacementRWS.xyz = input.positionPredisplacementRWS;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -990,12 +1041,12 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             VaryingsMeshToPS output;
             output.positionCS = input.positionCS;
-            output.positionRWS = input.interp0.xyz;
-            output.positionPredisplacementRWS = input.interp1.xyz;
-            output.texCoord0 = input.interp2.xyzw;
-            output.texCoord1 = input.interp3.xyzw;
-            output.texCoord2 = input.interp4.xyzw;
-            output.texCoord3 = input.interp5.xyzw;
+            output.texCoord0 = input.texCoord0.xyzw;
+            output.texCoord1 = input.texCoord1.xyzw;
+            output.texCoord2 = input.texCoord2.xyzw;
+            output.texCoord3 = input.texCoord3.xyzw;
+            output.positionRWS = input.positionRWS.xyz;
+            output.positionPredisplacementRWS = input.positionPredisplacementRWS.xyz;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -1147,95 +1198,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -1268,7 +1319,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -1349,6 +1400,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -1384,8 +1440,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -1397,6 +1451,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -1628,7 +1726,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -1658,7 +1755,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -1667,13 +1766,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define ATTRIBUTES_NEED_NORMAL
             #define ATTRIBUTES_NEED_TANGENT
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TANGENT_TO_WORLD
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
             #define HAVE_MESH_MODIFICATION
@@ -1685,8 +1780,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -1769,7 +1862,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -1781,10 +1874,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -1818,8 +1912,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalOS : NORMAL;
              float4 tangentOS : TANGENT;
              float4 uv0 : TEXCOORD0;
-             float4 uv1 : TEXCOORD1;
-             float4 uv2 : TEXCOORD2;
              float4 uv3 : TEXCOORD3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : INSTANCEID_SEMANTIC;
@@ -1831,8 +1923,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalWS;
              float4 tangentWS;
              float4 texCoord0;
-             float4 texCoord1;
-             float4 texCoord2;
              float4 texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
@@ -1847,19 +1937,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         struct PackedVaryingsMeshToPS
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-             float3 interp0 : INTERP0;
-             float4 interp1 : INTERP1;
-             float4 interp2 : INTERP2;
-             float4 interp3 : INTERP3;
-             float4 interp4 : INTERP4;
-             float4 interp5 : INTERP5;
+             float4 tangentWS : INTERP0;
+             float4 texCoord0 : INTERP1;
+             float4 texCoord3 : INTERP2;
+             float3 normalWS : INTERP3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
             #endif
@@ -1870,12 +1956,10 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             PackedVaryingsMeshToPS output;
             ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
             output.positionCS = input.positionCS;
-            output.interp0.xyz =  input.normalWS;
-            output.interp1.xyzw =  input.tangentWS;
-            output.interp2.xyzw =  input.texCoord0;
-            output.interp3.xyzw =  input.texCoord1;
-            output.interp4.xyzw =  input.texCoord2;
-            output.interp5.xyzw =  input.texCoord3;
+            output.tangentWS.xyzw = input.tangentWS;
+            output.texCoord0.xyzw = input.texCoord0;
+            output.texCoord3.xyzw = input.texCoord3;
+            output.normalWS.xyz = input.normalWS;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -1886,12 +1970,10 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             VaryingsMeshToPS output;
             output.positionCS = input.positionCS;
-            output.normalWS = input.interp0.xyz;
-            output.tangentWS = input.interp1.xyzw;
-            output.texCoord0 = input.interp2.xyzw;
-            output.texCoord1 = input.interp3.xyzw;
-            output.texCoord2 = input.interp4.xyzw;
-            output.texCoord3 = input.interp5.xyzw;
+            output.tangentWS = input.tangentWS.xyzw;
+            output.texCoord0 = input.texCoord0.xyzw;
+            output.texCoord3 = input.texCoord3.xyzw;
+            output.normalWS = input.normalWS.xyz;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -2049,95 +2131,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -2173,7 +2255,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -2250,12 +2332,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             output.tangentToWorld =             BuildTangentToWorld(input.tangentWS, input.normalWS);
             output.texCoord0 =                  input.texCoord0;
-            output.texCoord1 =                  input.texCoord1;
-            output.texCoord2 =                  input.texCoord2;
             output.texCoord3 =                  input.texCoord3;
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -2291,8 +2376,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -2304,6 +2387,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -2535,7 +2662,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -2565,7 +2691,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -2574,12 +2702,8 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define ATTRIBUTES_NEED_NORMAL
             #define ATTRIBUTES_NEED_TANGENT
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
             #define HAVE_MESH_MODIFICATION
@@ -2591,8 +2715,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -2676,7 +2798,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -2688,10 +2810,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -2725,8 +2848,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalOS : NORMAL;
              float4 tangentOS : TANGENT;
              float4 uv0 : TEXCOORD0;
-             float4 uv1 : TEXCOORD1;
-             float4 uv2 : TEXCOORD2;
              float4 uv3 : TEXCOORD3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : INSTANCEID_SEMANTIC;
@@ -2736,8 +2857,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
              float4 texCoord0;
-             float4 texCoord1;
-             float4 texCoord2;
              float4 texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
@@ -2752,17 +2871,13 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         struct PackedVaryingsMeshToPS
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-             float4 interp0 : INTERP0;
-             float4 interp1 : INTERP1;
-             float4 interp2 : INTERP2;
-             float4 interp3 : INTERP3;
+             float4 texCoord0 : INTERP0;
+             float4 texCoord3 : INTERP1;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
             #endif
@@ -2773,10 +2888,8 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             PackedVaryingsMeshToPS output;
             ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
             output.positionCS = input.positionCS;
-            output.interp0.xyzw =  input.texCoord0;
-            output.interp1.xyzw =  input.texCoord1;
-            output.interp2.xyzw =  input.texCoord2;
-            output.interp3.xyzw =  input.texCoord3;
+            output.texCoord0.xyzw = input.texCoord0;
+            output.texCoord3.xyzw = input.texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -2787,10 +2900,8 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             VaryingsMeshToPS output;
             output.positionCS = input.positionCS;
-            output.texCoord0 = input.interp0.xyzw;
-            output.texCoord1 = input.interp1.xyzw;
-            output.texCoord2 = input.interp2.xyzw;
-            output.texCoord3 = input.interp3.xyzw;
+            output.texCoord0 = input.texCoord0.xyzw;
+            output.texCoord3 = input.texCoord3.xyzw;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -2948,95 +3059,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -3072,7 +3183,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -3148,12 +3259,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             output.positionSS = input.positionCS;       // input.positionCS is SV_Position
         
             output.texCoord0 =                  input.texCoord0;
-            output.texCoord1 =                  input.texCoord1;
-            output.texCoord2 =                  input.texCoord2;
             output.texCoord3 =                  input.texCoord3;
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -3189,8 +3303,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -3202,6 +3314,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -3444,7 +3600,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -3474,7 +3629,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -3483,14 +3640,10 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define ATTRIBUTES_NEED_NORMAL
             #define ATTRIBUTES_NEED_TANGENT
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_POSITION_WS
             #define VARYINGS_NEED_TANGENT_TO_WORLD
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
             #define HAVE_MESH_MODIFICATION
@@ -3502,8 +3655,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -3585,7 +3736,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -3597,10 +3748,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -3633,8 +3785,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalOS : NORMAL;
              float4 tangentOS : TANGENT;
              float4 uv0 : TEXCOORD0;
-             float4 uv1 : TEXCOORD1;
-             float4 uv2 : TEXCOORD2;
              float4 uv3 : TEXCOORD3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : INSTANCEID_SEMANTIC;
@@ -3647,8 +3797,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalWS;
              float4 tangentWS;
              float4 texCoord0;
-             float4 texCoord1;
-             float4 texCoord2;
              float4 texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
@@ -3663,20 +3811,16 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         struct PackedVaryingsMeshToPS
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-             float3 interp0 : INTERP0;
-             float3 interp1 : INTERP1;
-             float4 interp2 : INTERP2;
-             float4 interp3 : INTERP3;
-             float4 interp4 : INTERP4;
-             float4 interp5 : INTERP5;
-             float4 interp6 : INTERP6;
+             float4 tangentWS : INTERP0;
+             float4 texCoord0 : INTERP1;
+             float4 texCoord3 : INTERP2;
+             float3 positionRWS : INTERP3;
+             float3 normalWS : INTERP4;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
             #endif
@@ -3687,13 +3831,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             PackedVaryingsMeshToPS output;
             ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
             output.positionCS = input.positionCS;
-            output.interp0.xyz =  input.positionRWS;
-            output.interp1.xyz =  input.normalWS;
-            output.interp2.xyzw =  input.tangentWS;
-            output.interp3.xyzw =  input.texCoord0;
-            output.interp4.xyzw =  input.texCoord1;
-            output.interp5.xyzw =  input.texCoord2;
-            output.interp6.xyzw =  input.texCoord3;
+            output.tangentWS.xyzw = input.tangentWS;
+            output.texCoord0.xyzw = input.texCoord0;
+            output.texCoord3.xyzw = input.texCoord3;
+            output.positionRWS.xyz = input.positionRWS;
+            output.normalWS.xyz = input.normalWS;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -3704,13 +3846,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             VaryingsMeshToPS output;
             output.positionCS = input.positionCS;
-            output.positionRWS = input.interp0.xyz;
-            output.normalWS = input.interp1.xyz;
-            output.tangentWS = input.interp2.xyzw;
-            output.texCoord0 = input.interp3.xyzw;
-            output.texCoord1 = input.interp4.xyzw;
-            output.texCoord2 = input.interp5.xyzw;
-            output.texCoord3 = input.interp6.xyzw;
+            output.tangentWS = input.tangentWS.xyzw;
+            output.texCoord0 = input.texCoord0.xyzw;
+            output.texCoord3 = input.texCoord3.xyzw;
+            output.positionRWS = input.positionRWS.xyz;
+            output.normalWS = input.normalWS.xyz;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -3868,95 +4008,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -3992,7 +4132,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -4070,12 +4210,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             output.positionRWS =                input.positionRWS;
             output.tangentToWorld =             BuildTangentToWorld(input.tangentWS, input.normalWS);
             output.texCoord0 =                  input.texCoord0;
-            output.texCoord1 =                  input.texCoord1;
-            output.texCoord2 =                  input.texCoord2;
             output.texCoord3 =                  input.texCoord3;
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -4111,8 +4254,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -4124,6 +4265,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -4366,7 +4551,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -4396,7 +4580,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -4405,13 +4591,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define ATTRIBUTES_NEED_NORMAL
             #define ATTRIBUTES_NEED_TANGENT
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TANGENT_TO_WORLD
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
             #define HAVE_MESH_MODIFICATION
@@ -4423,8 +4605,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -4506,7 +4686,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -4518,10 +4698,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -4554,8 +4735,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalOS : NORMAL;
              float4 tangentOS : TANGENT;
              float4 uv0 : TEXCOORD0;
-             float4 uv1 : TEXCOORD1;
-             float4 uv2 : TEXCOORD2;
              float4 uv3 : TEXCOORD3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : INSTANCEID_SEMANTIC;
@@ -4567,8 +4746,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalWS;
              float4 tangentWS;
              float4 texCoord0;
-             float4 texCoord1;
-             float4 texCoord2;
              float4 texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
@@ -4583,19 +4760,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         struct PackedVaryingsMeshToPS
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-             float3 interp0 : INTERP0;
-             float4 interp1 : INTERP1;
-             float4 interp2 : INTERP2;
-             float4 interp3 : INTERP3;
-             float4 interp4 : INTERP4;
-             float4 interp5 : INTERP5;
+             float4 tangentWS : INTERP0;
+             float4 texCoord0 : INTERP1;
+             float4 texCoord3 : INTERP2;
+             float3 normalWS : INTERP3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
             #endif
@@ -4606,12 +4779,10 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             PackedVaryingsMeshToPS output;
             ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
             output.positionCS = input.positionCS;
-            output.interp0.xyz =  input.normalWS;
-            output.interp1.xyzw =  input.tangentWS;
-            output.interp2.xyzw =  input.texCoord0;
-            output.interp3.xyzw =  input.texCoord1;
-            output.interp4.xyzw =  input.texCoord2;
-            output.interp5.xyzw =  input.texCoord3;
+            output.tangentWS.xyzw = input.tangentWS;
+            output.texCoord0.xyzw = input.texCoord0;
+            output.texCoord3.xyzw = input.texCoord3;
+            output.normalWS.xyz = input.normalWS;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -4622,12 +4793,10 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             VaryingsMeshToPS output;
             output.positionCS = input.positionCS;
-            output.normalWS = input.interp0.xyz;
-            output.tangentWS = input.interp1.xyzw;
-            output.texCoord0 = input.interp2.xyzw;
-            output.texCoord1 = input.interp3.xyzw;
-            output.texCoord2 = input.interp4.xyzw;
-            output.texCoord3 = input.interp5.xyzw;
+            output.tangentWS = input.tangentWS.xyzw;
+            output.texCoord0 = input.texCoord0.xyzw;
+            output.texCoord3 = input.texCoord3.xyzw;
+            output.normalWS = input.normalWS.xyz;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -4785,95 +4954,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -4909,7 +5078,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -4986,12 +5155,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             output.tangentToWorld =             BuildTangentToWorld(input.tangentWS, input.normalWS);
             output.texCoord0 =                  input.texCoord0;
-            output.texCoord1 =                  input.texCoord1;
-            output.texCoord2 =                  input.texCoord2;
             output.texCoord3 =                  input.texCoord3;
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -5027,8 +5199,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -5040,6 +5210,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -5285,7 +5499,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -5316,7 +5529,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -5325,13 +5540,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define ATTRIBUTES_NEED_NORMAL
             #define ATTRIBUTES_NEED_TANGENT
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_POSITION_WS
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
             #define HAVE_MESH_MODIFICATION
@@ -5343,8 +5554,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -5427,7 +5636,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -5439,10 +5648,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -5475,8 +5685,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalOS : NORMAL;
              float4 tangentOS : TANGENT;
              float4 uv0 : TEXCOORD0;
-             float4 uv1 : TEXCOORD1;
-             float4 uv2 : TEXCOORD2;
              float4 uv3 : TEXCOORD3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : INSTANCEID_SEMANTIC;
@@ -5487,8 +5695,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
              float3 positionRWS;
              float4 texCoord0;
-             float4 texCoord1;
-             float4 texCoord2;
              float4 texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
@@ -5503,18 +5709,14 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         struct PackedVaryingsMeshToPS
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-             float3 interp0 : INTERP0;
-             float4 interp1 : INTERP1;
-             float4 interp2 : INTERP2;
-             float4 interp3 : INTERP3;
-             float4 interp4 : INTERP4;
+             float4 texCoord0 : INTERP0;
+             float4 texCoord3 : INTERP1;
+             float3 positionRWS : INTERP2;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
             #endif
@@ -5525,11 +5727,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             PackedVaryingsMeshToPS output;
             ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
             output.positionCS = input.positionCS;
-            output.interp0.xyz =  input.positionRWS;
-            output.interp1.xyzw =  input.texCoord0;
-            output.interp2.xyzw =  input.texCoord1;
-            output.interp3.xyzw =  input.texCoord2;
-            output.interp4.xyzw =  input.texCoord3;
+            output.texCoord0.xyzw = input.texCoord0;
+            output.texCoord3.xyzw = input.texCoord3;
+            output.positionRWS.xyz = input.positionRWS;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -5540,11 +5740,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             VaryingsMeshToPS output;
             output.positionCS = input.positionCS;
-            output.positionRWS = input.interp0.xyz;
-            output.texCoord0 = input.interp1.xyzw;
-            output.texCoord1 = input.interp2.xyzw;
-            output.texCoord2 = input.interp3.xyzw;
-            output.texCoord3 = input.interp4.xyzw;
+            output.texCoord0 = input.texCoord0.xyzw;
+            output.texCoord3 = input.texCoord3.xyzw;
+            output.positionRWS = input.positionRWS.xyz;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -5703,95 +5901,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -5830,7 +6028,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -5907,12 +6105,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             output.positionRWS =                input.positionRWS;
             output.texCoord0 =                  input.texCoord0;
-            output.texCoord1 =                  input.texCoord1;
-            output.texCoord2 =                  input.texCoord2;
             output.texCoord3 =                  input.texCoord3;
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -5948,8 +6149,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -5961,6 +6160,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -6194,7 +6437,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -6224,7 +6466,9 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
@@ -6233,12 +6477,8 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define ATTRIBUTES_NEED_NORMAL
             #define ATTRIBUTES_NEED_TANGENT
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
             #define HAVE_MESH_MODIFICATION
@@ -6250,8 +6490,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -6334,7 +6572,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -6346,10 +6584,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -6383,8 +6622,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
              float3 normalOS : NORMAL;
              float4 tangentOS : TANGENT;
              float4 uv0 : TEXCOORD0;
-             float4 uv1 : TEXCOORD1;
-             float4 uv2 : TEXCOORD2;
              float4 uv3 : TEXCOORD3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : INSTANCEID_SEMANTIC;
@@ -6394,8 +6631,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
              float4 texCoord0;
-             float4 texCoord1;
-             float4 texCoord2;
              float4 texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
@@ -6410,17 +6645,13 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         struct PackedVaryingsMeshToPS
         {
             SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-             float4 interp0 : INTERP0;
-             float4 interp1 : INTERP1;
-             float4 interp2 : INTERP2;
-             float4 interp3 : INTERP3;
+             float4 texCoord0 : INTERP0;
+             float4 texCoord3 : INTERP1;
             #if UNITY_ANY_INSTANCING_ENABLED
              uint instanceID : CUSTOM_INSTANCE_ID;
             #endif
@@ -6431,10 +6662,8 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             PackedVaryingsMeshToPS output;
             ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
             output.positionCS = input.positionCS;
-            output.interp0.xyzw =  input.texCoord0;
-            output.interp1.xyzw =  input.texCoord1;
-            output.interp2.xyzw =  input.texCoord2;
-            output.interp3.xyzw =  input.texCoord3;
+            output.texCoord0.xyzw = input.texCoord0;
+            output.texCoord3.xyzw = input.texCoord3;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -6445,10 +6674,8 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             VaryingsMeshToPS output;
             output.positionCS = input.positionCS;
-            output.texCoord0 = input.interp0.xyzw;
-            output.texCoord1 = input.interp1.xyzw;
-            output.texCoord2 = input.interp2.xyzw;
-            output.texCoord3 = input.interp3.xyzw;
+            output.texCoord0 = input.texCoord0.xyzw;
+            output.texCoord3 = input.texCoord3.xyzw;
             #if UNITY_ANY_INSTANCING_ENABLED
             output.instanceID = input.instanceID;
             #endif
@@ -6606,95 +6833,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -6730,7 +6957,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         {
             // build graph inputs
             VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
-            // Override time parameters with used one (This is required to correctly handle motion vector for vertex animation based on time)
+            // Override time parameters with used one (This is required to correctly handle motion vectors for vertex animation based on time)
         
             // evaluate vertex graph
         #ifdef HAVE_VFX_MODIFICATION
@@ -6806,12 +7033,15 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             output.positionSS = input.positionCS;       // input.positionCS is SV_Position
         
             output.texCoord0 =                  input.texCoord0;
-            output.texCoord1 =                  input.texCoord1;
-            output.texCoord2 =                  input.texCoord2;
             output.texCoord3 =                  input.texCoord3;
         
         #ifdef HAVE_VFX_MODIFICATION
             // FragInputs from VFX come from two places: Interpolator or CBuffer.
+        #if VFX_USE_GRAPH_VALUES
+            uint instanceActiveIndex = asuint(UNITY_ACCESS_INSTANCED_PROP(PerInstance, _InstanceActiveIndex));
+            /* WARNING: $splice Could not find named fragment 'VFXLoadGraphValues' */
+        #endif
+        
             /* WARNING: $splice Could not find named fragment 'VFXSetFragInputs' */
         
         #endif
@@ -6847,8 +7077,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -6860,6 +7088,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -7067,6 +7339,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             "RenderPipeline"="HDRenderPipeline"
             "RenderType"="HDUnlitShader"
             "Queue"="AlphaTest+0"
+            "DisableBatching"="False"
             "ShaderGraphShader"="true"
             "ShaderGraphTargetId"="HDUnlitSubTarget"
         }
@@ -7097,7 +7370,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -7124,19 +7396,17 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
         
             // Attribute
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
         
@@ -7147,8 +7417,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -7232,7 +7500,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -7244,10 +7512,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -7282,8 +7551,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         
@@ -7425,95 +7692,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -7543,8 +7810,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -7556,6 +7821,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -7783,7 +8092,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #pragma multi_compile _ TRANSPARENT_COLOR_SHADOW
         #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -7809,19 +8117,17 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
         
             // Attribute
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
         
@@ -7832,8 +8138,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -7915,7 +8219,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -7927,10 +8231,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -7965,8 +8270,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         
@@ -8108,95 +8411,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -8226,8 +8529,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -8239,6 +8540,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -8465,7 +8810,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -8492,19 +8836,17 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
         
             // Attribute
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
         
@@ -8515,8 +8857,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -8600,7 +8940,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -8612,10 +8952,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -8650,8 +8991,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         
@@ -8793,95 +9132,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -8911,8 +9250,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -8924,6 +9261,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -9150,7 +9531,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -9177,19 +9557,17 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
         
             // Attribute
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
         
@@ -9200,8 +9578,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -9285,7 +9661,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -9297,10 +9673,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -9337,8 +9714,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         
@@ -9480,95 +9855,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -9598,8 +9973,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -9611,6 +9984,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
@@ -9874,7 +10291,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // Keywords
             #pragma shader_feature_local _ _ALPHATEST_ON
         #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-        #pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
         #pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
         #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
         #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
@@ -9900,19 +10316,17 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
+            // Always include Shader Graph version
+            // Always include last to avoid double macros
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" // Need to be here for Gradient struct definition
         
             // --------------------------------------------------
             // Defines
         
             // Attribute
             #define ATTRIBUTES_NEED_TEXCOORD0
-            #define ATTRIBUTES_NEED_TEXCOORD1
-            #define ATTRIBUTES_NEED_TEXCOORD2
             #define ATTRIBUTES_NEED_TEXCOORD3
             #define VARYINGS_NEED_TEXCOORD0
-            #define VARYINGS_NEED_TEXCOORD1
-            #define VARYINGS_NEED_TEXCOORD2
             #define VARYINGS_NEED_TEXCOORD3
         
         
@@ -9923,8 +10337,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             #define FRAG_INPUTS_ENABLE_STRIPPING
             #endif
             #define FRAG_INPUTS_USE_TEXCOORD0
-            #define FRAG_INPUTS_USE_TEXCOORD1
-            #define FRAG_INPUTS_USE_TEXCOORD2
             #define FRAG_INPUTS_USE_TEXCOORD3
         
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -10006,7 +10418,7 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
             // -- Graph Properties
             CBUFFER_START(UnityPerMaterial)
-        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_TexelSize;
+        float4 _TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D_TexelSize;
         float4 _Direction_TexelSize;
         float2 _TextureSize;
         float _RotateUV;
@@ -10018,10 +10430,11 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         float _EnableBlendModePreserveSpecularLighting;
         CBUFFER_END
         
+        
         // Object and Global properties
         SAMPLER(SamplerState_Linear_Repeat);
-        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
-        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1);
+        TEXTURE2D(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
+        SAMPLER(sampler_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D);
         TEXTURE2D(_Direction);
         SAMPLER(sampler_Direction);
         
@@ -10055,8 +10468,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             struct SurfaceDescriptionInputs
         {
              float4 uv0;
-             float4 uv1;
-             float4 uv2;
              float4 uv3;
         };
         
@@ -10198,95 +10609,95 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
-            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0 = UnityBuildTexture2DStructNoScale(_Direction);
-            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0 = IN.uv0;
-            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3;
-            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3);
-            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0 = float2(1, 1);
-            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0 = float2(30, 30);
-            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2;
-            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2);
-            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2;
-            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2);
-            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1;
-            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1);
-            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2;
-            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2);
-            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0 = float2(246, 246);
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.z;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.w;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.x;
-            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4 = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1).texelSize.y;
-            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2);
-            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2);
-            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0 = float2(10, 10);
-            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2;
-            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2);
-            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2;
-            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2);
-            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2);
-            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0 = float2(0.1, 0.1);
-            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2;
-            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2);
-            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0 = IN.uv3;
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[0];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[1];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[2];
-            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4 = _UV_1ca38e193be034888b8a707af9d47210_Out_0[3];
-            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2;
-            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2);
-            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2;
-            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2);
-            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2;
-            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2);
-            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1;
-            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1);
-            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2;
-            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2);
-            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3;
-            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3);
-            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3;
-            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3);
+            UnityTexture2D _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_Direction);
+            float4 _UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4 = IN.uv0;
+            float2 _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2;
+            Unity_TilingAndOffset_float((_UV_7c8a457b34527181924b2b4a71350de9_Out_0_Vector4.xy), float2 (2, 2), float2 (0, 0), _TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2);
+            float2 _Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2 = float2(1, 1);
+            float2 _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2 = float2(30, 30);
+            float2 _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2;
+            Unity_Divide_float2(_Vector2_9a3e446bd0dfc3868e3db6f9bf101ead_Out_0_Vector2, _Vector2_8355e4dbd796b188ba1e500dcabf0c0f_Out_0_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2);
+            float2 _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2;
+            Unity_Divide_float2(_TilingAndOffset_67d58b7a8092828aaece7f3acfe6e8a9_Out_3_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2);
+            float2 _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2;
+            Unity_Fraction_float2(_Divide_5d0f49ab4bcab689894f976217114a79_Out_2_Vector2, _Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2);
+            float2 _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Fraction_e4f0f05fb76fd3809f5ec855b54a4595_Out_1_Vector2, _Divide_f0d0aaa28637b781bcd99c1c912b5eae_Out_2_Vector2, _Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2);
+            float2 _Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2 = float2(246, 246);
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.z;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.w;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelWidth_3_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.x;
+            float _TexelSize_18bb9f416e386f87bee91aa46804bc56_TexelHeight_4_Float = UnityBuildTexture2DStructNoScale(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Texture_1_Texture2D).texelSize.y;
+            float2 _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2 = float2(_TexelSize_18bb9f416e386f87bee91aa46804bc56_Width_0_Float, _TexelSize_18bb9f416e386f87bee91aa46804bc56_Height_2_Float);
+            float2 _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e6d2595367ed0380b42c7a74855838a5_Out_0_Vector2, _Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2);
+            float2 _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2 = float2(10, 10);
+            float2 _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Vector2_e8728bfbf194e5818f010927b4ba8d79_Out_0_Vector2, _Vector2_97c81bcbfd26f08385a101ac3da412f3_Out_0_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2);
+            float2 _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2;
+            Unity_Subtract_float2(_Multiply_561a2890964f4081a8cf5d16bccb889f_Out_2_Vector2, _Multiply_bccda05b3809138d8da15484dd6a7b4e_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2);
+            float2 _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cbcb0de832b1d08288916e46aa8d4df2_Out_2_Vector2, _Subtract_710d4672e66f7780ad90ca6e19a733bd_Out_2_Vector2, _Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2);
+            float2 _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2 = float2(0.1, 0.1);
+            float2 _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2;
+            Unity_Multiply_float2_float2(_Multiply_cd542324eceadd8daaca18ab78d3fbf6_Out_2_Vector2, _Vector2_df86361e9c36e7828e3097cc1fa8a75b_Out_0_Vector2, _Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2);
+            float4 _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4 = IN.uv3;
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[0];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[1];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_B_3_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[2];
+            float _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_A_4_Float = _UV_1ca38e193be034888b8a707af9d47210_Out_0_Vector4[3];
+            float _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float;
+            Unity_Multiply_float_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, -1, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float);
+            float _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, 0, _Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean);
+            float _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float;
+            Unity_Divide_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Multiply_3bdf02c598430c878e3738cac7f0dae8_Out_2_Float, _Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float);
+            float _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float;
+            Unity_Arctangent_float(_Divide_2b884a92fd783d82a9012917c2b83115_Out_2_Float, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float);
+            float _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float;
+            Unity_Add_float(_Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, 3.141592, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float);
+            float _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float;
+            Unity_Branch_float(_Comparison_e67d9847aa86858490dd0c37e68e7505_Out_2_Boolean, _Arctangent_5140ab7fbdf95a8f9329bfd0cd09226c_Out_1_Float, _Add_cf6b7aee4a487f8ca16b9171b64a8f0d_Out_2_Float, _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float);
+            float2 _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2;
+            Unity_Rotate_Radians_float(_Multiply_8e351d40d36634829f2bb0905b9b9342_Out_2_Vector2, float2 (0.5, 0.5), _Branch_9de100b31215ba89bb19e5b89012a25a_Out_3_Float, _Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2);
             #if defined(SHADER_API_GLES) && (SHADER_TARGET < 30)
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = float4(0.0f, 0.0f, 0.0f, 1.0f);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = float4(0.0f, 0.0f, 0.0f, 1.0f);
             #else
-              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3), 0);
+              float4 _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4 = SAMPLE_TEXTURE2D_LOD(_Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.tex, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.samplerstate, _Property_70a6ddd048a60f81b46e2042f9ae833b_Out_0_Texture2D.GetTransformedUV(_Rotate_ff1406ef744b188ca79c6d3bf0b8bbd7_Out_3_Vector2), 0);
             #endif
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.r;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.g;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.b;
-            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8 = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0.a;
-            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2;
-            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2);
-            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0 = float3(0, 0, 0);
-            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2);
-            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2;
-            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2);
-            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2;
-            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2);
-            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3;
-            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3);
-            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2;
-            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2);
-            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 0);
-            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1;
-            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1);
-            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2;
-            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2);
-            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3;
-            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3);
-            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3);
-            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2, 1);
-            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3;
-            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3);
-            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3;
-            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3);
-            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
-            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2);
-            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_R_5_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.r;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_G_6_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.g;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_B_7_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.b;
+            float _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float = _SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_RGBA_0_Vector4.a;
+            float _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean;
+            Unity_Comparison_Greater_float(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float, 0.001, _Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean);
+            float3 _Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3 = float3(0, 0, 0);
+            float2 _Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2 = float2(_Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_R_1_Float, _Split_11d6e1d03b6aec85a5cc295d4f2f2c3a_G_2_Float);
+            float _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float;
+            Unity_Distance_float2(_Vector2_4aeecd1cb271dd8e96c2fb12309b9dd0_Out_0_Vector2, float2(0, 0), _Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float);
+            float _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float;
+            Unity_Multiply_float_float(_Distance_47e812ff6269a181b6e0faa017faee3b_Out_2_Float, 1.6, _Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float);
+            float _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float;
+            Unity_Clamp_float(_Multiply_e5102f48c5e759879293e06062894e0c_Out_2_Float, 0, 1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float);
+            float _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float;
+            Unity_Subtract_float(1, _Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float);
+            float3 _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3 = float3(1, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 0);
+            float _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float;
+            Unity_Absolute_float(_Clamp_ec36a3c091f7148e8b7ca54cb1273530_Out_3_Float, _Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float);
+            float _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float;
+            Unity_Power_float(_Absolute_5573b6b2c1616e819aa4eeb67caec457_Out_1_Float, 0.16, _Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float);
+            float _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float;
+            Unity_Clamp_float(_Power_33dedbf009cacf848c403a58667a66c6_Out_2_Float, 0, 1, _Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float);
+            float3 _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_aeff4a868e81c68f85dfe4c9662da9ce_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3);
+            float3 _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3 = float3(0, _Subtract_2f8c058d66260b84866bd56a0469ea11_Out_2_Float, 1);
+            float3 _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3;
+            Unity_Lerp_float3(_Vector3_37ab63b41d52bb8d8eba9088ed71bc11_Out_0_Vector3, _Vector3_484f28086891e98d9589d1f65774f6f4_Out_0_Vector3, (_Clamp_062fed397e52b48f8a7809d95fc105e8_Out_3_Float.xxx), _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3);
+            float3 _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3;
+            Unity_Branch_float3(_Comparison_1a93f0ca7c913a8f81659b20b8d59f2b_Out_2_Boolean, _Lerp_e6000a54e83a8f8e8c5bc16419b360ca_Out_3_Vector3, _Lerp_93469a90f98ccf80a7121c0b2bf05f48_Out_3_Vector3, _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3);
+            float3 _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
+            Unity_Multiply_float3_float3((_SampleTexture2DLOD_7fdbdd0c5b377086acfc5974a225b0dd_A_8_Float.xxx), _Branch_365bf259ae64c386a18e2d6997727100_Out_3_Vector3, _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3);
+            surface.BaseColor = _Multiply_0563147e8bc9868b8c2a4f2c442c349f_Out_2_Vector3;
             surface.Emission = float3(0, 0, 0);
             surface.Alpha = 1;
             surface.AlphaClipThreshold = 0.5;
@@ -10316,8 +10727,6 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
         
         
             output.uv0 =                                        input.texCoord0;
-            output.uv1 =                                        input.texCoord1;
-            output.uv2 =                                        input.texCoord2;
             output.uv3 =                                        input.texCoord3;
         
             // splice point to copy frag inputs custom interpolator pack into the SDI
@@ -10329,6 +10738,50 @@ Shader "NatureManufacture Shaders/Debug/Flowmap Direction"
             // --------------------------------------------------
             // Build Surface Data (Specific Material)
         
+        void ApplyDecalToSurfaceDataNoNormal(DecalSurfaceData decalSurfaceData, inout SurfaceData surfaceData);
+        
+        void ApplyDecalAndGetNormal(FragInputs fragInputs, PositionInputs posInput, SurfaceDescription surfaceDescription,
+            inout SurfaceData surfaceData)
+        {
+            float3 doubleSidedConstants = GetDoubleSidedConstants();
+        
+        #ifdef DECAL_NORMAL_BLENDING
+            // SG nodes don't ouptut surface gradients, so if decals require surf grad blending, we have to convert
+            // the normal to gradient before applying the decal. We then have to resolve the gradient back to world space
+            float3 normalTS;
+        
+        
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        
+            GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+        #else
+            // normal delivered to master node
+        
+            #if HAVE_DECALS
+            if (_EnableDecals)
+            {
+                float alpha = 1.0;
+                alpha = surfaceDescription.Alpha;
+        
+                // Both uses and modifies 'surfaceData.normalWS'.
+                DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+            }
+            #endif
+        #endif
+        }
         void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData)
         {
             // setup defaults -- these are used if the graph doesn't output a value
