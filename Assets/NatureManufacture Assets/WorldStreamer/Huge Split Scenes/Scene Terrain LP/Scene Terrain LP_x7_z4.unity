@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 3
+    serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,13 +117,13 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    buildHeightMesh: 0
+    accuratePlacement: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &40146150
+--- !u!1 &82402605
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,38 +131,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 40146151}
-  - component: {fileID: 40146153}
-  - component: {fileID: 40146152}
+  - component: {fileID: 82402606}
+  - component: {fileID: 82402608}
+  - component: {fileID: 82402607}
   m_Layer: 0
-  m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_03_Medium_0
+  m_Name: LOD1_Terrain (2) 4_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &40146151
+--- !u!4 &82402606
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40146150}
+  m_GameObject: {fileID: 82402605}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3500, y: -0.3, z: 2000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1955317946}
+  m_Children:
+  - {fileID: 1320585320}
+  - {fileID: 590073870}
+  - {fileID: 824140118}
+  - {fileID: 653878856}
+  - {fileID: 2083377531}
+  - {fileID: 1678394593}
+  m_Father: {fileID: 683562528}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &40146152
+--- !u!23 &82402607
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40146150}
+  m_GameObject: {fileID: 82402605}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -173,10 +179,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 967595618}
+  - {fileID: 2100000, guid: 48a62c34e2dc58947b10dcc5bfd43bdc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -198,224 +204,61 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &40146153
+--- !u!33 &82402608
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40146150}
-  m_Mesh: {fileID: 4300000, guid: d182f6a8e6d81274da279f132ae5d0df, type: 2}
---- !u!1 &257268670
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 257268672}
-  - component: {fileID: 257268671}
-  m_Layer: 0
-  m_Name: Scene Terrain LP_x7_z4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &257268671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 257268670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a7da46708b97c940a4fe54d35254afe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneName: Scene Terrain LP_x7_z4
-  color: {r: 0.7431992, g: 1, b: 0, a: 1}
-  position: {x: 3500, y: 0, z: 2000}
-  size: {x: 500, y: 100, z: 500}
-  wsPosition: {x: 10, y: 10, z: 10}
---- !u!4 &257268672
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 257268670}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1955317946}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &934091230
+  m_GameObject: {fileID: 82402605}
+  m_Mesh: {fileID: 4300000, guid: 41e68383b128d9a428752fdad0a9ef8f, type: 2}
+--- !u!21 &274860860
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Fir_05_Cross(Clone)
-  m_Shader: {fileID: 4800000, guid: c4aeae0c80b201b4599788ccc7b9e18d, type: 3}
+  m_Name: M_Trial_Fir_03_Cross(Clone)
+  m_Shader: {fileID: 4800000, guid: 8a1dd7aba2d705d47b72502998468819, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
+  m_ValidKeywords:
   - _ALPHATEST_ON
+  - _DISABLE_SSR_TRANSPARENT
+  - _DOUBLESIDED_ON
+  m_InvalidKeywords:
   - _KEYWORD0_ON
   - _WINDVERTEXCOLORMAINR_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 2475
+  stringTagMap:
+    MotionVector: User
+    RenderType: TransparentCutout
+  disabledShaderPasses:
+  - TransparentBackface
+  - MOTIONVECTORS
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - RayTracingPrepass
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 06a2f64ca3c377e4899525fe60bf9f4d, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
+    - WIND_SETTINGS_TexGust:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DetailMask:
+    - WIND_SETTINGS_TexNoise:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
+    - _BaseColorMap:
+        m_Texture: {fileID: 2800000, guid: ae93486ef0dd0824aa65ece4a0673af5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5385c14c048c7834882e8e4d025bc8aa, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetalicRAOGSmothnessA:
-        m_Texture: {fileID: 2800000, guid: f39f6bc6ea266c048be3fb238b793654, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _AO: 1
-    - _AmbientOcclusionPower: 1
-    - _Brightness: 4.79
-    - _BumpScale: 1
-    - _ColorNoiseSpread: 50
-    - _Cutoff: 0.65
-    - _DetailNormalMapScale: 1
-    - _Drag: 0.3
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0
-    - _GlossyReflections: 1
-    - _InitialBend: 1
-    - _Keyword0: 1
-    - _MaskClipValue: 0.7
-    - _MetalicPower: 1
-    - _Metallic: 0.06
-    - _Mode: 1
-    - _OcclusionStrength: 1
-    - _Parallax: 0.02
-    - _ShiverDirectionality: 0
-    - _ShiverDrag: 0
-    - _Smooothness: 0.06
-    - _SmoothnessTextureChannel: 0
-    - _SmothnessPower: 1
-    - _Specular: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Stiffness: 1
-    - _TouchReactActive: 0
-    - _TransAmbient: 0
-    - _TransDirect: 0.258
-    - _TransNormalDistortion: 1
-    - _TransScattering: 1
-    - _TransShadow: 0
-    - _Translucency: 50
-    - _UVSec: 0
-    - _WindNoisePower: 0
-    - _WindPower: 0.25
-    - _WindPowerDirectionX: 1
-    - _WindPowerDirectionZ: 0.3
-    - _WindVertexColorMainR: 1
-    - _WindVertexColorMainRNoiseB: 0
-    - _ZWrite: 1
-    - __dirty: 0
-    m_Colors:
-    - NewNormal: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorAdjustment: {r: 1, g: 1, b: 1, a: 0}
-    - _DryColor: {r: 0.8676471, g: 0.818369, b: 0.6124567, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HealthyColor: {r: 0.8490566, g: 0.8215714, b: 0.70888215, a: 1}
-    - _NewNormal: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
-    - _TranslucencyColor: {r: 0.34034553, g: 0.48529398, b: 0.14630184, a: 0}
-    - _Vector0: {r: 1, g: 1, b: 1, a: 0}
-    - _WindColorMultiply: {r: 1, g: 1, b: 1, a: 0}
-  m_BuildTextureStacks: []
---- !u!21 &967595618
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: M_Fir_03_Cross(Clone)
-  m_Shader: {fileID: 4800000, guid: c4aeae0c80b201b4599788ccc7b9e18d, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _ALPHATEST_ON
-  - _KEYWORD0_ON
-  - _WINDVERTEXCOLORMAINR_ON
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 5c0dd408e2f6acf4d847a89944767e96, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -448,6 +291,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 5c0dd408e2f6acf4d847a89944767e96, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -460,41 +307,106 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ThicknessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - WIND_SETTINGS_FlexNoiseScale: 0
+    - WIND_SETTINGS_GustScale: 0
+    - WIND_SETTINGS_GustSpeed: 0
+    - WIND_SETTINGS_GustWorldScale: 0
+    - WIND_SETTINGS_ShiverNoiseScale: 0
+    - WIND_SETTINGS_Turbulence: 0
     - _AO: 1
+    - _AORemapMax: 1
+    - _AddPrecomputedVelocity: 0
+    - _AlphaCutoff: 0.65
+    - _AlphaCutoffEnable: 1
+    - _AlphaDstBlend: 0
+    - _AlphaShadowThreshold: 0.5
+    - _AlphaSrcBlend: 1
+    - _AlphaToMask: 0
+    - _AlphaToMaskInspectorValue: 0
     - _AmbientOcclusionPower: 1
+    - _BlendMode: 0
     - _Brightness: 4.79
     - _BumpScale: 1
-    - _ColorNoiseSpread: 50
+    - _ColorNoiseSpread: 2
+    - _ConservativeDepthOffsetEnable: 0
+    - _CullMode: 0
+    - _CullModeForward: 0
     - _Cutoff: 0.65
+    - _DepthOffsetEnable: 0
     - _DetailNormalMapScale: 1
+    - _DiffusionProfileHash: 2.64331
+    - _DoubleSidedEnable: 1
+    - _DoubleSidedGIMode: 0
+    - _DoubleSidedNormalMode: 1
     - _Drag: 0.3
     - _DstBlend: 0
+    - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableFogOnTransparent: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _HeightDrag: 0
     - _InitialBend: 1
     - _Keyword0: 1
     - _MaskClipValue: 0.7
     - _MetalicPower: 1
     - _Metallic: 0.06
     - _Mode: 1
+    - _NormalScale: 1
     - _OcclusionStrength: 1
+    - _OpaqueCullMode: 2
     - _Parallax: 0.02
+    - _RayTracing: 0
+    - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
+    - _RefractionModel: 0
+    - _RenderQueueType: 1
+    - _RequireSplitLighting: 0
     - _ShiverDirectionality: 0
     - _ShiverDrag: 0
     - _Smooothness: 0.06
+    - _SmoothnessRemapMax: 0.1
     - _SmoothnessTextureChannel: 0
     - _SmothnessPower: 1
     - _Specular: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StencilRef: 0
+    - _StencilRefDepth: 8
+    - _StencilRefDistortionVec: 4
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
+    - _StencilWriteMask: 6
+    - _StencilWriteMaskDepth: 8
+    - _StencilWriteMaskDistortionVec: 4
+    - _StencilWriteMaskGBuffer: 14
+    - _StencilWriteMaskMV: 40
     - _Stiffness: 1
+    - _SupportDecals: 1
+    - _SurfaceType: 0
+    - _Thickness: 0.746
     - _TouchReactActive: 0
     - _TransAmbient: 0
     - _TransDirect: 0.258
@@ -502,29 +414,46 @@ Material:
     - _TransScattering: 1
     - _TransShadow: 0
     - _Translucency: 50
+    - _TransparentBackfaceEnable: 0
+    - _TransparentCullMode: 2
+    - _TransparentDepthPostpassEnable: 0
+    - _TransparentDepthPrepassEnable: 0
+    - _TransparentSortPriority: 0
+    - _TransparentWritingMotionVec: 0
+    - _TransparentZWrite: 0
     - _UVSec: 0
+    - _UseShadowThreshold: 0
     - _WindNoisePower: 0
+    - _WindNormalInfluence: 0
     - _WindPower: 0.25
     - _WindPowerDirectionX: 1
     - _WindPowerDirectionZ: 0.3
     - _WindVertexColorMainR: 1
     - _WindVertexColorMainRNoiseB: 0
+    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestGBuffer: 3
+    - _ZTestTransparent: 4
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
     - NewNormal: {r: 0, g: 0, b: 0, a: 0}
+    - WIND_SETTINGS_WorldDirectionAndSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorAdjustment: {r: 1, g: 1, b: 1, a: 0}
-    - _DryColor: {r: 0.8676471, g: 0.818369, b: 0.6124567, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HealthyColor: {r: 0.8490566, g: 0.8215714, b: 0.70888215, a: 1}
+    - _DiffusionProfileAsset: {r: -1.8019567e-30, g: 2.8583547e+22, b: 2.0825967e+12, a: 8.838735e-11}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DryColor: {r: 0.8773585, g: 0.8440883, b: 0.7076807, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HealthyColor: {r: 1, g: 1, b: 1, a: 1}
     - _NewNormal: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TilingOffset: {r: 1, g: 1, b: 0, a: 0}
     - _TranslucencyColor: {r: 0.34034553, g: 0.48529398, b: 0.14630184, a: 0}
     - _Vector0: {r: 1, g: 1, b: 1, a: 0}
+    - _VertexNormalMultiply: {r: 0, g: 0, b: 0, a: 0}
     - _WindColorMultiply: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
---- !u!1 &1102515149
+--- !u!1 &590073869
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -532,9 +461,92 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1102515150}
-  - component: {fileID: 1102515152}
-  - component: {fileID: 1102515151}
+  - component: {fileID: 590073870}
+  - component: {fileID: 590073872}
+  - component: {fileID: 590073871}
+  m_Layer: 0
+  m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_01_Plant_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &590073870
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590073869}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 82402606}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &590073871
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590073869}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 1309491569}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &590073872
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590073869}
+  m_Mesh: {fileID: 4300000, guid: 487c0c6018a8c9a45bad166d42719f6a, type: 2}
+--- !u!1 &653878855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 653878856}
+  - component: {fileID: 653878858}
+  - component: {fileID: 653878857}
   m_Layer: 0
   m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_03_Medium_1
   m_TagString: Untagged
@@ -542,28 +554,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1102515150
+--- !u!4 &653878856
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1102515149}
+  m_GameObject: {fileID: 653878855}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1955317946}
-  m_RootOrder: 1
+  m_Father: {fileID: 82402606}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1102515151
+--- !u!23 &653878857
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1102515149}
+  m_GameObject: {fileID: 653878855}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -574,10 +586,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 967595618}
+  - {fileID: 274860860}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -599,15 +611,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1102515152
+--- !u!33 &653878858
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1102515149}
+  m_GameObject: {fileID: 653878855}
   m_Mesh: {fileID: 4300000, guid: bd4aca87852a30c4b96937f1d0744cac, type: 2}
---- !u!1 &1320666089
+--- !u!1 &683562526
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -615,38 +627,88 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1320666090}
-  - component: {fileID: 1320666092}
-  - component: {fileID: 1320666091}
+  - component: {fileID: 683562528}
+  - component: {fileID: 683562527}
   m_Layer: 0
-  m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_05_cheap_0
+  m_Name: Scene Terrain LP_x7_z4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1320666090
+--- !u!114 &683562527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683562526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7da46708b97c940a4fe54d35254afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: Scene Terrain LP_x7_z4
+  color: {r: 0.7431992, g: 1, b: 0, a: 1}
+  position: {x: 3500, y: 0, z: 2000}
+  size: {x: 500, y: 100, z: 500}
+  wsPosition: {x: 10, y: 10, z: 10}
+--- !u!4 &683562528
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320666089}
+  m_GameObject: {fileID: 683562526}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 82402606}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &824140117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824140118}
+  - component: {fileID: 824140120}
+  - component: {fileID: 824140119}
+  m_Layer: 0
+  m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_03_Medium_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &824140118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824140117}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1955317946}
+  m_Father: {fileID: 82402606}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1320666091
+--- !u!23 &824140119
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320666089}
+  m_GameObject: {fileID: 824140117}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -657,10 +719,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 934091230}
+  - {fileID: 274860860}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -682,15 +744,256 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1320666092
+--- !u!33 &824140120
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320666089}
-  m_Mesh: {fileID: 4300000, guid: 25728b312c883b741b447755f8ed7a11, type: 2}
---- !u!1 &1359631063
+  m_GameObject: {fileID: 824140117}
+  m_Mesh: {fileID: 4300000, guid: d182f6a8e6d81274da279f132ae5d0df, type: 2}
+--- !u!21 &1309491569
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_Trial_Fir_01_Cross(Clone)
+  m_Shader: {fileID: 4800000, guid: 8a1dd7aba2d705d47b72502998468819, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _DISABLE_SSR_TRANSPARENT
+  - _DOUBLESIDED_ON
+  m_InvalidKeywords:
+  - _KEYWORD0_ON
+  - _WINDVERTEXCOLORMAINR_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 2475
+  stringTagMap:
+    MotionVector: User
+    RenderType: TransparentCutout
+  disabledShaderPasses:
+  - TransparentBackface
+  - MOTIONVECTORS
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - RayTracingPrepass
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - WIND_SETTINGS_TexGust:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - WIND_SETTINGS_TexNoise:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColorMap:
+        m_Texture: {fileID: 2800000, guid: d68b901193817744a874fd1a1f024cd2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: c37022698c41b1a4d8230e9190cba1fd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: d68b901193817744a874fd1a1f024cd2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetalicRAOGSmothnessA:
+        m_Texture: {fileID: 2800000, guid: f39f6bc6ea266c048be3fb238b793654, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: c37022698c41b1a4d8230e9190cba1fd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ThicknessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - WIND_SETTINGS_FlexNoiseScale: 0
+    - WIND_SETTINGS_GustScale: 0
+    - WIND_SETTINGS_GustSpeed: 0
+    - WIND_SETTINGS_GustWorldScale: 0
+    - WIND_SETTINGS_ShiverNoiseScale: 0
+    - WIND_SETTINGS_Turbulence: 0
+    - _AO: 1
+    - _AORemapMax: 1
+    - _AddPrecomputedVelocity: 0
+    - _AlphaCutoff: 0.5
+    - _AlphaCutoffEnable: 1
+    - _AlphaDstBlend: 0
+    - _AlphaShadowThreshold: 0.5
+    - _AlphaSrcBlend: 1
+    - _AlphaToMask: 0
+    - _AlphaToMaskInspectorValue: 0
+    - _AmbientOcclusionPower: 1
+    - _BlendMode: 0
+    - _Brightness: 4.79
+    - _BumpScale: 1
+    - _ColorNoiseSpread: 2
+    - _ConservativeDepthOffsetEnable: 0
+    - _CullMode: 0
+    - _CullModeForward: 0
+    - _Cutoff: 0.5
+    - _DepthOffsetEnable: 0
+    - _DetailNormalMapScale: 1
+    - _DiffusionProfileHash: 2.64331
+    - _DoubleSidedEnable: 1
+    - _DoubleSidedGIMode: 0
+    - _DoubleSidedNormalMode: 1
+    - _Drag: 0.3
+    - _DstBlend: 0
+    - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableFogOnTransparent: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0
+    - _GlossyReflections: 1
+    - _HeightDrag: 0
+    - _InitialBend: 1
+    - _Keyword0: 1
+    - _MaskClipValue: 0.7
+    - _MetalicPower: 1
+    - _Metallic: 0.06
+    - _Mode: 1
+    - _NormalScale: 1
+    - _OcclusionStrength: 1
+    - _OpaqueCullMode: 2
+    - _Parallax: 0.02
+    - _RayTracing: 0
+    - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
+    - _RefractionModel: 0
+    - _RenderQueueType: 1
+    - _RequireSplitLighting: 0
+    - _ShiverDirectionality: 0
+    - _ShiverDrag: 0
+    - _Smooothness: 0.06
+    - _SmoothnessRemapMax: 0.1
+    - _SmoothnessTextureChannel: 0
+    - _SmothnessPower: 1
+    - _Specular: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _StencilRef: 0
+    - _StencilRefDepth: 8
+    - _StencilRefDistortionVec: 4
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
+    - _StencilWriteMask: 6
+    - _StencilWriteMaskDepth: 8
+    - _StencilWriteMaskDistortionVec: 4
+    - _StencilWriteMaskGBuffer: 14
+    - _StencilWriteMaskMV: 40
+    - _Stiffness: 1
+    - _SupportDecals: 1
+    - _SurfaceType: 0
+    - _Thickness: 0.746
+    - _TouchReactActive: 0
+    - _TransAmbient: 0
+    - _TransDirect: 0.258
+    - _TransNormalDistortion: 1
+    - _TransScattering: 1
+    - _TransShadow: 0
+    - _Translucency: 50
+    - _TransparentBackfaceEnable: 0
+    - _TransparentCullMode: 2
+    - _TransparentDepthPostpassEnable: 0
+    - _TransparentDepthPrepassEnable: 0
+    - _TransparentSortPriority: 0
+    - _TransparentWritingMotionVec: 0
+    - _TransparentZWrite: 0
+    - _UVSec: 0
+    - _UseShadowThreshold: 0
+    - _WindNoisePower: 0
+    - _WindNormalInfluence: 0
+    - _WindPower: 0.25
+    - _WindPowerDirectionX: 1
+    - _WindPowerDirectionZ: 0.3
+    - _WindVertexColorMainR: 1
+    - _WindVertexColorMainRNoiseB: 0
+    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestGBuffer: 3
+    - _ZTestTransparent: 4
+    - _ZWrite: 1
+    - __dirty: 0
+    m_Colors:
+    - NewNormal: {r: 0, g: 0, b: 0, a: 0}
+    - WIND_SETTINGS_WorldDirectionAndSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorAdjustment: {r: 1, g: 1, b: 1, a: 0}
+    - _DiffusionProfileAsset: {r: -1.8019567e-30, g: 2.8583547e+22, b: 2.0825967e+12, a: 8.838735e-11}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DryColor: {r: 0.8773585, g: 0.8440883, b: 0.7076807, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HealthyColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NewNormal: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TilingOffset: {r: 1, g: 1, b: 0, a: 0}
+    - _TranslucencyColor: {r: 0.3403455, g: 0.48529398, b: 0.1463018, a: 0}
+    - _Vector0: {r: 1, g: 1, b: 1, a: 0}
+    - _VertexNormalMultiply: {r: 0, g: 0, b: 0, a: 0}
+    - _WindColorMultiply: {r: 1, g: 1, b: 1, a: 0}
+  m_BuildTextureStacks: []
+--- !u!1 &1320585319
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -698,9 +1001,333 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1359631064}
-  - component: {fileID: 1359631066}
-  - component: {fileID: 1359631065}
+  - component: {fileID: 1320585320}
+  - component: {fileID: 1320585322}
+  - component: {fileID: 1320585321}
+  m_Layer: 0
+  m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_01_Plant_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1320585320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320585319}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 82402606}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1320585321
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320585319}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 1309491569}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1320585322
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320585319}
+  m_Mesh: {fileID: 4300000, guid: f6add2b4db06e3245a214bc86118589f, type: 2}
+--- !u!21 &1346251841
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_Trial_Fir_05_Cross(Clone)
+  m_Shader: {fileID: 4800000, guid: 8a1dd7aba2d705d47b72502998468819, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _DISABLE_SSR_TRANSPARENT
+  - _DOUBLESIDED_ON
+  m_InvalidKeywords:
+  - _KEYWORD0_ON
+  - _WINDVERTEXCOLORMAINR_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 2475
+  stringTagMap:
+    MotionVector: User
+    RenderType: TransparentCutout
+  disabledShaderPasses:
+  - TransparentBackface
+  - MOTIONVECTORS
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - RayTracingPrepass
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - WIND_SETTINGS_TexGust:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - WIND_SETTINGS_TexNoise:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColorMap:
+        m_Texture: {fileID: 2800000, guid: 5385c14c048c7834882e8e4d025bc8aa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 06a2f64ca3c377e4899525fe60bf9f4d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 5385c14c048c7834882e8e4d025bc8aa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetalicRAOGSmothnessA:
+        m_Texture: {fileID: 2800000, guid: f39f6bc6ea266c048be3fb238b793654, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 06a2f64ca3c377e4899525fe60bf9f4d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ThicknessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - WIND_SETTINGS_FlexNoiseScale: 0
+    - WIND_SETTINGS_GustScale: 0
+    - WIND_SETTINGS_GustSpeed: 0
+    - WIND_SETTINGS_GustWorldScale: 0
+    - WIND_SETTINGS_ShiverNoiseScale: 0
+    - WIND_SETTINGS_Turbulence: 0
+    - _AO: 1
+    - _AORemapMax: 1
+    - _AddPrecomputedVelocity: 0
+    - _AlphaCutoff: 0.65
+    - _AlphaCutoffEnable: 1
+    - _AlphaDstBlend: 0
+    - _AlphaShadowThreshold: 0.5
+    - _AlphaSrcBlend: 1
+    - _AlphaToMask: 0
+    - _AlphaToMaskInspectorValue: 0
+    - _AmbientOcclusionPower: 1
+    - _BlendMode: 0
+    - _Brightness: 4.79
+    - _BumpScale: 1
+    - _ColorNoiseSpread: 2
+    - _ConservativeDepthOffsetEnable: 0
+    - _CullMode: 0
+    - _CullModeForward: 0
+    - _Cutoff: 0.65
+    - _DepthOffsetEnable: 0
+    - _DetailNormalMapScale: 1
+    - _DiffusionProfileHash: 2.64331
+    - _DoubleSidedEnable: 1
+    - _DoubleSidedGIMode: 0
+    - _DoubleSidedNormalMode: 1
+    - _Drag: 0.3
+    - _DstBlend: 0
+    - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableFogOnTransparent: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0
+    - _GlossyReflections: 1
+    - _HeightDrag: 0
+    - _InitialBend: 1
+    - _Keyword0: 1
+    - _MaskClipValue: 0.7
+    - _MetalicPower: 1
+    - _Metallic: 0.06
+    - _Mode: 1
+    - _NormalScale: 1
+    - _OcclusionStrength: 1
+    - _OpaqueCullMode: 2
+    - _Parallax: 0.02
+    - _RayTracing: 0
+    - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
+    - _RefractionModel: 0
+    - _RenderQueueType: 1
+    - _RequireSplitLighting: 0
+    - _ShiverDirectionality: 0
+    - _ShiverDrag: 0
+    - _Smooothness: 0.06
+    - _SmoothnessRemapMax: 0.1
+    - _SmoothnessTextureChannel: 0
+    - _SmothnessPower: 1
+    - _Specular: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _StencilRef: 0
+    - _StencilRefDepth: 8
+    - _StencilRefDistortionVec: 4
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
+    - _StencilWriteMask: 6
+    - _StencilWriteMaskDepth: 8
+    - _StencilWriteMaskDistortionVec: 4
+    - _StencilWriteMaskGBuffer: 14
+    - _StencilWriteMaskMV: 40
+    - _Stiffness: 1
+    - _SupportDecals: 1
+    - _SurfaceType: 0
+    - _Thickness: 0.746
+    - _TouchReactActive: 0
+    - _TransAmbient: 0
+    - _TransDirect: 0.258
+    - _TransNormalDistortion: 1
+    - _TransScattering: 1
+    - _TransShadow: 0
+    - _Translucency: 50
+    - _TransparentBackfaceEnable: 0
+    - _TransparentCullMode: 2
+    - _TransparentDepthPostpassEnable: 0
+    - _TransparentDepthPrepassEnable: 0
+    - _TransparentSortPriority: 0
+    - _TransparentWritingMotionVec: 0
+    - _TransparentZWrite: 0
+    - _UVSec: 0
+    - _UseShadowThreshold: 0
+    - _WindNoisePower: 0
+    - _WindNormalInfluence: 0
+    - _WindPower: 0.25
+    - _WindPowerDirectionX: 1
+    - _WindPowerDirectionZ: 0.3
+    - _WindVertexColorMainR: 1
+    - _WindVertexColorMainRNoiseB: 0
+    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestGBuffer: 3
+    - _ZTestTransparent: 4
+    - _ZWrite: 1
+    - __dirty: 0
+    m_Colors:
+    - NewNormal: {r: 0, g: 0, b: 0, a: 0}
+    - WIND_SETTINGS_WorldDirectionAndSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorAdjustment: {r: 1, g: 1, b: 1, a: 0}
+    - _DiffusionProfileAsset: {r: -1.8019567e-30, g: 2.8583547e+22, b: 2.0825967e+12, a: 8.838735e-11}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DryColor: {r: 0.8773585, g: 0.8440883, b: 0.7076807, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HealthyColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NewNormal: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TilingOffset: {r: 1, g: 1, b: 0, a: 0}
+    - _TranslucencyColor: {r: 0.34034553, g: 0.48529398, b: 0.14630184, a: 0}
+    - _Vector0: {r: 1, g: 1, b: 1, a: 0}
+    - _VertexNormalMultiply: {r: 0, g: 0, b: 0, a: 0}
+    - _WindColorMultiply: {r: 1, g: 1, b: 1, a: 0}
+  m_BuildTextureStacks: []
+--- !u!1 &1678394592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1678394593}
+  - component: {fileID: 1678394595}
+  - component: {fileID: 1678394594}
   m_Layer: 0
   m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_05_cheap_1
   m_TagString: Untagged
@@ -708,28 +1335,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1359631064
+--- !u!4 &1678394593
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359631063}
+  m_GameObject: {fileID: 1678394592}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1955317946}
-  m_RootOrder: 3
+  m_Father: {fileID: 82402606}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1359631065
+--- !u!23 &1678394594
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359631063}
+  m_GameObject: {fileID: 1678394592}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -740,10 +1367,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 934091230}
+  - {fileID: 1346251841}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -765,15 +1392,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1359631066
+--- !u!33 &1678394595
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359631063}
+  m_GameObject: {fileID: 1678394592}
   m_Mesh: {fileID: 4300000, guid: 20daa35eb6a041b49b1d8999463ab6d3, type: 2}
---- !u!1 &1955317943
+--- !u!1 &2083377530
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -781,23 +1408,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1955317946}
-  - component: {fileID: 1955317945}
-  - component: {fileID: 1955317944}
+  - component: {fileID: 2083377531}
+  - component: {fileID: 2083377533}
+  - component: {fileID: 2083377532}
   m_Layer: 0
-  m_Name: LOD1_Terrain (2) 4_7
+  m_Name: Terrain (2) 4_7_Tree_Batch_prefab_Trial_Fir_05_cheap_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!23 &1955317944
+--- !u!4 &2083377531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083377530}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 82402606}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &2083377532
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955317943}
+  m_GameObject: {fileID: 2083377530}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -808,10 +1450,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 48a62c34e2dc58947b10dcc5bfd43bdc, type: 2}
+  - {fileID: 1346251841}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -833,30 +1475,11 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1955317945
+--- !u!33 &2083377533
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955317943}
-  m_Mesh: {fileID: 4300000, guid: 41e68383b128d9a428752fdad0a9ef8f, type: 2}
---- !u!4 &1955317946
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955317943}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3500, y: -0.3, z: 2000}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 40146151}
-  - {fileID: 1102515150}
-  - {fileID: 1320666090}
-  - {fileID: 1359631064}
-  m_Father: {fileID: 257268672}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 2083377530}
+  m_Mesh: {fileID: 4300000, guid: 25728b312c883b741b447755f8ed7a11, type: 2}

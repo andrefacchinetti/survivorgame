@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -67,6 +67,9 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
+    m_FinalGather: 0
+    m_FinalGatherFiltering: 1
+    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -94,14 +97,14 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000030, guid: b517d9caa81cad544b3b28fcdc8fed4e, type: 2}
+  m_LightingDataAsset: {fileID: 112000028, guid: b517d9caa81cad544b3b28fcdc8fed4e, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 3
+    serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -114,69 +117,19 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    buildHeightMesh: 0
+    accuratePlacement: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &298232738
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 298232740}
-  - component: {fileID: 298232739}
-  m_Layer: 0
-  m_Name: Scene Micro_x32_z17
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &298232739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 298232738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a7da46708b97c940a4fe54d35254afe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneName: Scene Micro_x32_z17
-  color: {r: 0.93186754, g: 0.93333334, b: 0.84313726, a: 1}
-  position: {x: 2560, y: 0, z: 1360}
-  size: {x: 80, y: 100, z: 80}
-  wsPosition: {x: 10, y: 10, z: 10}
---- !u!4 &298232740
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 298232738}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1364543965}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &655960492
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1364543965}
+    serializedVersion: 2
+    m_TransformParent: {fileID: 782376100}
     m_Modifications:
     - target: {fileID: 1332214215066327572, guid: f2da5b6ac1713fc46ac14e1193150c60, type: 3}
       propertyPath: m_RootOrder
@@ -239,9 +192,7 @@ PrefabInstance:
       value: Prefab_Micro_Sign_Shop (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2da5b6ac1713fc46ac14e1193150c60, type: 3}
 --- !u!4 &655960493 stripped
 Transform:
@@ -253,8 +204,8 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1364543965}
+    serializedVersion: 2
+    m_TransformParent: {fileID: 782376100}
     m_Modifications:
     - target: {fileID: 1332214215066327572, guid: e41e64206272a9940981dd13c64ec9c8, type: 3}
       propertyPath: m_RootOrder
@@ -305,9 +256,7 @@ PrefabInstance:
       value: Prefab_Micro_Sign_PV4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e41e64206272a9940981dd13c64ec9c8, type: 3}
 --- !u!4 &674980232 stripped
 Transform:
@@ -319,8 +268,8 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1364543965}
+    serializedVersion: 2
+    m_TransformParent: {fileID: 782376100}
     m_Modifications:
     - target: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
       propertyPath: m_RootOrder
@@ -328,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.727808
+      value: 2.72781
       objectReference: {fileID: 0}
     - target: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
       propertyPath: m_LocalScale.y
@@ -336,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.7277918
+      value: 2.7277899
       objectReference: {fileID: 0}
     - target: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -383,16 +332,14 @@ PrefabInstance:
       value: Prefab_Micro_Sign_Cafe
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
 --- !u!4 &750595075 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
   m_PrefabInstance: {fileID: 750595074}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1364543964
+--- !u!1 &782376099
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -400,8 +347,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1364543965}
-  - component: {fileID: 1364543966}
+  - component: {fileID: 782376100}
+  - component: {fileID: 782376101}
   m_Layer: 0
   m_Name: Micro Objects
   m_TagString: Untagged
@@ -409,13 +356,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1364543965
+--- !u!4 &782376100
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364543964}
+  m_GameObject: {fileID: 782376099}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -425,16 +372,16 @@ Transform:
   - {fileID: 750595075}
   - {fileID: 674980232}
   - {fileID: 655960493}
-  m_Father: {fileID: 298232740}
+  m_Father: {fileID: 2041145305}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1364543966
+--- !u!114 &782376101
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364543964}
+  m_GameObject: {fileID: 782376099}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afcd572fe10db1d43bf1d9ddee5a0ac0, type: 3}
@@ -446,8 +393,8 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1364543965}
+    serializedVersion: 2
+    m_TransformParent: {fileID: 782376100}
     m_Modifications:
     - target: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
       propertyPath: m_RootOrder
@@ -498,12 +445,60 @@ PrefabInstance:
       value: Prefab_Micro_Sign_Cafe (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
 --- !u!4 &1772918466 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1332214215066327572, guid: 105ba048865ef1b4ebe00f46d08a3b3e, type: 3}
   m_PrefabInstance: {fileID: 1772918465}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2041145303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2041145305}
+  - component: {fileID: 2041145304}
+  m_Layer: 0
+  m_Name: Scene Micro_x32_z17
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2041145304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041145303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7da46708b97c940a4fe54d35254afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: Scene Micro_x32_z17
+  color: {r: 0.93186754, g: 0.93333334, b: 0.84313726, a: 1}
+  position: {x: 2560, y: 0, z: 1360}
+  size: {x: 80, y: 100, z: 80}
+  wsPosition: {x: 10, y: 10, z: 10}
+--- !u!4 &2041145305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041145303}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 782376100}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

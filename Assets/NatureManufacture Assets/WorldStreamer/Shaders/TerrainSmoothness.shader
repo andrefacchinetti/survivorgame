@@ -14,7 +14,7 @@
 			}
 
 			CGPROGRAM
-			#pragma surface surf NoLighting vertex:SplatmapVert //finalcolor:SplatmapFinalColor finalgbuffer:SplatmapFinalGBuffer addshadow fullforwardshadows
+			#pragma surface surf Standard vertex:SplatmapVert finalcolor:SplatmapFinalColor finalgbuffer:SplatmapFinalGBuffer addshadow fullforwardshadows
 			#pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 			#pragma multi_compile_fog // needed because finalcolor oppresses fog code generation.
 			#pragma target 3.0
@@ -25,7 +25,7 @@
 
 			#define TERRAIN_STANDARD_SHADER
 			#define TERRAIN_INSTANCED_PERPIXEL_NORMAL
-			#define TERRAIN_SURFACE_OUTPUT SurfaceOutput
+			#define TERRAIN_SURFACE_OUTPUT SurfaceOutputStandard
 			#include "TerrainSplatmapCommon.cginc"
 
 			half _Metallic0;
@@ -38,21 +38,7 @@
 			half _Smoothness2;
 			half _Smoothness3;
 
-			float PositivePow(float base, float power)
-			{
-				return pow(max(abs(base), float(1.192092896e-07)), power);
-			}
-
-
-			float SRGBToLinear(float c)
-			{
-				float linearRGBLo = c / 12.92;
-				float linearRGBHi = PositivePow((c + 0.055) / 1.055, 2.4);
-				float linearRGB = (c <= 0.04045) ? linearRGBLo : linearRGBHi;
-				return linearRGB;
-			}
-
-			void surf(Input IN, inout SurfaceOutput o) {
+			void surf(Input IN, inout SurfaceOutputStandard o) {
 				half4 splat_control;
 				half weight;
 				fixed4 mixedDiffuse;
@@ -60,24 +46,18 @@
 
 				float3 normal = o.Normal;
 				SplatmapMix(IN, defaultSmoothness, splat_control, weight, mixedDiffuse, normal);
-
+				
 				o.Alpha = weight;
-				o.Emission = mixedDiffuse.a;
+				o.Albedo = mixedDiffuse.a;
 
 			}
-			fixed4 LightingNoLighting(SurfaceOutput s, fixed3 lightDir, fixed atten) {
-				return fixed4(0, 0, 0, 0);//half4(s.Albedo, s.Alpha);
-			}
-
-
-
 			ENDCG
 
 			UsePass "Hidden/Nature/Terrain/Utilities/PICKING"
 			UsePass "Hidden/Nature/Terrain/Utilities/SELECTION"
 	}
 
-		Dependency "AddPassShader" = "NatureManufacture Shaders/Terrain/StandardSmoothnessAddPass"
+		Dependency "AddPassShader" = "Hidden/NatureManufacture Shaders/Splatmap/Standard-AddPassSmoothness"
 
 		//Fallback "Nature/Terrain/Diffuse"
 }

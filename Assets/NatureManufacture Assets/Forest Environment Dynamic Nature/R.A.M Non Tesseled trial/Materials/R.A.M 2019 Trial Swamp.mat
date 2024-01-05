@@ -13,7 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_DECALS
-  - _DISABLE_SSR_TRANSPARENT
+  - _DOUBLESIDED_ON
   - _ENABLE_FOG_ON_TRANSPARENT
   - _MATERIAL_FEATURE_TRANSMISSION
   - _SURFACE_TYPE_TRANSPARENT
@@ -21,7 +21,7 @@ Material:
   - _BLENDMODE_ALPHA
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: 3000
   stringTagMap:
     MotionVector: User
@@ -31,7 +31,6 @@ Material:
   - TransparentBackface
   - TransparentDepthPostpass
   - RayTracingPrepass
-  - TransparentDepthPrepass
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -253,8 +252,8 @@ Material:
     - _CleanFalloffPower: 0.02
     - _CleanWaterNoisePower: 10
     - _ConservativeDepthOffsetEnable: 0
-    - _CullMode: 2
-    - _CullModeForward: 2
+    - _CullMode: 0
+    - _CullModeForward: 0
     - _Cutoff: 0.5
     - _Depth: 0.98
     - _DepthFalloff: -13
@@ -277,7 +276,7 @@ Material:
     - _DetailSpecular: 0.098
     - _DiffusionProfileHash: 3.3669112
     - _Distortion: 0.312
-    - _DoubleSidedEnable: 0
+    - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 10
@@ -324,7 +323,7 @@ Material:
     - _PerPixelSorting: 0
     - _RayTracing: 0
     - _ReceivesSSR: 1
-    - _ReceivesSSRTransparent: 0
+    - _ReceivesSSRTransparent: 1
     - _Reflection: 0.66
     - _ReflectionPower: 0.083
     - _RefractionModel: 0
@@ -357,10 +356,10 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 0
+    - _StencilRefDepth: 8
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 2
-    - _StencilRefMV: 32
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4

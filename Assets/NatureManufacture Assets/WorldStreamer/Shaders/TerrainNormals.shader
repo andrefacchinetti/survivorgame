@@ -14,7 +14,7 @@
 			}
 
 			CGPROGRAM
-			#pragma surface surf NoLighting vertex:SplatmapVert finalcolor:SplatmapFinalColor finalgbuffer:SplatmapFinalGBuffer addshadow fullforwardshadows
+			#pragma surface surf Standard vertex:SplatmapVert finalcolor:SplatmapFinalColor finalgbuffer:SplatmapFinalGBuffer addshadow fullforwardshadows
 			#pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 			#pragma multi_compile_fog // needed because finalcolor oppresses fog code generation.
 			#pragma target 3.0
@@ -25,11 +25,8 @@
 
 			#define TERRAIN_STANDARD_SHADER
 			#define TERRAIN_INSTANCED_PERPIXEL_NORMAL
-			#define TERRAIN_SURFACE_OUTPUT SurfaceOutput
+			#define TERRAIN_SURFACE_OUTPUT SurfaceOutputStandard
 			#include "TerrainSplatmapCommon.cginc"
-
-
-			float _gamma;
 
 			half _Metallic0;
 			half _Metallic1;
@@ -41,7 +38,7 @@
 			half _Smoothness2;
 			half _Smoothness3;
 
-			void surf(Input IN, inout SurfaceOutput o) {
+			void surf(Input IN, inout SurfaceOutputStandard o) {
 				half4 splat_control;
 				half weight;
 				fixed4 mixedDiffuse;
@@ -49,35 +46,18 @@
 
 				float3 normal = o.Normal;
 				SplatmapMix(IN, defaultSmoothness, splat_control, weight, mixedDiffuse, normal);
-
+				
 				o.Alpha = weight;
-
-				if (_gamma == 1)
-				{
-					normal = normal * 0.5 + 0.5;
-				}
-				else
-				{
-									normal = pow(normal * 0.5 + 0.5, 2.2);
-				}
-
-
-
-				o.Emission = normal;
+				o.Albedo = pow(normal * 0.5 + 0.5, 2.2);
 
 			}
+			ENDCG
 
-
-		fixed4 LightingNoLighting(SurfaceOutput s, fixed3 lightDir, fixed atten) {
-		return fixed4(0, 0, 0, 0);
-	}
-	ENDCG
-
-		UsePass "Hidden/Nature/Terrain/Utilities/PICKING"
-		UsePass "Hidden/Nature/Terrain/Utilities/SELECTION"
+			UsePass "Hidden/Nature/Terrain/Utilities/PICKING"
+			UsePass "Hidden/Nature/Terrain/Utilities/SELECTION"
 	}
 
-		Dependency "AddPassShader" = "NatureManufacture Shaders/Terrain/StandardNormalAddPass"
+		Dependency "AddPassShader" = "Hidden/NatureManufacture Shaders/Splatmap/Standard-AddPass"
 
 		//Fallback "Nature/Terrain/Diffuse"
 }
