@@ -2,20 +2,31 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Lava_2_flow Lake
   m_Shader: {fileID: 4800000, guid: a078bba5a980e3447a3b8f0ef47227d2, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
+  m_InvalidKeywords: []
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 2225
+  stringTagMap:
+    MotionVector: User
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  - TransparentBackface
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - RayTracingPrepass
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -187,8 +198,27 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AOPower: 1
+    - _AddPrecomputedVelocity: 0
+    - _AlphaCutoffEnable: 0
+    - _AlphaDstBlend: 0
+    - _AlphaSrcBlend: 1
+    - _AlphaToMask: 0
+    - _AlphaToMaskInspectorValue: 0
     - _BigCascadeAngle: 7
     - _BigCascadeAngleFalloff: 2.3
     - _BigCascadeFalloff: 80
@@ -200,6 +230,7 @@ Material:
     - _BigCascadeSpeed: 4
     - _BigCascadeWaterNormalScale: 0.9
     - _BigCascadeWaterTessScale: 0.2
+    - _BlendMode: 0
     - _CascadeFalloff: 0.84
     - _CascadeFalloffSlow: 5.86
     - _CascadeMetalic: 0
@@ -219,17 +250,28 @@ Material:
     - _ColdLavaEmissionMaskIntensivity: 1.3
     - _ColdLavaEmissionMaskPower: 42.98
     - _ColdLavaEmissionMaskTreshold: 18.7
+    - _ColdLavaFlowUVRefresSpeed: 0.1
     - _ColdLavaHeightBlendStrenghtVertexColor: 10
     - _ColdLavaMetalic: 1
     - _ColdLavaNoisePower: 1.76
     - _ColdLavaNormalScale: 1
     - _ColdLavaSmoothness: 1
     - _ColdLavaTessScale: 0.2
+    - _ConservativeDepthOffsetEnable: 0
+    - _CullMode: 2
+    - _CullModeForward: 2
     - _Cutoff: 0.5
     - _Depth: 0.98
     - _DepthFalloff: -13
+    - _DepthOffsetEnable: 0
     - _Distortion: 0.03
+    - _DoubleSidedEnable: 0
+    - _DoubleSidedGIMode: 0
+    - _DoubleSidedNormalMode: 2
+    - _DstBlend: 0
     - _EdgeLength: 11.8
+    - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableFogOnTransparent: 1
     - _FastCascadeAngle: 90
     - _FastCascadeFalloff: 80
     - _FastCascadeNormalInfluence: 0
@@ -250,6 +292,7 @@ Material:
     - _FoamTiling: 2
     - _Foamfalloff: -4
     - _GlobalLavaEmissionManager: 1
+    - _GlobalTiling: 1
     - _HotLavaAO: 1
     - _HotLavaAlbedoColorMultiply: 1
     - _HotLavaAngle: 0.001
@@ -257,6 +300,7 @@ Material:
     - _HotLavaEmissionMaskIntensivity: 4.2
     - _HotLavaEmissionMaskPower: 2.72
     - _HotLavaEmissionMaskTreshold: 2.05
+    - _HotLavaFlowUVRefreshSpeed: 0.1
     - _HotLavaHeightBlendStrenght: 2.27
     - _HotLavaHeightBlendStrenghtVertexColor: 10
     - _HotLavaHeightBlendTreshold: 0.1
@@ -278,6 +322,7 @@ Material:
     - _MediumLavaEmissionMaskIntesivity: 2
     - _MediumLavaEmissionMaskPower: 0
     - _MediumLavaEmissionMaskTreshold: 8.77
+    - _MediumLavaFlowUVRefreshSpeed: 0.1
     - _MediumLavaHeightBlend: 8.74
     - _MediumLavaHeightBlendStrenght: 0.4
     - _MediumLavaHeightBlendStrenghtVertexColor: 10
@@ -289,8 +334,15 @@ Material:
     - _MediumLavaTessScale: 0.1
     - _NormalScale: 0.5
     - _Occlusion: 0.48
+    - _OpaqueCullMode: 2
+    - _RayTracing: 0
+    - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
     - _Reflection: 0.66
     - _ReflectionPower: 0.083
+    - _RefractionModel: 0
+    - _RenderQueueType: 1
+    - _RequireSplitLighting: 0
     - _RimLightPower: 1.11
     - _ShalowDepth: 0.7
     - _ShalowFalloff: -1.2
@@ -312,15 +364,36 @@ Material:
     - _SmallCascadeWaterTessScale: 0.04
     - _Smoothness: 0.9
     - _Specular: 0.1
+    - _SrcBlend: 1
+    - _StencilRef: 0
+    - _StencilRefDepth: 8
+    - _StencilRefDistortionVec: 4
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
+    - _StencilWriteMask: 6
+    - _StencilWriteMaskDepth: 9
+    - _StencilWriteMaskDistortionVec: 4
+    - _StencilWriteMaskGBuffer: 15
+    - _StencilWriteMaskMV: 41
+    - _SupportDecals: 1
+    - _SurfaceType: 0
     - _TessMax: 11
     - _TessMaxDisp: 0
     - _TessMin: 0
     - _TessPhongStrength: 0
     - _TessValue: 26.51
     - _ToggleSwitch1: 0
+    - _TransparentBackfaceEnable: 0
+    - _TransparentCullMode: 2
+    - _TransparentDepthPostpassEnable: 0
+    - _TransparentDepthPrepassEnable: 0
+    - _TransparentSortPriority: 0
+    - _TransparentWritingMotionVec: 0
+    - _TransparentZWrite: 0
     - _UVDirectionV1U0: 1
-    - _UVVDirection1UDirection0: 0
+    - _UVVDirection1UDirection0: 1
     - _Udirection: 0
+    - _UseShadowThreshold: 0
     - _VCColdLavaHeightBlendStrenght: 10
     - _VCFrozenLavaHeightBlendStrenght: 10
     - _VCHotLavaHeightBlendStrenght: 2
@@ -342,6 +415,10 @@ Material:
     - _WaterTessScale: 0.06
     - _WaterTiling: 100
     - _WaterTranslucencyPower: 0.55
+    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestGBuffer: 4
+    - _ZTestTransparent: 4
+    - _ZWrite: 1
     - __dirty: 0
     - _oldLavaEmissionMaskTreshold: 42.98
     - _test: 0.35
@@ -351,11 +428,13 @@ Material:
     - _BigCascadeMixSpeed: {r: 0.02, g: 0.28, b: 0, a: 0}
     - _CascadeColor: {r: 20, g: 20, b: 20, a: 0}
     - _ColdLavaAlbedoColor: {r: 1, g: 1, b: 1, a: 0}
-    - _ColdLavaMainSpeed: {r: 0.7, g: -0.7, b: 0, a: 0}
+    - _ColdLavaMainSpeed: {r: 0.7, g: 0.7, b: 0, a: 0}
+    - _ColdLavaTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Color0: {r: 0, g: 0.6749488, b: 0.8088235, a: 0}
     - _Color1: {r: 0, g: 0.048731543, b: 0.22794023, a: 0}
     - _DeepColor: {r: 0.05708845, g: 0.095184885, b: 0.23528743, a: 0}
-    - _EmissionColor: {r: 1, g: 0.18620518, b: 0, a: 0}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _FlowmapSpeed: {r: 0, g: 0.87, b: 0, a: 0}
     - _FoamColor: {r: 20, g: 20, b: 20, a: 0}
     - _FoamSpeed: {r: -0.001, g: 0.018, b: 0, a: 0}
@@ -363,9 +442,13 @@ Material:
     - _HotLavaAlbedoColor: {r: 1, g: 1, b: 1, a: 0}
     - _HotLavaMainSpeed: {r: 0.7, g: 0.7, b: 0, a: 0}
     - _HotLavaMixSpeed: {r: 0.03, g: 0, b: 0, a: 0}
+    - _HotLavaTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _LavaEmissionColor: {r: 766.9961, g: 12.047059, b: 0, a: 0}
     - _MediumLavaAlbedoColor: {r: 1, g: 1, b: 1, a: 0}
-    - _MediumLavaMainSpeed: {r: 0.7, g: -0.7, b: 0, a: 0}
+    - _MediumLavaMainSpeed: {r: 0.7, g: 0.7, b: 0, a: 0}
+    - _MediumLavaTiling: {r: 2, g: 2, b: 0, a: 0}
     - _NoiseSpeed: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _NoiseTiling: {r: 1, g: 1, b: 0, a: 0}
     - _RimColor: {r: 1, g: 0, b: 0, a: 0}
     - _ShalowColor: {r: 0.5060554, g: 0.6617647, b: 0.61666334, a: 0}
     - _SlowCascadeColor: {r: 20, g: 20, b: 20, a: 0}
@@ -376,3 +459,4 @@ Material:
     - _Vector0: {r: 0, g: 0.87, b: 0, a: 0}
     - _WaterMainSpeed: {r: 0.01, g: 0, b: 0, a: 0}
     - _WaterMixSpeed: {r: -0.007, g: 0.05, b: 0, a: 0}
+  m_BuildTextureStacks: []
