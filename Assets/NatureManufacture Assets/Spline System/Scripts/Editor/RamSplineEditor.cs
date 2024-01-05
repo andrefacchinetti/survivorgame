@@ -187,7 +187,7 @@ public class RamSplineEditor : Editor
 
         EditorGUI.BeginChangeCheck();
         Undo.RecordObject(spline, "Spline changed");
-        
+
         //  GUILayout.Toolbar(spline.toolbarInt, toolbarStrings);
         int toolbarNew = GUILayout.SelectionGrid(spline.toolbarInt, toolbarStrings, 3, GUILayout.Height(125));
 
@@ -755,8 +755,8 @@ public class RamSplineEditor : Editor
         EditorGUI.indentLevel++;
 
         spline.terrainCarve = EditorGUILayout.CurveField("Terrain carve", spline.terrainCarve);
-        spline.terrainMeshSmoothX = EditorGUILayout.IntSlider("Shape smooth X", (int)spline.terrainMeshSmoothX, 1, 20);
-        spline.terrainMeshSmoothZ = EditorGUILayout.IntSlider("Shape smooth Z", (int)spline.terrainMeshSmoothZ, 1, 100);
+        spline.terrainMeshSmoothX = EditorGUILayout.IntSlider("Shape smooth X", (int) spline.terrainMeshSmoothX, 1, 20);
+        spline.terrainMeshSmoothZ = EditorGUILayout.IntSlider("Shape smooth Z", (int) spline.terrainMeshSmoothZ, 1, 100);
         spline.terrainSmoothMultiplier = EditorGUILayout.Slider("Smooth", spline.terrainSmoothMultiplier, 0, 20);
         spline.distSmooth = EditorGUILayout.FloatField("Smooth distance", spline.distSmooth);
         spline.maskCarve = LayerMaskField("Layers", spline.maskCarve, true);
@@ -948,7 +948,7 @@ public class RamSplineEditor : Editor
 
         if (GUILayout.Button("Remove Details Foliage"))
         {
-            spline.ShowTerrainCarve(spline.distanceClearFoliage);
+            spline.ShowTerrainCarve(spline.distanceClearFoliage, false);
             spline.TerrainClearFoliage();
             terrainShapeShow = false;
         }
@@ -958,7 +958,7 @@ public class RamSplineEditor : Editor
 
         if (GUILayout.Button("Remove Trees"))
         {
-            spline.ShowTerrainCarve(spline.distanceClearFoliageTrees);
+            spline.ShowTerrainCarve(spline.distanceClearFoliageTrees, false);
             spline.TerrainClearFoliage(false);
             terrainShapeShow = false;
         }
@@ -1847,7 +1847,7 @@ public class RamSplineEditor : Editor
         }
 
         if (GUILayout.Button("Reset vertex colors") && EditorUtility.DisplayDialog("Reset vertex colors?",
-            "Are you sure you want to reset f vertex colors?", "Yes", "No"))
+                "Are you sure you want to reset f vertex colors?", "Yes", "No"))
         {
             spline.colors = null;
             spline.GenerateSpline();
@@ -1937,7 +1937,7 @@ public class RamSplineEditor : Editor
 
         EditorGUILayout.Space();
         if (GUILayout.Button("Reset flow to automatic") && EditorUtility.DisplayDialog("Reset flow to automatic?",
-            "Are you sure you want to reset flow to automatic?", "Yes", "No"))
+                "Are you sure you want to reset flow to automatic?", "Yes", "No"))
         {
             spline.overrideFlowMap = false;
             spline.GenerateSpline();
@@ -2135,7 +2135,7 @@ public class RamSplineEditor : Editor
             }
 
             if (GUILayout.Toggle(selectedPosition == i, new GUIContent("S", "Select point"), "Button",
-                GUILayout.MaxWidth(20)))
+                    GUILayout.MaxWidth(20)))
             {
                 selectedPosition = i;
             }

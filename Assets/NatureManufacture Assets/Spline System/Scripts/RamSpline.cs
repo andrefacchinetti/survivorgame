@@ -1675,7 +1675,7 @@ public class RamSpline : MonoBehaviour
 
     #region Terrain
 
-    public void ShowTerrainCarve(float differentSize = 0)
+    public void ShowTerrainCarve(float differentSize = 0, bool useCurve = true)
     {
         if (Application.isEditor && meshGO == null)
         {
@@ -1749,7 +1749,7 @@ public class RamSpline : MonoBehaviour
                         smoothValue = Mathf.Pow(smoothValue, terrainSmoothMultiplier);
 
 
-                        height = Mathf.Lerp(hit.point.y, height, smoothValue);
+                        height = useCurve ? Mathf.Lerp(hit.point.y, height, smoothValue) : hit.point.y;
 
                         Vector4 newPos = new Vector4(hit.point.x, height, hit.point.z, -evaluate);
                         positionArrayRow.Add(newPos);
@@ -1777,7 +1777,7 @@ public class RamSpline : MonoBehaviour
                     float smoothValue = 1 - 2 * Mathf.Abs(t / (float) detailTerrain - 0.5f);
                     smoothValue = Mathf.Pow(smoothValue, terrainSmoothMultiplier);
 
-                    height = Mathf.Lerp(hit.point.y, height, 1);
+                    height = useCurve ? Mathf.Lerp(hit.point.y, height, 1) : hit.point.y;
 
                     Vector4 newPos = new Vector4(hit.point.x, height, hit.point.z, evaluate);
 
@@ -1810,7 +1810,7 @@ public class RamSpline : MonoBehaviour
                         float smoothValue = 1 - t / (float) detailTerrain;
                         smoothValue = Mathf.Pow(smoothValue, terrainSmoothMultiplier);
 
-                        height = Mathf.Lerp(hit.point.y, height, smoothValue);
+                        height = useCurve ? Mathf.Lerp(hit.point.y, height, smoothValue) : hit.point.y;
                         Vector4 newPos = new Vector4(hit.point.x, height, hit.point.z, -evaluate);
                         positionArrayRow.Add(newPos);
                     }
@@ -2513,8 +2513,8 @@ public class RamSpline : MonoBehaviour
                             {
                                 for (int z = 0; z < detailLayer.GetLength(1); z++)
                                 {
-                                    position.x = (z + minX) / (float) terrainToheight + terrain.transform.position.x;
-                                    position.z = (x + minZ) / (float) terrainTowidth + terrain.transform.position.z;
+                                    position.x = (z + minX + 0.5f) / (float) terrainToheight + terrain.transform.position.x;
+                                    position.z = (x + minZ + 0.5f) / (float) terrainTowidth + terrain.transform.position.z;
 
 
                                     Ray ray = new Ray(position + Vector3.up * 3000, Vector3.down);
