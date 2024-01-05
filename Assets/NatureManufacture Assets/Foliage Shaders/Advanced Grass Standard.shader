@@ -22,8 +22,8 @@ Shader "NatureManufacture Shaders/Grass/Advanced Grass Standard"
 		_WindColorInfluence("Wind Color Influence", Vector) = (0,0,0,0)
 		_WindColorThreshold("Wind Color Threshold", Range( 0 , 10)) = 1
 		_WindNormalInfluence("Wind Normal Influence", Float) = 0
-		_CullFarStart("CullFarStart", Range( 0 , 10000)) = 40
 		_CullFarDistance("CullFarDistance", Range( 0 , 10000)) = 5
+		_CullFarStart("CullFarStart", Range( 0 , 10000)) = 40
 		[Toggle]_BackFaceMirrorNormal("BackFace Mirror Normal", Float) = 1
 		[Toggle(_TOUCHREACTACTIVE_ON)] _TouchReactActive("TouchReactActive", Float) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}

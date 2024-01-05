@@ -2,16 +2,27 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RAM_Trial_Waterfall_Top
   m_Shader: {fileID: 210, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHABLEND_ON _BLENDMODE_ADD _DISABLE_DECALS _DISABLE_SSR _ENABLE_FOG_ON_TRANSPARENT
-    _FADING_ON _MATERIAL_FEATURE_TRANSMISSION _NORMALMAP _NORMALMAP_TANGENT_SPACE
-    _SURFACE_TYPE_TRANSPARENT
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHABLEND_ON
+  - _FADING_ON
+  - _NORMALMAP
+  m_InvalidKeywords:
+  - _BLENDMODE_ADD
+  - _DISABLE_DECALS
+  - _DISABLE_SSR
+  - _ENABLE_FOG_ON_TRANSPARENT
+  - _MATERIAL_FEATURE_TRANSMISSION
+  - _NORMALMAP_TANGENT_SPACE
+  - _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -23,7 +34,8 @@ Material:
   - TransparentDepthPrepass
   - TransparentBackface
   - MOTIONVECTORS
-  - ALWAYS
+  - GRABPASS
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -171,6 +183,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AOPower: 1
     - _AORemapMax: 1
@@ -333,8 +346,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 0.6}
     - _Color0: {r: 0.5735295, g: 0.5735295, b: 0.5735295, a: 0}
     - _ColorPower: {r: 25, g: 25, b: 25, a: 0}
-    - _DiffusionProfileAsset: {r: 5.4629544e+10, g: 1.0282388e+32, b: -5.388665e+13,
-        a: 1.6297446e+27}
+    - _DiffusionProfileAsset: {r: 5.4629544e+10, g: 1.0282388e+32, b: -5.388665e+13, a: 1.6297446e+27}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmisColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
@@ -352,3 +364,4 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
