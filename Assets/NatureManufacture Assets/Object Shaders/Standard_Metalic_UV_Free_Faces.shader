@@ -6,7 +6,7 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 		_ShapeBumpMapScale("Shape BumpMap Scale", Range( 0 , 5)) = 1
 		_Color("Color", Color) = (1,1,1,1)
 		_Tiling("Tiling", Range( 0.1 , 100)) = 6
-		_TriplanarFallOff("Triplanar FallOff", Range( 0.0001 , 100)) = 15
+		_TriplanarFallOff("Triplanar FallOff", Range( 0 , 10)) = 1
 		[NoScaleOffset]_TopAlbedo("Top Albedo", 2D) = "white" {}
 		[NoScaleOffset]_TopNormal("Top Normal", 2D) = "bump" {}
 		_TopNormalScale("Top Normal Scale", Range( 0 , 5)) = 1
@@ -21,9 +21,8 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 		_AmbientOcclusionPower("Ambient Occlusion Power", Range( 0 , 1)) = 0
 		_SmoothnessPower("Smoothness Power", Range( 0 , 2)) = 2
 		_DetailMask("DetailMask", 2D) = "white" {}
-		_DetailAlbedoMap("DetailAlbedoMap", 2D) = "black" {}
+		_DetailMapAlbedoRNyGNxA("Detail Map Albedo(R) Ny(G) Nx(A)", 2D) = "white" {}
 		_DetailAlbedoPower("Detail Albedo Power", Range( 0 , 2)) = 0
-		[NoScaleOffset]_DetailNormalMap("DetailNormalMap", 2D) = "bump" {}
 		_DetailNormalMapScale("DetailNormalMapScale", Range( 0 , 5)) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 		[HideInInspector] __dirty( "", Int ) = 1
@@ -39,6 +38,8 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 		#include "UnityPBSLighting.cginc"
 		#include "Lighting.cginc"
 		#pragma target 3.0
+		#define ASE_TEXTURE_PARAMS(textureName) textureName
+
 		#ifdef UNITY_PASS_SHADOWCASTER
 			#undef INTERNAL_DATA
 			#undef WorldReflectionVector
@@ -64,10 +65,9 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 		uniform float _ShapeBumpMapScale;
 		uniform sampler2D _ShapeBumpMap;
 		uniform float4 _ShapeBumpMap_ST;
+		uniform sampler2D _DetailMapAlbedoRNyGNxA;
+		uniform float4 _DetailMapAlbedoRNyGNxA_ST;
 		uniform float _DetailNormalMapScale;
-		uniform sampler2D _DetailNormalMap;
-		uniform sampler2D _DetailAlbedoMap;
-		uniform float4 _DetailAlbedoMap_ST;
 		uniform sampler2D _DetailMask;
 		uniform float4 _DetailMask_ST;
 		uniform sampler2D _TopAlbedo;
@@ -83,18 +83,18 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 		uniform float _ShapeAmbientOcclusionPower;
 
 
-		inline float3 TriplanarSamplingCNF( sampler2D topTexMap, sampler2D midTexMap, sampler2D botTexMap, float3 worldPos, float3 worldNormal, float falloff, float tilling, float3 normalScale, float3 index )
+		inline float3 TriplanarSamplingCNF( sampler2D topTexMap, sampler2D midTexMap, sampler2D botTexMap, float3 worldPos, float3 worldNormal, float falloff, float2 tiling, float3 normalScale, float3 index )
 		{
 			float3 projNormal = ( pow( abs( worldNormal ), falloff ) );
-			projNormal /= projNormal.x + projNormal.y + projNormal.z;
+			projNormal /= ( projNormal.x + projNormal.y + projNormal.z ) + 0.00001;
 			float3 nsign = sign( worldNormal );
 			float negProjNormalY = max( 0, projNormal.y * -nsign.y );
 			projNormal.y = max( 0, projNormal.y * nsign.y );
 			half4 xNorm; half4 yNorm; half4 yNormN; half4 zNorm;
-			xNorm = ( tex2D( midTexMap, tilling * worldPos.zy * float2( nsign.x, 1.0 ) ) );
-			yNorm = ( tex2D( topTexMap, tilling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
-			yNormN = ( tex2D( botTexMap, tilling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
-			zNorm = ( tex2D( midTexMap, tilling * worldPos.xy * float2( -nsign.z, 1.0 ) ) );
+			xNorm = ( tex2D( ASE_TEXTURE_PARAMS( midTexMap ), tiling * worldPos.zy * float2( nsign.x, 1.0 ) ) );
+			yNorm = ( tex2D( ASE_TEXTURE_PARAMS( topTexMap ), tiling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
+			yNormN = ( tex2D( ASE_TEXTURE_PARAMS( botTexMap ), tiling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
+			zNorm = ( tex2D( ASE_TEXTURE_PARAMS( midTexMap ), tiling * worldPos.xy * float2( -nsign.z, 1.0 ) ) );
 			xNorm.xyz = half3( UnpackScaleNormal( xNorm, normalScale.y ).xy * float2( nsign.x, 1.0 ) + worldNormal.zy, worldNormal.x ).zyx;
 			yNorm.xyz = half3( UnpackScaleNormal( yNorm, normalScale.x ).xy * float2( nsign.y, 1.0 ) + worldNormal.xz, worldNormal.y ).xzy;
 			zNorm.xyz = half3( UnpackScaleNormal( zNorm, normalScale.y ).xy * float2( -nsign.z, 1.0 ) + worldNormal.xy, worldNormal.z ).xyz;
@@ -103,18 +103,18 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 		}
 
 
-		inline float4 TriplanarSamplingCF( sampler2D topTexMap, sampler2D midTexMap, sampler2D botTexMap, float3 worldPos, float3 worldNormal, float falloff, float tilling, float3 normalScale, float3 index )
+		inline float4 TriplanarSamplingCF( sampler2D topTexMap, sampler2D midTexMap, sampler2D botTexMap, float3 worldPos, float3 worldNormal, float falloff, float2 tiling, float3 normalScale, float3 index )
 		{
 			float3 projNormal = ( pow( abs( worldNormal ), falloff ) );
-			projNormal /= projNormal.x + projNormal.y + projNormal.z;
+			projNormal /= ( projNormal.x + projNormal.y + projNormal.z ) + 0.00001;
 			float3 nsign = sign( worldNormal );
 			float negProjNormalY = max( 0, projNormal.y * -nsign.y );
 			projNormal.y = max( 0, projNormal.y * nsign.y );
 			half4 xNorm; half4 yNorm; half4 yNormN; half4 zNorm;
-			xNorm = ( tex2D( midTexMap, tilling * worldPos.zy * float2( nsign.x, 1.0 ) ) );
-			yNorm = ( tex2D( topTexMap, tilling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
-			yNormN = ( tex2D( botTexMap, tilling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
-			zNorm = ( tex2D( midTexMap, tilling * worldPos.xy * float2( -nsign.z, 1.0 ) ) );
+			xNorm = ( tex2D( ASE_TEXTURE_PARAMS( midTexMap ), tiling * worldPos.zy * float2( nsign.x, 1.0 ) ) );
+			yNorm = ( tex2D( ASE_TEXTURE_PARAMS( topTexMap ), tiling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
+			yNormN = ( tex2D( ASE_TEXTURE_PARAMS( botTexMap ), tiling * worldPos.xz * float2( nsign.y, 1.0 ) ) );
+			zNorm = ( tex2D( ASE_TEXTURE_PARAMS( midTexMap ), tiling * worldPos.xy * float2( -nsign.z, 1.0 ) ) );
 			return xNorm * projNormal.x + yNorm * projNormal.y + yNormN * negProjNormalY + zNorm * projNormal.z;
 		}
 
@@ -130,25 +130,33 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 			float3 appendResult461 = (float3(_TopNormalScale , _BottomNormalScale , _BottomNormalScale));
 			float3 triplanar409 = TriplanarSamplingCNF( _TopNormal, _BottomNormal, _BottomNormal, ase_worldPos, ase_worldNormal, _TriplanarFallOff, temp_output_422_0, appendResult461, float3(0,0,0) );
 			float3 tanTriplanarNormal409 = mul( ase_worldToTangent, triplanar409 );
-			float2 uv_ShapeBumpMap = i.uv_texcoord * _ShapeBumpMap_ST.xy + _ShapeBumpMap_ST.zw;
-			float3 temp_output_455_0 = BlendNormals( tanTriplanarNormal409 , UnpackScaleNormal( tex2D( _ShapeBumpMap, uv_ShapeBumpMap ) ,_ShapeBumpMapScale ) );
-			float2 uv_DetailAlbedoMap = i.uv_texcoord * _DetailAlbedoMap_ST.xy + _DetailAlbedoMap_ST.zw;
+			float2 uv0_ShapeBumpMap = i.uv_texcoord * _ShapeBumpMap_ST.xy + _ShapeBumpMap_ST.zw;
+			float3 temp_output_455_0 = BlendNormals( tanTriplanarNormal409 , UnpackScaleNormal( tex2D( _ShapeBumpMap, uv0_ShapeBumpMap ), _ShapeBumpMapScale ) );
+			float2 uv0_DetailMapAlbedoRNyGNxA = i.uv_texcoord * _DetailMapAlbedoRNyGNxA_ST.xy + _DetailMapAlbedoRNyGNxA_ST.zw;
+			float4 tex2DNode437 = tex2D( _DetailMapAlbedoRNyGNxA, uv0_DetailMapAlbedoRNyGNxA );
+			float2 appendResult11_g1 = (float2(tex2DNode437.a , tex2DNode437.g));
+			float2 temp_output_4_0_g1 = ( ( ( appendResult11_g1 * float2( 2,2 ) ) + float2( -1,-1 ) ) * _DetailNormalMapScale );
+			float2 break8_g1 = temp_output_4_0_g1;
+			float dotResult5_g1 = dot( temp_output_4_0_g1 , temp_output_4_0_g1 );
+			float temp_output_9_0_g1 = sqrt( ( 1.0 - saturate( dotResult5_g1 ) ) );
+			float3 appendResult10_g1 = (float3(break8_g1.x , break8_g1.y , temp_output_9_0_g1));
 			float2 uv_DetailMask = i.uv_texcoord * _DetailMask_ST.xy + _DetailMask_ST.zw;
 			float4 tex2DNode447 = tex2D( _DetailMask, uv_DetailMask );
-			float3 lerpResult441 = lerp( temp_output_455_0 , BlendNormals( temp_output_455_0 , UnpackScaleNormal( tex2D( _DetailNormalMap, uv_DetailAlbedoMap ) ,_DetailNormalMapScale ) ) , tex2DNode447.a);
+			float3 lerpResult441 = lerp( temp_output_455_0 , BlendNormals( temp_output_455_0 , appendResult10_g1 ) , tex2DNode447.a);
 			o.Normal = lerpResult441;
 			float4 triplanar406 = TriplanarSamplingCF( _TopAlbedo, _BottomAlbedo, _BottomAlbedo, ase_worldPos, ase_worldNormal, _TriplanarFallOff, temp_output_422_0, float3( 1,1,1 ), float3(0,0,0) );
 			float4 temp_output_459_0 = ( triplanar406 * _Color );
+			float4 temp_cast_2 = (( _DetailAlbedoPower * tex2DNode437.r )).xxxx;
 			float4 blendOpSrc433 = temp_output_459_0;
-			float4 blendOpDest433 = ( _DetailAlbedoPower * tex2D( _DetailAlbedoMap, uv_DetailAlbedoMap ) );
+			float4 blendOpDest433 = temp_cast_2;
 			float4 lerpResult434 = lerp( temp_output_459_0 , (( blendOpDest433 > 0.5 ) ? ( 1.0 - ( 1.0 - 2.0 * ( blendOpDest433 - 0.5 ) ) * ( 1.0 - blendOpSrc433 ) ) : ( 2.0 * blendOpDest433 * blendOpSrc433 ) ) , ( _DetailAlbedoPower * tex2DNode447.a ));
-			o.Albedo = lerpResult434.rgb;
+			o.Albedo = lerpResult434.xyz;
 			float4 triplanar414 = TriplanarSamplingCF( _TopMetalicRAmbientOcclusionGSmoothnessA, _BottomMetalicRAmbientOcclusionGSmoothnessA, _BottomMetalicRAmbientOcclusionGSmoothnessA, ase_worldPos, ase_worldNormal, _TriplanarFallOff, temp_output_422_0, float3( 1,1,1 ), float3(0,0,0) );
 			o.Metallic = ( triplanar414.x * _MetallicPower );
 			o.Smoothness = ( triplanar414.w * _SmoothnessPower );
 			float clampResult96 = clamp( triplanar414.y , ( 1.0 - _AmbientOcclusionPower ) , 1.0 );
-			float clampResult450 = clamp( tex2D( _ShapeAmbientOcclusionG, uv_ShapeBumpMap ).g , ( 1.0 - _ShapeAmbientOcclusionPower ) , 1.0 );
-			o.Occlusion = ( clampResult96 + clampResult450 );
+			float clampResult450 = clamp( tex2D( _ShapeAmbientOcclusionG, uv0_ShapeBumpMap ).g , ( 1.0 - _ShapeAmbientOcclusionPower ) , 1.0 );
+			o.Occlusion = min( clampResult96 , clampResult450 );
 			o.Alpha = 1;
 		}
 
@@ -170,7 +178,7 @@ Shader "NatureManufacture Shaders/Standard Shaders/Standard Metalic UV Free Face
 			#pragma multi_compile UNITY_PASS_SHADOWCASTER
 			#pragma skip_variants FOG_LINEAR FOG_EXP FOG_EXP2
 			#include "HLSLSupport.cginc"
-			#if ( SHADER_API_D3D11 || SHADER_API_GLCORE || SHADER_API_GLES3 || SHADER_API_METAL || SHADER_API_VULKAN )
+			#if ( SHADER_API_D3D11 || SHADER_API_GLCORE || SHADER_API_GLES || SHADER_API_GLES3 || SHADER_API_METAL || SHADER_API_VULKAN )
 				#define CAN_SKIP_VPOS
 			#endif
 			#include "UnityCG.cginc"
