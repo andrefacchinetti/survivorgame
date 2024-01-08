@@ -97,6 +97,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 	void AnimEventBebeuAgua()
 	{
 		playerController.statsJogador.setarSedeAtual(playerController.statsJogador.sedeAtual + 100);
+		playerController.PararAbility(playerController.beberAguaRioAbility);
 	}
 
 	void AnimEventBebeuGarrafa()

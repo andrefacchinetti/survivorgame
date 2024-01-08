@@ -245,10 +245,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
             }
         }
-        /*else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
+        else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
         {
             interacaoBeberAgua(hit);
-        }*/
+        }
         else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
         {
             interacaoEncherGarrafa(hit);
