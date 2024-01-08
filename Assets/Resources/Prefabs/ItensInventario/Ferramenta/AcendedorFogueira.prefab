@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 482242383785524713}
   - component: {fileID: 6285686137343759969}
   - component: {fileID: 4236582786131573064}
-  - component: {fileID: 138011823345932274}
+  - component: {fileID: 8973798074695706203}
   m_Layer: 11
   m_Name: AcendedorFogueira
   m_TagString: ItemDrop
@@ -135,8 +135,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: -4259321514581051041, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   estaSendoComido: 0
---- !u!136 &138011823345932274
-CapsuleCollider:
+--- !u!65 &8973798074695706203
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -153,11 +153,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.1
-  m_Height: 1.1
-  m_Direction: 0
-  m_Center: {x: 0.26, y: 0, z: 0}
+  serializedVersion: 3
+  m_Size: {x: 0.023, y: 0.13, z: 0.06}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3610880050327857804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -169,6 +167,18 @@ PrefabInstance:
     - target: {fileID: 1482338108640310, guid: ed2b54f035699d54ba22e379cc6e9cd6, type: 3}
       propertyPath: m_Name
       value: Lighter
+      objectReference: {fileID: 0}
+    - target: {fileID: 4175660320198562, guid: ed2b54f035699d54ba22e379cc6e9cd6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4175660320198562, guid: ed2b54f035699d54ba22e379cc6e9cd6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4175660320198562, guid: ed2b54f035699d54ba22e379cc6e9cd6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4175660320198562, guid: ed2b54f035699d54ba22e379cc6e9cd6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -209,6 +219,10 @@ PrefabInstance:
     - target: {fileID: 4175660320198562, guid: ed2b54f035699d54ba22e379cc6e9cd6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4175660320198562, guid: ed2b54f035699d54ba22e379cc6e9cd6, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
