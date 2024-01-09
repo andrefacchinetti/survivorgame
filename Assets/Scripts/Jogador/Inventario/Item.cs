@@ -170,7 +170,7 @@ public class Item : MonoBehaviourPunCallbacks
                     inventario.playerController.varaDePescaFP.peixeDaVara.SetActive(false);
                 }
             }
-            else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemAcendedorFogueira))
+            else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemIsqueiro))
             {
                 inventario.playerController.acendedorFogueiraTP = inventario.playerController.contentItemsTP.GetComponentInChildren<AcendedorFogueira>();
                 inventario.playerController.acendedorFogueiraFP = inventario.playerController.contentItemsFP.GetComponentInChildren<AcendedorFogueira>();

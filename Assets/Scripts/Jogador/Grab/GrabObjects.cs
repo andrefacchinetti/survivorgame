@@ -312,7 +312,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
                 possibleInteraction = true;
             }
-            else if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemAcendedorFogueira))
+            else if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemIsqueiro))
             {
                 playerController.fogueiraAcendendo = hit.transform.gameObject;
                 if (!hit.transform.gameObject.GetComponent<Fogueira>().fogo.isFogoAceso)
