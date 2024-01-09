@@ -36,9 +36,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Item itemColetando;
 	[SerializeField] [HideInInspector] public ItemDefinitionBase itemDefinitionBaseColentando;
 	[SerializeField] [HideInInspector] public GameController gameController;
+
 	[SerializeField] [HideInInspector] public Swim swimAbility;
 	[SerializeField] [HideInInspector] public ClimbFromWater climbWaterAbility;
-	[SerializeField] [HideInInspector] public HeightChange heightChange;
+	[SerializeField] [HideInInspector] public HeightChange heightChangeAbility;
+	[SerializeField] [HideInInspector] public SpeedChange speedChangeAbility;
 	[SerializeField] [HideInInspector] public Pescar pescarAbility;
 	[SerializeField] [HideInInspector] public AcenderFogueira acenderFogueiraAbility;
 	[SerializeField] [HideInInspector] public ApagarFogueira apagarFogueiraAbility; 
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public Dissecar dissecarAbility;
 	[SerializeField] [HideInInspector] public BeberAguaRio beberAguaRioAbility;
 	[SerializeField] [HideInInspector] public EncherGarrafaRio encherGarrafaRioAbility;
+	[SerializeField] [HideInInspector] public Revive reviveAbility;
 
 	[HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
 	[HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
@@ -69,7 +72,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		characterLocomotion = GetComponent<UltimateCharacterLocomotion>();
 		swimAbility = characterLocomotion.GetAbility<Swim>();
 		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();
-		heightChange = characterLocomotion.GetAbility<HeightChange>();
+		heightChangeAbility = characterLocomotion.GetAbility<HeightChange>();
+		speedChangeAbility = characterLocomotion.GetAbility<SpeedChange>();
 		pescarAbility = characterLocomotion.GetAbility<Pescar>();
 		acenderFogueiraAbility = characterLocomotion.GetAbility<AcenderFogueira>();
 		apagarFogueiraAbility = characterLocomotion.GetAbility<ApagarFogueira>();
@@ -77,6 +81,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		dissecarAbility = characterLocomotion.GetAbility<Dissecar>();
 		beberAguaRioAbility = characterLocomotion.GetAbility<BeberAguaRio>();
 		encherGarrafaRioAbility = characterLocomotion.GetAbility<EncherGarrafaRio>();
+		reviveAbility = characterLocomotion.GetAbility<Revive>();
 
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
@@ -87,6 +92,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	}
 
 	bool jaSaiuDaAgua = true, tt=false;
+	bool recarregandoEnergia = false;
 	void Update()
 	{
 		if (PV == null) return;
@@ -97,8 +103,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		{
 			if (Input.GetButtonDown("Crouch"))
 			{
-				if (heightChange.IsActive) heightChange.StopAbility(true);
-                else heightChange.StartAbility();
+				if (heightChangeAbility.IsActive) heightChangeAbility.StopAbility(true);
+                else heightChangeAbility.StartAbility();
+			}
+
+			bool isRunning = Input.GetButton("Change Speeds") && pesoGrab == 0 && !recarregandoEnergia;
+			if (isRunning)
+			{
+				statsJogador.setarEnergiaAtual(statsJogador.energiaAtual - statsJogador.consumoEnergiaPorSegundo * Time.deltaTime);
+				statsJogador.setarSedeAtual(statsJogador.sedeAtual - (statsJogador.valorDiminuiSedePorTempo / statsJogador.consumoEnergiaPorSegundo) * Time.deltaTime);
+				speedChangeAbility.StartAbility();
+			}
+			else
+			{
+				statsJogador.setarEnergiaAtual(statsJogador.energiaAtual + statsJogador.recuperacaoEnergiaPorSegundo * Time.deltaTime);
+				if (statsJogador.energiaAtual > 10) recarregandoEnergia = false;
+				if (speedChangeAbility.IsActive) speedChangeAbility.StopAbility(true);
+			}
+			if (statsJogador.energiaAtual <= 0 && !recarregandoEnergia)
+			{
+				recarregandoEnergia = true;
 			}
 
 			if (inventario.itemNaMao != null)
@@ -190,7 +214,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 	public void StartarAbility(Ability habilidade)
     {
-		characterLocomotion.TryStopAbility(heightChange, true);
+		characterLocomotion.TryStopAbility(heightChangeAbility, true);
 		characterLocomotion.TryStartAbility(habilidade);
 	}
 

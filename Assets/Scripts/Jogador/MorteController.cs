@@ -20,16 +20,20 @@ public class MorteController : MonoBehaviour
 
     void Update()
     {
-        if (!playerController.characterHealth.IsAlive() && !hudMorte.activeSelf) // Checa se o jogador está morto e inicia o temporizador
+        if (!playerController.characterHealth.IsAlive()) // Checa se o jogador está morto e inicia o temporizador
         {
-            AttHudJogadorMorreu();
-        }
-        if (hudMorte.activeSelf && !playerController.characterHealth.IsAlive())
-        {
-            if (Input.GetButtonDown("Use"))
+            if (!hudMorte.activeSelf)
             {
-                tempoAtual = 0;
+                AttHudJogadorMorreu();
             }
+            else
+            {
+                if (Input.GetButtonDown("Use"))
+                {
+                    tempoAtual = 0;
+                }
+            }
+            
         }
     }
 
@@ -45,9 +49,10 @@ public class MorteController : MonoBehaviour
 
         if (playerController != null && playerController.gameController != null && playerController.gameController.respawnPointJogador != null)
         {
-            this.gameObject.transform.position = playerController.gameController.respawnPointJogador.transform.position;
+            Transform destinoRespawn = playerController.gameController.respawnPointJogador.transform;
+            playerController.characterLocomotion.SetPositionAndRotation(destinoRespawn.position, destinoRespawn.rotation, false, false);
             reviverJogador();
-            Debug.Log("Respawnou jogador na posição: " + playerController.gameController.respawnPointJogador.transform.position);
+            Debug.Log("Respawnou  jogador na posição: " + playerController.gameController.respawnPointJogador.transform.position);
         }
         else
         {

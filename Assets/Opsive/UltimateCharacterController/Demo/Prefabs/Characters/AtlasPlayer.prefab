@@ -44471,8 +44471,8 @@ MonoBehaviour:
   - rid: 368926224600793144
   - rid: 5675375734969336431
   m_Abilities:
-  - rid: 3024401404359082001
   - rid: 3024401404359081985
+  - rid: 3024401404359082001
   - rid: 368926426650116476
   - rid: 1246164547599597590
   - rid: 368926206858625272
@@ -45275,8 +45275,8 @@ MonoBehaviour:
           m_BlockList: []
           m_Default: 1
         m_Enabled: 1
-        m_StartType: 3
-        m_StopType: 2
+        m_StartType: 1
+        m_StopType: 1
         m_InputNames:
         - Change Speeds
         m_LongPressDuration: 0.5
@@ -46576,14 +46576,14 @@ MonoBehaviour:
           m_Preset: {fileID: 0}
           m_BlockList: []
           m_Default: 1
-        m_Enabled: 0
+        m_Enabled: 1
         m_StartType: 1
         m_StopType: 1
         m_InputNames: []
         m_LongPressDuration: 0.5
         m_WaitForLongPressRelease: 0
         m_AbilityStarter:
-          rid: -2
+          rid: 6506621957663359120
         m_AttributeModifier:
           m_AttributeName: 
           m_Amount: 0
@@ -48222,6 +48222,13 @@ MonoBehaviour:
         m_AbilityMessageText: 
         m_AbilityMessageIcon: {fileID: 0}
         m_InspectorDescription: 
+    - rid: 6506621957663359120
+      type: {class: ComboTimeout, ns: Opsive.UltimateCharacterController.Character.Abilities.Starters, asm: Opsive.UltimateCharacterController}
+      data:
+        m_ComboInputElements:
+        - m_InputName: 
+          m_AxisInput: 0
+          m_Timeout: 0
     - rid: 6628036857415860224
       type: {class: EquipUnequip, ns: Opsive.UltimateCharacterController.Character.Abilities.Items, asm: Opsive.UltimateCharacterController}
       data:
@@ -49179,7 +49186,7 @@ MonoBehaviour:
     m_MinValue: 0
     m_MaxValue: 100
     m_Value: 100
-    m_AutoUpdateValueType: 2
+    m_AutoUpdateValueType: 0
     m_UpdateWhenInactive: 0
     m_AutoUpdateStartDelay: 1
     m_AutoUpdateInterval: 0.1
@@ -49469,6 +49476,8 @@ MonoBehaviour:
   tempoPraDiminuirStatsFomeSedePorSegundos: 120
   valorDiminuiFomePorTempo: 5
   valorDiminuiSedePorTempo: 10
+  consumoEnergiaPorSegundo: 5
+  recuperacaoEnergiaPorSegundo: 2
 --- !u!114 &1109976662794217089
 MonoBehaviour:
   m_ObjectHideFlags: 0

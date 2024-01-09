@@ -285,10 +285,10 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character
         {
             EventHandler.UnregisterEvent<CharacterItem, int>(m_GameObject, "OnInventoryUnequipItem", OnUnequipItem);
 
-            for (int i = 0; i < m_Renderers.Count; ++i) {
+            /*for (int i = 0; i < m_Renderers.Count; ++i) {
                 m_Renderers[i].materials = (!m_CharacterLocomotion.FirstPersonPerspective || 
                     (m_RendererThirdPersonObjects[i] == null)) ? m_OriginalMaterials[i] : m_InvisibleMaterials[i];
-            }
+            }*/
         }
 
         /// <summary>

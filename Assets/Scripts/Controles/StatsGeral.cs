@@ -58,7 +58,7 @@ public class StatsGeral : MonoBehaviour
             PlayerController pc = attacker.GetComponentInParent<PlayerController>();
             if (pc != null)
             {
-                if (pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name == construcaoStats.itemMarteloReparador.name)
+                if (pc.inventario.itemNaMao != null && pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name == construcaoStats.itemMarteloReparador.name)
                 {
                     TakeCura(dano);
                     return;

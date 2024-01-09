@@ -18,7 +18,9 @@ public class StatsJogador : MonoBehaviour
     //STATS CURRENT
     [SerializeField] [HideInInspector] public float fomeAtual, sedeAtual, energiaAtual;
 
-    [SerializeField] float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
+    [SerializeField] public float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
+    public float consumoEnergiaPorSegundo = 5.0f;
+    public float recuperacaoEnergiaPorSegundo = 2.0f;
 
     private void Awake()
     {
@@ -101,6 +103,8 @@ public class StatsJogador : MonoBehaviour
 
     public void AcoesReviveu()
     {
+        Debug.Log("revivendo");
+        playerController.StartarAbility(playerController.reviveAbility);
         playerController.canMove = true;
         playerController.corpoDissecando = null;
         playerController.animalCapturado = null;
