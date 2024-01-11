@@ -244,7 +244,8 @@ public class Item : MonoBehaviourPunCallbacks
     {
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + curaFome);
-        inventario.statsJogador.TakeHealHealth(curaVida);
+        if(curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida));
+        else inventario.statsJogador.TakeHealHealth(curaVida);
     }
 
     public void diminuirQuantidade(int valorQtd)
