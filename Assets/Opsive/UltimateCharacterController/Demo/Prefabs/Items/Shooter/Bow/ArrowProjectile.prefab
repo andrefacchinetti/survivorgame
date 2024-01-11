@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: 7718780275033468639}
   - component: {fileID: 7676667658641291101}
   - component: {fileID: 7659399149177937773}
-  m_Layer: 28
+  - component: {fileID: 4633606748257461700}
+  - component: {fileID: 3384258987123876186}
+  m_Layer: 11
   m_Name: ArrowProjectile
-  m_TagString: Untagged
+  m_TagString: ItemDrop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -352,6 +354,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SurfaceType: {fileID: 0}
   m_AllowDecals: 0
+--- !u!114 &4633606748257461700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7771915061955658277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15022b58aaf9a7e4499948d5529d9bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 114053257604410210, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  estaSendoComido: 0
+--- !u!136 &3384258987123876186
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7771915061955658277}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.004768
+  m_Height: 0.6771279
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1731066323027553693
 PrefabInstance:
   m_ObjectHideFlags: 0
