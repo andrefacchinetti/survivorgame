@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public TMP_Text txMsgAlerta;
 
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
+
+	[SerializeField] [HideInInspector] public Inventory inventory;
 	[SerializeField] [HideInInspector] public UltimateCharacterLocomotion characterLocomotion;
 	[SerializeField] [HideInInspector] public CharacterHealth characterHealth;
 	[SerializeField] [HideInInspector] public CharacterAttributeManager characterAttributeManager;
@@ -69,6 +71,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		characterHealth = GetComponent<CharacterHealth>();
 		characterAttributeManager = GetComponent<CharacterAttributeManager>();
 		txMsgAlerta.text = "";
+
+		inventory = GetComponent<Inventory>();
 		characterLocomotion = GetComponent<UltimateCharacterLocomotion>();
 		swimAbility = characterLocomotion.GetAbility<Swim>();
 		climbWaterAbility = characterLocomotion.GetAbility<ClimbFromWater>();

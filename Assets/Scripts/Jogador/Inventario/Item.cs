@@ -227,8 +227,7 @@ public class Item : MonoBehaviourPunCallbacks
         {
             objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
         }
-        inventario.RemoverItemDoInventario(this, quantidade); //TODO: implementar opcao de dropar itens em quantidade
-        inventario.inventory.RemoveItemIdentifierAmount(itemIdentifierAmount.ItemIdentifier, quantidade);
+        inventario.RemoverItemDoInventarioPorItemIdentifier(itemIdentifierAmount.ItemIdentifier, quantidade);
     }
 
     public void UsarItem() //Usa item qdo aperta o botoa do mouse com o item na mao

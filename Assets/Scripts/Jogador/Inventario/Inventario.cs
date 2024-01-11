@@ -7,6 +7,7 @@ using Obi;
 using Opsive.UltimateCharacterController.Inventory;
 using Opsive.Shared.Utility;
 using Opsive.UltimateCharacterController.Items;
+using Opsive.Shared.Events;
 using Opsive.Shared.Inventory;
 
 public class Inventario : MonoBehaviour
@@ -172,11 +173,30 @@ public class Inventario : MonoBehaviour
     {
         foreach (ItemIdentifierAmount ingrediente in ingredientes)
         {
-            this.RemoverItemDoInventarioPorNome(ingrediente.ItemDefinition, ingrediente.Amount);
+            inventory.RemoveItemIdentifierAmount(ingrediente.ItemIdentifier, ingrediente.Amount);
         }
     }
 
     public void RemoverItemDoInventarioPorNome(ItemDefinitionBase itemDefinition, int quantidadeResponse)
+    {
+        inventory.RemoveItemIdentifierAmount(itemDefinition.CreateItemIdentifier(), quantidadeResponse);
+    }
+
+    public void RemoverItemDoInventarioPorItemIdentifier(IItemIdentifier itemIdentifier, int quantidadeResponse)
+    {
+        inventory.RemoveItemIdentifierAmount(itemIdentifier, quantidadeResponse);
+    }
+
+    public void RemoverItemDoInventario(Item itemResponse, int quantidadeResponse)
+    {
+        inventory.RemoveItemIdentifierAmount(itemResponse.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
+    }
+
+    public void ConsumirItemDaMao()
+    {
+        ConsumirItemDaMao(false);
+    }
+    public void removendoItemDoInventarioPorNome(ItemDefinitionBase itemDefinition, int quantidadeResponse)
     {
         foreach (Item item in itens)
         {
@@ -186,16 +206,6 @@ public class Inventario : MonoBehaviour
                 return;
             }
         }
-    }
-
-    public void RemoverItemDoInventario(Item itemResponse, int quantidadeResponse)
-    {
-        itemResponse.diminuirQuantidade(quantidadeResponse, false);
-    }
-
-    public void ConsumirItemDaMao()
-    {
-        ConsumirItemDaMao(false);
     }
 
     public void ConsumirItemDaMao(bool isCordaPartindo)
