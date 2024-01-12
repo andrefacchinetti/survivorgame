@@ -67,11 +67,11 @@ public class Inventario : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetButtonDown("Inventario"))
         {
             ToggleInventario();
         }
-        if (Input.GetKeyDown(KeyCode.Escape) || !playerController.characterHealth.IsAlive())
+        if (Input.GetButtonDown("Hide") || !playerController.characterHealth.IsAlive())
         {
             FecharInventario();
         }
@@ -111,6 +111,7 @@ public class Inventario : MonoBehaviour
         canvasInventario.SetActive(false);
         cameraInventario.SetActive(false);
         playerController.canMove = true;
+        EventHandler.ExecuteEvent(playerController.gameObject, "OnEnableGameplayInput", true);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -121,6 +122,7 @@ public class Inventario : MonoBehaviour
         canvasInventario.SetActive(true);
         cameraInventario.SetActive(true);
         playerController.canMove = false;
+        EventHandler.ExecuteEvent(playerController.gameObject, "OnEnableGameplayInput", false);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
     }
