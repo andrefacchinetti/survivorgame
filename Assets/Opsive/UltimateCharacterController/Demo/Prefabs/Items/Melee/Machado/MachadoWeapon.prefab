@@ -179,8 +179,8 @@ MonoBehaviour:
   m_SpawnParent:
     m_ID: 50022001
     m_Object: {fileID: 0}
-  m_LocalSpawnPosition: {x: 0.025, y: -0.002, z: 0.148}
-  m_LocalSpawnRotation: {x: 249.899, y: 93.943, z: -0.2940063}
+  m_LocalSpawnPosition: {x: 0, y: 0, z: 0}
+  m_LocalSpawnRotation: {x: 0, y: 0, z: 0}
   m_LocalSpawnScale: {x: 1, y: 1, z: 1}
   m_FirstPersonBaseObjectID: 0
   m_VisibleItem: {fileID: 5316769507000729773}
@@ -340,6 +340,7 @@ MonoBehaviour:
     m_Modules:
     - rid: 5675375867080475064
     - rid: 5876176267361910787
+    - rid: 6506622029638664656
   m_AttackEffectsModuleGroup:
     m_Modules:
     - rid: 5031970493140303902
@@ -854,7 +855,7 @@ MonoBehaviour:
         m_Bindings:
           m_Bindings: []
         m_Enabled: 1
-        m_ID: 0
+        m_ID: -1
         m_Name: 
         m_GizmoSettings:
           DrawGizmo: 0
@@ -862,7 +863,7 @@ MonoBehaviour:
           Color1: {r: 1, g: 0, b: 0, a: 1}
           Color2: {r: 1, g: 0.1, b: 0.1, a: 0.3}
           Color3: {r: 1, g: 0, b: 1, a: 1}
-        m_MultiHitFrameCount: 200
+        m_MultiHitFrameCount: 50
         m_ImpactLayers:
           serializedVersion: 2
           m_Bits: 3758096345
@@ -877,7 +878,7 @@ MonoBehaviour:
             m_MinimumYOffset: 0
             m_MinimumZOffset: 0
             m_RequireMovement: 0
-            m_SingleHit: 1
+            m_SingleHit: 0
             m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
           m_ThirdPerson:
           - m_Collider: {fileID: 7555794908783022076}
@@ -886,7 +887,7 @@ MonoBehaviour:
             m_MinimumYOffset: 0
             m_MinimumZOffset: 0
             m_RequireMovement: 0
-            m_SingleHit: 1
+            m_SingleHit: 0
             m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
         m_Density: 0
     - rid: 5876176267361910787
@@ -904,7 +905,7 @@ MonoBehaviour:
         m_Bindings:
           m_Bindings: []
         m_Enabled: 0
-        m_ID: -1
+        m_ID: -2
         m_Name: 
         m_GizmoSettings:
           DrawGizmo: 0
@@ -912,7 +913,7 @@ MonoBehaviour:
           Color1: {r: 1, g: 0, b: 0, a: 1}
           Color2: {r: 1, g: 0.1, b: 0.1, a: 0.3}
           Color3: {r: 1, g: 0, b: 1, a: 1}
-        m_MultiHitFrameCount: 10
+        m_MultiHitFrameCount: 100
         m_ImpactLayers:
           serializedVersion: 2
           m_Bits: 3758096345
@@ -925,9 +926,9 @@ MonoBehaviour:
             m_DamageMultiplier: 1
             m_ColliderObjectID: -1
             m_MinimumYOffset: 0
-            m_MinimumZOffset: 0
+            m_MinimumZOffset: 1
             m_RequireMovement: 0
-            m_SingleHit: 1
+            m_SingleHit: 0
             m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
           m_ThirdPerson:
           - m_Collider: {fileID: 7555794908783022076}
@@ -936,8 +937,36 @@ MonoBehaviour:
             m_MinimumYOffset: 0
             m_MinimumZOffset: 0
             m_RequireMovement: 0
-            m_SingleHit: 1
+            m_SingleHit: 0
             m_SurfaceImpact: {fileID: 11400000, guid: c5ab4290ae28ad645a9e5b3483fc05cb, type: 2}
+    - rid: 6506622029638664656
+      type: {class: SphereOverlapCollision, ns: Opsive.UltimateCharacterController.Items.Actions.Modules.Melee, asm: Opsive.UltimateCharacterController}
+      data:
+        m_States:
+        - m_Name: Default
+          m_Preset: {fileID: 0}
+          m_BlockList: []
+          m_Default: 1
+        m_Bindings:
+          m_Bindings: []
+        m_Enabled: 0
+        m_ID: 2
+        m_Name: 
+        m_GizmoSettings:
+          DrawGizmo: 0
+          DrawGizmoOnSelected: 1
+          Color1: {r: 1, g: 0, b: 0, a: 1}
+          Color2: {r: 1, g: 0.1, b: 0.1, a: 0.3}
+          Color3: {r: 1, g: 0, b: 1, a: 1}
+        m_MultiHitFrameCount: 50
+        m_ImpactLayers:
+          serializedVersion: 2
+          m_Bits: 3758096345
+        m_TriggerInteraction: 1
+        m_MaxCollisionCount: 20
+        m_ForwardShieldSensitivity: -0.75
+        m_SphereCenter: {x: 0, y: 1, z: 1}
+        m_SphereRadius: 0.4
 --- !u!1001 &1928598345505750772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -992,11 +1021,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8221411923157135624, guid: b3e3d251694f404498a314fdc6b105b7, type: 3}
       propertyPath: m_Size.x
-      value: 0.2
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 8221411923157135624, guid: b3e3d251694f404498a314fdc6b105b7, type: 3}
       propertyPath: m_Size.y
-      value: 0.2
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 8221411923157135624, guid: b3e3d251694f404498a314fdc6b105b7, type: 3}
       propertyPath: m_Size.z
@@ -1004,7 +1033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8221411923157135624, guid: b3e3d251694f404498a314fdc6b105b7, type: 3}
       propertyPath: m_Center.y
-      value: -0.12
+      value: -0.09
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1080,11 +1109,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8876944812034476113, guid: 08e8b2d30a286df4b8d7182606e72d61, type: 3}
       propertyPath: m_Size.x
-      value: 0.2
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 8876944812034476113, guid: 08e8b2d30a286df4b8d7182606e72d61, type: 3}
       propertyPath: m_Size.y
-      value: 0.2
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 8876944812034476113, guid: 08e8b2d30a286df4b8d7182606e72d61, type: 3}
       propertyPath: m_Size.z
@@ -1092,7 +1121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8876944812034476113, guid: 08e8b2d30a286df4b8d7182606e72d61, type: 3}
       propertyPath: m_Center.y
-      value: -0.12
+      value: -0.09
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
