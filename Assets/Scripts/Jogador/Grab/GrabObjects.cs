@@ -107,14 +107,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             possibleInteraction = false;
         }
 
-        if (grabedObj != null)
+        if (grabedObj != null || !grabedObj.GetComponent<Rigidbody>())
         {
-            if (!grabedObj.GetComponent<Rigidbody>())
-            {
-                Debug.LogError("Coloque um Rigidbody no objeto!");
-                return;
-            }
-
             Rigidbody objRig = grabedObj.GetComponent<Rigidbody>();
             Vector3 posGrab = cam.transform.position + cam.transform.forward * maxDistPlayer;
             float dist = Vector3.Distance(grabedObj.transform.position, posGrab);
@@ -137,6 +131,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else
         {
             playerController.pesoGrab = 0;
+            possibleGrab = false;
+            possibleInteraction = false;
         }
     }
 

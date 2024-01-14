@@ -70,7 +70,14 @@ public class StatsGeral : MonoBehaviour
             if (collisorSofreDano.isApenasFerramentaRecomendadaCausaDano)
             {
                 PlayerController pc = attacker.GetComponentInParent<PlayerController>();
-                dano = collisorSofreDano.CalcularDanoPorArmaCausandoDano(pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, dano);
+                if(pc != null && pc.inventario.itemNaMao != null)
+                {
+                    dano = collisorSofreDano.CalcularDanoPorArmaCausandoDano(pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, dano);
+                }
+                else //Else serve para evitar que lobisomens ou outras coisas causem dano em dropa recursos
+                {
+                    dano = 0;
+                }
             }
         }
         health.AplicarDanoNoHealth(dano);
