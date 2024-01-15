@@ -49,7 +49,7 @@ public class CheckGroundedContact : MonoBehaviourPunCallbacks
         {
             if (collision.gameObject.GetComponent<PhotonView>().ViewID == grabObjects.grabedObj.GetComponent<PhotonView>().ViewID)
             {
-                grabObjects.UngrabObject();
+                grabObjects.UngrabObject(grabObjects.grabedObj.GetComponent<Rigidbody>());
             }
         }
     }
@@ -60,7 +60,7 @@ public class CheckGroundedContact : MonoBehaviourPunCallbacks
         {
             if (collision.gameObject.GetComponent<PhotonView>().ViewID == grabObjects.grabedObj.GetComponent<PhotonView>().ViewID)
             {
-                grabObjects.UngrabObject();
+                grabObjects.UngrabObject(grabObjects.grabedObj.GetComponent<Rigidbody>());
             }
         }
     }

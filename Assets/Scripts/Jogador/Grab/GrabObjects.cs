@@ -43,12 +43,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     }
 
 
-    public void UngrabObject()
+    public void UngrabObject(Rigidbody objRig)
     {
         if (grabedObj == null) return;
-        Rigidbody objRig = grabedObj.GetComponent<Rigidbody>();
-        objRig.drag = rigSaveGrabed.x;
-        objRig.angularDrag = rigSaveGrabed.y;
+        if(objRig != null)
+        {
+            objRig.drag = rigSaveGrabed.x;
+            objRig.angularDrag = rigSaveGrabed.y;
+        }
         rigSaveGrabed = Vector2.zero;
         grabedObj = null;
         playerController.pesoGrab = 0;
@@ -103,13 +105,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         }
         else
         {
-            possibleGrab = false;
-            possibleInteraction = false;
+            limparViewGrabed();
         }
 
-        if (grabedObj != null || !grabedObj.GetComponent<Rigidbody>())
+        if (grabedObj != null)
         {
             Rigidbody objRig = grabedObj.GetComponent<Rigidbody>();
+
+            if (!objRig)
+            {
+                UngrabObject(objRig);
+                return;
+            }
+
             Vector3 posGrab = cam.transform.position + cam.transform.forward * maxDistPlayer;
             float dist = Vector3.Distance(grabedObj.transform.position, posGrab);
             float calc = forceGrab * dist * 6 * Time.deltaTime;
@@ -125,17 +133,20 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
             if (Input.GetMouseButtonUp(1) || objRig.velocity.magnitude >= 20 || dist >= 10 )
             {
-                UngrabObject();
+                UngrabObject(objRig);
             }
         }
         else
         {
             playerController.pesoGrab = 0;
-            possibleGrab = false;
-            possibleInteraction = false;
         }
     }
 
+    private void limparViewGrabed()
+    {
+        possibleGrab = false;
+        possibleInteraction = false;
+    }
 
     private void executarAcoesDoHit(RaycastHit hit)
     {
