@@ -29,6 +29,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public PlayerController playerController;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
+    [SerializeField] [HideInInspector] public ArrastarItensInventario arrastarItensInventario;
 
     [SerializeField] TMP_Text txMsgLogItem;
     [SerializeField] RawImage imgLogItem;
@@ -43,6 +44,7 @@ public class Inventario : MonoBehaviour
         playerController = GetComponentInParent<PlayerController>();
         statsJogador = GetComponentInParent<StatsJogador>();
         craftMaos = GetComponent<CraftMaos>();
+        arrastarItensInventario = GetComponent<ArrastarItensInventario>();
     }
 
     void Start()
@@ -119,6 +121,7 @@ public class Inventario : MonoBehaviour
     public void AbrirInventario()
     {
         if (!playerController.canMove) return;
+        arrastarItensInventario.HoverNothing();
         canvasInventario.SetActive(true);
         cameraInventario.SetActive(true);
         playerController.canMove = false;

@@ -14555,7 +14555,7 @@ MonoBehaviour:
   - rid: 368926159479505030
   - rid: 368926159479505032
   - rid: 368926176517292603
-  m_CanChangePerspectives: 1
+  m_CanChangePerspectives: 0
   m_CanZoom: 0
   m_ZoomState: Zoom
   m_StateAppendItemIdentifierName: 0
@@ -44484,7 +44484,7 @@ MonoBehaviour:
   m_ThirdPersonStateName: ThirdPerson
   m_MovingStateName: Moving
   m_AirborneStateName: Airborne
-  m_MovementTypeFullName: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes.Adventure
+  m_MovementTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Character.MovementTypes.Combat
   m_FirstPersonMovementTypeFullName: Opsive.UltimateCharacterController.FirstPersonController.Character.MovementTypes.Combat
   m_ThirdPersonMovementTypeFullName: Opsive.UltimateCharacterController.ThirdPersonController.Character.MovementTypes.Combat
   m_MovementTypes:
@@ -86038,6 +86038,7 @@ MonoBehaviour:
   playerController: {fileID: 0}
   statsJogador: {fileID: 0}
   craftMaos: {fileID: 0}
+  arrastarItensInventario: {fileID: 0}
   txMsgLogItem: {fileID: 4380464443642238796}
   imgLogItem: {fileID: 7255971368845549842}
   texturaTransparente: {fileID: 2800000, guid: 8bc0afeb4792be54ab0a17dc67251c2b, type: 3}
@@ -130935,12 +130936,13 @@ PrefabInstance:
         'ORG-neck'\n\tTransform 'ORG-shin.R'\n\tTransform 'ORG-thigh.R'\n\tTransform
         'ORG-shin.L'\n\tTransform 'ORG-chest'\n\tTransform 'ORG-foot.R'\n\tTransform
         'ORG-foot.L'\n\tTransform 'ORG-head'\n\tand more ...\n\tFrom animation clip
-        'IdleFirstPerson'\n\tFrom animation clip 'AssaultRifleReloadFirstPerson'\n\tFrom
-        animation clip 'AssaultRifleFireFirstPerson'\n\tFrom animation clip 'AssaultRifleEquipFirstPerson'\n\tFrom
-        animation clip 'AssaultRifleUnequipFirstPerson'\n\tFrom animation clip 'AssaultRifleMeleeAttackFirstPerson'\n\tFrom
-        animation clip 'AssaultRifleDryFireFirstPerson'\n\tFrom animation clip 'AssaultRifleAimFirstPerson'\n\tFrom
+        'AssaultRifleReloadFirstPerson'\n\tFrom animation clip 'AssaultRifleFireFirstPerson'\n\tFrom
+        animation clip 'AssaultRifleEquipFirstPerson'\n\tFrom animation clip 'AssaultRifleUnequipFirstPerson'\n\tFrom
+        animation clip 'AssaultRifleMeleeAttackFirstPerson'\n\tFrom animation clip
+        'AssaultRifleDryFireFirstPerson'\n\tFrom animation clip 'AssaultRifleAimFirstPerson'\n\tFrom
         animation clip 'FragGrenadePrimaryThrowFirstPerson'\n\tFrom animation clip
-        'FragGrenadeReequipFirstPerson'\n\tand more ..."
+        'FragGrenadeReequipFirstPerson'\n\tFrom animation clip 'FragGrenadeEquipFirstPerson'\n\tand
+        more ..."
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: e88266b54de15624ab3bb0c2b6251323, type: 3}
       propertyPath: m_ApplyRootMotion
