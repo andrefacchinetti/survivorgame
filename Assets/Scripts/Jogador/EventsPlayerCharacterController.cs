@@ -28,6 +28,10 @@ public class EventsPlayerCharacterController : MonoBehaviour
 
     private void OnAdjustItemIdentifierAmount(IItemIdentifier itemIdentifier, int qtdAnterior, int qtdAtual)
     {
+        if (playerController.inventario.itemBody.Equals(itemIdentifier.GetItemDefinition())) //Itens não removiveis
+        {
+            return;
+        }
         Debug.Log("The inventory used " + itemIdentifier + ",  previousAmount: " + qtdAnterior + " newAmount: " + qtdAtual);
         if (qtdAnterior > qtdAtual)
         {

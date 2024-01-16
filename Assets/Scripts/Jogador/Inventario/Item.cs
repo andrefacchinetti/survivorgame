@@ -211,10 +211,10 @@ public class Item : MonoBehaviourPunCallbacks
     private void UnequipItemInventory()
     {
         Debug.Log("unequipou com sucesso");
+        inventario.playerController.PararAbilitys();
         inventario.inventory.GetComponent<ItemSetManagerBase>().UnEquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
         IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;
         inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdBody, groupIndex, true, true);
-        inventario.playerController.PararAbilitys();
     }
 
     public void DroparItem()
