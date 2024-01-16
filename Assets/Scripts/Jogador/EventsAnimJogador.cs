@@ -25,8 +25,9 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		foreach (Item.ItemDropStruct drop in playerController.itemsDropsPosDissecar)
 		{
 			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-			string nomePrefab = drop.tipoItem + "/" + drop.itemDefinition.name;
-			ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position,
+			string nomePrefab = (drop.nomePrefabAlternativo != null && drop.nomePrefabAlternativo.Length > 0) ? drop.nomePrefabAlternativo : drop.itemDefinition.name;
+			string prefabPath = drop.tipoItem + "/" + nomePrefab;
+			ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position,
 				playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.rotation, drop.materialPersonalizado, playerController.PV.ViewID);
 		}
 		playerController.itemsDropsPosDissecar = new List<Item.ItemDropStruct>();
@@ -85,8 +86,9 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 			Vector3 direction = hit.point - transform.position;
 			direction.Normalize();
 
-			string nomePrefab = playerController.inventario.itemNaMao.tipoItem + "/" + playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name;
-			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(nomePrefab, 1, transform.position, Quaternion.LookRotation(direction), null, playerController.PV.ViewID);
+			string nomePrefab = playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name;
+			string prefabPath = playerController.inventario.itemNaMao.tipoItem + "/" + nomePrefab;
+			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, transform.position, Quaternion.LookRotation(direction), null, playerController.PV.ViewID);
 			// Aplica a força na direção calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
 			//REMOVER ITEM DA MAO
