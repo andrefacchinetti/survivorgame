@@ -14442,7 +14442,6 @@ GameObject:
   - component: {fileID: 4850094825898424473}
   - component: {fileID: 7764077561596125616}
   - component: {fileID: 4540347312566279386}
-  - component: {fileID: 467608728338604452}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -15174,25 +15173,6 @@ MonoBehaviour:
   cam: {fileID: 3813098724038858983}
   playerController: {fileID: 5210577174366718764}
   inventario: {fileID: 7866029698388542841}
---- !u!114 &467608728338604452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1138372460463781578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5c61b7a04f29ad49a0985f4fb6c436d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ProxyVolume:
-    m_Shape: 1
-    m_BoxSize: {x: 6, y: 6, z: 6}
-    m_SphereRadius: 6.0804596
-    m_CSVersion: 2
-    m_ObsoleteSphereInfiniteProjection: 0
-    m_ObsoleteBoxInfiniteProjection: 0
 --- !u!1 &1140423138507913915
 GameObject:
   m_ObjectHideFlags: 0
@@ -49029,14 +49009,14 @@ MonoBehaviour:
   m_OnRemoveItemEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_RemoveAllOnDeath: 1
+  m_RemoveAllOnDeath: 0
   m_LoadoutEquip:
     m_Option: 1
     m_ItemSetName: 
     m_Index: 0
   m_DefaultLoadout:
   - ItemDefinition: {fileID: 114459215557555358, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-    Amount: 1
+    Amount: 999
   m_RemoveExceptions:
   - {fileID: 114459215557555358, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
 --- !u!114 &7064251930780761804
@@ -85739,11 +85719,11 @@ MonoBehaviour:
       ItemDefinition: {fileID: 3695085728959387799, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
     groupIndex: -1
-    nomePortugues: Cogumelo Cozido
-    nomeIngles: Cooked Mushroom
+    nomePortugues: Cogumelo
+    nomeIngles: Mushroom
     isConsumivel: 1
     curaSede: 0
-    curaFome: 8
+    curaFome: 5
     curaVida: 0
     textureImgItem: {fileID: 2800000, guid: b9814eea59885be4784654f814f9db87, type: 3}
     objInventario: {fileID: 5607158698356098807}
@@ -85752,8 +85732,8 @@ MonoBehaviour:
       ItemDefinition: {fileID: -2748956937195691997, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
     groupIndex: -1
-    nomePortugues: Cogumelo Cru
-    nomeIngles: Raw Mushroom
+    nomePortugues: Mushroom
+    nomeIngles: Mushroom
     isConsumivel: 1
     curaSede: 0
     curaFome: 5
@@ -85765,11 +85745,11 @@ MonoBehaviour:
       ItemDefinition: {fileID: -5517174099113100608, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
     groupIndex: -1
-    nomePortugues: Cogumelo Estragado
-    nomeIngles: Spoiled Mushroom
+    nomePortugues: Cogumelo
+    nomeIngles: Mushroom
     isConsumivel: 1
     curaSede: 0
-    curaFome: 5
+    curaFome: 8
     curaVida: 0
     textureImgItem: {fileID: 2800000, guid: b9814eea59885be4784654f814f9db87, type: 3}
     objInventario: {fileID: 5607158698356098807}
@@ -85778,11 +85758,11 @@ MonoBehaviour:
       ItemDefinition: {fileID: -4857954303038025896, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
     groupIndex: -1
-    nomePortugues: Cogumelo Cozido
-    nomeIngles: Cooked Mushroom
+    nomePortugues: Cogumelo
+    nomeIngles: Mushroom
     isConsumivel: 1
     curaSede: 0
-    curaFome: 8
+    curaFome: 5
     curaVida: -5
     textureImgItem: {fileID: 2800000, guid: 949b13c9c2d8f3c418f760a073fa805e, type: 3}
     objInventario: {fileID: 5607158698356098807}
@@ -85791,11 +85771,11 @@ MonoBehaviour:
       ItemDefinition: {fileID: 7779035483283339918, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
     groupIndex: -1
-    nomePortugues: Cogumelo Cru
-    nomeIngles: Raw Mushroom
+    nomePortugues: Cogumelo
+    nomeIngles: Mushroom
     isConsumivel: 1
     curaSede: 0
-    curaFome: 5
+    curaFome: 8
     curaVida: -10
     textureImgItem: {fileID: 2800000, guid: 949b13c9c2d8f3c418f760a073fa805e, type: 3}
     objInventario: {fileID: 5607158698356098807}
@@ -85804,11 +85784,11 @@ MonoBehaviour:
       ItemDefinition: {fileID: 4168448939014710687, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
       Amount: 0
     groupIndex: -1
-    nomePortugues: Cogumelo Estragado
-    nomeIngles: Spoiled Mushroom
+    nomePortugues: Cogumelo
+    nomeIngles: Mushroom
     isConsumivel: 1
     curaSede: 0
-    curaFome: 5
+    curaFome: 8
     curaVida: -10
     textureImgItem: {fileID: 2800000, guid: 949b13c9c2d8f3c418f760a073fa805e, type: 3}
     objInventario: {fileID: 5607158698356098807}
@@ -85980,6 +85960,19 @@ MonoBehaviour:
     curaFome: 0
     curaVida: 0
     textureImgItem: {fileID: 2800000, guid: c9476f6cfc5cb414abcc6ca1b9f5be27, type: 3}
+    objInventario: {fileID: 5607158698356098807}
+  - tipoItem: 3
+    itemIdentifierAmount:
+      ItemDefinition: {fileID: -8377439063012984352, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+      Amount: 0
+    groupIndex: -1
+    nomePortugues: Cogumelo
+    nomeIngles: Mushroom
+    isConsumivel: 1
+    curaSede: 0
+    curaFome: 8
+    curaVida: -10
+    textureImgItem: {fileID: 2800000, guid: 949b13c9c2d8f3c418f760a073fa805e, type: 3}
     objInventario: {fileID: 5607158698356098807}
   itens:
   - {fileID: 0}
