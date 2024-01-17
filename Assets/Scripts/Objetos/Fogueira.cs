@@ -12,8 +12,12 @@ public class Fogueira : MonoBehaviour
     [SerializeField] public Fogo fogo;
     [SerializeField] [HideInInspector] public Panela panela;
     [SerializeField] public GameObject slotPanela, slotTigela;
-    [SerializeField] public GameObject fogueiraInteira, fogueiraQuebrada;
+    [SerializeField] public GameObject fogueiraApagada, fogueiraAcesa, fogueiraQueimada;
 
+    private void Start()
+    {
+        ApagarFogueira();
+    }
 
     void Update()
     {
@@ -29,8 +33,9 @@ public class Fogueira : MonoBehaviour
     {
         ApagarFogueira();
         gameObject.layer = 2;
-        fogueiraInteira.SetActive(false);
-        fogueiraQuebrada.SetActive(true);
+        fogueiraApagada.SetActive(false);
+        fogueiraAcesa.SetActive(false);
+        fogueiraQueimada.SetActive(true);
         isQuebrada = true;
     }
 
@@ -67,6 +72,10 @@ public class Fogueira : MonoBehaviour
         Debug.Log("fogueira acesa");
         fogo.gameObject.SetActive(true);
         fogo.isFogoAceso = true;
+
+        fogueiraApagada.SetActive(false);
+        fogueiraAcesa.SetActive(true);
+        fogueiraQueimada.SetActive(false);
     }
 
     public void ApagarFogueira()
@@ -74,6 +83,10 @@ public class Fogueira : MonoBehaviour
         Debug.Log("fogueira apagada");
         fogo.isFogoAceso = false;
         fogo.gameObject.SetActive(false);
+
+        fogueiraApagada.SetActive(true);
+        fogueiraAcesa.SetActive(false);
+        fogueiraQueimada.SetActive(false);
     }
 
 }
