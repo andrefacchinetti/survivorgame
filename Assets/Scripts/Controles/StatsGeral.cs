@@ -53,33 +53,37 @@ public class StatsGeral : MonoBehaviour
     {
         //Evento que acontece antes de aplicar o damage no Health
         Debug.Log("on pre damage");
-        if(construcaoStats != null) //Verificar se cura construcao com martelo reparador
+        if(attacker != null)
         {
-            PlayerController pc = attacker.GetComponentInParent<PlayerController>();
-            if (pc != null)
-            {
-                if (pc.inventario.itemNaMao != null && pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name == construcaoStats.itemMarteloReparador.name)
-                {
-                    TakeCura(dano);
-                    return;
-                }
-            }
-        }
-        if(collisorSofreDano != null)
-        {
-            if (collisorSofreDano.isApenasFerramentaRecomendadaCausaDano)
+            if (construcaoStats != null) //Verificar se cura construcao com martelo reparador
             {
                 PlayerController pc = attacker.GetComponentInParent<PlayerController>();
-                if(pc != null && pc.inventario.itemNaMao != null)
+                if (pc != null)
                 {
-                    dano = collisorSofreDano.CalcularDanoPorArmaCausandoDano(pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, dano);
+                    if (pc.inventario.itemNaMao != null && pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name == construcaoStats.itemMarteloReparador.name)
+                    {
+                        TakeCura(dano);
+                        return;
+                    }
                 }
-                else //Else serve para evitar que lobisomens ou outras coisas causem dano em dropa recursos
+            }
+            if (collisorSofreDano != null)
+            {
+                if (collisorSofreDano.isApenasFerramentaRecomendadaCausaDano)
                 {
-                    dano = 0;
+                    PlayerController pc = attacker.GetComponentInParent<PlayerController>();
+                    if (pc != null && pc.inventario.itemNaMao != null)
+                    {
+                        dano = collisorSofreDano.CalcularDanoPorArmaCausandoDano(pc.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, dano);
+                    }
+                    else //Else serve para evitar que lobisomens ou outras coisas causem dano em dropa recursos
+                    {
+                        dano = 0;
+                    }
                 }
             }
         }
+        
         health.AplicarDanoNoHealth(dano);
     }
 
@@ -123,7 +127,7 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damageValue) //Dano causado pro fatores externos (sem ser por dano de arma do player)
+    public void TakeDamage(float damageValue) // metodo usadno para Dano causado por fatores externos (sem ser por dano de arma do player)
     {
         if (jogadorStats != null) //jogador
         {
@@ -131,7 +135,6 @@ public class StatsGeral : MonoBehaviour
         }
         else //outros
         {
-            Debug.Log("take damage");
             health.Damage(damageValue);
         }
     }

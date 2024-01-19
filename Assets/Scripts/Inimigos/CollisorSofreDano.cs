@@ -6,9 +6,9 @@ using Opsive.Shared.Inventory;
 using Opsive.Shared.Events;
 using Opsive.UltimateCharacterController.Items.Actions.Impact;
 using Opsive.UltimateCharacterController.Items;
+using Opsive.UltimateCharacterController.Items.Actions;
+using Opsive.UltimateCharacterController.Character;
 
-
-[RequireComponent(typeof(Rigidbody))]
 public class CollisorSofreDano : MonoBehaviourPunCallbacks
 {
 
