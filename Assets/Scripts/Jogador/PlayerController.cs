@@ -9,6 +9,7 @@ using Opsive.UltimateCharacterController.Character;
 using Opsive.UltimateCharacterController.Character.Abilities;
 using Opsive.UltimateCharacterController.AddOns.Swimming;
 using Opsive.Shared.Events;
+using UnityEngine.Profiling;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -103,6 +104,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (!PV.IsMine)
 			return;
 
+		Profiler.BeginSample("Script PlayerController: ");
 		if (!inventario.canvasInventario.activeSelf && canMove)
 		{
 			if (Input.GetButtonDown("Crouch"))
@@ -170,6 +172,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			PararAbilitys();
 		}
 
+		Profiler.EndSample();
 	}
 
 	public void TogglePlayerModoConstrucao(bool construcaoAtiva)

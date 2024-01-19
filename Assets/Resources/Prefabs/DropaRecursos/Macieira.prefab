@@ -16,15 +16,15 @@ GameObject:
   - component: {fileID: 7691594342833754096}
   - component: {fileID: 1362550205423797582}
   - component: {fileID: 8648559711080790551}
-  - component: {fileID: 7574828929506503201}
   - component: {fileID: 3442750672345811724}
   - component: {fileID: 8942410137462150836}
-  m_Layer: 0
+  - component: {fileID: 3399624679220421330}
+  m_Layer: 11
   m_Name: Macieira
   m_TagString: Arvore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &365875561385255263
 Transform:
@@ -59,17 +59,24 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: 624320006817971678, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 7
   - itemDefinition: {fileID: 4597794648270290949, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 3
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 5
   - itemDefinition: {fileID: -1633559503932853837, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 10
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
+  direcaoDrop: 121
   isAttacking: 0
   health: {fileID: 3442750672345811724}
   attributeManager: {fileID: 0}
@@ -78,8 +85,9 @@ MonoBehaviour:
   animalStats: {fileID: 0}
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
-  itemRepairHammer: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-  itemDemolitionHammer: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcaoStats: {fileID: 0}
+  collisorSofreDano: {fileID: 0}
+  isSangra: 0
 --- !u!114 &4218742848115672858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,11 +100,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemIdentifierAmountFerramentasRecomendadas: []
+  ferramentasRecomendadas:
+  - {fileID: 6267662026738597845, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  - {fileID: 3189386700851253806, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
   isConstrucao: 0
-  PV: {fileID: 0}
+  PV: {fileID: -750206528992994435}
 --- !u!208 &-2860086694590876968
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -174,6 +184,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParteQuebravel: 0
+  souObjInteiro: 0
+  souObjRachado: 0
+  souObjNucleoQuebravel: 0
+  arvoreQuebravelBase: {fileID: 0}
+  minhaFileira: {fileID: 0}
+  isPedacoQuebrado: 0
+  rb: {fileID: 0}
+  forcaEmpurraArvore: 2
 --- !u!136 &8648559711080790551
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -193,28 +212,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.15
+  m_Radius: 0.67
   m_Height: 25.1
   m_Direction: 1
   m_Center: {x: -0.02, y: 12.5, z: 0.4}
---- !u!114 &7574828929506503201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365875561385255256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c044cafc437eafa49a3780082f155ff0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objFrutas:
-  - {fileID: 69018636233824971}
-  - {fileID: 960362110109168971}
-  - {fileID: 862898462250186530}
-  - {fileID: 6761840989022643728}
-  - {fileID: 8043648999965104098}
 --- !u!114 &3442750672345811724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,13 +287,26 @@ MonoBehaviour:
       m_Default: 1
     m_Name: Health
     m_MinValue: 0
-    m_MaxValue: 100
-    m_Value: 100
+    m_MaxValue: 40
+    m_Value: 40
     m_AutoUpdateValueType: 0
     m_UpdateWhenInactive: 0
     m_AutoUpdateStartDelay: 1
     m_AutoUpdateInterval: 0.1
     m_AutoUpdateAmount: 0.2
+--- !u!114 &3399624679220421330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365875561385255256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ebcf42a9d8f9145a73c60c46c60bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ID: 101
 --- !u!1001 &4938110060081420783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -301,30 +315,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 365875561385255263}
     m_Modifications:
+    - target: {fileID: 104164074866284136, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 3358961031692989766}
+    - target: {fileID: 1887891307026146908, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2122372530896440209, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137537805319241670, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176749628130794910, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
+      objectReference: {fileID: 0}
+    - target: {fileID: 2694897549545586168, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3261179394101954010, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 3358961031692989766}
+    - target: {fileID: 4193397340169610630, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 3358961031692989766}
     - target: {fileID: 4751295394670540965, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
       propertyPath: m_Name
       value: Macieira
       objectReference: {fileID: 0}
-    - target: {fileID: 4966011867208775401, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5378473678570332703, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5378473678570332703, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.55521977
-      objectReference: {fileID: 0}
-    - target: {fileID: 5378473678570332703, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.55521977
-      objectReference: {fileID: 0}
-    - target: {fileID: 5378473678570332703, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.55521977
-      objectReference: {fileID: 0}
+    - target: {fileID: 5361518376336234381, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 3358961031692989766}
     - target: {fileID: 5378473678570332703, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.035040416
@@ -365,39 +395,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4966011867208775401, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+    - target: {fileID: 6331224377351238091, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532295844964018799, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
+      objectReference: {fileID: 0}
+    - target: {fileID: 7822306482042393005, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003243171291673589, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056687531255482274, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584932700867261972, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 3358961031692989766}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
---- !u!1 &69018636233824971 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4932150754547254052, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-  m_PrefabInstance: {fileID: 4938110060081420783}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &862898462250186530 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5728034999920799437, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-  m_PrefabInstance: {fileID: 4938110060081420783}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &960362110109168971 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5319970172644273316, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-  m_PrefabInstance: {fileID: 4938110060081420783}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1018831387804220400 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5378473678570332703, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-  m_PrefabInstance: {fileID: 4938110060081420783}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6761840989022643728 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1824329906980487167, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
-  m_PrefabInstance: {fileID: 4938110060081420783}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8043648999965104098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3109586877845802509, guid: 04a4964fea878e349936ccd8456cca8d, type: 3}
   m_PrefabInstance: {fileID: 4938110060081420783}
   m_PrefabAsset: {fileID: 0}

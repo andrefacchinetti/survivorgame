@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 1362550205423797582}
   - component: {fileID: 7092692541358971050}
   - component: {fileID: 4987424039484499642}
-  - component: {fileID: 5600283591638573785}
   - component: {fileID: 3158106429675773941}
   - component: {fileID: 4005545810204101697}
   - component: {fileID: 1867669553304318831}
@@ -65,21 +64,30 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: 4048728896585032082, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 10
   - itemDefinition: {fileID: 624320006817971678, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 3
     qtdMaxDrops: 5
   - itemDefinition: {fileID: -6461764253188329171, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 3
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 6
     qtdMaxDrops: 6
   - itemDefinition: {fileID: -1633559503932853837, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 10
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
+  direcaoDrop: 121
   isAttacking: 0
   health: {fileID: 4005545810204101697}
   attributeManager: {fileID: 0}
@@ -88,8 +96,9 @@ MonoBehaviour:
   animalStats: {fileID: 0}
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
-  itemRepairHammer: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-  itemDemolitionHammer: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcaoStats: {fileID: 0}
+  collisorSofreDano: {fileID: 0}
+  isSangra: 0
 --- !u!114 &4218742848115672858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemIdentifierAmountFerramentasRecomendadas: []
+  ferramentasRecomendadas: []
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
   isConstrucao: 0
@@ -184,6 +193,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParteQuebravel: 0
+  souObjInteiro: 0
+  souObjRachado: 0
+  souObjNucleoQuebravel: 0
+  arvoreQuebravelBase: {fileID: 0}
+  minhaFileira: {fileID: 0}
+  isPedacoQuebrado: 0
+  rb: {fileID: 0}
+  forcaEmpurraArvore: 2
 --- !u!33 &7092692541358971050
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -237,24 +255,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5600283591638573785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365875561385255256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c044cafc437eafa49a3780082f155ff0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objFrutas:
-  - {fileID: 2767520857789149756}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &3158106429675773941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,8 +275,8 @@ MonoBehaviour:
       m_Default: 1
     m_Name: Health
     m_MinValue: 0
-    m_MaxValue: 100
-    m_Value: 100
+    m_MaxValue: 40
+    m_Value: 40
     m_AutoUpdateValueType: 0
     m_UpdateWhenInactive: 0
     m_AutoUpdateStartDelay: 1
@@ -437,11 +437,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
---- !u!1 &2767520857789149756 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
-  m_PrefabInstance: {fileID: 1292975615432860586}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5850002770804587823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}

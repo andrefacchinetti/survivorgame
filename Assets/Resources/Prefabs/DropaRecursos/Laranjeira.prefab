@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: -750206528992994435}
   - component: {fileID: 7691594342833754096}
   - component: {fileID: 1362550205423797582}
-  - component: {fileID: 2476341706445491458}
   - component: {fileID: 4845237439841257854}
   - component: {fileID: 7206596999829809780}
   - component: {fileID: 2892732505747481411}
@@ -59,21 +58,30 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: 4048728896585032082, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 10
   - itemDefinition: {fileID: 624320006817971678, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 3
     qtdMaxDrops: 5
   - itemDefinition: {fileID: 8239348117860471735, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 3
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 5
   - itemDefinition: {fileID: -1633559503932853837, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 10
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
+  direcaoDrop: 121
   isAttacking: 0
   health: {fileID: 4845237439841257854}
   attributeManager: {fileID: 0}
@@ -82,8 +90,9 @@ MonoBehaviour:
   animalStats: {fileID: 0}
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
-  itemRepairHammer: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-  itemDemolitionHammer: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcaoStats: {fileID: 0}
+  collisorSofreDano: {fileID: 0}
+  isSangra: 0
 --- !u!114 &4218742848115672858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemIdentifierAmountFerramentasRecomendadas: []
+  ferramentasRecomendadas: []
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
   isConstrucao: 0
@@ -178,24 +187,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2476341706445491458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365875561385255256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c044cafc437eafa49a3780082f155ff0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objFrutas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  isParteQuebravel: 0
+  souObjInteiro: 0
+  souObjRachado: 0
+  souObjNucleoQuebravel: 0
+  arvoreQuebravelBase: {fileID: 0}
+  minhaFileira: {fileID: 0}
+  isPedacoQuebrado: 0
+  rb: {fileID: 0}
+  forcaEmpurraArvore: 2
 --- !u!114 &4845237439841257854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,8 +267,8 @@ MonoBehaviour:
       m_Default: 1
     m_Name: Health
     m_MinValue: 0
-    m_MaxValue: 100
-    m_Value: 100
+    m_MaxValue: 50
+    m_Value: 50
     m_AutoUpdateValueType: 0
     m_UpdateWhenInactive: 0
     m_AutoUpdateStartDelay: 1

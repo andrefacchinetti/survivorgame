@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: -3848155439849487351}
   - component: {fileID: -3523775134325607720}
   - component: {fileID: -3261591165271238713}
-  - component: {fileID: 3933979349768285736}
   - component: {fileID: 8464822322603125318}
   - component: {fileID: 3236155095621367834}
   - component: {fileID: 8436990865386643165}
@@ -203,17 +202,24 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: 4048728896585032082, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
-    qtdMinDrops: 5
-    qtdMaxDrops: 10
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
+    qtdMinDrops: 7
+    qtdMaxDrops: 7
   - itemDefinition: {fileID: 7357019995443405037, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 3
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 5
   - itemDefinition: {fileID: -1633559503932853837, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 10
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
+  direcaoDrop: 121
   isAttacking: 0
   health: {fileID: 8436990865386643165}
   attributeManager: {fileID: 0}
@@ -222,8 +228,9 @@ MonoBehaviour:
   animalStats: {fileID: 0}
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
-  itemRepairHammer: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-  itemDemolitionHammer: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcaoStats: {fileID: 0}
+  collisorSofreDano: {fileID: 0}
+  isSangra: 0
 --- !u!54 &-3477170186386619868
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -263,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemIdentifierAmountFerramentasRecomendadas: []
+  ferramentasRecomendadas: []
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
   isConstrucao: 0
@@ -280,6 +287,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParteQuebravel: 0
+  souObjInteiro: 0
+  souObjRachado: 0
+  souObjNucleoQuebravel: 0
+  arvoreQuebravelBase: {fileID: 0}
+  minhaFileira: {fileID: 0}
+  isPedacoQuebrado: 0
+  rb: {fileID: 0}
+  forcaEmpurraArvore: 2
 --- !u!114 &-3523775134325607720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,24 +334,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.66, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &3933979349768285736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8762280737830071063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c044cafc437eafa49a3780082f155ff0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objFrutas:
-  - {fileID: 6339911234222602166}
-  - {fileID: 2754585199266757970}
-  - {fileID: 2064130742849977699}
-  - {fileID: 2930357835915751010}
-  - {fileID: 6296343270487655228}
 --- !u!64 &8464822322603125318
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -378,8 +376,8 @@ MonoBehaviour:
       m_Default: 1
     m_Name: Health
     m_MinValue: 0
-    m_MaxValue: 100
-    m_Value: 100
+    m_MaxValue: 70
+    m_Value: 70
     m_AutoUpdateValueType: 0
     m_UpdateWhenInactive: 0
     m_AutoUpdateStartDelay: 1
@@ -514,11 +512,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2312290015814810850, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
   m_PrefabInstance: {fileID: 285855178612590650}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2930357835915751010 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3124714362089154136, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
-  m_PrefabInstance: {fileID: 285855178612590650}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &965872091917540106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -592,11 +585,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
---- !u!1 &2754585199266757970 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3124714362089154136, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
-  m_PrefabInstance: {fileID: 965872091917540106}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3274556769911154664 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2312290015814810850, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
@@ -680,11 +668,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2312290015814810850, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
   m_PrefabInstance: {fileID: 4033101908807490363}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2064130742849977699 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3124714362089154136, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
-  m_PrefabInstance: {fileID: 4033101908807490363}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8952080670230062436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -758,11 +741,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
---- !u!1 &6296343270487655228 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3124714362089154136, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
-  m_PrefabInstance: {fileID: 8952080670230062436}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6641343203564247430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2312290015814810850, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
@@ -841,11 +819,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
---- !u!1 &6339911234222602166 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3124714362089154136, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}
-  m_PrefabInstance: {fileID: 8982100176541454830}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6678894330098806028 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2312290015814810850, guid: d2e7bff6a9830744cb22c3498ceafd93, type: 3}

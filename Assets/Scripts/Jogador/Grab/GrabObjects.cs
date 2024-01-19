@@ -6,13 +6,14 @@ using Photon.Pun;
 using Photon.Realtime;
 using Opsive.UltimateCharacterController.Inventory;
 using Opsive.Shared.Inventory;
+using UnityEngine.Profiling;
 
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
-    private string tagKeypagButton = "KeypadButton", tagNote = "Note";
+    private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -87,6 +88,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     void Update()
     {
+        Profiler.BeginSample("Script GrabObjects: ");
         if (!playerController.podeSeMexer() || inventario.canvasInventario.activeSelf) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
@@ -140,6 +142,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             playerController.pesoGrab = 0;
         }
+        Profiler.EndSample();
     }
 
     private void limparViewGrabed()
@@ -148,6 +151,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         possibleInteraction = false;
     }
 
+    private void DestruirObjeto(GameObject obj) //destruir recurso apos jogador pegar
+    {
+        if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(obj); 
+        else GameObject.Destroy(obj);
+    }
     private void executarAcoesDoHit(RaycastHit hit)
     {
         possibleGrab = false;
@@ -159,7 +167,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             {
                 interacaoCapturarObjeto(hit);
             }
-            else if (hit.transform.tag == tagItemDrop && 
+            else if (hit.transform.tag == tagItemDrop &&
                 (hit.transform.GetComponent<ItemDrop>().item.name.Equals(inventario.itemPanela.name) || hit.transform.GetComponent<ItemDrop>().item.name.Equals(inventario.itemTigela.name))
                 && inventario.itemNaMao != null && inventario.itemNaMao.tipoItem.Equals(Item.TiposItems.Consumivel) && hit.transform.GetComponent<Panela>().fogueira != null)
             {
@@ -210,8 +218,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     {
                         if (destruirObjetoDaCena)
                         {
-                            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(hit.transform.gameObject); //destruir recurso apos jogador pegar
-                            else GameObject.Destroy(hit.transform.gameObject);
+                            DestruirObjeto(hit.transform.gameObject);
                         }
                     }
                     else
@@ -299,7 +306,27 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else if(hit.transform.tag == tagNote)
         {
             interacaoComNote(hit);
+        }else if (hit.transform.tag == tagFrutaEmArvore)
+        {
+            interacaoComFrutaEmArvore(hit);
         }
+    }
+
+    private void interacaoComFrutaEmArvore(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            transferOwnerPV(hit.transform.gameObject);
+            ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
+            playerController.inventario.AdicionarItemAoInventario(null, itemDrop.item, 1);
+            FrutaEmArvore frutaEmArvore = hit.transform.gameObject.GetComponent<FrutaEmArvore>();
+            if (frutaEmArvore != null)
+            {
+                frutaEmArvore.ColetarUmaFruta(itemDrop.item);
+            }
+            DestruirObjeto(hit.transform.gameObject);
+        }
+        possibleGrab = true;
     }
 
     //INTERAÇÕES

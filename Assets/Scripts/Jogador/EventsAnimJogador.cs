@@ -178,34 +178,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		playerController.characterLocomotion.TryStopAbility(playerController.pescarAbility);
 	}
 
-	void AnimEventColetouFruta()
-	{
-		if (playerController.arvoreColetando == null) return;
-		List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
-		foreach (Item.ItemDropStruct itemDropScruct in playerController.arvoreColetando.GetComponent<StatsGeral>().dropsItems)
-		{
-			if (itemDropScruct.tipoItem.Equals(Item.TiposItems.Consumivel.ToString()))
-			{
-				if (itemDropScruct.qtdMaxDrops > 0)
-				{
-					Debug.Log("coletou fruta: " + itemDropScruct.itemDefinition.name);
-					playerController.inventario.AdicionarItemAoInventario(null, itemDropScruct.itemDefinition, 1);
-					playerController.arvoreColetando.GetComponent<ArvoreFrutifera>().DesaparecerUmaFrutaDaArvore();
-					Item.ItemDropStruct novo = new Item.ItemDropStruct();
-					novo.itemDefinition = itemDropScruct.itemDefinition;
-					novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
-					novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
-					itemDrops.Add(novo);
-				}
-			}
-			else
-			{
-				itemDrops.Add(itemDropScruct);
-			}
-		}
-		playerController.arvoreColetando.GetComponent<StatsGeral>().dropsItems = itemDrops;
-	}
-
 	void AnimEventColetouItem()
 	{
 		if (playerController.itemDefinitionBaseColentando == null) return;

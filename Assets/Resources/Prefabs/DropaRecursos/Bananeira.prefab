@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 5067474142698927465}
   - component: {fileID: 6786136492198658105}
   - component: {fileID: 486221103838745201}
-  - component: {fileID: 1947338096731310370}
   - component: {fileID: 5800055514027019702}
   - component: {fileID: 1337214457061045473}
   - component: {fileID: 152875446304747360}
@@ -61,17 +60,24 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: 4048728896585032082, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 10
   - itemDefinition: {fileID: 8547759042800656647, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 3
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 6
     qtdMaxDrops: 6
   - itemDefinition: {fileID: -1633559503932853837, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 10
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
+  direcaoDrop: 121
   isAttacking: 0
   health: {fileID: 1337214457061045473}
   attributeManager: {fileID: 0}
@@ -80,8 +86,9 @@ MonoBehaviour:
   animalStats: {fileID: 0}
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
-  itemRepairHammer: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-  itemDemolitionHammer: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcaoStats: {fileID: 0}
+  collisorSofreDano: {fileID: 0}
+  isSangra: 0
 --- !u!114 &4676182442331139464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemIdentifierAmountFerramentasRecomendadas: []
+  ferramentasRecomendadas: []
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
   isConstrucao: 0
@@ -176,6 +183,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParteQuebravel: 0
+  souObjInteiro: 0
+  souObjRachado: 0
+  souObjNucleoQuebravel: 0
+  arvoreQuebravelBase: {fileID: 0}
+  minhaFileira: {fileID: 0}
+  isPedacoQuebrado: 0
+  rb: {fileID: 0}
+  forcaEmpurraArvore: 2
 --- !u!33 &6786136492198658105
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -232,25 +248,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1947338096731310370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365875561385255256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c044cafc437eafa49a3780082f155ff0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objFrutas:
-  - {fileID: 2211857438007416992}
-  - {fileID: 1496675516939245168}
-  - {fileID: 3020870752245599845}
-  - {fileID: 5635766345069486545}
-  - {fileID: 4041963126085967249}
-  - {fileID: 1418526080918481249}
 --- !u!136 &5800055514027019702
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -426,38 +423,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
---- !u!1 &1418526080918481249 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8449991305343368337, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-  m_PrefabInstance: {fileID: 7416297901978326512}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1496675516939245168 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8227717897906324352, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-  m_PrefabInstance: {fileID: 7416297901978326512}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1941401688000460204 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8942676796700680284, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-  m_PrefabInstance: {fileID: 7416297901978326512}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2211857438007416992 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8672212391395085648, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-  m_PrefabInstance: {fileID: 7416297901978326512}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3020870752245599845 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5694716343385054101, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-  m_PrefabInstance: {fileID: 7416297901978326512}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4041963126085967249 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6844358359784638561, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-  m_PrefabInstance: {fileID: 7416297901978326512}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5635766345069486545 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2944712074008425505, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
   m_PrefabInstance: {fileID: 7416297901978326512}
   m_PrefabAsset: {fileID: 0}
