@@ -58,13 +58,18 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: 624320006817971678, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 5
     qtdMaxDrops: 10
   - itemDefinition: {fileID: -1633559503932853837, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    materialPersonalizado: {fileID: 0}
+    nomePrefabAlternativo: 
     qtdMinDrops: 10
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
+  direcaoDrop: 121
   isAttacking: 0
   health: {fileID: 3853916074598057735}
   attributeManager: {fileID: 0}
@@ -73,8 +78,9 @@ MonoBehaviour:
   animalStats: {fileID: 0}
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
-  itemRepairHammer: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-  itemDemolitionHammer: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcaoStats: {fileID: 0}
+  collisorSofreDano: {fileID: 0}
+  isSangra: 0
 --- !u!114 &4218742848115672858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,7 +93,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemIdentifierAmountFerramentasRecomendadas: []
+  ferramentasRecomendadas:
+  - {fileID: 6267662026738597845, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  - {fileID: 3189386700851253806, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
   isConstrucao: 0
@@ -169,6 +177,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParteQuebravel: 0
+  souObjInteiro: 0
+  souObjRachado: 0
+  souObjNucleoQuebravel: 0
+  arvoreQuebravelBase: {fileID: 0}
+  minhaFileira: {fileID: 0}
+  isPedacoQuebrado: 0
+  rb: {fileID: 0}
+  forcaEmpurraArvore: 2
 --- !u!136 &9174786962908128673
 CapsuleCollider:
   m_ObjectHideFlags: 0

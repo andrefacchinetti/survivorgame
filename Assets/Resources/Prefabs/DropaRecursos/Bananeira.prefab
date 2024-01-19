@@ -37,7 +37,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9.5856, y: 9.5856, z: 9.5856}
+  m_LocalScale: {x: 4.5, y: 4.5, z: 4.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1941401688000460204}
@@ -58,12 +58,12 @@ MonoBehaviour:
   damage: 0
   objPaiParaDestruir: {fileID: 0}
   dropsItems:
-  - itemDefinition: {fileID: 4048728896585032082, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  - itemDefinition: {fileID: 624320006817971678, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
     materialPersonalizado: {fileID: 0}
     nomePrefabAlternativo: 
     qtdMinDrops: 5
-    qtdMaxDrops: 10
+    qtdMaxDrops: 5
   - itemDefinition: {fileID: 8547759042800656647, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 3
     materialPersonalizado: {fileID: 0}
@@ -101,11 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
+  ferramentasRecomendadas:
+  - {fileID: 6267662026738597845, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  - {fileID: 3189386700851253806, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   isApenasFerramentaRecomendadaCausaDano: 1
   statsGeral: {fileID: 0}
   isConstrucao: 0
-  PV: {fileID: 0}
+  PV: {fileID: 7270303751526096708}
 --- !u!208 &16921039025051525
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -167,7 +169,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
@@ -342,8 +344,8 @@ MonoBehaviour:
       m_Default: 1
     m_Name: Health
     m_MinValue: 0
-    m_MaxValue: 100
-    m_Value: 100
+    m_MaxValue: 40
+    m_Value: 40
     m_AutoUpdateValueType: 0
     m_UpdateWhenInactive: 0
     m_AutoUpdateStartDelay: 1
@@ -357,26 +359,150 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 365875561385255263}
     m_Modifications:
+    - target: {fileID: 1053022120997229183, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1400671743780606678, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2333669091600387995, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2333669091600387995, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2333669091600387995, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2333669091600387995, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375106864258003360, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 4815885586266944128}
+    - target: {fileID: 3032164852677050379, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3032164852677050379, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3032164852677050379, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3032164852677050379, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3176340773907937417, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 4815885586266944128}
+    - target: {fileID: 3220007356652698543, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3220007356652698543, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3220007356652698543, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3220007356652698543, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435699458573594832, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435699458573594832, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435699458573594832, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435699458573594832, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4950846218019090331, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222460786317122479, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438138054097014992, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5675171140256325643, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5957867364359705350, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 4815885586266944128}
+    - target: {fileID: 6869880276920198960, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 4815885586266944128}
+    - target: {fileID: 7659283490546938495, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7659283490546938495, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7659283490546938495, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7659283490546938495, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8597676829077715686, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
       propertyPath: m_Name
       value: Bananeira
       objectReference: {fileID: 0}
-    - target: {fileID: 8942676796700680284, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-      propertyPath: m_RootOrder
+    - target: {fileID: 8621583263665959638, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8942676796700680284, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-      propertyPath: m_LocalScale.x
+    - target: {fileID: 8621583263665959638, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8621583263665959638, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8942676796700680284, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
+    - target: {fileID: 8621583263665959638, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8942676796700680284, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 8871771993196239857, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 4815885586266944128}
     - target: {fileID: 8942676796700680284, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000041246414
@@ -417,8 +543,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3004180154535560432, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+    - target: {fileID: 9101625780351931207, guid: e5331f30578b5b44d8928ea79eae2b19, type: 3}
+      propertyPath: statsGeral
+      value: 
+      objectReference: {fileID: 4815885586266944128}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -17,7 +17,7 @@ public class CollisorSofreDano : MonoBehaviourPunCallbacks
   
     [HideInInspector] public StatsGeral statsGeral;
     [SerializeField] public bool isConstrucao;
-    public PhotonView PV;
+    [HideInInspector] public PhotonView PV;
 
     private void Awake()
     {
