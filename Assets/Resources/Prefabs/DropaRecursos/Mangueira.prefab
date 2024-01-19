@@ -37,7 +37,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20894788, y: 0.20894788, z: 0.20894788}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5850002770804587823}
@@ -66,8 +66,8 @@ MonoBehaviour:
     tipoItem: 4
     materialPersonalizado: {fileID: 0}
     nomePrefabAlternativo: 
-    qtdMinDrops: 5
-    qtdMaxDrops: 10
+    qtdMinDrops: 2
+    qtdMaxDrops: 2
   - itemDefinition: {fileID: 624320006817971678, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
     materialPersonalizado: {fileID: 0}
@@ -78,8 +78,8 @@ MonoBehaviour:
     tipoItem: 3
     materialPersonalizado: {fileID: 0}
     nomePrefabAlternativo: 
-    qtdMinDrops: 6
-    qtdMaxDrops: 6
+    qtdMinDrops: 5
+    qtdMaxDrops: 5
   - itemDefinition: {fileID: -1633559503932853837, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
     materialPersonalizado: {fileID: 0}
@@ -127,12 +127,12 @@ NavMeshObstacle:
   m_GameObject: {fileID: 365875561385255256}
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 1.93, y: 10, z: 1.775}
+  m_Shape: 0
+  m_Extents: {x: 1.7, y: 28.5, z: 1.7}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 9.36, z: 0}
+  m_Center: {x: 0, y: 27.4, z: 0}
   m_TimeToStationary: 0.5
 --- !u!114 &-750206528992994435
 MonoBehaviour:
@@ -179,7 +179,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
@@ -354,8 +354,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.4
-  m_Height: 60.5
+  m_Radius: 1.6
+  m_Height: 55.09
   m_Direction: 1
   m_Center: {x: 0, y: 28.3, z: 0}
 --- !u!1001 &1292975615432860586
@@ -366,9 +366,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 365875561385255263}
     m_Modifications:
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_Name
       value: Manga
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
       objectReference: {fileID: 0}
     - target: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_RootOrder
@@ -437,8 +449,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4025411819368333664}
   m_SourcePrefab: {fileID: 100100000, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+--- !u!1 &2767520857789149756 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+  m_PrefabInstance: {fileID: 1292975615432860586}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4025411819368333664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767520857789149756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c229cb64cef533442a1a0483b9ad8d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsGeral: {fileID: 3358961031692989766}
 --- !u!4 &5850002770804587823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
@@ -452,9 +485,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 365875561385255263}
     m_Modifications:
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_Name
       value: Manga (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
       objectReference: {fileID: 0}
     - target: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_RootOrder
@@ -523,8 +568,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3601672998887977244}
   m_SourcePrefab: {fileID: 100100000, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+--- !u!1 &2954570449739824757 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+  m_PrefabInstance: {fileID: 2204821933454012387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3601672998887977244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2954570449739824757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c229cb64cef533442a1a0483b9ad8d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsGeral: {fileID: 3358961031692989766}
 --- !u!4 &6793654902351573350 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
@@ -538,9 +604,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 365875561385255263}
     m_Modifications:
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_Name
       value: Manga (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
       objectReference: {fileID: 0}
     - target: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_RootOrder
@@ -609,13 +687,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 824923657038326720}
   m_SourcePrefab: {fileID: 100100000, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
 --- !u!4 &12515554272695033 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
   m_PrefabInstance: {fileID: 4679950481149316220}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8605008744671960554 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+  m_PrefabInstance: {fileID: 4679950481149316220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &824923657038326720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8605008744671960554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c229cb64cef533442a1a0483b9ad8d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsGeral: {fileID: 3358961031692989766}
 --- !u!1001 &5741095516569968608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -624,9 +723,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 365875561385255263}
     m_Modifications:
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_Name
       value: Manga (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
       objectReference: {fileID: 0}
     - target: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_RootOrder
@@ -695,13 +806,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1658015297630470453}
   m_SourcePrefab: {fileID: 100100000, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
 --- !u!4 &1113100535528423781 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
   m_PrefabInstance: {fileID: 5741095516569968608}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8662058165436812918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+  m_PrefabInstance: {fileID: 5741095516569968608}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1658015297630470453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8662058165436812918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c229cb64cef533442a1a0483b9ad8d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsGeral: {fileID: 3358961031692989766}
 --- !u!1001 &8653372785699629139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -710,9 +842,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 365875561385255263}
     m_Modifications:
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446783016841297317, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_Name
       value: Manga (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      propertyPath: m_TagString
+      value: FrutaEmArvore
       objectReference: {fileID: 0}
     - target: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
       propertyPath: m_RootOrder
@@ -781,10 +925,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7256992205738329069}
   m_SourcePrefab: {fileID: 100100000, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
 --- !u!4 &4091524991255656150 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4674438438140092037, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
   m_PrefabInstance: {fileID: 8653372785699629139}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5732892406898440645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4006418020139241878, guid: 5c2a5e01398bb09429f532188a6e2208, type: 3}
+  m_PrefabInstance: {fileID: 8653372785699629139}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7256992205738329069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732892406898440645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c229cb64cef533442a1a0483b9ad8d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsGeral: {fileID: 3358961031692989766}
