@@ -12,11 +12,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 781cc897cf8675041a751163b51f97dd, type: 3}
   m_Name: HDRenderPipelineGlobalSettings
   m_EditorClassIdentifier: 
-  m_Settings:
-    m_SettingsList: []
-    m_RuntimeSettings: []
-  m_DefaultVolumeProfile: {fileID: 11400000, guid: af20694840a40b144bd45e5d4b62edd9, type: 2}
-  m_LookDevVolumeProfile: {fileID: 11400000, guid: a296996a29f0c684eb0cf3bbfaabb5dd, type: 2}
+  m_CustomPostProcessOrdersSettings:
+    m_Version: 0
+    m_BeforeTransparentCustomPostProcesses:
+      m_InjectionPoint: 0
+      m_CustomPostProcessTypesAsString: []
+    m_BeforeTAACustomPostProcesses:
+      m_InjectionPoint: 3
+      m_CustomPostProcessTypesAsString: []
+    m_BeforePostProcessCustomPostProcesses:
+      m_InjectionPoint: 1
+      m_CustomPostProcessTypesAsString: []
+    m_AfterPostProcessBlursCustomPostProcesses:
+      m_InjectionPoint: 4
+      m_CustomPostProcessTypesAsString: []
+    m_AfterPostProcessCustomPostProcesses:
+      m_InjectionPoint: 2
+      m_CustomPostProcessTypesAsString: []
+  beforeTransparentCustomPostProcesses: []
+  beforePostProcessCustomPostProcesses: []
+  afterPostProcessBlursCustomPostProcesses: []
+  afterPostProcessCustomPostProcesses: []
+  beforeTAACustomPostProcesses: []
+  m_ShaderStrippingSetting:
+    m_Version: 0
+    m_ExportShaderVariants: 1
+    m_ShaderVariantLogLevel: 0
+    m_StripRuntimeDebugShaders: 0
+  m_ShaderVariantLogLevel: 0
+  m_SupportRuntimeDebugDisplay: 1
+  m_ExportShaderVariants: 1
+  m_StripDebugVariants: 0
+  DLSSProjectId: 000000
+  useDLSSCustomProjectId: 0
+  supportProbeVolumes: 0
+  autoRegisterDiffusionProfiles: 0
+  analyticDerivativeEmulation: 0
+  analyticDerivativeDebugOutput: 0
+  lensAttenuationMode: 0
+  colorGradingSpace: 0
+  m_ObsoleteDiffusionProfileSettingsList:
+  - {fileID: 11400000, guid: 16c7c1d43c1734b4b9fd6e420650bca0, type: 2}
+  - {fileID: 11400000, guid: 78322c7f82657514ebe48203160e3f39, type: 2}
+  - {fileID: 11400000, guid: bf98aeed9548d6840ae9b1000bdceeda, type: 2}
+  - {fileID: 11400000, guid: ced0ded1002e03b4cbe34e685c502de4, type: 2}
+  - {fileID: 11400000, guid: 8ae28b9a19c36784280380e4799243cb, type: 2}
+  specularFade: 0
+  rendererListCulling: 0
+  m_ObsoleteDefaultVolumeProfile: {fileID: 0}
+  m_ObsoleteLookDevVolumeProfile: {fileID: 0}
   m_ObsoleteRenderingPathDefaultCameraFrameSettings:
     bitDatas:
       data1: 72198260625768269
@@ -65,7 +109,7 @@ MonoBehaviour:
     sssCustomDownsampleSteps: 0
     msaaMode: 1
     materialQuality: 0
-  m_RenderingPath:
+  m_ObsoleteRenderingPath:
     m_Version: 0
     m_Camera:
       bitDatas:
@@ -115,14 +159,22 @@ MonoBehaviour:
       sssCustomDownsampleSteps: 0
       msaaMode: 1
       materialQuality: 0
-  m_RenderPipelineResources: {fileID: 11400000, guid: 3ce144cff5783da45aa5d4fdc2da14b7, type: 2}
-  m_RenderPipelineRayTracingResources: {fileID: 0}
-  beforeTransparentCustomPostProcesses: []
-  beforePostProcessCustomPostProcesses: []
-  afterPostProcessBlursCustomPostProcesses: []
-  afterPostProcessCustomPostProcesses: []
-  beforeTAACustomPostProcesses: []
-  defaultRenderingLayerMask: 257
+  m_Settings:
+    m_SettingsList:
+      m_List:
+      - rid: 413775535109046274
+      - rid: 413775535109046275
+      - rid: 413775535109046276
+      - rid: 413775535109046277
+      - rid: 413775535109046278
+      - rid: 413775535109046279
+      - rid: 413775535109046280
+      - rid: 413775535109046281
+      - rid: 413775535109046282
+      - rid: 413775535109046283
+      - rid: 413775535109046284
+    m_RuntimeSettings:
+      m_List: []
   renderingLayerNames:
   - Light Layer default
   - Light Layer 1
@@ -156,44 +208,133 @@ MonoBehaviour:
   decalLayerName5: Decal Layer 5
   decalLayerName6: Decal Layer 6
   decalLayerName7: Decal Layer 7
-  lensAttenuationMode: 0
-  colorGradingSpace: 0
-  m_ObsoleteDiffusionProfileSettingsList:
-  - {fileID: 11400000, guid: 16c7c1d43c1734b4b9fd6e420650bca0, type: 2}
-  - {fileID: 11400000, guid: 78322c7f82657514ebe48203160e3f39, type: 2}
-  - {fileID: 11400000, guid: bf98aeed9548d6840ae9b1000bdceeda, type: 2}
-  - {fileID: 11400000, guid: ced0ded1002e03b4cbe34e685c502de4, type: 2}
-  - {fileID: 11400000, guid: 8ae28b9a19c36784280380e4799243cb, type: 2}
-  specularFade: 0
-  rendererListCulling: 0
-  DLSSProjectId: 000000
-  useDLSSCustomProjectId: 0
-  supportProbeVolumes: 0
-  autoRegisterDiffusionProfiles: 0
-  analyticDerivativeEmulation: 0
-  analyticDerivativeDebugOutput: 0
   apvScenesData:
-    m_ObsoleteSerializedBakingSets: []
-    sceneToBakingSet:
+    obsoleteSceneBounds:
       m_Keys: []
       m_Values: []
-    bakingSets: []
-    sceneBounds:
-      m_Keys: []
-      m_Values: []
-    hasProbeVolumes:
+    obsoleteHasProbeVolumes:
       m_Keys: []
       m_Values: 
-  m_Version: 10
-  m_ShaderStrippingSetting:
-    m_Version: 0
-    m_ExportShaderVariants: 1
-    m_ShaderVariantLogLevel: 0
-    m_StripRuntimeDebugShaders: 0
-  m_ShaderVariantLogLevel: 0
-  m_SupportRuntimeDebugDisplay: 1
-  m_ExportShaderVariants: 1
-  m_StripDebugVariants: 0
+  m_Version: 14
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 413775535109046274
+      type: {class: ShaderStrippingSetting, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 0
+        m_ExportShaderVariants: 1
+        m_ShaderVariantLogLevel: 0
+        m_StripRuntimeDebugShaders: 0
+    - rid: 413775535109046275
+      type: {class: RenderingPathFrameSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_Camera:
+          bitDatas:
+            data1: 72198260625768269
+            data2: 13799031440106553368
+          lodBias: 1
+          lodBiasMode: 0
+          lodBiasQualityLevel: 0
+          maximumLODLevel: 0
+          maximumLODLevelMode: 0
+          maximumLODLevelQualityLevel: 0
+          sssQualityMode: 0
+          sssQualityLevel: 0
+          sssCustomSampleBudget: 20
+          sssCustomDownsampleSteps: 0
+          msaaMode: 1
+          materialQuality: 0
+        m_CustomOrBakedReflection:
+          bitDatas:
+            data1: 135310754214733
+            data2: 4539628428684427288
+          lodBias: 1
+          lodBiasMode: 0
+          lodBiasQualityLevel: 0
+          maximumLODLevel: 0
+          maximumLODLevelMode: 0
+          maximumLODLevelQualityLevel: 0
+          sssQualityMode: 0
+          sssQualityLevel: 0
+          sssCustomSampleBudget: 20
+          sssCustomDownsampleSteps: 0
+          msaaMode: 1
+          materialQuality: 0
+        m_RealtimeReflection:
+          bitDatas:
+            data1: 139923400171341
+            data2: 13763000466881413136
+          lodBias: 1
+          lodBiasMode: 0
+          lodBiasQualityLevel: 0
+          maximumLODLevel: 0
+          maximumLODLevelMode: 0
+          maximumLODLevelQualityLevel: 0
+          sssQualityMode: 0
+          sssQualityLevel: 0
+          sssCustomSampleBudget: 20
+          sssCustomDownsampleSteps: 0
+          msaaMode: 1
+          materialQuality: 0
+    - rid: 413775535109046276
+      type: {class: DiffusionProfileDefaultSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_AutoRegisterDiffusionProfiles: 0
+    - rid: 413775535109046277
+      type: {class: SpecularFadeSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_SpecularFade: 0
+    - rid: 413775535109046278
+      type: {class: ColorGradingSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_ColorGradingSpace: 0
+    - rid: 413775535109046279
+      type: {class: LensSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_LensAttenuationMode: 0
+    - rid: 413775535109046280
+      type: {class: AnalyticDerivativeSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_AnalyticDerivativeEmulation: 0
+        m_AnalyticDerivativeDebugOutput: 0
+    - rid: 413775535109046281
+      type: {class: RenderGraphSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_DynamicRenderPassCulling: 0
+    - rid: 413775535109046282
+      type: {class: CustomPostProcessOrdersSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_BeforeTransparentCustomPostProcesses:
+          m_InjectionPoint: 0
+          m_CustomPostProcessTypesAsString: []
+        m_BeforeTAACustomPostProcesses:
+          m_InjectionPoint: 3
+          m_CustomPostProcessTypesAsString: []
+        m_BeforePostProcessCustomPostProcesses:
+          m_InjectionPoint: 1
+          m_CustomPostProcessTypesAsString: []
+        m_AfterPostProcessBlursCustomPostProcesses:
+          m_InjectionPoint: 4
+          m_CustomPostProcessTypesAsString: []
+        m_AfterPostProcessCustomPostProcesses:
+          m_InjectionPoint: 2
+          m_CustomPostProcessTypesAsString: []
+    - rid: 413775535109046283
+      type: {class: HDRPDefaultVolumeProfileSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_VolumeProfile: {fileID: 11400000, guid: af20694840a40b144bd45e5d4b62edd9, type: 2}
+    - rid: 413775535109046284
+      type: {class: LookDevVolumeProfileSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Version: 0
+        m_VolumeProfile: {fileID: 11400000, guid: a296996a29f0c684eb0cf3bbfaabb5dd, type: 2}
