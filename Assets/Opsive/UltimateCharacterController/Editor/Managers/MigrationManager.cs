@@ -232,7 +232,7 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
                         child.gameObject.GetComponent<Character.Identifiers.CharacterColliderBaseIdentifier>()) {
                         var collider = child.gameObject.GetComponent<Collider>();
                         if (collider != null) { 
-                            collider.material = Shared.Editor.Utility.EditorUtility.LoadAsset<PhysicMaterial>(c_CharacterPhysicMaterialGUID);
+                            collider.material = Shared.Editor.Utility.EditorUtility.LoadAsset<PhysicsMaterial>(c_CharacterPhysicMaterialGUID);
                         }
                         moveGameObject = true;
                     }

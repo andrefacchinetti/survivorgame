@@ -11,8 +11,8 @@ public class GrudarEmSuperficie : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<CollisorSofreDano>() != null || collision.gameObject.tag == "Terreno")
         {
-            // A colisão ocorreu com um objeto da camada "Construcao"
-            if (gameObjectPai.GetComponent<Rigidbody>().velocity.magnitude > 1f)
+            // A colisï¿½o ocorreu com um objeto da camada "Construcao"
+            if (gameObjectPai.GetComponent<Rigidbody>().linearVelocity.magnitude > 1f)
             {
                 gameObjectPai.GetComponent<Rigidbody>().isKinematic = true;
                 gameObjectPai.transform.SetParent(collision.gameObject.transform);

@@ -135,7 +135,7 @@ namespace Opsive.UltimateCharacterController.Objects.CharacterAssist
         /// </summary>
         private void CheckVelocity()
         {
-            if (m_Rigidbody.velocity.sqrMagnitude < 0.01f) {
+            if (m_Rigidbody.linearVelocity.sqrMagnitude < 0.01f) {
                 m_TriggerEnableEvent = Scheduler.Schedule(m_TriggerEnableDelay, EnableTrigger);
                 return;
             }

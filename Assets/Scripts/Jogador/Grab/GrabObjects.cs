@@ -49,8 +49,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (grabedObj == null) return;
         if(objRig != null)
         {
-            objRig.drag = rigSaveGrabed.x;
-            objRig.angularDrag = rigSaveGrabed.y;
+            objRig.linearDamping = rigSaveGrabed.x;
+            objRig.angularDamping = rigSaveGrabed.y;
         }
         rigSaveGrabed = Vector2.zero;
         grabedObj = null;
@@ -69,19 +69,19 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     public bool isPlayerEstaOlhandoPraBaixo()
     {
-        // Obter a direção da câmera
+        // Obter a direï¿½ï¿½o da cï¿½mera
         Vector3 cameraForward = Camera.main.transform.forward;
-        // Obter o ângulo em relação ao eixo Y (vertical)
+        // Obter o ï¿½ngulo em relaï¿½ï¿½o ao eixo Y (vertical)
         float angle = Mathf.Abs(Vector3.Angle(cameraForward, Vector3.up));
-        // Verificar se o ângulo é menor que o limite
+        // Verificar se o ï¿½ngulo ï¿½ menor que o limite
         if (angle > anguloLimiteOlhandoPraBaixo)
         {
-            // O player está olhando para baixo
+            // O player estï¿½ olhando para baixo
             return true;
         }
         else
         {
-            // O player não está olhando para baixo
+            // O player nï¿½o estï¿½ olhando para baixo
             return false;
         }
     }
@@ -126,14 +126,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
             if (rigSaveGrabed == Vector2.zero)
             {
-                rigSaveGrabed = new Vector2(objRig.drag, objRig.angularDrag);
+                rigSaveGrabed = new Vector2(objRig.linearDamping, objRig.angularDamping);
             }
-            objRig.drag = 2.5f;
-            objRig.angularDrag = 2.5f;
+            objRig.linearDamping = 2.5f;
+            objRig.angularDamping = 2.5f;
             objRig.AddForce(-(grabedObj.transform.position - posGrab).normalized * calc, ForceMode.Impulse);
             playerController.pesoGrab = objRig.mass;
 
-            if (Input.GetMouseButtonUp(1) || objRig.velocity.magnitude >= 20 || dist >= 10 )
+            if (Input.GetMouseButtonUp(1) || objRig.linearVelocity.magnitude >= 20 || dist >= 10 )
             {
                 UngrabObject(objRig);
             }
@@ -329,7 +329,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         possibleGrab = true;
     }
 
-    //INTERAÇÕES
+    //INTERAï¿½ï¿½ES
     private void interacaoIncendiaveis(RaycastHit hit)
     {
         if (inventario.itemNaMao != null)

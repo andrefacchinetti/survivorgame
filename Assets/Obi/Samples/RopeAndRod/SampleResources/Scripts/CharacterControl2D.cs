@@ -19,7 +19,7 @@ public class CharacterControl2D : MonoBehaviour {
 
 		unityRigidbody.AddForce(new Vector3(Input.GetAxis("Horizontal")*acceleration,0,0));
 	
-		unityRigidbody.velocity = Vector3.ClampMagnitude(unityRigidbody.velocity,maxSpeed);
+		unityRigidbody.linearVelocity = Vector3.ClampMagnitude(unityRigidbody.linearVelocity,maxSpeed);
 		
 		if (Input.GetButtonDown("Jump")){
 			unityRigidbody.AddForce(Vector3.up * jumpPower,ForceMode.VelocityChange);

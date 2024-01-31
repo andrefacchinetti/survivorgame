@@ -352,7 +352,7 @@ namespace Opsive.UltimateCharacterController.Character
 
             m_Transform = transform;
             m_Rigidbody = gameObject.GetCachedComponent<Rigidbody>();
-            m_Rigidbody.drag = m_Rigidbody.angularDrag = 0;
+            m_Rigidbody.linearDamping = m_Rigidbody.angularDamping = 0;
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.interpolation = RigidbodyInterpolation.None;
             m_CharacterLayerManager = gameObject.GetCachedComponent<CharacterLayerManager>();

@@ -164,7 +164,7 @@ namespace WorldStreamer2
 
         void StopMovement()
         {
-            velocity = rigidbody.velocity;
+            velocity = rigidbody.linearVelocity;
             angularVelocity = rigidbody.angularVelocity;
             rigidbody.isKinematic = false;
         }
@@ -172,7 +172,7 @@ namespace WorldStreamer2
         void StartMovement()
         {
             rigidbody.isKinematic = true;
-            rigidbody.velocity = velocity;
+            rigidbody.linearVelocity = velocity;
             rigidbody.angularVelocity = angularVelocity;
         }
 

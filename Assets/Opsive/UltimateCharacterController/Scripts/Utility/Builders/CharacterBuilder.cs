@@ -112,7 +112,7 @@ namespace Opsive.UltimateCharacterController.Utility.Builders
             if (rigidbody == null) {
                 rigidbody = character.AddComponent<Rigidbody>();
             }
-            rigidbody.drag = rigidbody.angularDrag = 0;
+            rigidbody.linearDamping = rigidbody.angularDamping = 0;
             rigidbody.useGravity = false;
             rigidbody.isKinematic = true;
             rigidbody.mass = 80;
@@ -280,7 +280,7 @@ namespace Opsive.UltimateCharacterController.Utility.Builders
 #if UNITY_EDITOR
                 var physicMaterialPath = UnityEditor.AssetDatabase.GUIDToAssetPath(c_CharacterPhysicMaterialGUID);
                 if (!string.IsNullOrEmpty(physicMaterialPath)) {
-                    var colliderPhysicMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath(physicMaterialPath, typeof(PhysicMaterial)) as PhysicMaterial;
+                    var colliderPhysicMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath(physicMaterialPath, typeof(PhysicsMaterial)) as PhysicsMaterial;
                     capsuleCollider.material = colliderPhysicMaterial;
                 }
 #endif
