@@ -18,13 +18,13 @@ GameObject:
   - component: {fileID: 4112116597577158067}
   - component: {fileID: 7758435858999300726}
   - component: {fileID: 8938805788929585190}
-  - component: {fileID: 7080823217629626607}
+  - component: {fileID: 6901225485682419972}
   m_Layer: 11
   m_Name: Beech_Tree_01
   m_TagString: Arvore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2051450255979100380
 Transform:
@@ -34,7 +34,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7844194303150068972}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1006.6099, y: 0.013105869, z: 360.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -117,11 +117,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.72, y: 10, z: 0.685}
+  m_Extents: {x: 0.23, y: 5.1, z: 0.335}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 9.75, z: 0.42}
+  m_Center: {x: 0.05, y: 4.5, z: 0.42}
   m_TimeToStationary: 0.5
 --- !u!114 &1371954451464001763
 MonoBehaviour:
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_HealthAttributeName: Health
   m_ShieldAttributeName: 
   m_Hitboxes:
-  - m_Collider: {fileID: 7080823217629626607}
+  - m_Collider: {fileID: 6901225485682419972}
     m_DamageMultiplier: 1
   m_MaxHitboxCollisionCount: 10
   m_SpawnedObjectsOnDeath: []
@@ -284,8 +284,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ID: 101
---- !u!64 &7080823217629626607
-MeshCollider:
+--- !u!136 &6901225485682419972
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -302,10 +302,11 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: 17662ef9a5452e94ca19272ebd546eca, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.17
+  m_Height: 8.23
+  m_Direction: 1
+  m_Center: {x: 0.09, y: 3.76, z: 0}
 --- !u!1001 &1409151906845850988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -314,6 +315,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2051450255979100380}
     m_Modifications:
+    - target: {fileID: 1861513475237691617, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2493473939148820682, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6081562986216898770, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -373,6 +382,18 @@ PrefabInstance:
     - target: {fileID: 7078907134251479745, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
       propertyPath: m_Name
       value: prefab_beech_tree_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7078907134251479745, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7590580875848450626, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7683460461932659776, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4846686975992879102, guid: 915b43792ae342d4ba5fa425e86cc6f4, type: 3}
