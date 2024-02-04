@@ -47,8 +47,8 @@ public class Item : MonoBehaviourPunCallbacks
     {
         public ItemDefinitionBase itemDefinition;
         public TiposItems tipoItem;
+        public GameObject[] prefabDropMarks;
         public Material materialPersonalizado;
-        public string nomePrefabAlternativo;
         public int qtdMinDrops;
         public int qtdMaxDrops;
     }

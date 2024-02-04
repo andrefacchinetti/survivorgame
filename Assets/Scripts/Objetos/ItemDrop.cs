@@ -43,4 +43,28 @@ public class ItemDrop : MonoBehaviourPunCallbacks
         return objInstanciado;
     }
 
+    public static GameObject InstanciarPrefabPorPrefabMark(string nomePrefab, GameObject[] prefabMarks, int viewID)
+    {
+        GameObject objInstanciado = null;
+        string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
+        Debug.Log(prefabPath);
+
+        for (int i = 0; i < prefabMarks.Length; i++)
+        {
+            if (PhotonNetwork.IsConnected)
+            {
+                objInstanciado = PhotonNetwork.Instantiate(prefabPath, prefabMarks[i].transform.position, prefabMarks[i].transform.rotation, 0, new object[] { viewID });
+            }
+            else
+            {
+                GameObject prefab = Resources.Load<GameObject>(prefabPath);
+                objInstanciado = Instantiate(prefab, prefabMarks[i].transform.position, prefabMarks[i].transform.rotation);
+            }
+            objInstanciado.GetComponent<MeshRenderer>().material = prefabMarks[i].GetComponent<MeshRenderer>().material;
+            objInstanciado.transform.localScale = prefabMarks[i].transform.lossyScale;
+        }
+
+        return objInstanciado;
+    }
+
 }

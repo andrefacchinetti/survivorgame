@@ -21,7 +21,6 @@ public class FrutaEmArvore : MonoBehaviour
                     novo.itemDefinition = itemDropScruct.itemDefinition;
                     novo.tipoItem = itemDropScruct.tipoItem;
                     novo.materialPersonalizado = itemDropScruct.materialPersonalizado;
-                    novo.nomePrefabAlternativo = itemDropScruct.nomePrefabAlternativo;
                     novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
                     novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
                     itemDrops.Add(novo);

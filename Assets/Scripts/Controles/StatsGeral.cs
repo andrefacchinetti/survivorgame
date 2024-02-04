@@ -190,10 +190,17 @@ public class StatsGeral : MonoBehaviour
             if (!Item.TiposItems.Nenhum.ToString().Equals(drop.tipoItem))
             {
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-                string nomePrefab = (drop.nomePrefabAlternativo != null && drop.nomePrefabAlternativo.Length > 0) ? drop.nomePrefabAlternativo : drop.itemDefinition.name;
+                string nomePrefab = drop.itemDefinition.name;
                 string prefabPath = drop.tipoItem + "/" + nomePrefab;
-                Debug.Log("dropando: " + nomePrefab+"  "+ (drop.nomePrefabAlternativo != null && drop.nomePrefabAlternativo.Length > 0));
-                ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
+                Debug.Log("dropando: " + nomePrefab);
+                if(drop.prefabDropMarks != null && drop.prefabDropMarks.Length > 0)
+                {
+                    ItemDrop.InstanciarPrefabPorPrefabMark(prefabPath, drop.prefabDropMarks, PV.ViewID);
+                }
+                else
+                {
+                    ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
+                }
             }
         }
     }

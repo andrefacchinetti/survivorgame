@@ -25,7 +25,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		foreach (Item.ItemDropStruct drop in playerController.itemsDropsPosDissecar)
 		{
 			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-			string nomePrefab = (drop.nomePrefabAlternativo != null && drop.nomePrefabAlternativo.Length > 0) ? drop.nomePrefabAlternativo : drop.itemDefinition.name;
+			string nomePrefab = drop.itemDefinition.name;
 			string prefabPath = drop.tipoItem + "/" + nomePrefab;
 			ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position,
 				playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.rotation, drop.materialPersonalizado, playerController.PV.ViewID);
