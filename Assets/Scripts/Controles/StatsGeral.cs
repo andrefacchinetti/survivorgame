@@ -139,7 +139,7 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
-    public void AcoesTomouDano() //É chamado no event invocado apos o Health receber o Damage()
+    public void AcoesTomouDano() //ï¿½ chamado no event invocado apos o Health receber o Damage()
     {
         if (jogadorStats != null)
         {
@@ -170,7 +170,7 @@ public class StatsGeral : MonoBehaviour
 
     public void DroparItensDaMochila()
     {
-        if (jogadorStats == null) return; //NAO É UM JOGADOR
+        if (jogadorStats == null) return; //NAO ï¿½ UM JOGADOR
 
         List<Item> itensParaRemover = new List<Item>(jogadorStats.playerController.inventario.itens);
 

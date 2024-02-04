@@ -67,20 +67,20 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 
 	void AnimEventArremessoLanca()
 	{
-		Debug.Log("arremessou lança");
+		Debug.Log("arremessou lanï¿½a");
 		ArremessarItemNaMao();
 	}
 
-	// Força do arremesso
+	// Forï¿½a do arremesso
 	public float throwForce = 300f;
-	private void ArremessarItemNaMao() // Função que arremessa o objeto na direção da câmera
+	private void ArremessarItemNaMao() // Funï¿½ï¿½o que arremessa o objeto na direï¿½ï¿½o da cï¿½mera
 	{
 		if (playerController.inventario.itemNaMao == null) return;
-		// Cria um ray que parte da posição da câmera na direção em que ela está apontando
+		// Cria um ray que parte da posiï¿½ï¿½o da cï¿½mera na direï¿½ï¿½o em que ela estï¿½ apontando
 		Ray ray = new Ray(transform.position, transform.forward);
-		// Declara uma variável para armazenar o ponto em que o ray colide com a superfície
+		// Declara uma variï¿½vel para armazenar o ponto em que o ray colide com a superfï¿½cie
 		RaycastHit hit;
-		// Se o ray atingir alguma superfície, calcula a direção do arremesso
+		// Se o ray atingir alguma superfï¿½cie, calcula a direï¿½ï¿½o do arremesso
 		if (Physics.Raycast(ray, out hit))
 		{
 			Vector3 direction = hit.point - transform.position;
@@ -89,7 +89,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 			string nomePrefab = playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name;
 			string prefabPath = playerController.inventario.itemNaMao.tipoItem + "/" + nomePrefab;
 			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, transform.position, Quaternion.LookRotation(direction), null, playerController.PV.ViewID);
-			// Aplica a força na direção calculada
+			// Aplica a forï¿½a na direï¿½ï¿½o calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);
 			//REMOVER ITEM DA MAO
 			playerController.inventario.ConsumirItemDaMao();
