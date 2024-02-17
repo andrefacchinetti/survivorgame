@@ -26,8 +26,9 @@ public class StatsGeral : MonoBehaviour
     [HideInInspector] public ConstrucaoStats construcaoStats;
     [HideInInspector] public CollisorSofreDano collisorSofreDano;
 
-    public bool isSangra = false;
+    public EstilhacoFxController.TipoEstilhaco tipoEstilhaco;
     BFX_DemoTest bloodController;
+    EstilhacoFxController estilhacoFxController;
 
     PhotonView PV;
 
@@ -46,7 +47,8 @@ public class StatsGeral : MonoBehaviour
         if (health == null) health = GetComponentInParent<Health>();
         attributeManager = GetComponentInParent<AttributeManager>();
         if (dropPosition == null) dropPosition = this.gameObject;
-        if(isSangra) bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
+        if(EstilhacoFxController.TipoEstilhaco.Sangue.Equals(tipoEstilhaco)) bloodController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<BFX_DemoTest>();
+        else if (!EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<EstilhacoFxController>();
     }
 
     private void OnPreDamage(float dano, Vector3 position, GameObject attacker, Collider hitCollider)
@@ -91,8 +93,9 @@ public class StatsGeral : MonoBehaviour
     {
         //Evento que acontece depois de aplicar o damage no Health
         Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
-        if(hitCollider != null && isSangra) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
-        if(attacker != null)
+        if (hitCollider != null && EstilhacoFxController.TipoEstilhaco.Sangue.Equals(tipoEstilhaco)) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
+        else if (hitCollider != null && !EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController.GerarEstilhaco(tipoEstilhaco, hitCollider, hitCollider.transform.position);
+        if (attacker != null)
         {
             PlayerController pc = attacker.GetComponentInParent<PlayerController>(); //TODO: OTIMIZAR ISSO
             if (pc != null)
