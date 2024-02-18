@@ -39,10 +39,9 @@ public class EstilhacoFxController : MonoBehaviour
 		}
 	}
 
-	public void GerarEstilhaco(TipoEstilhaco tipoEstilhaco, Collider colliderAlvo, Vector3 colliderArma)
+	public void GerarEstilhaco(TipoEstilhaco tipoEstilhaco, Vector3 colliderArma, Vector3 attacker)
     {
-		Debug.Log("Estilhaço alvo" + colliderAlvo.gameObject.tag);
-		GameObject particle = spawnParticle(tipoEstilhaco, colliderAlvo, colliderArma);
+		GameObject particle = spawnParticle(tipoEstilhaco, colliderArma, attacker);
     }
 
 	private GameObject obterParticlePorTipo(TipoEstilhaco tipoEstilhaco)
@@ -52,18 +51,14 @@ public class EstilhacoFxController : MonoBehaviour
 		else return null;
 	}
 
-	public GameObject spawnParticle(TipoEstilhaco tipoEstilhaco, Collider colliderAlvo, Vector3 colliderArma)
+	public GameObject spawnParticle(TipoEstilhaco tipoEstilhaco, Vector3 colliderArma, Vector3 attacker)
 	{
-		float angle = 0;
 		Vector3 spawnPosition = colliderArma;
-		Vector3 estilhacoDirection = (colliderArma - spawnPosition).normalized;
 
 		GameObject particleEx = obterParticlePorTipo(tipoEstilhaco);
-		GameObject particles = (GameObject)Instantiate(particleEx);
+		GameObject particles = (GameObject)Instantiate(particleEx, spawnPosition, new Quaternion());
 		if (particles == null) return null;
-		particles.transform.position = spawnPosition;
-		particles.transform.rotation = Quaternion.Euler(0, angle + 90, 0);
-		particles.transform.LookAt(spawnPosition + estilhacoDirection, direction);
+		particles.transform.LookAt(attacker);
 
 #if UNITY_3_5
 			particles.SetActiveRecursively(true);

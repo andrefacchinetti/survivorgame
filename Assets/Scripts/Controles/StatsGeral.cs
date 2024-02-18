@@ -94,7 +94,7 @@ public class StatsGeral : MonoBehaviour
         //Evento que acontece depois de aplicar o damage no Health
         Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
         if (hitCollider != null && EstilhacoFxController.TipoEstilhaco.Sangue.Equals(tipoEstilhaco)) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
-        else if (hitCollider != null && !EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController.GerarEstilhaco(tipoEstilhaco, hitCollider, hitCollider.transform.position);
+        else if (hitCollider != null && !EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController.GerarEstilhaco(tipoEstilhaco, position, attacker.transform.position);
         if (attacker != null)
         {
             PlayerController pc = attacker.GetComponentInParent<PlayerController>(); //TODO: OTIMIZAR ISSO
