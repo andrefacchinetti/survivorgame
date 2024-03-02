@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330046235}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.99985915, y: 0.000043405205, z: 0.0026176288, w: -0.016579546}
+  m_LocalRotation: {x: 0.9109153, y: -0.012607453, z: 0.40575692, w: -0.07372772}
   m_LocalPosition: {x: 0, y: 5423, z: 40884}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6880325585466105053}
-  m_LocalEulerAnglesHint: {x: 181.9, y: -0.3, z: 0}
+  m_LocalEulerAnglesHint: {x: 187.128, y: -48.317993, z: 4.7870026}
 --- !u!108 &330046236
 Light:
   m_ObjectHideFlags: 0
@@ -43,8 +43,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 0.9027123, b: 0.740566, a: 1}
-  m_Intensity: 118032.88
+  m_Color: {r: 0.696668, g: 0.6981132, b: 0.56310076, a: 1}
+  m_Intensity: 66719.09
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EnableSpotReflector: 1
   m_LightUnit: 2
   m_LuxAtDistance: 1
-  m_Intensity: 30
+  m_Intensity: 25842.904
   m_InnerSpotPercent: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_ShadowVariant: 0
   m_ShadowPrecision: 0
   useOldInspector: 0
-  useVolumetric: 0
+  useVolumetric: 1
   featuresFoldout: 1
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
@@ -751,7 +751,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8509933423755590592}
-  - component: {fileID: 2464509441493695479}
   m_Layer: 0
   m_Name: Sky
   m_TagString: Untagged
@@ -776,23 +775,6 @@ Transform:
   - {fileID: 6880325585466105053}
   m_Father: {fileID: 6652729579810953492}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2464509441493695479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1537659621590213364}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 0e768098c1315af4985674e5cc731509, type: 2}
 --- !u!1 &1674958626712441771
 GameObject:
   m_ObjectHideFlags: 0
@@ -2759,10 +2741,10 @@ MonoBehaviour:
   meioDia: {r: 1, g: 0.9843137, b: 0.9490196, a: 1}
   entardecer: {r: 0.9607843, g: 0.75686276, b: 0.43137255, a: 1}
   noite: {r: 0.9607843, g: 0.75686276, b: 0.43137255, a: 1}
-  intensidadeAmanhecer: 5
-  intensidadeMeioDia: 5
-  intensidadeEntardecer: 10
-  intensidadeNoite: 10
+  intensidadeAmanhecer: 30000
+  intensidadeMeioDia: 30000
+  intensidadeEntardecer: 30000
+  intensidadeNoite: 30000
   amanhecerHorario: 5
   meioDiaHorario: 10
   entardecerHorario: 18
@@ -4432,6 +4414,7 @@ MonoBehaviour:
   ParticleMadeira: {fileID: 100002, guid: 5d73f72c6be7d0440bbc9c87d4f718c0, type: 3}
   ParticlePedra: {fileID: 100006, guid: 9e95c7b2183a4f345aaf86846f8f1918, type: 3}
   bulletholes: {fileID: 7378025849301908818}
+  direction: {x: 0, y: 0, z: 0}
 --- !u!1001 &8870450592291922125
 PrefabInstance:
   m_ObjectHideFlags: 0
