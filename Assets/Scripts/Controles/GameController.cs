@@ -84,7 +84,7 @@ public class GameController : MonoBehaviour
 
         Color currentColor;
 
-        /*if (gameHour >= amanhecerHorario && gameHour < meioDiaHorario)
+        if (gameHour >= amanhecerHorario && gameHour < meioDiaHorario)
         {
             currentColor = Color.Lerp(amanhecer, meioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
             luzDoSol.intensity = Mathf.Lerp(intensidadeAmanhecer, intensidadeMeioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
@@ -109,7 +109,7 @@ public class GameController : MonoBehaviour
 
         gameSecond = Mathf.FloorToInt(elapsedTime % 60);
         AtualizarRotacaoDoSol();
-        objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);*/
+        objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);
     }
 
     private float targetRotation = 0f;
