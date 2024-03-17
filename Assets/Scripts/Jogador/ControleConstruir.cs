@@ -13,6 +13,7 @@ public class ControleConstruir : MonoBehaviour
     [SerializeField] PlayerController playerController;
     [SerializeField] public ItemDefinitionBase itemMadeira, itemPedra, itemMarteloReparador;
     public bool isAtivo = false, podeJuntar, isConectado, podeConstruir, isMadeira;
+    public bool isModoConstrucao = false;
     public float distanciaMax, rotacao, velRotacao;
     [HideInInspector] public ConstrucoesController construcaoControllerHit;
     public GameObject objeto;
@@ -178,7 +179,7 @@ public class ControleConstruir : MonoBehaviour
                 if (construcao.isConstrucaoMadeiraOuPedra) possuiQtdIngredientesNecessarios = inventario.VerificarQtdItem(isMadeira ? itemMadeira : itemPedra, isMadeira ? construcao.ingredientes[0].Amount : construcao.ingredientes[1].Amount, true);
                 else possuiQtdIngredientesNecessarios = inventario.VerificarQtdItems(construcao.ingredientes, true);
 
-                if (possuiQtdIngredientesNecessarios && (podeConstruir && VerificarSePodeConstruir())){
+                if ((isModoConstrucao || possuiQtdIngredientesNecessarios) && (podeConstruir && VerificarSePodeConstruir())){
                     GameObject instanciado = Instantiate(construcao.isConstrucaoMadeiraOuPedra ? isMadeira ? construcao.madPrefab : construcao.pedPrefab : construcao.objPrefab, objeto.transform.position, objeto.transform.rotation);
                     if(construcaoControllerHit != null)
                     {
