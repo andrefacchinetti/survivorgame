@@ -31,7 +31,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
     [SerializeField] [HideInInspector] public ArrastarItensInventario arrastarItensInventario;
 
-    [SerializeField] TMP_Text txMsgLogItem;
+    [SerializeField] TMP_Text txMsgLogItem, txMunicoesHud;
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
