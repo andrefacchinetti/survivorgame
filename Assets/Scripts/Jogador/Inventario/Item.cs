@@ -12,6 +12,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public TiposItems tipoItem;
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField] public ItemIdentifierAmount itemIdentifierAmount;
+    [SerializeField] public ItemDefinitionBase tipoMunicao;
     [SerializeField] public int groupIndex;
     [SerializeField] public bool isConsumivel;
     [SerializeField] public int curaSede, curaFome, curaVida;
@@ -58,6 +59,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         public TiposItems tipoItem;
         public ItemIdentifierAmount itemIdentifierAmount;
+        public ItemDefinitionBase tipoMunicao;
         public int groupIndex;
         public string nomePortugues, nomeIngles;
         public bool isConsumivel;
@@ -72,6 +74,7 @@ public class Item : MonoBehaviourPunCallbacks
         nomePortugues = itemResponse.nomePortugues;
         nomeIngles = itemResponse.nomeIngles;
         itemIdentifierAmount = itemResponse.itemIdentifierAmount;
+        tipoMunicao = itemResponse.tipoMunicao;
         groupIndex = itemResponse.groupIndex;
         isConsumivel = itemResponse.isConsumivel;
         curaSede = itemResponse.curaSede;
@@ -131,6 +134,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void DeselecionarItem()
     {
+        inventario.txMunicoesHud.text = "";
         inventario.itemNaMao = null;
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
@@ -198,6 +202,8 @@ public class Item : MonoBehaviourPunCallbacks
                 inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false);
             }
         }
+
+        inventario.AtualizarHudMunicoesComArmaAtual();
 
     }
 

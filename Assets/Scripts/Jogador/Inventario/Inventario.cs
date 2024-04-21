@@ -31,7 +31,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
     [SerializeField] [HideInInspector] public ArrastarItensInventario arrastarItensInventario;
 
-    [SerializeField] TMP_Text txMsgLogItem, txMunicoesHud;
+    [SerializeField] public TMP_Text txMsgLogItem, txMunicoesHud;
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
@@ -356,6 +356,30 @@ public class Inventario : MonoBehaviour
             }
         }
         return "";
+    }
+
+    public void AtualizarHudMunicoesComArmaAtual()
+    {
+        this.txMunicoesHud.text = "";
+        if (itemNaMao != null && itemNaMao.tipoMunicao != null)
+        {
+            int qtdMunicaoNoInventario = ObterQtdItemNoInventario(itemNaMao.itemIdentifierAmount.ItemDefinition);
+            this.txMunicoesHud.text = "0" + "/" + qtdMunicaoNoInventario;
+        }
+    }
+
+    public int ObterQtdItemNoInventario(ItemDefinitionBase itemDefinition)
+    {
+        int qtdItemAtual = 0;
+        foreach (Item item in itens)
+        {
+            if (item.itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
+            {
+                qtdItemAtual += item.quantidade;
+                break; //Tirar break se as municoes poderem ficar em slots diferentes
+            }
+        }
+        return qtdItemAtual;
     }
 
     public void AlertarJogadorComLogItem(string nomeItemTraduzido, Texture imgItem, bool isAumentandoQtd, int quantidade)
