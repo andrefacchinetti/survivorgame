@@ -552,6 +552,12 @@ namespace Opsive.UltimateCharacterController.Inventory
             }
         }
 
+        protected virtual void SendPreItemIdentifierAdjustAmountEvent(IItemIdentifier itemIdentifier)
+        {
+            // Notify those interested that an item has been adjusted.
+            EventHandler.ExecuteEvent(m_GameObject, "OnPreInventoryAdjustItemIdentifierAmount", itemIdentifier);
+        }
+
         /// <summary>
         /// Adjusts the amount of the specified ItemIdentifier.
         /// </summary>
@@ -960,6 +966,7 @@ namespace Opsive.UltimateCharacterController.Inventory
             if (itemIdentifier == null || amount <= 0) {
                 return (0, dropInstance);
             }
+            SendPreItemIdentifierAdjustAmountEvent(itemIdentifier);
 
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             if (m_NetworkInfo != null && m_NetworkInfo.HasAuthority()) {

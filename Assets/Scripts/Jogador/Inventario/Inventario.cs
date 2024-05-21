@@ -9,6 +9,7 @@ using Opsive.Shared.Utility;
 using Opsive.UltimateCharacterController.Items;
 using Opsive.Shared.Events;
 using Opsive.Shared.Inventory;
+using Opsive.UltimateCharacterController.Items.Actions;
 
 public class Inventario : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
     [SerializeField] [HideInInspector] public ArrastarItensInventario arrastarItensInventario;
 
-    [SerializeField] public TMP_Text txMsgLogItem, txMunicoesHud;
+    [SerializeField] public TMP_Text txMsgLogItem, txMunicoesClipHud, txMunicoesInventarioHud;
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
@@ -211,6 +212,27 @@ public class Inventario : MonoBehaviour
                 return;
             }
         }
+
+    }
+
+    public void AdicionarMunicoesDoClipNoInventarioAposDroparArma(IItemIdentifier itemIdentifier)
+    {
+        if (itemIdentifier != null)
+        {
+            CharacterItem characterItem = inventory.GetCharacterItem(itemIdentifier);
+
+            if(characterItem != null)
+            {
+                CharacterItemAction itemAction = characterItem.ItemActions[0];
+                if (itemAction is ShootableAction)
+                {
+                    var shootableAction = itemAction as ShootableAction;
+                    int qtdNoClip = shootableAction.ClipRemainingCount;
+                    AdicionarItemAoInventario(null, shootableAction.GetAmmoDataInClip(0).ItemIdentifier.GetItemDefinition(), qtdNoClip); //add municoes do clip no inventario
+                    shootableAction.MainClipModule.SetClipRemaining(0); //Remove municoes do clip da arma
+                }
+            }
+        }
     }
 
     public void ConsumirItemDaMao(bool isCordaPartindo)
@@ -360,11 +382,25 @@ public class Inventario : MonoBehaviour
 
     public void AtualizarHudMunicoesComArmaAtual()
     {
-        this.txMunicoesHud.text = "";
-        if (itemNaMao != null && itemNaMao.tipoMunicao != null)
+        this.txMunicoesClipHud.text = "";
+        this.txMunicoesInventarioHud.text = "";
+        if (itemNaMao != null && itemNaMao.tipoMunicao != null) //Quando equipa uma arma, verifica se existe um tipo de municao
         {
-            int qtdMunicaoNoInventario = ObterQtdItemNoInventario(itemNaMao.itemIdentifierAmount.ItemDefinition);
-            this.txMunicoesHud.text = "0" + "/" + qtdMunicaoNoInventario;
+            int qtdMunicaoNoInventario = ObterQtdItemNoInventario(itemNaMao.tipoMunicao);
+            CharacterItem characterItem = inventory.GetActiveCharacterItem(1);
+            if (characterItem == null) characterItem = inventory.GetActiveCharacterItem(0);
+           
+            if (characterItem != null)
+            {
+                CharacterItemAction itemAction = characterItem.ItemActions[0];
+                if (itemAction is ShootableAction)
+                {
+                    var shootableAction = itemAction as ShootableAction;
+                    this.txMunicoesClipHud.text = shootableAction.ClipRemainingCount + " / " + shootableAction.ClipSize;
+                    this.txMunicoesInventarioHud.text = "(" + qtdMunicaoNoInventario + ")";
+                }
+            }
+            
         }
     }
 

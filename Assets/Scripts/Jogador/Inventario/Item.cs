@@ -134,7 +134,8 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void DeselecionarItem()
     {
-        inventario.txMunicoesHud.text = "";
+        inventario.txMunicoesClipHud.text = "";
+        inventario.txMunicoesInventarioHud.text = "";
         inventario.itemNaMao = null;
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
@@ -291,6 +292,7 @@ public class Item : MonoBehaviourPunCallbacks
             RemoverItemDaMochila();
         }
         inventario.AlertarJogadorComLogItem(this.obterNomeItemTraduzido(), imagemItem.texture, false, quantidadeResponse);
+        
     }
 
     private void SetarItemNaMaoNull()
@@ -331,6 +333,7 @@ public class Item : MonoBehaviourPunCallbacks
             txQuantidade.text = quantidade + "";
             gameObject.SetActive(true);
             inventario.AlertarJogadorComLogItem(this.obterNomeItemTraduzido(), imagemItem.texture, true, quantidadeResponse);
+            inventario.AtualizarHudMunicoesComArmaAtual();
             return true;
         }
     }
