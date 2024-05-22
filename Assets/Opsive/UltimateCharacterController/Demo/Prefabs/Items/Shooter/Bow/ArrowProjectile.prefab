@@ -10,15 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7769180514583067805}
   - component: {fileID: 7659278461335637755}
-  - component: {fileID: 7654839570234147831}
   - component: {fileID: 7718780275033468639}
   - component: {fileID: 7676667658641291101}
   - component: {fileID: 7659399149177937773}
-  - component: {fileID: 4633606748257461700}
   - component: {fileID: 3384258987123876186}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: ArrowProjectile
-  m_TagString: ItemDrop
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,14 +74,17 @@ MonoBehaviour:
   m_ActiveAudioClipSet:
     m_AudioConfig: {fileID: 0}
     m_AudioClips: []
-  m_DisableColliderOnImpact: 1
+  m_DisableColliderOnImpact: 0
   m_StickyLayers:
     serializedVersion: 2
     m_Bits: 205520843
   m_DestroyOnCollision: 0
   m_WaitForParticleStop: 0
-  m_DestructionDelay: 10
-  m_SpawnedObjectsOnDestruction: []
+  m_DestructionDelay: 0.01
+  m_SpawnedObjectsOnDestruction:
+  - m_Object: {fileID: 2444314942964740145, guid: 20159265741fdb8419e5596d4c6021c8, type: 3}
+    m_Probability: 1
+    m_RandomSpin: 0
   m_DefaultImpactDamageData:
     m_LayerMask:
       serializedVersion: 2
@@ -175,29 +176,6 @@ MonoBehaviour:
         m_AllowMultiHits: 0
         m_CallImpactCallbackOnOriginator: 1
         m_CallImpactCallbackOnTarget: 1
---- !u!136 &7654839570234147831
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7771915061955658277}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.004768
-  m_Height: 0.6771279
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7718780275033468639
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -245,6 +223,7 @@ TrailRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -354,20 +333,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SurfaceType: {fileID: 0}
   m_AllowDecals: 0
---- !u!114 &4633606748257461700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7771915061955658277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15022b58aaf9a7e4499948d5529d9bac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 114053257604410210, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
-  estaSendoComido: 0
 --- !u!136 &3384258987123876186
 CapsuleCollider:
   m_ObjectHideFlags: 0
