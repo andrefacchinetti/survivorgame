@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -14,7 +15,7 @@ public class GameController : MonoBehaviour
     public int gameMinute = 0;  // Define o minuto atual do jogo
     public int gameSecond = 0;  // Define o minuto atual do jogo
     public int gameDay = 1;  // Define o dia atual do jogo
-    public float gameSpeed = 60f;  // Define a velocidade do tempo do jogo (em segundos do mundo real)
+    public float gameSpeed = 1f;  // Define a velocidade do tempo do jogo (Valor padrão = 1. Diminua para ficar mais rapido)
     private float elapsedTime = 0f;  // Tempo que passou desde o in�cio do jogo
 
     public bool isNoite = false;
@@ -42,13 +43,20 @@ public class GameController : MonoBehaviour
     private float lastGameDayLobos = -1, lastGameDayAnimais = -1;
 
     [SerializeField] public GameObject respawnPointJogador;
+    [SerializeField] public List<SpawnLoots> listaSpawnLoots;
 
-    public bool isRespawnarInimigos = true; //DEIXAR TRUE 
+    [SerializeField] public bool isRespawnarInimigos = true; //DEIXAR TRUE ]
+    [HideInInspector] public PhotonView PV;
+
+    private void Awake()
+    {
+        listaSpawnLoots = new List<SpawnLoots>();
+        spawnController = GetComponent<SpawnController>();
+        PV = GetComponent<PhotonView>();
+    }
 
     private void Start()
     {
-        spawnController = GetComponent<SpawnController>();
-
         float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
         targetRotation = mappedHour;
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
@@ -73,12 +81,11 @@ public class GameController : MonoBehaviour
                 {
                     gameHour -= 24;
                     gameDay++;
+                    spawnarLootsPorDia();
                 }
             }
-
-            spawnarPorDia();
-
             isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario;
+            spawnarPorDia();
             elapsedTime = 0;
         }
 
@@ -133,6 +140,14 @@ public class GameController : MonoBehaviour
     float Map(float value, float fromSource, float toSource, float fromTarget, float toTarget)
     {
         return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
+    }
+
+    private void spawnarLootsPorDia()
+    {
+        foreach(SpawnLoots spawnLoots in listaSpawnLoots)
+        {
+            spawnLoots.SpawnarLootPorDias();
+        }
     }
 
     private void spawnarPorDia()

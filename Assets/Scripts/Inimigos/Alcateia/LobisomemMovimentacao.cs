@@ -112,8 +112,14 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else
             {
-                atacarAlvo(targetObstaculo.position);
-                targetObstaculo = null;
+                if (isPodeAtacarAlvo(transform, targetObstaculo.position))  // Ataca o alvo
+                {
+                    atacarAlvo(targetObstaculo.position);
+                }
+                else
+                {
+                    MoveToPosition(targetObstaculo.position);
+                }
             }
         }
         else
@@ -234,6 +240,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
         }
     }
+
 
     public void perseguirInimigo()
     {

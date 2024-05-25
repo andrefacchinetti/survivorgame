@@ -9,12 +9,20 @@ public class VerificaObstaculo : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (!lobisomemMovimentacao.statsGeral.health.IsAlive()) return;
+        if (lobisomemMovimentacao.targetObstaculo != null || !lobisomemMovimentacao.statsGeral.health.IsAlive()) return;
         if (other.gameObject.tag == "ConstrucaoStats" && other.gameObject.name != "Fundação")
         {
-            Debug.Log("Achou obstaculo");
             lobisomemMovimentacao.agent.ResetPath();
             lobisomemMovimentacao.targetObstaculo = other.transform;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (lobisomemMovimentacao.targetObstaculo == null) return;
+        if(other.GetInstanceID() == lobisomemMovimentacao.targetObstaculo.GetInstanceID())
+        {
+            lobisomemMovimentacao.targetObstaculo = null;
         }
     }
 

@@ -32,7 +32,10 @@ public class ItemDrop : MonoBehaviourPunCallbacks
             else
             {
                 GameObject prefab = Resources.Load<GameObject>(prefabPath);
-                objInstanciado = Instantiate(prefab, position, rotation);
+                if (prefab != null)
+                {
+                    objInstanciado = Instantiate(prefab, position, rotation);
+                }
             }
             if (materialPersonalizado != null)
             {
