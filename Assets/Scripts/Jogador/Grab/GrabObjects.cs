@@ -1,12 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
-using Opsive.UltimateCharacterController.Inventory;
 using Opsive.Shared.Inventory;
-using UnityEngine.Profiling;
 
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
@@ -42,7 +36,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             obj.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
         }
     }
-
 
     public void UngrabObject(Rigidbody objRig)
     {
@@ -88,7 +81,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        Profiler.BeginSample("Script GrabObjects: ");
         if (!playerController.podeSeMexer() || inventario.canvasInventario.activeSelf) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
@@ -142,7 +134,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             playerController.pesoGrab = 0;
         }
-        Profiler.EndSample();
     }
 
     private void limparViewGrabed()
@@ -180,7 +171,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     transferOwnerPV(hit.transform.gameObject);
                     grabedObj = hit.transform.gameObject;
                 }
-                if (hit.transform.tag == tagItemDrop && Input.GetButtonDown("Use")) //Pega item do chao
+                if (hit.transform.tag == tagItemDrop && Input.GetButton("Use")) //Pega item do chao
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();

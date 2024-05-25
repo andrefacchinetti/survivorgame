@@ -151,7 +151,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    /*void OnGUI()
+    void OnGUI()
     {
         int w = Screen.width, h = Screen.height;
 
@@ -166,7 +166,7 @@ public class GameController : MonoBehaviour
         float fps = 1.0f / deltaTime;
         string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
         GUI.Label(rect, text, style);
-    }*/
+    }
 
 
 }

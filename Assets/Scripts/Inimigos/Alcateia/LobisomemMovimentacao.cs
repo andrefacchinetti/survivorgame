@@ -31,7 +31,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void Update()
     {
         if (!statsGeral.health.IsAlive()) return;
-        movimentacaoAlfa();
+        movimentarAleatoriamentePeloMapa();
         resetAgentDestination();
         verificarProximoComida();
         verificarAtaque();
@@ -191,10 +191,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private void movimentacaoAlfa()
-    {
-        movimentarAleatoriamentePeloMapa();
-    }
 
     private void MoveToPosition(Vector3 position)
     {
@@ -321,7 +317,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (targetInimigo != null || !statsGeral.health.IsAlive()) return;
-        Debug.Log("procurando");
         if (other.tag == "PlayerCollider" || other.tag == "AnimalCollider")
         {
             Debug.Log("LOBISOMEM ACHOU ENEMY");
@@ -344,7 +339,6 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     public void Fugir()
     {
-        Debug.Log("lobisomem fugindo");
         targetInimigo = null;
         targetComida = null;
         Invoke("StopRunning", tempoCorridaFugindo);
