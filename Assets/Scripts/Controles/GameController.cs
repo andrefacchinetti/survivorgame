@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
         listaSpawnLoots = new List<SpawnLoots>();
         spawnController = GetComponent<SpawnController>();
         PV = GetComponent<PhotonView>();
+        Time.fixedDeltaTime = 0.05f; //Unity roda o FixedUpdate a cada 0,02 segundos (50 vezes por segundo). Você pode ajustar isso para reduzir a carga da CPU:
     }
 
     private void Start()

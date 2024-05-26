@@ -5565,7 +5565,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 539956234430540701}
-  - component: {fileID: 6743572311769286073}
   - component: {fileID: 1574845959459527339}
   m_Layer: 0
   m_Name: VerificaObstaculo
@@ -5589,27 +5588,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8093462007807650854}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6743572311769286073
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5927473330091345444}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.5, y: 2, z: 4.5}
-  m_Center: {x: 0, y: 0.93, z: 0}
 --- !u!114 &1574845959459527339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5623,6 +5601,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lobisomemMovimentacao: {fileID: 6794255505814172601}
+  detectionDistance: 2
+  raycastInterval: 0.9
 --- !u!1 &6675854601060158243
 GameObject:
   m_ObjectHideFlags: 0
@@ -5669,7 +5649,6 @@ GameObject:
   - component: {fileID: 8613304744895229175}
   - component: {fileID: 6181527304707068731}
   - component: {fileID: 6705834608301830161}
-  - component: {fileID: 4301160461291216546}
   m_Layer: 0
   m_Name: FormaLobo
   m_TagString: Untagged
@@ -5722,6 +5701,7 @@ MonoBehaviour:
   animator: {fileID: 6705834608301830161}
   statsGeral: {fileID: 3779143584047925500}
   lobisomemStats: {fileID: 259249254}
+  detectionRadius: 10
 --- !u!114 &9158058162828518566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5863,24 +5843,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &4301160461291216546
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7775916410102296583}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 80, y: 30, z: 80}
-  m_Center: {x: 0, y: 1.96, z: 9.57}

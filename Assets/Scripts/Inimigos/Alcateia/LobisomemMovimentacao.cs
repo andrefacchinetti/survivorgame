@@ -18,20 +18,43 @@ public class LobisomemMovimentacao : MonoBehaviour
     [HideInInspector] public Transform targetObstaculo;
 
     private float timer;
+    private float caminhoCooldown = 1f; // Adicione um cooldown para atualizações de caminho
+    private float proximaAtualizacaoCaminho;
     public NavMeshAgent agent;
     public Animator animator;
     public StatsGeral statsGeral;
     public LobisomemStats lobisomemStats;
 
+    private float detectionInterval = 0.5f; // Checa a cada 0.5 segundos
+    private float detectionTimer;
+
     private void Awake()
     {
         timer = timerParaAndarAleatoriamente;
+        proximaAtualizacaoCaminho = Time.time;
     }
 
     private void Update()
     {
         if (!statsGeral.health.IsAlive()) return;
-        movimentarAleatoriamentePeloMapa();
+        timer += Time.deltaTime;
+        detectionTimer += Time.deltaTime;
+
+        if (detectionTimer >= detectionInterval)
+        {
+            detectionTimer = 0;
+            DetectNearbyObjects();
+        }
+
+        if (targetInimigo != null)
+        {
+            perseguirInimigo();
+        }
+        else
+        {
+            movimentarAleatoriamentePeloMapa();
+        }
+
         resetAgentDestination();
         verificarProximoComida();
         verificarAtaque();
@@ -48,16 +71,17 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void verificarProximoComida()
     {
-        if(targetComida != null)
+        if (targetComida != null)
         {
-            if (targetComida.GetComponent<ItemDrop>() !=null && !targetComida.GetComponent<ItemDrop>().estaSendoComido)
+            var itemDrop = targetComida.GetComponent<ItemDrop>();
+            if (itemDrop != null && !itemDrop.estaSendoComido)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, targetComida.transform.position);
-                if (distanceToTarget < 1)
+                if (distanceToTarget < 1f)
                 {
                     transform.LookAt(targetComida.transform);
                     animator.SetTrigger("comendo");
-                    targetComida.GetComponent<ItemDrop>().estaSendoComido = true;
+                    itemDrop.estaSendoComido = true;
                 }
                 else
                 {
@@ -78,14 +102,14 @@ public class LobisomemMovimentacao : MonoBehaviour
             atacarObstaculoOuInimigo();
             return;
         }
-       
-        if (!targetInimigo.health.IsAlive()) 
+
+        if (!targetInimigo.health.IsAlive())
         {
             targetInimigo = null;
         }
         else
         {
-            if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))  // Ataca o alvo
+            if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))
             {
                 atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
             }
@@ -112,7 +136,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else
             {
-                if (isPodeAtacarAlvo(transform, targetObstaculo.position))  // Ataca o alvo
+                if (isPodeAtacarAlvo(transform, targetObstaculo.position))
                 {
                     atacarAlvo(targetObstaculo.position);
                 }
@@ -121,10 +145,6 @@ public class LobisomemMovimentacao : MonoBehaviour
                     MoveToPosition(targetObstaculo.position);
                 }
             }
-        }
-        else
-        {
-            perseguirInimigo();
         }
     }
 
@@ -135,7 +155,6 @@ public class LobisomemMovimentacao : MonoBehaviour
             transform.LookAt(positionAlvo);
             lobisomemStats.lastAttackTime = Time.time;
             animator.SetTrigger("attack" + Random.Range(1, 3));
-            Debug.Log("Atacando obstaculo");
         }
         else
         {
@@ -151,195 +170,104 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else
         {
-           if(targetInimigo == null)
-           {
-               agent.speed = lobisomemStats.walkSpeed;
-           }
+            agent.speed = targetInimigo == null ? lobisomemStats.walkSpeed : lobisomemStats.runSpeed;
         }
         setarAnimacaoPorVelocidade();
     }
 
     private void setarAnimacaoPorVelocidade()
     {
-        if (agent.velocity.magnitude > 1f)
-        {
-            animator.SetBool("run", true);
-            animator.SetBool("walk", false);
-        }
-        else if (agent.velocity.magnitude > 0.05f)
-        {
-            animator.SetBool("walk", true);
-            animator.SetBool("run", false);
-        }
-        else
-        {
-            animator.SetBool("walk", false);
-            animator.SetBool("run", false);
-        }
-    }
-
-    private bool EstouDistanteDe(Vector3 destino, float distanciaMaximaDestino)
-    {
-        float distance = Vector3.Distance(transform.position, destino);  // Calcula a dist�ncia entre o inimigo e a posicao do territorio base
-        if (distance > distanciaMaximaDestino)
-        {
-            return true;
-        }
-        return false;
+        float speed = agent.velocity.magnitude;
+        animator.SetBool("run", speed > 1f);
+        animator.SetBool("walk", speed > 0.05f && speed <= 1f);
     }
 
     private void movimentarAleatoriamentePeloMapa()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo")) return;
-        if (targetInimigo == null)
+        if (targetInimigo == null && timer >= timerParaAndarAleatoriamente)
         {
+            timer = 0;
             MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
         }
     }
 
-
     private void MoveToPosition(Vector3 position)
     {
+        if (Time.time < proximaAtualizacaoCaminho) return;
+
         NavMeshHit hit;
-        bool hasValidPath = NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas);
-        if (hasValidPath)
+        if (NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas))
         {
             agent.SetDestination(position);
-            Debug.Log("lobo move to position");
         }
         else
         {
             MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
         }
+
+        proximaAtualizacaoCaminho = Time.time + caminhoCooldown;
     }
 
     private void MoveToRandomPosition(float minDistance, float maxDistance)
     {
-        timer += Time.deltaTime;
+        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
+        randomDirection += transform.position;
 
-        if (timer >= timerParaAndarAleatoriamente)
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
         {
-            timer = 0;
-
-            Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-            randomDirection += transform.position;
-
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
+            float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
+            if (distanceToNewPosition >= minDistance)
             {
-                float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
-                if (distanceToNewPosition >= minDistance)
-                {
-                    MoveToPosition(hit.position);
-                }
-                else
-                {
-                    // Se a nova posição estiver muito próxima, gere uma nova posição aleatória
-                    MoveToRandomPosition(minDistance, maxDistance);
-                }
+                MoveToPosition(hit.position);
+            }
+            else
+            {
+                MoveToRandomPosition(minDistance, maxDistance);
             }
         }
     }
-
 
     public void perseguirInimigo()
     {
         if (targetInimigo == null) return;
-        Vector3 targetVelocity = GetTargetVelocity(targetInimigo);
 
-        if (targetVelocity != Vector3.zero)
+        Vector3 targetPosition = targetInimigo.obterTransformPositionDoCollider().position;
+        if (Time.time >= proximaAtualizacaoCaminho && agent.isOnNavMesh)
         {
-            Vector3 predictedPosition = PredictTargetPosition(targetInimigo, targetVelocity);
-
-            Vector3 randomOffset = Random.insideUnitSphere * lobisomemStats.destinationOffset;
-
-            Vector3 destination = predictedPosition + (predictedPosition - targetInimigo.obterTransformPositionDoCollider().position).normalized * lobisomemStats.leadDistance + randomOffset;
-
-            // Verifica se o agent já tem um path e se ele está próximo do destino
-            if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > lobisomemStats.pathUpdateDistanceThreshold))
+            if (!agent.hasPath || agent.remainingDistance > lobisomemStats.pathUpdateDistanceThreshold)
             {
-                Debug.Log("Perseguindo inimigo 1");
-                MoveToPosition(destination);
-            }
-
-            agent.speed = lobisomemStats.runSpeed;
-        }
-        else
-        {
-            if(agent.velocity == Vector3.zero)
-            {
-                Debug.Log("Perseguindo inimigo 2");
-                MoveToPosition(targetInimigo.obterTransformPositionDoCollider().position);
+                MoveToPosition(targetPosition);
             }
         }
+
+        agent.speed = lobisomemStats.runSpeed;
     }
 
-    private Vector3 GetTargetVelocity(StatsGeral target)
-    {
-        if (target.GetComponent<CharacterController>() != null)
-        {
-            return target.GetComponent<CharacterController>().velocity.normalized;
-        }
-        else if (target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>() != null)
-        {
-            return target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized;
-        }
-        return Vector3.zero;
-    }
+    public float detectionRadius = 10f;
 
-    private Vector3 PredictTargetPosition(StatsGeral target, Vector3 velocity)
+    private void DetectNearbyObjects()
     {
-        return target.obterTransformPositionDoCollider().position + velocity * lobisomemStats.leadTime;
-    }
-
-    private bool VerificarSeAlcancaAlvo(Transform transform)
-    {
-        NavMeshPath path = new NavMeshPath();
-
-        if (NavMesh.CalculatePath(agent.transform.position, transform.position, NavMesh.AllAreas, path))
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        foreach (var hitCollider in hitColliders)
         {
-            if (path.status == NavMeshPathStatus.PathComplete)
+            if (hitCollider.CompareTag("PlayerCollider") || hitCollider.CompareTag("AnimalCollider"))
             {
-                Debug.Log("O NavMeshAgent pode alcançar o alvo.");
-                return true;
+                StatsGeral statsGeralEnemy = hitCollider.transform.GetComponentInParent<StatsGeral>();
+                if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive())
+                {
+                    targetInimigo = statsGeralEnemy;
+                    targetComida = null;
+                }
             }
-            else
+            else if (hitCollider.CompareTag("ItemDrop"))
             {
-                Debug.Log("O NavMeshAgent não pode alcançar o alvo.");
-                return false;
-            }
-        }
-
-        if (!EstouDistanteDe(transform.position, 2))
-        {
-            return false;
-        }
-        else
-        {
-            Debug.Log("O NavMeshAgent esta indo pra perto do alvo.");
-            return true;
-        }
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        if (targetInimigo != null || !statsGeral.health.IsAlive()) return;
-        if (other.tag == "PlayerCollider" || other.tag == "AnimalCollider")
-        {
-            Debug.Log("LOBISOMEM ACHOU ENEMY");
-            StatsGeral statsGeralEnemy = other.transform.GetComponentInParent<StatsGeral>();
-            if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive())
-            {
-                targetInimigo = statsGeralEnemy;
-                targetComida = null;
-            }
-        }
-       
-        if (other.tag == "ItemDrop")
-        {
-            if (other.GetComponent<Consumivel>() != null && other.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
-            {
-                targetComida = other.gameObject; //gostou da comida
+                Consumivel consumivel = hitCollider.GetComponent<Consumivel>();
+                if (consumivel != null && consumivel.tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
+                {
+                    targetComida = hitCollider.gameObject;
+                }
             }
         }
     }
@@ -353,27 +281,21 @@ public class LobisomemMovimentacao : MonoBehaviour
         MoveToRandomPosition(raioDeDistanciaMaxParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
     }
 
-    void GoAtk()
+    private void StopRunning()
     {
-        statsGeral.isAttacking = true;
-    }
-
-    void NotAtk()
-    {
-        statsGeral.isAttacking = false;
-    }
-
-    void AnimEventComeu()
-    {
-        if (targetComida != null && targetComida.tag != "PlayerCollider") { 
-            Destroy(targetComida.gameObject); 
-        }
+        agent.speed = lobisomemStats.walkSpeed;
     }
 
     private void Uivar()
     {
-        if (targetInimigo != null || animator.GetCurrentAnimatorStateInfo(0).IsName("uivar")) return;
-        animator.SetTrigger("uivar");
+        if (targetInimigo == null && !animator.GetCurrentAnimatorStateInfo(0).IsName("uivar"))
+        {
+            animator.SetTrigger("uivar");
+        }
     }
+
+    void GoAtk() => statsGeral.isAttacking = true;
+    void NotAtk() => statsGeral.isAttacking = false;
+    void AnimEventComeu() => Destroy(targetComida);
 
 }
