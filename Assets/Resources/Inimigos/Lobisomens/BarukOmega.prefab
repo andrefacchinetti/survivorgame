@@ -5512,7 +5512,6 @@ GameObject:
   - component: {fileID: 4731360456219773428}
   - component: {fileID: 1320667856605422304}
   - component: {fileID: 3282043018525333715}
-  - component: {fileID: 7616560791870867511}
   m_Layer: 0
   m_Name: FormaLobo
   m_TagString: Untagged
@@ -5627,6 +5626,7 @@ MonoBehaviour:
   animator: {fileID: 1108925025853680717}
   statsGeral: {fileID: 7903728559268399649}
   lobisomemStats: {fileID: 267380533}
+  detectionRadius: 10
 --- !u!114 &1320667856605422304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5706,27 +5706,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!65 &7616560791870867511
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5468006273728238530}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 80, y: 30, z: 80}
-  m_Center: {x: 0, y: 1.96, z: 9.57}
 --- !u!1 &6257151522080331373
 GameObject:
   m_ObjectHideFlags: 0
@@ -5736,7 +5715,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6013480123304703975}
-  - component: {fileID: 5597512538616921049}
   - component: {fileID: 5218051852410893734}
   m_Layer: 0
   m_Name: VerificaObstaculo
@@ -5760,27 +5738,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 32190855700425336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5597512538616921049
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6257151522080331373}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.5, y: 2, z: 4.5}
-  m_Center: {x: 0, y: 0.93, z: 0}
 --- !u!114 &5218051852410893734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5794,6 +5751,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lobisomemMovimentacao: {fileID: 4731360456219773428}
+  detectionDistance: 2
+  raycastInterval: 0.9
 --- !u!1 &6769918230844760620
 GameObject:
   m_ObjectHideFlags: 0

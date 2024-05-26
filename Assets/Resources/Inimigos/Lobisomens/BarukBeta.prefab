@@ -4731,7 +4731,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 421609749773628018}
-  - component: {fileID: 957404679135946498}
   - component: {fileID: 7349177925722677773}
   m_Layer: 0
   m_Name: VerificaObstaculo
@@ -4755,27 +4754,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7581572316815441344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &957404679135946498
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3691528665392428831}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.5, y: 2, z: 4.5}
-  m_Center: {x: 0, y: 0.93, z: 0}
 --- !u!114 &7349177925722677773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4789,6 +4767,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lobisomemMovimentacao: {fileID: 5395484721726252598}
+  detectionDistance: 2
+  raycastInterval: 0.9
 --- !u!1 &3729656669622578240
 GameObject:
   m_ObjectHideFlags: 0
@@ -4804,7 +4784,6 @@ GameObject:
   - component: {fileID: 8952800212168170291}
   - component: {fileID: 639627126643355711}
   - component: {fileID: 9069274540997828627}
-  - component: {fileID: 3254616350322323537}
   m_Layer: 0
   m_Name: FormaLobo
   m_TagString: Untagged
@@ -4857,6 +4836,7 @@ MonoBehaviour:
   animator: {fileID: 9065241160681522896}
   statsGeral: {fileID: 8817566113519457645}
   lobisomemStats: {fileID: 8094014223833661833}
+  detectionRadius: 10
 --- !u!195 &2233054291421786745
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4998,27 +4978,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!65 &3254616350322323537
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3729656669622578240}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 80, y: 30, z: 80}
-  m_Center: {x: 0, y: 1.96, z: 9.57}
 --- !u!1 &5597691540608719961
 GameObject:
   m_ObjectHideFlags: 0

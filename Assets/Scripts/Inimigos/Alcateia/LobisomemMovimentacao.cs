@@ -4,28 +4,24 @@ using UnityEngine.AI;
 
 public class LobisomemMovimentacao : MonoBehaviour
 {
-    public float distanciaMaximaPontoBase = 50f;
-    public float distanciaMaximaDoSeuAlfa = 10f;
-    public float tempoCorridaFugindo = 5f;
-    public float raioDeDistanciaMinParaAndarAleatoriamente = 10f;
-    public float raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
+
+    public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f, raioDeDistanciaMaxParaPerseguirAlvo = 40f;
     public float timerParaAndarAleatoriamente = 5f;
-    public float timerParaAlfaDecidirComandosParaSeusBetas = 10f;
-    public float tempoParadoNaArvore = 10f;
+    public float preditorMultiplicador = 1.5f;
 
     [HideInInspector] public StatsGeral targetInimigo;
     [HideInInspector] public GameObject targetComida;
     [HideInInspector] public Transform targetObstaculo;
 
     private float timer;
-    private float caminhoCooldown = 1f; // Adicione um cooldown para atualizações de caminho
+    private float caminhoCooldown = 0.5f;
     private float proximaAtualizacaoCaminho;
     public NavMeshAgent agent;
     public Animator animator;
     public StatsGeral statsGeral;
     public LobisomemStats lobisomemStats;
 
-    private float detectionInterval = 0.5f; // Checa a cada 0.5 segundos
+    private float detectionInterval = 0.5f;
     private float detectionTimer;
 
     private void Awake()
@@ -48,25 +44,23 @@ public class LobisomemMovimentacao : MonoBehaviour
 
         if (targetInimigo != null)
         {
-            perseguirInimigo();
+            if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))
+            {
+                atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
+            }
+            else
+            {
+                perseguirInimigo();
+            }
         }
         else
         {
             movimentarAleatoriamentePeloMapa();
         }
 
-        resetAgentDestination();
         verificarProximoComida();
         verificarAtaque();
         verificarCorrerAndar();
-    }
-
-    private void resetAgentDestination()
-    {
-        if (agent.isOnNavMesh && !agent.pathPending && agent.remainingDistance < 0.1f)
-        {
-            agent.ResetPath();
-        }
     }
 
     private void verificarProximoComida()
@@ -185,10 +179,22 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void movimentarAleatoriamentePeloMapa()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo")) return;
-        if (targetInimigo == null && timer >= timerParaAndarAleatoriamente)
+
+        if(timer >= timerParaAndarAleatoriamente)
         {
-            timer = 0;
-            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+            if (targetInimigo == null)
+            {
+                timer = 0;
+                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+                Debug.Log("nao tenho alvo, andando aleatoriamente");
+            }
+            else if (Vector3.Distance(transform.position, targetInimigo.obterTransformPositionDoCollider().position) > raioDeDistanciaMaxParaPerseguirAlvo)
+            {
+                targetInimigo = null;
+                timer = 0;
+                Uivar();
+                Debug.Log("alvo ta muito distante, parando de perseguir e uivando");
+            }
         }
     }
 
@@ -199,11 +205,21 @@ public class LobisomemMovimentacao : MonoBehaviour
         NavMeshHit hit;
         if (NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas))
         {
-            agent.SetDestination(position);
+            // Verifica se a posição projetada está dentro do NavMesh
+            if (hit.hit)
+            {
+                agent.SetDestination(hit.position);
+            }
+            else
+            {
+                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
+                Debug.Log("move to position: hit else");
+            }
         }
         else
         {
             MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
+            Debug.Log("move to position: sampleposition else");
         }
 
         proximaAtualizacaoCaminho = Time.time + caminhoCooldown;
@@ -222,23 +238,32 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 MoveToPosition(hit.position);
             }
-            else
-            {
-                MoveToRandomPosition(minDistance, maxDistance);
-            }
         }
     }
 
     public void perseguirInimigo()
     {
         if (targetInimigo == null) return;
+        Vector3 alvoPosition = targetInimigo.obterTransformPositionDoCollider().position;
+        Vector3 alvoVelocity = (alvoPosition - targetInimigo.transform.position) / detectionInterval;
+        Vector3 predictedPosition = alvoPosition + alvoVelocity * preditorMultiplicador;
 
-        Vector3 targetPosition = targetInimigo.obterTransformPositionDoCollider().position;
         if (Time.time >= proximaAtualizacaoCaminho && agent.isOnNavMesh)
         {
             if (!agent.hasPath || agent.remainingDistance > lobisomemStats.pathUpdateDistanceThreshold)
             {
-                MoveToPosition(targetPosition);
+                MoveToPosition(predictedPosition);
+                Debug.Log("perseguindo inimigo: move to " + predictedPosition);
+            }
+            else if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                // Se o agente estiver muito perto do destino, pare de perseguir
+                agent.ResetPath();
+                Debug.Log("perseguindo inimigo: parou de perseguir, muito perto do destino");
+            }
+            else
+            {
+                Debug.Log("perseguindo inimigo: nao consegui mover");
             }
         }
 
@@ -272,15 +297,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    public void Fugir()
-    {
-        targetInimigo = null;
-        targetComida = null;
-        Invoke("StopRunning", tempoCorridaFugindo);
-        agent.speed = lobisomemStats.runSpeed;
-        MoveToRandomPosition(raioDeDistanciaMaxParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
-    }
-
     private void StopRunning()
     {
         agent.speed = lobisomemStats.walkSpeed;
@@ -297,5 +313,4 @@ public class LobisomemMovimentacao : MonoBehaviour
     void GoAtk() => statsGeral.isAttacking = true;
     void NotAtk() => statsGeral.isAttacking = false;
     void AnimEventComeu() => Destroy(targetComida);
-
 }
