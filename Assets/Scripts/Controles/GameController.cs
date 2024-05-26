@@ -43,7 +43,8 @@ public class GameController : MonoBehaviour
     private float lastGameDayLobos = -1, lastGameDayAnimais = -1;
 
     [SerializeField] public GameObject respawnPointJogador;
-    [SerializeField] public List<SpawnLoots> listaSpawnLoots;
+    [SerializeField] public SpawnDropaRecursosManager spawnDropaRecursosManager;
+    [HideInInspector] public List<SpawnLoots> listaSpawnLoots;
 
     [SerializeField] public bool isRespawnarInimigos = true; //DEIXAR TRUE ]
     [HideInInspector] public PhotonView PV;
@@ -60,6 +61,7 @@ public class GameController : MonoBehaviour
         float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
         targetRotation = mappedHour;
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
+        spawnDropaRecursosManager.SpawnarDropaRecursos(PV.ViewID);
     }
 
     // Update is called once per frame
@@ -82,6 +84,7 @@ public class GameController : MonoBehaviour
                     gameHour -= 24;
                     gameDay++;
                     spawnarLootsPorDia();
+                    spawnDropaRecursosManager.SpawnarDropaRecursos(PV.ViewID);
                 }
             }
             isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario;
