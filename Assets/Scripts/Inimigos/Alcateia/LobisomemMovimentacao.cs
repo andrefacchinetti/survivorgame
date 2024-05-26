@@ -4,23 +4,26 @@ using UnityEngine.AI;
 
 public class LobisomemMovimentacao : MonoBehaviour
 {
-
-    public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f, raioDeDistanciaMaxParaPerseguirAlvo = 40f;
+    // Variáveis públicas para ajustar o comportamento do lobisomem
+    public float raioDeDistanciaMinParaAndarAleatoriamente = 10f;
+    public float raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
+    public float raioDeDistanciaMaxParaPerseguirAlvo = 40f;
     public float timerParaAndarAleatoriamente = 5f;
     public float preditorMultiplicador = 1.5f;
 
+    // Referências a outros componentes
     [HideInInspector] public StatsGeral targetInimigo;
     [HideInInspector] public GameObject targetComida;
     [HideInInspector] public Transform targetObstaculo;
-
-    private float timer;
-    private float caminhoCooldown = 0.5f;
-    private float proximaAtualizacaoCaminho;
     public NavMeshAgent agent;
     public Animator animator;
     public StatsGeral statsGeral;
     public LobisomemStats lobisomemStats;
 
+    // Variáveis privadas para controle de tempo
+    private float timer;
+    private float caminhoCooldown = 0.5f;
+    private float proximaAtualizacaoCaminho;
     private float detectionInterval = 0.5f;
     private float detectionTimer;
 
@@ -117,7 +120,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     private bool isPodeAtacarAlvo(Transform transformInicial, Vector3 positionTarget)
     {
         float distanceToInimigo = Vector3.Distance(transformInicial.position, positionTarget);
-        return distanceToInimigo <= lobisomemStats.distanciaDeAtaque;
+        return distanceToInimigo <= lobisomemStats.distanciaDeAtaque*2;
     }
 
     private void atacarObstaculoOuInimigo()
@@ -146,7 +149,13 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (!statsGeral.isAttacking && Time.time > lobisomemStats.lastAttackTime + lobisomemStats.attackInterval)
         {
-            transform.LookAt(positionAlvo);
+            // Calcula a posição prevista do alvo
+            Vector3 predictedPosition = PreverPosicaoAlvo(positionAlvo);
+
+            // Ajusta a direção do lobisomem para a posição prevista
+            transform.LookAt(predictedPosition);
+
+            // Ativa o ataque
             lobisomemStats.lastAttackTime = Time.time;
             animator.SetTrigger("attack" + Random.Range(1, 3));
         }
@@ -154,6 +163,15 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             perseguirInimigo();
         }
+    }
+
+    // Função para prever a posição futura do alvo
+    private Vector3 PreverPosicaoAlvo(Vector3 positionAlvo)
+    {
+        Vector3 alvoPosition = targetInimigo.obterTransformPositionDoCollider().position;
+        Vector3 alvoVelocity = (alvoPosition - targetInimigo.transform.position) / detectionInterval;
+        Vector3 predictedPosition = alvoPosition + alvoVelocity * preditorMultiplicador;
+        return predictedPosition;
     }
 
     private void verificarCorrerAndar()
@@ -180,7 +198,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo")) return;
 
-        if(timer >= timerParaAndarAleatoriamente)
+        if (timer >= timerParaAndarAleatoriamente)
         {
             if (targetInimigo == null)
             {
@@ -264,6 +282,8 @@ public class LobisomemMovimentacao : MonoBehaviour
             else
             {
                 Debug.Log("perseguindo inimigo: nao consegui mover");
+                targetInimigo = null;
+                movimentarAleatoriamentePeloMapa();
             }
         }
 
@@ -314,3 +334,4 @@ public class LobisomemMovimentacao : MonoBehaviour
     void NotAtk() => statsGeral.isAttacking = false;
     void AnimEventComeu() => Destroy(targetComida);
 }
+

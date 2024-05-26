@@ -701,16 +701,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energiaAtual: 0
   distanciaDePerseguicao: 10
-  distanciaDeAtaque: 2
-  attackInterval: 1
+  distanciaDeAtaque: 0.9
+  attackInterval: 0.5
   lastAttackTime: 0
-  destinationOffset: 1
-  walkSpeed: 0.8
-  runSpeed: 1.1
-  speedVariation: 0.3
-  leadTime: 1.2
-  leadDistance: 2
-  tempoMudancaDeTurnoProfissoes: 300
+  walkSpeed: 1
+  runSpeed: 1.3
   pathUpdateDistanceThreshold: 10
   lobisomemController: {fileID: 0}
   statsGeral: {fileID: 3779143584047925500}
@@ -5602,7 +5597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobisomemMovimentacao: {fileID: 6794255505814172601}
   detectionDistance: 2
-  raycastInterval: 0.9
+  raycastInterval: 1
 --- !u!1 &6675854601060158243
 GameObject:
   m_ObjectHideFlags: 0
@@ -5686,15 +5681,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 213f51c1714e92b4888f7fd266217d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanciaMaximaPontoBase: 100
-  distanciaMaximaDoSeuAlfa: 100
-  tempoCorridaFugindo: 5
   raioDeDistanciaMinParaAndarAleatoriamente: 10
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
   raioDeDistanciaMaxParaPerseguirAlvo: 40
   timerParaAndarAleatoriamente: 5
-  timerParaAlfaDecidirComandosParaSeusBetas: 10
-  tempoParadoNaArvore: 10
   preditorMultiplicador: 1.5
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
@@ -5810,7 +5800,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7775916410102296583}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2.2
+  m_Radius: 1
   m_Speed: 1
   m_Acceleration: 1
   avoidancePriority: 50
