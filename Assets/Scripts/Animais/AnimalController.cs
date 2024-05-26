@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 
 [RequireComponent(typeof(PhotonView), typeof(NavMeshAgent), typeof(StatsGeral))]
-[RequireComponent(typeof(AnimalStats), typeof(BoxCollider))]
+[RequireComponent(typeof(AnimalStats))]
 public class AnimalController : MonoBehaviourPunCallbacks
 {
 
@@ -21,7 +21,9 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
     [SerializeField] public float timerParaAndarAleatoriamente = 5f;
     [SerializeField] public float pathUpdateDistanceThreshold = 10;
+    [SerializeField] private float detectionInterval = 0.5f;
 
+    private float detectionTimer;
     private float timer;
     private bool isEating = false;
 
@@ -54,6 +56,13 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         if (statsGeral.health.IsAlive())
         {
+            detectionTimer += Time.deltaTime;
+
+            if (detectionTimer >= detectionInterval)
+            {
+                detectionTimer = 0;
+                DetectNearbyObjects();
+            }
             if (animalStats.estaFugindo)
             {
                 //Debug.Log("animal ta fugindo...");
@@ -89,6 +98,65 @@ public class AnimalController : MonoBehaviourPunCallbacks
             agent.ResetPath();
         }
     }
+
+    public float detectionRadius = 10f;
+    private void DetectNearbyObjects()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (targetInimigo != null || !statsGeral.health.IsAlive() || animalStats.estaFugindo) return;
+
+            if (hitCollider.CompareTag("ItemDrop") && hitCollider.GetComponent<Consumivel>() != null)
+            {
+                FindFood(hitCollider.gameObject);
+            }
+
+            if (!isAnimalAgressivo) return;
+
+            if (hitCollider.CompareTag("Player"))
+            {
+                targetInimigo = hitCollider.GetComponent<StatsGeral>();
+                targetComida = null;
+            }
+
+            if (!isPredador) return;
+
+            CollisorSofreDano collisorSofreDano = hitCollider.GetComponent<CollisorSofreDano>();
+            if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID)
+            {
+                StatsGeral objPai = collisorSofreDano.statsGeral;
+                if ((objPai.gameObject.GetComponent<AnimalController>() != null || objPai.gameObject.GetComponent<LobisomemController>() != null) && statsGeral.health.IsAlive())
+                {
+                    if (objPai.gameObject.GetComponent<AnimalController>() != null)
+                    {
+                        if (!objPai.gameObject.GetComponent<AnimalController>().isPredador && (isPequenoPorte || (!isPequenoPorte && !objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)))
+                        {
+                            targetInimigo = objPai;
+                            targetComida = null;
+                        }
+                        else if (objPai.gameObject.GetComponent<AnimalController>().isPredador)
+                        {
+                            Fugir();
+                        }
+                    }
+                    else if (objPai.gameObject.GetComponent<LobisomemController>() != null)
+                    {
+                        if (isPredador)
+                        {
+                            targetInimigo = objPai;
+                            targetComida = null;
+                        }
+                        else
+                        {
+                            Fugir();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     private void perseguirComida()
     {
@@ -257,54 +325,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
             if ((food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Fruta) || food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Vegetal)))
             {
                 targetComida = food;
-            }
-        }
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        if (targetInimigo != null || !statsGeral.health.IsAlive() || animalStats.estaFugindo) return;
-        if (other.gameObject.tag == "ItemDrop" && other.gameObject.GetComponent<Consumivel>() != null)
-        {
-            FindFood(other.gameObject);
-        }
-        if (!isAnimalAgressivo) return;
-        if (other.gameObject.tag == "Player")
-        {
-            targetInimigo = other.gameObject.GetComponent<StatsGeral>(); ;
-            targetComida = null;
-        }
-        if (!isPredador) return;
-        CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
-        if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID)
-        {
-            StatsGeral objPai = collisorSofreDano.statsGeral;
-            if ((objPai.gameObject.GetComponent<AnimalController>() != null || objPai.gameObject.GetComponent<LobisomemController>() != null) && statsGeral.health.IsAlive())
-            {
-                if(objPai.gameObject.GetComponent<AnimalController>() != null)
-                {
-                    if (!objPai.gameObject.GetComponent<AnimalController>().isPredador && (isPequenoPorte || (!isPequenoPorte && !objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)))
-                    {
-                        targetInimigo = objPai;
-                        targetComida = null;
-                    }
-                    else if (objPai.gameObject.GetComponent<AnimalController>().isPredador)
-                    {
-                        Fugir();
-                    }
-                }
-                else if(objPai.gameObject.GetComponent<LobisomemController>() != null)
-                {
-                    if (isPredador)
-                    {
-                        targetInimigo = objPai;
-                        targetComida = null;
-                    }
-                    else
-                    {
-                        Fugir();
-                    }
-                }
             }
         }
     }

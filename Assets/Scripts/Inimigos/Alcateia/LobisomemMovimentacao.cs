@@ -204,14 +204,12 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 timer = 0;
                 MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
-                Debug.Log("nao tenho alvo, andando aleatoriamente");
             }
             else if (Vector3.Distance(transform.position, targetInimigo.obterTransformPositionDoCollider().position) > raioDeDistanciaMaxParaPerseguirAlvo)
             {
                 targetInimigo = null;
                 timer = 0;
                 Uivar();
-                Debug.Log("alvo ta muito distante, parando de perseguir e uivando");
             }
         }
     }
@@ -231,13 +229,11 @@ public class LobisomemMovimentacao : MonoBehaviour
             else
             {
                 MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
-                Debug.Log("move to position: hit else");
             }
         }
         else
         {
             MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
-            Debug.Log("move to position: sampleposition else");
         }
 
         proximaAtualizacaoCaminho = Time.time + caminhoCooldown;
@@ -271,17 +267,14 @@ public class LobisomemMovimentacao : MonoBehaviour
             if (!agent.hasPath || agent.remainingDistance > lobisomemStats.pathUpdateDistanceThreshold)
             {
                 MoveToPosition(predictedPosition);
-                Debug.Log("perseguindo inimigo: move to " + predictedPosition);
             }
             else if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 // Se o agente estiver muito perto do destino, pare de perseguir
                 agent.ResetPath();
-                Debug.Log("perseguindo inimigo: parou de perseguir, muito perto do destino");
             }
             else
             {
-                Debug.Log("perseguindo inimigo: nao consegui mover");
                 targetInimigo = null;
                 movimentarAleatoriamentePeloMapa();
             }

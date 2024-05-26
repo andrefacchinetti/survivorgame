@@ -1928,7 +1928,6 @@ GameObject:
   - component: {fileID: 5270115142143410926}
   - component: {fileID: 528671491017205880}
   - component: {fileID: 4071521643879966431}
-  - component: {fileID: -4785663404009738490}
   - component: {fileID: 6873295055636824291}
   - component: {fileID: 7099681601551189723}
   m_Layer: 0
@@ -2017,6 +2016,7 @@ MonoBehaviour:
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
   timerParaAndarAleatoriamente: 5
   pathUpdateDistanceThreshold: 10
+  detectionInterval: 0.5
   gameController: {fileID: 0}
   statsGeral: {fileID: 4071521643879966431}
   animalStats: {fileID: 528671491017205880}
@@ -2027,6 +2027,7 @@ MonoBehaviour:
   targetObstaculo: {fileID: 0}
   targetCapturador: {fileID: 0}
   PV: {fileID: 5270115142143410926}
+  detectionRadius: 25
 --- !u!195 &4388767236681393940
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2151,27 +2152,6 @@ MonoBehaviour:
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
   tipoEstilhaco: 1
---- !u!65 &-4785663404009738490
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1828100575842878}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 9.54, y: 7.8, z: 15.93}
-  m_Center: {x: 0, y: 0, z: 1.5}
 --- !u!114 &6873295055636824291
 MonoBehaviour:
   m_ObjectHideFlags: 0
