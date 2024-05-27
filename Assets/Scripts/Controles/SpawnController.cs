@@ -9,7 +9,7 @@ public class SpawnController : MonoBehaviour
 
     [SerializeField] GameController gameController;
 
-    [SerializeField] int qtdBasePorNoiteLobos = 3, qtdAMaisPorNoiteLobos = 1, qtdMaxLobos = 50, qtdMaxAnimaisAgressivos = 20, qtdMaxAnimaisPassivos = 10;
+    [SerializeField] int qtdBasePorNoiteLobos = 3, qtdAMaisPorNoiteLobos = 1, qtdMaxLobos = 50, qtdMaxAnimaisAgressivos = 10, qtdMaxAnimaisPassivos = 15;
     [SerializeField] float distanciaMaxEntreSpawnPointLoboxJogadores = 100;
     [SerializeField] SpawnArea spawnLobos;
     [SerializeField] SpawnArea[] spawnAnimaisAgressivos, spawnAnimaisPassivos;
@@ -138,7 +138,7 @@ public class SpawnController : MonoBehaviour
 
     public void InstanciarPrefabPorPathAnimais(string path, SpawnArea[] spawnsArea, bool isAnimaisAgressivos, int viewID)
     {
-        int qtdMaxToSpawn = isAnimaisAgressivos ? qtdMaxAnimaisAgressivos - animaisAgressivosInGame.Count : qtdMaxAnimaisPassivos - animaisPassivosInGame.Count;
+        int qtdMaxToSpawn = isAnimaisAgressivos ? (qtdMaxAnimaisAgressivos) - animaisAgressivosInGame.Count : (qtdMaxAnimaisPassivos) - animaisPassivosInGame.Count;
 
         bool isPhotonConnected = PhotonNetwork.IsConnected;
 

@@ -62,6 +62,7 @@ public class GameController : MonoBehaviour
         float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
         targetRotation = mappedHour;
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
+        spawnarPorDia();
     }
 
     // Update is called once per frame

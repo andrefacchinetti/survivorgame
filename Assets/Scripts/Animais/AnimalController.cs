@@ -8,23 +8,22 @@ using Photon.Pun;
 [RequireComponent(typeof(AnimalStats))]
 public class AnimalController : MonoBehaviourPunCallbacks
 {
-
     public bool isAnimalAgressivo, isAnimalCarnivoro, isAnimalHerbivoro, isPredador, isPequenoPorte;
-    public float eatTime = 5f; // tempo de alimentação
+    public float eatTime = 5f;
     public float walkSpeed = 1, runSpeed = 2;
     public bool isProcuraComida = true, isCapturado;
     public GameObject objRopePivot, objColeiraRope;
 
-    public float eatDistance = 2f; // distância para detectar comida
-    public float tempoCorridaFugindo = 5f; // tempo que o animal corre após tomar dano
-    public float restTime = 20f; // tempo que o animal descansa após tomar dano
+    public float eatDistance = 2f;
+    public float tempoCorridaFugindo = 5f;
+    public float restTime = 20f;
     public float raioDeDistanciaMinParaAndarAleatoriamente = 10f, raioDeDistanciaMaxParaAndarAleatoriamente = 40f;
     [SerializeField] public float timerParaAndarAleatoriamente = 5f;
     [SerializeField] public float pathUpdateDistanceThreshold = 10;
-    [SerializeField] private float detectionInterval = 0.5f;
+    [SerializeField] private float detectionInterval = 2f;
 
-    private float detectionTimer;
-    private float timer;
+    private float detectionTimer = 0;
+    private float timer = 0;
     private bool isEating = false;
 
     [SerializeField] [HideInInspector] public GameController gameController;
@@ -49,48 +48,43 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        InvokeRepeating("CorrerOuAndarEmPerseguicao", 0f, tempoCorridaFugindo);
+        InvokeRepeating(nameof(CorrerOuAndarEmPerseguicao), 0f, tempoCorridaFugindo);
+        StartCoroutine(DetectionCoroutine());
     }
 
     void Update()
     {
         if (statsGeral.health.IsAlive())
         {
-            detectionTimer += Time.deltaTime;
-
-            if (detectionTimer >= detectionInterval)
-            {
-                detectionTimer = 0;
-                DetectNearbyObjects();
-            }
             if (animalStats.estaFugindo)
             {
-                //Debug.Log("animal ta fugindo...");
-            }else if(isCapturado && targetCapturador != null)
+                // Animal is fleeing
+            }
+            else if (isCapturado && targetCapturador != null)
             {
-                seguirCapturador();
+                SeguirCapturador();
             }
             else if (targetInimigo != null)
             {
-                perseguirInimigo(); 
+                PerseguirInimigo();
             }
-            else if(targetComida != null)
+            else if (targetComida != null)
             {
-                perseguirComida();
+                PerseguirComida();
             }
             else
             {
-                andarAleatoriamentePeloMapa();
+                AndarAleatoriamentePeloMapa();
             }
-            verificarCorrerAndar();
-            verificarAtaque();
+            VerificarCorrerAndar();
+            VerificarAtaque();
         }
         else
         {
             animator.SetBool("isDead", true);
             targetInimigo = null;
             targetComida = null;
-            if(targetCapturador != null)
+            if (targetCapturador != null)
             {
                 targetCapturador.GetComponent<PlayerController>().inventario.UngrabAnimalCapturado(false);
                 targetCapturador = null;
@@ -99,20 +93,30 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
     }
 
+    private IEnumerator DetectionCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(detectionInterval);
+            DetectNearbyObjects();
+        }
+    }
+
     public float detectionRadius = 10f;
     private void DetectNearbyObjects()
     {
+        Debug.Log("animal detectando objetos: " + PV.ViewID);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
         foreach (var hitCollider in hitColliders)
         {
             if (targetInimigo != null || !statsGeral.health.IsAlive() || animalStats.estaFugindo) return;
 
-            if (hitCollider.CompareTag("ItemDrop") && hitCollider.GetComponent<Consumivel>() != null)
+            if (hitCollider.CompareTag("ItemDrop") && hitCollider.TryGetComponent(out Consumivel consumivel))
             {
                 FindFood(hitCollider.gameObject);
             }
 
-            if (!isAnimalAgressivo) return;
+            if (!isAnimalAgressivo) continue;
 
             if (hitCollider.CompareTag("Player"))
             {
@@ -120,111 +124,98 @@ public class AnimalController : MonoBehaviourPunCallbacks
                 targetComida = null;
             }
 
-            if (!isPredador) return;
+            if (!isPredador) continue;
 
-            CollisorSofreDano collisorSofreDano = hitCollider.GetComponent<CollisorSofreDano>();
-            if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID)
+            if (hitCollider.TryGetComponent(out CollisorSofreDano collisorSofreDano) && collisorSofreDano.PV.ViewID != PV.ViewID)
             {
-                StatsGeral objPai = collisorSofreDano.statsGeral;
-                if ((objPai.gameObject.GetComponent<AnimalController>() != null || objPai.gameObject.GetComponent<LobisomemController>() != null) && statsGeral.health.IsAlive())
+                var objPai = collisorSofreDano.statsGeral;
+                var animalController = objPai.GetComponent<AnimalController>();
+                var lobisomemController = objPai.GetComponent<LobisomemController>();
+
+                if (animalController != null && statsGeral.health.IsAlive())
                 {
-                    if (objPai.gameObject.GetComponent<AnimalController>() != null)
+                    if (!animalController.isPredador && (isPequenoPorte || (!isPequenoPorte && !animalController.isPequenoPorte)))
                     {
-                        if (!objPai.gameObject.GetComponent<AnimalController>().isPredador && (isPequenoPorte || (!isPequenoPorte && !objPai.gameObject.GetComponent<AnimalController>().isPequenoPorte)))
-                        {
-                            targetInimigo = objPai;
-                            targetComida = null;
-                        }
-                        else if (objPai.gameObject.GetComponent<AnimalController>().isPredador)
-                        {
-                            Fugir();
-                        }
+                        targetInimigo = objPai;
+                        targetComida = null;
                     }
-                    else if (objPai.gameObject.GetComponent<LobisomemController>() != null)
+                    else if (animalController.isPredador)
                     {
-                        if (isPredador)
-                        {
-                            targetInimigo = objPai;
-                            targetComida = null;
-                        }
-                        else
-                        {
-                            Fugir();
-                        }
+                        Fugir();
+                    }
+                }
+                else if (lobisomemController != null && statsGeral.health.IsAlive())
+                {
+                    if (isPredador)
+                    {
+                        targetInimigo = objPai;
+                        targetComida = null;
+                    }
+                    else
+                    {
+                        Fugir();
                     }
                 }
             }
         }
     }
 
-
-    private void perseguirComida()
+    private void PerseguirComida()
     {
         if (targetComida == null) return;
-        // se já temos um alvo de comida, verifique se estamos perto o suficiente para comer
+
         if (Vector3.Distance(transform.position, targetComida.transform.position) <= eatDistance)
         {
             if (!isEating)
             {
                 isEating = true;
                 animator.SetBool("isEating", true);
-                Invoke("FinishEating", eatTime);
+                Invoke(nameof(FinishEating), eatTime);
             }
         }
-        else
+        else if (!agent.hasPath)
         {
-            if (!agent.hasPath)
-            {
-                MoveToPosition(targetComida.transform.position);
-            }
+            MoveToPosition(targetComida.transform.position);
         }
     }
-
     private float distanciaMinima = 2.0f;
-    private void seguirCapturador()
+    private void SeguirCapturador()
     {
-        float distancia = Vector3.Distance(transform.position, targetCapturador.transform.position); // Calcula a distância entre o animal e o targetCapturador
+        float distancia = Vector3.Distance(transform.position, targetCapturador.transform.position);
 
         if (distancia > distanciaMinima)
         {
-            // Define a posição de destino para ser a posição do targetCapturador com um deslocamento para trás com base na distância mínima
             Vector3 posicaoDestino = targetCapturador.transform.position - (targetCapturador.transform.forward * distanciaMinima);
-            // Move o animal em direção à posição de destino
             agent.SetDestination(posicaoDestino);
         }
         else
         {
-            // Se estiver dentro da distância mínima, para o agente
             agent.ResetPath();
         }
     }
 
-    private bool agentEstaIndoParaDestino(Vector3 destino, float margemErro = 0.1f)
+    private bool AgentEstaIndoParaDestino(Vector3 destino, float margemErro = 0.1f)
     {
         return !agent.hasPath || Vector3.Distance(agent.destination, destino) > margemErro;
     }
 
-    private void andarAleatoriamentePeloMapa()
+    private void AndarAleatoriamentePeloMapa()
     {
         if (animalStats.estaFugindo) return;
 
-        if (agentEstaIndoParaDestino(agent.destination))
+        if (AgentEstaIndoParaDestino(agent.destination))
         {
             agent.speed = walkSpeed;
             MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
         }
     }
 
-    private void verificarCorrerAndar()
+    private void VerificarCorrerAndar()
     {
-        /*if (animator.GetCurrentAnimatorStateInfo(0).IsName("isEating") || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            agent.speed = 0;
-        }*/
-        setarAnimacaoPorVelocidade();
+        SetarAnimacaoPorVelocidade();
     }
 
-    private void setarAnimacaoPorVelocidade()
+    private void SetarAnimacaoPorVelocidade()
     {
         if (agent.velocity.magnitude > runSpeed - animalStats.speedVariation)
         {
@@ -269,16 +260,14 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private void MoveToPosition(Vector3 position)
     {
-        NavMeshHit hit;
-        bool hasValidPath = NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas);
-        if (hasValidPath)
+        if (NavMesh.SamplePosition(position, out NavMeshHit hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas))
         {
             agent.SetDestination(position);
             Debug.Log("animal move to position");
         }
         else
         {
-            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
+            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
         }
     }
 
@@ -293,8 +282,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
             Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
             randomDirection += transform.position;
 
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, maxDistance, NavMesh.AllAreas))
             {
                 float distanceToNewPosition = Vector3.Distance(transform.position, hit.position);
                 if (distanceToNewPosition >= minDistance)
@@ -303,7 +291,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    // Se a nova posição estiver muito próxima, gere uma nova posição aleatória
                     MoveToRandomPosition(minDistance, maxDistance);
                 }
             }
@@ -313,19 +300,14 @@ public class AnimalController : MonoBehaviourPunCallbacks
     private void FindFood(GameObject food)
     {
         if (!isProcuraComida || targetInimigo != null) return;
-        if (isAnimalCarnivoro)
+        var consumivel = food.GetComponent<Consumivel>();
+        if (isAnimalCarnivoro && consumivel.tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
         {
-            if ((food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne)))
-            {
-                targetComida = food;
-            }
+            targetComida = food;
         }
-        if (isAnimalHerbivoro)
+        if (isAnimalHerbivoro && (consumivel.tipoConsumivel.Equals(Consumivel.TipoConsumivel.Fruta) || consumivel.tipoConsumivel.Equals(Consumivel.TipoConsumivel.Vegetal)))
         {
-            if ((food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Fruta) || food.GetComponent<Consumivel>().tipoConsumivel.Equals(Consumivel.TipoConsumivel.Vegetal)))
-            {
-                targetComida = food;
-            }
+            targetComida = food;
         }
     }
 
@@ -337,16 +319,16 @@ public class AnimalController : MonoBehaviourPunCallbacks
         targetInimigo = null;
         targetComida = null;
         timer = timerParaAndarAleatoriamente;
-        Invoke("PararDeFugir", tempoCorridaFugindo);
+        Invoke(nameof(PararDeFugir), tempoCorridaFugindo);
         agent.speed = runSpeed;
         MoveToRandomPosition(raioDeDistanciaMaxParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
     }
 
-    private void verificarAtaque()
+    private void VerificarAtaque()
     {
         if (targetInimigo == null)
         {
-            atacarObstaculoOuInimigo();
+            AtacarObstaculoOuInimigo();
             return;
         }
 
@@ -356,25 +338,25 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
         else
         {
-            if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))  // Ataca o alvo
+            if (PodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))
             {
                 Debug.Log("Atacando inimigo");
-                atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
+                AtacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
             }
             else
             {
-                atacarObstaculoOuInimigo();
+                AtacarObstaculoOuInimigo();
             }
         }
     }
 
-    private bool isPodeAtacarAlvo(Transform transformInicial, Vector3 positionTarget)
+    private bool PodeAtacarAlvo(Transform transformInicial, Vector3 positionTarget)
     {
         float distanceToInimigo = Vector3.Distance(transformInicial.position, positionTarget);
         return distanceToInimigo <= animalStats.distanciaDeAtaque;
     }
 
-    private void atacarObstaculoOuInimigo()
+    private void AtacarObstaculoOuInimigo()
     {
         if (targetObstaculo != null)
         {
@@ -384,17 +366,17 @@ public class AnimalController : MonoBehaviourPunCallbacks
             }
             else
             {
-                atacarAlvo(targetObstaculo.position);
+                AtacarAlvo(targetObstaculo.position);
                 targetObstaculo = null;
             }
         }
         else
         {
-            perseguirInimigo();
+            PerseguirInimigo();
         }
     }
 
-    private void atacarAlvo(Vector3 positionAlvo)
+    private void AtacarAlvo(Vector3 positionAlvo)
     {
         if (!statsGeral.isAttacking && Time.time > animalStats.lastAttackTime + animalStats.attackInterval)
         {
@@ -405,11 +387,11 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
         else
         {
-            perseguirInimigo();
+            PerseguirInimigo();
         }
     }
 
-    public void perseguirInimigo()
+    public void PerseguirInimigo()
     {
         if (targetInimigo == null) return;
         Vector3 targetVelocity = GetTargetVelocity(targetInimigo);
@@ -422,7 +404,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
             Vector3 destination = predictedPosition + (predictedPosition - targetInimigo.obterTransformPositionDoCollider().position).normalized * animalStats.leadDistance + randomOffset;
 
-            // Verifica se o agent já tem um path e se ele está próximo do destino
             if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > pathUpdateDistanceThreshold))
             {
                 Debug.Log("Perseguindo inimigo 1");
@@ -443,13 +424,13 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private Vector3 GetTargetVelocity(StatsGeral target)
     {
-        if (target.GetComponent<CharacterController>() != null)
+        if (target.TryGetComponent(out CharacterController characterController))
         {
-            return target.GetComponent<CharacterController>().velocity.normalized;
+            return characterController.velocity.normalized;
         }
-        else if (target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>() != null)
+        else if (target.obterTransformPositionDoCollider().TryGetComponent(out NavMeshAgent navMeshAgent))
         {
-            return target.obterTransformPositionDoCollider().GetComponent<NavMeshAgent>().velocity.normalized;
+            return navMeshAgent.velocity.normalized;
         }
         return Vector3.zero;
     }
@@ -463,14 +444,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         if (targetInimigo == null) return;
 
-        if (animator.GetBool("run") == true)
-        {
-            agent.speed = walkSpeed;
-        }
-        else
-        {
-            agent.speed = runSpeed;
-        }
+        agent.speed = animator.GetBool("run") ? walkSpeed : runSpeed;
     }
 
     void GoAtk()
@@ -482,5 +456,4 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         statsGeral.isAttacking = false;
     }
-
 }
