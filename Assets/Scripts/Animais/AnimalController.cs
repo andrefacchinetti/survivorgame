@@ -34,7 +34,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
     [SerializeField] private StatsGeral targetInimigo;
     [SerializeField] private GameObject targetComida;
     [HideInInspector] public Transform targetObstaculo;
-    [HideInInspector] public GameObject targetCapturador;
+    [HideInInspector] public PlayerController targetCapturador;
     public PhotonView PV;
 
     private void Awake()
@@ -52,7 +52,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
         StartCoroutine(DetectionCoroutine());
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (statsGeral.health.IsAlive())
         {
@@ -86,7 +86,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
             targetComida = null;
             if (targetCapturador != null)
             {
-                targetCapturador.GetComponent<PlayerController>().inventario.UngrabAnimalCapturado(false);
+                targetCapturador.inventario.UngrabAnimalCapturado(false);
                 targetCapturador = null;
             }
             agent.ResetPath();

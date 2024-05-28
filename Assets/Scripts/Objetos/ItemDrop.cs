@@ -11,6 +11,7 @@ public class ItemDrop : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] public ItemDefinitionBase item;
+    [SerializeField] public string pathPrefab;
     public bool estaSendoComido = false;
 
     public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, Material materialPersonalizado, int viewID)

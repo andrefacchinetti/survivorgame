@@ -41,7 +41,7 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		Debug.Log("capturou");
 		if (playerController.animalCapturado == null) return;
 		playerController.animalCapturado.isCapturado = true;
-		playerController.animalCapturado.targetCapturador = this.gameObject;
+		playerController.animalCapturado.targetCapturador = this.playerController;
 		playerController.animalCapturado.objColeiraRope.SetActive(true);
 		if(playerController.cordaWeaponTP != null)
         {

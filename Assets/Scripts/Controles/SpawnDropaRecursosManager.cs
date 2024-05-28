@@ -7,11 +7,13 @@ using UnityEngine;
 public class SpawnDropaRecursosManager : MonoBehaviour
 {
 
-    [SerializeField] int diasPraRespawnarArvores = 5, diasPraRespawnarDropaRecursos = 5;
-    int countDiasArvore = 0, countDiasDropaRecursos = 0;
+    [SerializeField] int diasPraRespawnarArvores = 5, diasPraRespawnarDropaRecursos = 5, diasPraRespawnarRecursos = 2;
+    [SerializeField] GameObject contentItensDropPadraoDoCenario; //GameObject contendo todos os itens spawnados por padrao no cenario do jogo (gravetos, pedras, lanternas, etc...)
 
+    int countDiasArvore = 0, countDiasDropaRecursos = 0, countDiasRecursos = 0;
     [SerializeField] List<DropaRecursosSpawn> arvoresSpawn;
     [SerializeField] List<DropaRecursosSpawn> dropaRecursosSpawn;
+    [SerializeField] List<DropaRecursosSpawn> recursosSpawn;
 
     [System.Serializable]
     public struct DropaRecursosSpawn
@@ -23,6 +25,24 @@ public class SpawnDropaRecursosManager : MonoBehaviour
         public Vector3 scaleLossy;
     }
 
+    private void Awake()
+    {
+        recursosSpawn = new List<DropaRecursosSpawn>();
+        foreach (ItemDrop recurso in contentItensDropPadraoDoCenario.GetComponentsInChildren<ItemDrop>())
+        {
+            if(dropaRecursosSpawn != null)
+            {
+                DropaRecursosSpawn recursoSpawn = new DropaRecursosSpawn();
+                recursoSpawn.objeto = recurso.gameObject;
+                recursoSpawn.prefabPath = recurso.pathPrefab;
+                recursoSpawn.position = recurso.transform.position;
+                recursoSpawn.rotation = recurso.transform.rotation;
+                recursoSpawn.scaleLossy = recurso.transform.lossyScale;
+                recursosSpawn.Add(recursoSpawn);
+            }
+        }
+    }
+
     private void Start()
     {
         countDiasArvore = 0;
@@ -32,24 +52,30 @@ public class SpawnDropaRecursosManager : MonoBehaviour
         foreach (GameObject arvore in GameObject.FindGameObjectsWithTag("Arvore"))
         {
             DropaRecursosStats dropaRecursosStats = arvore.GetComponent<DropaRecursosStats>();
-            DropaRecursosSpawn arvoreSpawn = new DropaRecursosSpawn();
-            arvoreSpawn.objeto = arvore;
-            arvoreSpawn.prefabPath = dropaRecursosStats.pathPrefab;
-            arvoreSpawn.position = arvore.transform.position;
-            arvoreSpawn.rotation = arvore.transform.rotation;
-            arvoreSpawn.scaleLossy = arvore.transform.lossyScale;
-            arvoresSpawn.Add(arvoreSpawn);
+            if (dropaRecursosSpawn != null)
+            {
+                DropaRecursosSpawn arvoreSpawn = new DropaRecursosSpawn();
+                arvoreSpawn.objeto = arvore;
+                arvoreSpawn.prefabPath = dropaRecursosStats.pathPrefab;
+                arvoreSpawn.position = arvore.transform.position;
+                arvoreSpawn.rotation = arvore.transform.rotation;
+                arvoreSpawn.scaleLossy = arvore.transform.lossyScale;
+                arvoresSpawn.Add(arvoreSpawn);
+            }
         }
         foreach (GameObject dropaRecurso in GameObject.FindGameObjectsWithTag("DropaRecursos"))
         {
             DropaRecursosStats dropaRecursosStats = dropaRecurso.GetComponent<DropaRecursosStats>();
-            DropaRecursosSpawn arvoreSpawn = new DropaRecursosSpawn();
-            arvoreSpawn.objeto = dropaRecurso;
-            arvoreSpawn.prefabPath = dropaRecursosStats.pathPrefab;
-            arvoreSpawn.position = dropaRecurso.transform.position;
-            arvoreSpawn.rotation = dropaRecurso.transform.rotation;
-            arvoreSpawn.scaleLossy = dropaRecurso.transform.lossyScale;
-            dropaRecursosSpawn.Add(arvoreSpawn);
+            if (dropaRecursosSpawn != null)
+            {
+                DropaRecursosSpawn arvoreSpawn = new DropaRecursosSpawn();
+                arvoreSpawn.objeto = dropaRecurso;
+                arvoreSpawn.prefabPath = dropaRecursosStats.pathPrefab;
+                arvoreSpawn.position = dropaRecurso.transform.position;
+                arvoreSpawn.rotation = dropaRecurso.transform.rotation;
+                arvoreSpawn.scaleLossy = dropaRecurso.transform.lossyScale;
+                dropaRecursosSpawn.Add(arvoreSpawn);
+            }
         }
     }
 
@@ -59,7 +85,7 @@ public class SpawnDropaRecursosManager : MonoBehaviour
         {
             foreach (DropaRecursosSpawn arvoreSpawn in arvoresSpawn)
             {
-                TrySpawnarDropaRecursos(arvoreSpawn, viewID);
+                TrySpawnarDropaRecursosSpawn(arvoreSpawn, viewID);
             }
             countDiasArvore = 0;
         }
@@ -71,7 +97,7 @@ public class SpawnDropaRecursosManager : MonoBehaviour
         {
             foreach (DropaRecursosSpawn dropaRecursoSpawn in dropaRecursosSpawn)
             {
-                TrySpawnarDropaRecursos(dropaRecursoSpawn, viewID);
+                TrySpawnarDropaRecursosSpawn(dropaRecursoSpawn, viewID);
             }
             countDiasDropaRecursos = 0;
         }
@@ -79,9 +105,21 @@ public class SpawnDropaRecursosManager : MonoBehaviour
         {
             countDiasDropaRecursos++;
         }
+        if (countDiasRecursos >= diasPraRespawnarRecursos)
+        {
+            foreach (DropaRecursosSpawn recursoSpawn in recursosSpawn)
+            {
+                TrySpawnarDropaRecursosSpawn(recursoSpawn, viewID);
+            }
+            countDiasRecursos = 0;
+        }
+        else
+        {
+            countDiasRecursos++;
+        }
     }
 
-    public void TrySpawnarDropaRecursos(DropaRecursosSpawn arvoreSpawn, int viewID)
+    public void TrySpawnarDropaRecursosSpawn(DropaRecursosSpawn arvoreSpawn, int viewID)
     {
         if (arvoreSpawn.objeto == null)
         {
