@@ -48,6 +48,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] public bool isRespawnarInimigos = true; //DEIXAR TRUE ]
     [HideInInspector] public PhotonView PV;
+    [HideInInspector] public GameObject[] playersOnline;
 
     private void Awake()
     {
@@ -59,6 +60,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        playersOnline = GameObject.FindGameObjectsWithTag("Player");
         float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
         targetRotation = mappedHour;
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
