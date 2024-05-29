@@ -202,7 +202,11 @@ public class StatsGeral : MonoBehaviour
                 }
                 else
                 {
-                    ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
+                    float alturaObjetoExistente = dropPosition != null ? dropPosition.GetComponent<Collider>().bounds.size.y : 0;
+                    Vector3 spawnPosition = dropPosition.transform.position + new Vector3(0, alturaObjetoExistente, 0);
+                    Debug.Log(prefabPath + " altura: " + alturaObjetoExistente);
+
+                    ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, spawnPosition, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
                 }
             }
         }
