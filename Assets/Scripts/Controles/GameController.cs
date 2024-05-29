@@ -125,6 +125,14 @@ public class GameController : MonoBehaviour
         objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);
     }
 
+    private void LateUpdate()
+    {
+        if (playersOnline == null || playersOnline.Length <= 0 || playersOnline.Length != PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            playersOnline = GameObject.FindGameObjectsWithTag("Player");
+        }
+    }
+
     private float targetRotation = 0f;
     private float rotationVelocity = 0f;
     void AtualizarRotacaoDoSol()

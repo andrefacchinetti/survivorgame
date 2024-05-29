@@ -9,7 +9,6 @@ using Opsive.UltimateCharacterController.Character;
 using Opsive.UltimateCharacterController.Character.Abilities;
 using Opsive.UltimateCharacterController.AddOns.Swimming;
 using Opsive.Shared.Events;
-using UnityEngine.Profiling;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -100,11 +99,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	bool recarregandoEnergia = false;
 	void Update()
 	{
-		if (PV == null) return;
-		if (!PV.IsMine)
-			return;
+		if (PV == null || !PV.IsMine) return;
 
-		Profiler.BeginSample("Script PlayerController: ");
 		if (!inventario.canvasInventario.activeSelf && canMove)
 		{
 			if (Input.GetButtonDown("Crouch"))
@@ -164,18 +160,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					jaSaiuDaAgua = true;
 				}
 			}
-
 		}
-
 		if (characterLocomotion.Moving)
 		{
 			PararAbilitys();
 		}
-
-		Profiler.EndSample();
 	}
 
-	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
+    public void TogglePlayerModoConstrucao(bool construcaoAtiva)
     {
 		if (construcaoAtiva)
 		{

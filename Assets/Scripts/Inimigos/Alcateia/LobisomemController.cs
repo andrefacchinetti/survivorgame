@@ -1,34 +1,28 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class LobisomemController : MonoBehaviour
 {
 
-    [SerializeField] public GameObject objFormaLobo;
     [SerializeField] [HideInInspector] public GameController gameController;
 
-    [SerializeField] [HideInInspector] public LobisomemStats lobisomemStats;
-    [SerializeField] [HideInInspector] public StatsGeral statsGeral;
-    [SerializeField] public LobisomemMovimentacao lobisomemMovimentacao;
+    [HideInInspector] public LobisomemStats lobisomemStats;
+    [HideInInspector] public StatsGeral statsGeral;
+    [HideInInspector] public LobisomemMovimentacao lobisomemMovimentacao;
 
     [SerializeField] float limiteDistanciaAteJogadores = 80;
-
-    private GameObject[] jogadores;
 
     private void Awake()
     {
         lobisomemStats = GetComponent<LobisomemStats>();
         statsGeral = GetComponent<StatsGeral>();
-    }
-
-    private void Start()
-    {
-        jogadores = GameObject.FindGameObjectsWithTag("PlayerCollider");
+        lobisomemMovimentacao = GetComponent<LobisomemMovimentacao>();
     }
 
     public bool estouLongeDeAlgumJogador()
     {
         float distanciaLimiteAoQuadrado = limiteDistanciaAteJogadores * limiteDistanciaAteJogadores;
-        foreach (GameObject jogador in jogadores)
+        foreach (GameObject jogador in gameController.playersOnline)
         {
             if(jogador != null)
             {
@@ -40,11 +34,6 @@ public class LobisomemController : MonoBehaviour
             }
         }
         return false;
-    }
-
-    public GameObject obterGameObjectFormaAtiva()
-    {
-        return objFormaLobo;
     }
 
 }

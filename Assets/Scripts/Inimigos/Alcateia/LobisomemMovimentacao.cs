@@ -15,8 +15,8 @@ public class LobisomemMovimentacao : MonoBehaviour
     [HideInInspector] public StatsGeral targetInimigo;
     [HideInInspector] public GameObject targetComida;
     [HideInInspector] public Transform targetObstaculo;
-    public NavMeshAgent agent;
-    public Animator animator;
+    [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public Animator animator;
     public StatsGeral statsGeral;
     public LobisomemStats lobisomemStats;
 
@@ -29,6 +29,9 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+
         timer = timerParaAndarAleatoriamente;
         proximaAtualizacaoCaminho = Time.time;
     }

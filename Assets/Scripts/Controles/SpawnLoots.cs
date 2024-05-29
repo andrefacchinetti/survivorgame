@@ -38,7 +38,7 @@ public class SpawnLoots : MonoBehaviour
 
     public void SpawnarRandomLoot()
     {
-        if(itemSpawnado != null)
+        if(itemSpawnado != null || itemSpawnado.transform.position.y < -40f)
         {
             Destroy(itemSpawnado);
         }

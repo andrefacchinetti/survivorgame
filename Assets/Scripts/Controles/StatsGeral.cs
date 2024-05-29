@@ -51,6 +51,14 @@ public class StatsGeral : MonoBehaviour
         else if (!EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<EstilhacoFxController>();
     }
 
+    private void LateUpdate()
+    {
+        if (transform.position.y < -40)
+        {
+            TakeDamage(999);
+        }
+    }
+
     private void OnPreDamage(float dano, Vector3 position, GameObject attacker, Collider hitCollider)
     {
         //Evento que acontece antes de aplicar o damage no Health
@@ -228,16 +236,7 @@ public class StatsGeral : MonoBehaviour
 
     public Transform obterTransformPositionDoCollider()
     {
-        if(lobisomemStats != null)
-        {
-            return GetComponent<LobisomemController>().obterGameObjectFormaAtiva().transform;
-        }
-        else
-        {
-            return transform;
-        }
+        return transform;
     }
-
-
 
 }

@@ -52,7 +52,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
         StartCoroutine(DetectionCoroutine());
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (statsGeral.health.IsAlive())
         {
