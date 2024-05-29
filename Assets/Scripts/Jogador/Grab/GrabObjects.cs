@@ -5,7 +5,7 @@ using Opsive.Shared.Inventory;
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
-    private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
+    private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAguaPotavel = "AguaPotavel", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
     private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore";
 
@@ -250,11 +250,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
             }
         }
-        else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
+        else if (hit.transform.tag == tagAguaPotavel && inventario.itemNaMao == null)
         {
             interacaoBeberAgua(hit);
         }
-        else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
+        else if (hit.transform.tag == tagAguaPotavel && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
         {
             interacaoEncherGarrafa(hit);
         }
