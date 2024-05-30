@@ -7,7 +7,7 @@ public class CordaWeapon : MonoBehaviour
 {
 
     [SerializeField] public bool isThirdPerson = false;
-    [SerializeField] public GameObject objObiSolver, objObiRope, objCordaSemGrab, objCordaMaos;
+    [SerializeField] public GameObject objObiSolver, objObiRope, objCordaSemGrab, objCordaMaos, objCordaEnvoltaMaos, objCordaNode;
     [SerializeField] public RopeEstoura ropeEstoura;
     [SerializeField] public PointRopeFollow ropeGrab;
     [SerializeField] public GameObject pivotRopeStart, pivotRopeEnd;
@@ -21,7 +21,10 @@ public class CordaWeapon : MonoBehaviour
     {
         foreach(MeshRenderer mesh in GetComponentsInChildren<MeshRenderer>())
         {
-            mesh.material = materialInvisivel;
+            if(mesh.gameObject != objCordaEnvoltaMaos && mesh.gameObject != objCordaNode && mesh.gameObject != objCordaSemGrab)
+            {
+                mesh.material = materialInvisivel;
+            }
         }
     }
 
@@ -47,13 +50,15 @@ public class CordaWeapon : MonoBehaviour
 
     public void AcoesRenovarCordaEstourada(bool isCordaPartindo)
     {
-        Debug.LogWarning("AcoesRenovarCordaEstourada 2");
         CancelInvoke("SumirObjRopeStart");
         Transform positionRope = objObiRope.gameObject.transform;
         GameObject novaCorda = Instantiate(prefabCorda, positionRope.position, positionRope.rotation, objObiSolver.transform);
         foreach (MeshRenderer mesh in novaCorda.GetComponentsInChildren<MeshRenderer>())
         {
-            mesh.material = materialInvisivel;
+            if (mesh.gameObject != objCordaEnvoltaMaos && mesh.gameObject != objCordaNode && mesh.gameObject != objCordaSemGrab)
+            {
+                mesh.material = materialInvisivel;
+            }
         }
         ropeEstoura = novaCorda.GetComponent<RopeEstoura>();
         ropeEstoura.playerController = playerController;
