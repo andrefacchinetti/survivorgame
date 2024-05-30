@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-
     [SerializeField] Light luzDoSol;
     [SerializeField] GameObject objMoon, pivotDoSol;
     [SerializeField] float moonRotationSpeed = 10f;
@@ -36,7 +35,7 @@ public class GameController : MonoBehaviour
     public float amanhecerHorario = 6f;
     public float meioDiaHorario = 12f;
     public float entardecerHorario = 17f;
-    public float noiteHorario = 00f;
+    public float noiteHorario = 0f;
 
     [SerializeField] [HideInInspector] SpawnController spawnController;
     float deltaTime = 0.0f;
@@ -61,8 +60,12 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         playersOnline = GameObject.FindGameObjectsWithTag("Player");
-        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
+
+        // Mapeia o horário inicial do jogo para o ângulo de rotação do sol
+        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 0f, 24f, -180f, 180f);
         targetRotation = mappedHour;
+
+        // Define a rotação inicial do pivô do sol
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
         spawnarPorDia();
     }
@@ -127,30 +130,34 @@ public class GameController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (playersOnline == null || playersOnline.Length <= 0 || playersOnline.Length != PhotonNetwork.CurrentRoom.PlayerCount)
+        if (playersOnline == null || playersOnline.Length <= 0 )
         {
-            playersOnline = GameObject.FindGameObjectsWithTag("Player");
+            if (!PhotonNetwork.IsConnected || playersOnline.Length != PhotonNetwork.CurrentRoom.PlayerCount)
+            {
+                playersOnline = GameObject.FindGameObjectsWithTag("Player");
+            }
         }
     }
 
     private float targetRotation = 0f;
     private float rotationVelocity = 0f;
+
     void AtualizarRotacaoDoSol()
     {
-        // Mapeia gameHour, gameMinute e gameSegundos para o intervalo desejado (-190, -90, 20)
-        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
+        // Mapeia gameHour, gameMinute e gameSecond para o intervalo desejado (-180, 180)
+        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 0f, 24f, -180f, 180f);
 
         // Define o novo ângulo de rotação
-        float targetAngle = mappedHour + Mathf.Repeat(deltaTime * multiplicadorVelocidade, 360f);
+        float targetAngle = mappedHour;
 
         // Suaviza a transição entre as posições
         float smoothTime = 1.0f; // Ajuste conforme necessário
-        targetRotation = Mathf.SmoothDamp(targetRotation, targetAngle, ref rotationVelocity, smoothTime);
+        targetRotation = Mathf.SmoothDampAngle(targetRotation, targetAngle, ref rotationVelocity, smoothTime);
 
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
     }
 
-    // Fun��o para mapear valores de um intervalo para outro
+    // Função para mapear valores de um intervalo para outro
     float Map(float value, float fromSource, float toSource, float fromTarget, float toTarget)
     {
         return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
@@ -158,7 +165,7 @@ public class GameController : MonoBehaviour
 
     private void spawnarLootsPorDia()
     {
-        foreach(SpawnLoots spawnLoots in listaSpawnLoots)
+        foreach (SpawnLoots spawnLoots in listaSpawnLoots)
         {
             spawnLoots.SpawnarLootPorDias();
         }
@@ -196,6 +203,4 @@ public class GameController : MonoBehaviour
         string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
         GUI.Label(rect, text, style);
     }
-
-
 }
