@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7593b3a9277ac4696b20006c21dde2, type: 3}
   m_Name: VisualEnvironment
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   skyType:
     m_OverrideState: 1
     m_Value: 1
@@ -21,13 +21,13 @@ MonoBehaviour:
     m_Value: 0
   skyAmbientMode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   planetRadius:
     m_OverrideState: 1
     m_Value: 6378.1
   renderingSpace:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   centerMode:
     m_OverrideState: 1
     m_Value: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Value: 0
   windSpeed:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 100
   fogType:
     m_OverrideState: 1
     m_Value: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d877ec3e844f2ca46830012e8e79319b, type: 3}
   m_Name: PhysicallyBasedSky
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   rotation:
     m_OverrideState: 1
     m_Value: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
     m_Value: 0.23264056
   airTint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 0.9, g: 0.9, b: 1, a: 1}
   airMaximumAltitude:
     m_OverrideState: 1
     m_Value: 55261.973
@@ -254,13 +254,13 @@ MonoBehaviour:
     m_Value: 1
   ozoneMinimumAltitude:
     m_OverrideState: 1
-    m_Value: 20000
+    m_Value: 10000
   ozoneLayerWidth:
     m_OverrideState: 1
-    m_Value: 20000
+    m_Value: 30000
   groundTint:
     m_OverrideState: 1
-    m_Value: {r: 0.12, g: 0.1, b: 0.09, a: 1}
+    m_Value: {r: 0.12156863, g: 0.105882354, b: 0.09411765, a: 1}
   groundColorTexture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a81bcacc415a1f743bfdf703afc52027, type: 3}
   m_Name: GradientSky
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   rotation:
     m_OverrideState: 1
     m_Value: 0
@@ -585,13 +585,13 @@ MonoBehaviour:
     m_Value: 0
   top:
     m_OverrideState: 1
-    m_Value: {r: 0.97972727, g: 1, b: 0, a: 1}
+    m_Value: {r: 0, g: 0, b: 1, a: 1}
   middle:
     m_OverrideState: 1
     m_Value: {r: 0.3, g: 0.7, b: 1, a: 1}
   bottom:
     m_OverrideState: 1
-    m_Value: {r: 0.8584906, g: 0.7752257, b: 0.58717513, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   gradientDiffusion:
     m_OverrideState: 1
     m_Value: 1
@@ -818,10 +818,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e9e4ed5a6f56fb4ebd693e39684f36f, type: 3}
   m_Name: VolumetricClouds
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enable:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   cloudTiling:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1}
@@ -862,10 +862,10 @@ MonoBehaviour:
     m_Value: 0
   cloudSimpleMode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   m_CloudPreset:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 1
   cumulusMap:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -909,10 +909,19 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1
+        time: 0.15
         value: 1
-        inSlope: 2
-        outSlope: 2
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0.1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
@@ -1001,10 +1010,10 @@ MonoBehaviour:
     m_Value: 0.5
   densityMultiplier:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 0.4
   shapeFactor:
     m_OverrideState: 1
-    m_Value: 0.651
+    m_Value: 0.9
   shapeScale:
     m_OverrideState: 1
     m_Value: 5
@@ -1013,10 +1022,10 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0, z: 0}
   erosionFactor:
     m_OverrideState: 1
-    m_Value: 0.581
+    m_Value: 0.8
   erosionScale:
     m_OverrideState: 1
-    m_Value: 75
+    m_Value: 107
   erosionNoiseType:
     m_OverrideState: 1
     m_Value: 1
@@ -1025,10 +1034,10 @@ MonoBehaviour:
     m_Value: 0
   microErosionFactor:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.5
   microErosionScale:
     m_OverrideState: 1
-    m_Value: 300
+    m_Value: 200
   ambientLightProbeDimmer:
     m_OverrideState: 1
     m_Value: 1
@@ -1072,16 +1081,16 @@ MonoBehaviour:
     m_Value: 0
   temporalAccumulationFactor:
     m_OverrideState: 1
-    m_Value: 0.872
+    m_Value: 0.95
   ghostingReduction:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   perceptualBlending:
     m_OverrideState: 1
     m_Value: 0
   shadows:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   shadowResolution:
     m_OverrideState: 1
     m_Value: 256
@@ -1181,25 +1190,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b24b200358312b4fa1004e2431c2f1f, type: 3}
   m_Name: ShadowsMidtonesHighlights
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.981, y: 0.98, z: 1, w: -0.025412962}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.038119435}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
   shadowsEnd:
     m_OverrideState: 1
-    m_Value: 0.28
+    m_Value: 0.3
   highlightsStart:
     m_OverrideState: 1
-    m_Value: 0.52
+    m_Value: 0.55
   highlightsEnd:
     m_OverrideState: 1
     m_Value: 1
@@ -2178,11 +2187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddcec8a8eb2d684d833ac8f5d26aebd, type: 3}
   m_Name: HDShadowSettings
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   interCascadeBorders: 1
   maxShadowDistance:
     m_OverrideState: 1
-    m_Value: 6000
+    m_Value: 150
   directionalTransmissionMultiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -2191,25 +2200,25 @@ MonoBehaviour:
     m_Value: 4
   cascadeShadowSplit0:
     m_OverrideState: 1
-    m_Value: 0.012999999
+    m_Value: 0.05
   cascadeShadowSplit1:
     m_OverrideState: 1
-    m_Value: 0.031
+    m_Value: 0.15
   cascadeShadowSplit2:
     m_OverrideState: 1
-    m_Value: 0.146
+    m_Value: 0.3
   cascadeShadowBorder0:
     m_OverrideState: 1
-    m_Value: 0.005515218
+    m_Value: 0.06905067
   cascadeShadowBorder1:
     m_OverrideState: 1
-    m_Value: 0.017309153
+    m_Value: 0.05086228
   cascadeShadowBorder2:
     m_OverrideState: 1
-    m_Value: 0.014684905
+    m_Value: 0
   cascadeShadowBorder3:
     m_OverrideState: 1
-    m_Value: 0.025452232
+    m_Value: 0
 --- !u!114 &6087970676068370512
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -2222,7 +2231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b6606ef2548734bb6d11b9d160bc7e, type: 3}
   m_Name: HDRISky
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   rotation:
     m_OverrideState: 1
     m_Value: 0
@@ -2691,7 +2700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953beb541740ddc499d005ee80c9ff29, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   quality:
     m_OverrideState: 1
     m_Value: 1
