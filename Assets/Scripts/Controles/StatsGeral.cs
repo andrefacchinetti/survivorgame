@@ -62,7 +62,6 @@ public class StatsGeral : MonoBehaviour
     private void OnPreDamage(float dano, Vector3 position, GameObject attacker, Collider hitCollider)
     {
         //Evento que acontece antes de aplicar o damage no Health
-        Debug.Log("on pre damage");
         if(attacker != null)
         {
             if (construcaoStats != null) //Verificar se cura construcao com martelo reparador
@@ -100,7 +99,6 @@ public class StatsGeral : MonoBehaviour
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
         //Evento que acontece depois de aplicar o damage no Health
-        Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
         if (hitCollider != null && EstilhacoFxController.TipoEstilhaco.Sangue.Equals(tipoEstilhaco)) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
         else if (hitCollider != null && !EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController.GerarEstilhaco(tipoEstilhaco, position, attacker.transform.position);
         if (attacker != null)
@@ -203,7 +201,6 @@ public class StatsGeral : MonoBehaviour
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
                 string nomePrefab = drop.itemDefinition.name;
                 string prefabPath = drop.tipoItem + "/" + nomePrefab;
-                Debug.Log("dropando: " + nomePrefab);
                 if(drop.prefabDropMarks != null && drop.prefabDropMarks.Length > 0)
                 {
                     ItemDrop.InstanciarPrefabPorPrefabMark(prefabPath, drop.prefabDropMarks, PV.ViewID);
@@ -212,8 +209,6 @@ public class StatsGeral : MonoBehaviour
                 {
                     float alturaObjetoExistente = dropPosition != null ? dropPosition.GetComponent<Collider>().bounds.size.y : 0;
                     Vector3 spawnPosition = dropPosition.transform.position + new Vector3(0, alturaObjetoExistente, 0);
-                    Debug.Log(prefabPath + " altura: " + alturaObjetoExistente);
-
                     ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, spawnPosition, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
                 }
             }

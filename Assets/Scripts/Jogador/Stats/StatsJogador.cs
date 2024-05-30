@@ -103,12 +103,14 @@ public class StatsJogador : MonoBehaviour
 
     public void AcoesReviveu()
     {
-        Debug.Log("revivendo");
         playerController.StartarAbility(playerController.reviveAbility);
         playerController.canMove = true;
         playerController.corpoDissecando = null;
         playerController.animalCapturado = null;
         TakeHealHealth(playerController.characterAttributeManager.GetAttribute(playerController.characterHealth.HealthAttributeName).MaxValue * 0.20f); //CURA 20% DA VIDA MAXIMA
+        setarFomeAtual(fomeMaxima*0.25f);
+        setarSedeAtual(sedeMaxima * 0.25f);
+        setarEnergiaAtual(energiaMaxima);
     }
 
 }
