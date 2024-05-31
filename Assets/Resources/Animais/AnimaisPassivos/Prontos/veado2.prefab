@@ -807,6 +807,7 @@ GameObject:
   - component: {fileID: -4866988502566810622}
   - component: {fileID: 7856833715048534640}
   - component: {fileID: 8485721970314212191}
+  - component: {fileID: 2303720156082480933}
   m_Layer: 11
   m_Name: veado2
   m_TagString: Animal
@@ -1019,7 +1020,6 @@ MonoBehaviour:
   leadTime: 1.2
   leadDistance: 2
   estaFugindo: 0
-  genero: 0
 --- !u!114 &7856833715048534640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,6 +1110,57 @@ MonoBehaviour:
   m_OnDeathEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2303720156082480933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469321126311600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 569de36fa01ebc747b8a8eac3c3e3d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipo: 2
+  genero: 1
+  pathsPrefabMachoFemea:
+  - Animais/AnimaisPassivos/Prontos/veado
+  - Animais/AnimaisPassivos/Prontos/veado2
+  itemsExtraAdultos:
+  - itemDefinition: {fileID: 1460890667258715926, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+    tipoItem: 4
+    prefabDropMarks: []
+    materialPersonalizado: {fileID: 0}
+    qtdMinDrops: 1
+    qtdMaxDrops: 2
+  - itemDefinition: {fileID: 1460890667258715926, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+    tipoItem: 4
+    prefabDropMarks: []
+    materialPersonalizado: {fileID: 0}
+    qtdMinDrops: 1
+    qtdMaxDrops: 2
+  - itemDefinition: {fileID: 3961578301439138061, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+    tipoItem: 3
+    prefabDropMarks: []
+    materialPersonalizado: {fileID: 0}
+    qtdMinDrops: 1
+    qtdMaxDrops: 1
+  - itemDefinition: {fileID: 3961578301439138061, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+    tipoItem: 3
+    prefabDropMarks: []
+    materialPersonalizado: {fileID: 0}
+    qtdMinDrops: 1
+    qtdMaxDrops: 1
+  - itemDefinition: {fileID: 3961578301439138061, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+    tipoItem: 3
+    prefabDropMarks: []
+    materialPersonalizado: {fileID: 0}
+    qtdMinDrops: 1
+    qtdMaxDrops: 2
+  tempoParaVirarAdulto: 800
+  tempoParaEngravidarDenovo: 1200
+  distanciaProcriacao: 10
 --- !u!1 &1472112858167492
 GameObject:
   m_ObjectHideFlags: 0

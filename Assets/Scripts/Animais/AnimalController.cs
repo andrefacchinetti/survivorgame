@@ -105,7 +105,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float detectionRadius = 10f;
     private void DetectNearbyObjects()
     {
-        Debug.Log("animal detectando objetos: " + PV.ViewID);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
         foreach (var hitCollider in hitColliders)
         {
@@ -263,7 +262,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
         if (NavMesh.SamplePosition(position, out NavMeshHit hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas))
         {
             agent.SetDestination(position);
-            Debug.Log("animal move to position");
         }
         else
         {
