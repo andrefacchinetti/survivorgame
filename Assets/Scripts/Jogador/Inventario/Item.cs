@@ -191,16 +191,15 @@ public class Item : MonoBehaviourPunCallbacks
 
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
-            inventario.playerController.cordaWeaponFP = inventario.playerController.contentItemsTP.GetComponentInChildren<CordaWeapon>();
-            inventario.playerController.cordaWeaponTP = inventario.playerController.contentItemsFP.GetComponentInChildren<CordaWeapon>();
+            inventario.playerController.cordaWeaponTP = inventario.playerController.contentItemsTP.GetComponentInChildren<CordaWeapon>();
+            inventario.playerController.cordaWeaponFP = inventario.playerController.contentItemsFP.GetComponentInChildren<CordaWeapon>();
 
-            if (inventario.playerController.cordaWeaponFP != null && inventario.playerController.cordaWeaponTP != null)
+            if (inventario.playerController.cordaWeaponFP != null)
             {
-                Debug.LogWarning("equipando corda 1");
                 inventario.playerController.cordaWeaponTP.playerController = inventario.playerController;
                 inventario.playerController.cordaWeaponFP.playerController = inventario.playerController;
-                inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);
-                inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false);
+                inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false, true);
+                inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false, false);
             }
         }
 
@@ -210,14 +209,12 @@ public class Item : MonoBehaviourPunCallbacks
 
     private void EquipItemInventory()
     {
-        Debug.Log("equipou com sucesso");
         inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
         inventario.playerController.PararAbilitys();
     }
     
     private void UnequipItemInventory()
     {
-        Debug.Log("unequipou com sucesso");
         inventario.playerController.PararAbilitys();
         inventario.inventory.GetComponent<ItemSetManagerBase>().UnEquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
         IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;
@@ -316,7 +313,6 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if (!gameObject.activeSelf && inventario.qtdItensAtual >= inventario.qtdItensMaximo)
         {
-            Debug.Log("Inventario cheio");
             return false;
         }
         else
