@@ -82,15 +82,28 @@ public class CordaWeapon : MonoBehaviour
         Destroy(objObiRope.gameObject);
         objObiRope = novaCorda;
         objObiRope.SetActive(false);
+        objCordaSemGrab.SetActive(true);
         meshCordaGrab = objObiRope.GetComponent<MeshRenderer>();
         playerController.inventario.UngrabCoisasCapturadasComCorda(isCordaPartindo);
     }
 
     public void AcoesGrabandoAlvo()
     {
-        objCordaMaos.SetActive(false);
+        DesativarCordaMaosSemGrab();
         objObiRope.SetActive(true);
         meshCordaGrab.material = materialCorda;
+    }
+
+    public void AtivarCordaMaosSemGrab()
+    {
+        objCordaMaos.SetActive(true);
+        objCordaSemGrab.SetActive(true);
+    }
+
+    public void DesativarCordaMaosSemGrab()
+    {
+        objCordaMaos.SetActive(false);
+        objCordaSemGrab.SetActive(false);
     }
 
 }

@@ -139,8 +139,7 @@ public class Item : MonoBehaviourPunCallbacks
         inventario.itemNaMao = null;
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
-            inventario.UngrabAnimalCapturado(false);
-            inventario.UngrabObjetoCapturado();
+            DesequiparCordaNasMaos();
         }
         UnequipItemInventory();
     }
@@ -191,20 +190,30 @@ public class Item : MonoBehaviourPunCallbacks
 
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
-            inventario.playerController.cordaWeaponTP = inventario.playerController.contentItemsTP.GetComponentInChildren<CordaWeapon>();
-            inventario.playerController.cordaWeaponFP = inventario.playerController.contentItemsFP.GetComponentInChildren<CordaWeapon>();
-
-            if (inventario.playerController.cordaWeaponFP != null)
-            {
-                inventario.playerController.cordaWeaponTP.playerController = inventario.playerController;
-                inventario.playerController.cordaWeaponFP.playerController = inventario.playerController;
-                inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false, true);
-                inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false, false);
-            }
+            EquiparCordaNasMaos();
         }
 
         inventario.AtualizarHudMunicoesComArmaAtual();
 
+    }
+
+    public void EquiparCordaNasMaos()
+    {
+        inventario.playerController.cordaWeaponTP = inventario.playerController.contentItemsTP.GetComponentInChildren<CordaWeapon>();
+        inventario.playerController.cordaWeaponFP = inventario.playerController.contentItemsFP.GetComponentInChildren<CordaWeapon>();
+
+        if (inventario.playerController.cordaWeaponFP != null)
+        {
+            inventario.playerController.cordaWeaponTP.playerController = inventario.playerController;
+            inventario.playerController.cordaWeaponFP.playerController = inventario.playerController;
+            inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false, true);
+            inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false, false);
+        }
+    }
+
+    public void DesequiparCordaNasMaos()
+    {
+        inventario.UngrabCoisasCapturadasComCorda(false);
     }
 
     private void EquipItemInventory()
@@ -264,7 +273,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
             inventario.ToggleGrabUngrabCorda(isCordaPartindo);
-            inventario.UngrabObjetoCapturado();
+            inventario.UngrabCoisasCapturadasComCorda(isCordaPartindo);
             SetarItemNaMaoNull();
         }
         if (quantidade <= 0)

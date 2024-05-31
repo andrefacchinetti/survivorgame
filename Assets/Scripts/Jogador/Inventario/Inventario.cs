@@ -295,6 +295,17 @@ public class Inventario : MonoBehaviour
     {
         if (!playerController.cordaWeaponFP.objObiRope.activeSelf) //Grabando Animal
         {
+            if (playerController.animalCapturado != null)
+            {
+                playerController.animalCapturado.isCapturado = true;
+                playerController.animalCapturado.targetCapturador = this.playerController;
+                playerController.animalCapturado.objColeiraRope.SetActive(true);
+                if (playerController.cordaWeaponTP != null)
+                {
+                    playerController.cordaWeaponTP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+                    playerController.cordaWeaponFP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+                }
+            }
             playerController.cordaWeaponFP.AcoesGrabandoAlvo();
             playerController.cordaWeaponTP.AcoesGrabandoAlvo();
         }
@@ -310,19 +321,19 @@ public class Inventario : MonoBehaviour
         UngrabObjetoCapturado();
     }
 
-    public void UngrabAnimalCapturado(bool isCordaPartindo)
+    private void UngrabAnimalCapturado(bool isCordaPartindo)
     {
         if (!isCordaPartindo)
         {
             if (playerController.cordaWeaponTP != null)
             {
-                if(playerController.cordaWeaponTP.objObiRope != null)
+                if (playerController.cordaWeaponTP.objObiRope != null)
                 {
                     playerController.cordaWeaponTP.objObiRope.SetActive(false);
                     playerController.cordaWeaponFP.objObiRope.SetActive(false);
                 }
-                playerController.cordaWeaponFP.objCordaMaos.SetActive(true);
-                playerController.cordaWeaponTP.objCordaMaos.SetActive(true);
+                playerController.cordaWeaponFP.AtivarCordaMaosSemGrab();
+                playerController.cordaWeaponTP.AtivarCordaMaosSemGrab();
             }
         }
         if (playerController.animalCapturado != null)
@@ -340,7 +351,7 @@ public class Inventario : MonoBehaviour
         }
     }
 
-    public void UngrabObjetoCapturado()
+    private void UngrabObjetoCapturado()
     {
         if (playerController.objCapturado != null)
         {

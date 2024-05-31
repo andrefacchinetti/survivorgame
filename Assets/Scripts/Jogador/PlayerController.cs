@@ -201,6 +201,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		PararAbility(dissecarAbility);
 		PararAbility(beberAguaRioAbility);
 		PararAbility(encherGarrafaRioAbility);
+		PararAbility(capturarAbility);
 	}
 
 	public void PararAbility(Ability habilidade)

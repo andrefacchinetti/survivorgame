@@ -478,7 +478,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(animalController.gameObject);
-            playerController.inventario.ToggleGrabUngrabCorda(false);
+            inventario.itemNaMao.DesequiparCordaNasMaos();
+            inventario.itemNaMao.EquiparCordaNasMaos();
         }
         possibleInteraction = true;
     }
