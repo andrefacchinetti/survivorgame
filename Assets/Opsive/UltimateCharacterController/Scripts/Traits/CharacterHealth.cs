@@ -173,6 +173,7 @@ namespace Opsive.UltimateCharacterController.Traits
 
             // Apply the damage.
             Damage(damageAmount, m_Transform.position, Vector3.zero, 0, m_GameObject);
+            EventHandler.ExecuteEvent<float>(m_GameObject, "OnFallDamage", damageAmount);
         }
 
         /// <summary>

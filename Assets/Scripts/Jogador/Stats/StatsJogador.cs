@@ -39,8 +39,19 @@ public class StatsJogador : MonoBehaviour
         setarFomeAtual(fomeMaxima);
         setarSedeAtual(sedeMaxima);
         setarEnergiaAtual(energiaMaxima);
+        ResetarStatsFeridasInternas();
         InvokeRepeating("DiminuirStatsPorTempo", 0, tempoPraDiminuirStatsFomeSedePorSegundos);
         InvokeRepeating("VerificarStatsFeridasInternas", 0, tempoPraDiminuirStatsFeridasInternasPorSegundos);
+    }
+
+    public void ResetarStatsFeridasInternas()
+    {
+        isSangrando = false;
+        isFraturado = false;
+        isAbstinencia = false;
+        AtualizarImgSangrando();
+        AtualizarImgAbstinencia();
+        AtualizarImgFraturado();
     }
 
     void DiminuirStatsPorTempo()
@@ -49,19 +60,19 @@ public class StatsJogador : MonoBehaviour
         setarSedeAtual(sedeAtual - valorDaSedeReduzidaPorTempo);
         if(sedeAtual <= 0 || fomeAtual <= 0)
         {
-            TakeDamageHealth(10);
+            TakeDamageHealth(10, false);
         }
         if (isAbstinencia)
         {
-            TakeDamageHealth(10);
+            TakeDamageHealth(10, false);
         }
         if (isFraturado)
         {
-            TakeDamageHealth(10);
+            TakeDamageHealth(10, false);
         }
         if (isSangrando)
         {
-            TakeDamageHealth(10);
+            TakeDamageHealth(10, false);
         }
     }
     
@@ -86,8 +97,20 @@ public class StatsJogador : MonoBehaviour
         }
     }
 
-    public void TakeDamageHealth(float value)
+    public void FraturarJogador()
     {
+        isFraturado = true;
+        AtualizarImgFraturado();
+    }
+
+    public void TakeDamageHealth(float value, bool isPodeCausarSangramento)
+    {
+        if (isPodeCausarSangramento && !isSangrando)
+        {
+            int randomSangramento = Random.Range(0, 100);
+            if (randomSangramento < 30) isSangrando = true;
+            AtualizarImgSangrando();
+        }
         playerController.characterHealth.Damage(value);
         AtualizarImgVida();
     }
@@ -111,6 +134,11 @@ public class StatsJogador : MonoBehaviour
     public void AtualizarImgSangrando()
     {
         hudJogador.atualizarImgSangrando(isSangrando);
+    }
+
+    public void AtualizarImgFraturado()
+    {
+        hudJogador.atualizarImgFraturado(isFraturado);
     }
 
     public float ObterVidaMaximaHealth()
@@ -158,6 +186,7 @@ public class StatsJogador : MonoBehaviour
         setarFomeAtual(fomeMaxima*0.25f);
         setarSedeAtual(sedeMaxima * 0.25f);
         setarEnergiaAtual(energiaMaxima);
+        ResetarStatsFeridasInternas();
     }
 
 }

@@ -36,6 +36,7 @@ public class StatsGeral : MonoBehaviour
     {
         EventHandler.RegisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
         EventHandler.RegisterEvent<float, Vector3, GameObject, Collider>(gameObject, "OnPreHealthDamage", OnPreDamage);
+        EventHandler.RegisterEvent<float>(gameObject, "OnFallDamage", OnActionFallDamage);
         PV = GetComponent<PhotonView>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         animalStats = GetComponentInParent<AnimalStats>();
@@ -55,7 +56,15 @@ public class StatsGeral : MonoBehaviour
     {
         if (transform.position.y < -40)
         {
-            TakeDamage(999);
+            TakeDamage(999, false);
+        }
+    }
+
+    private void OnActionFallDamage(float fallDamageValue)
+    {
+        if(fallDamageValue >= 20 && jogadorStats != null)
+        {
+            jogadorStats.FraturarJogador();
         }
     }
 
@@ -92,7 +101,7 @@ public class StatsGeral : MonoBehaviour
                 }
             }
         }
-        
+        Debug.Log("aplicando dano");
         health.AplicarDanoNoHealth(dano);
     }
 
@@ -109,6 +118,7 @@ public class StatsGeral : MonoBehaviour
                 pc.animatorJogador.SetTrigger("acertouAtaque");
             }
         }
+        Debug.Log("OnDamage");
         AcoesTomouDano();
     }
 
@@ -136,11 +146,11 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damageValue) // metodo usadno para Dano causado por fatores externos (sem ser por dano de arma do player)
+    public void TakeDamage(float damageValue, bool isPodeCausarSangramento) // metodo usadno para Dano causado por fatores externos (sem ser por dano de arma do player)
     {
         if (jogadorStats != null) //jogador
         {
-            jogadorStats.TakeDamageHealth(damageValue);
+            jogadorStats.TakeDamageHealth(damageValue, isPodeCausarSangramento);
         }
         else //outros
         {

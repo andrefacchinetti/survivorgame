@@ -258,7 +258,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + curaFome);
-        if(curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida));
+        if(curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida), false);
         else inventario.statsJogador.TakeHealHealth(curaVida);
     }
 

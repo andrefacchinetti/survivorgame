@@ -20,7 +20,7 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
         if(other.transform.tag == "PlayerCollider")
         {
             Debug.Log("bateu no player collider");
-            other.GetComponentInParent<StatsGeral>().TakeDamage(statsGeral.damage);
+            other.GetComponentInParent<StatsGeral>().TakeDamage(statsGeral.damage, true);
             statsGeral.isAttacking = false;
         }
         if(other.transform.tag == "AnimalCollider" || other.transform.tag == "ConstrucaoCollider")
@@ -49,13 +49,13 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
                         else
                         {
                             Debug.Log("dando dano em construcao");
-                            objPai.TakeDamage(damage);
+                            objPai.TakeDamage(damage, false);
                         }
                     }
                     else
                     {
                         Debug.Log("dando dano take damake");
-                        objPai.TakeDamage(damage);
+                        objPai.TakeDamage(damage, false);
                     }
                     statsGeral.isAttacking = false;
                 }
