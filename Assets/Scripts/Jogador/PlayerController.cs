@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			if (isRunning)
 			{
 				statsJogador.setarEnergiaAtual(statsJogador.energiaAtual - statsJogador.consumoEnergiaPorSegundo * Time.deltaTime);
-				statsJogador.setarSedeAtual(statsJogador.sedeAtual - (statsJogador.valorDiminuiSedePorTempo / statsJogador.consumoEnergiaPorSegundo) * Time.deltaTime);
+				statsJogador.setarSedeAtual(statsJogador.sedeAtual - (statsJogador.valorDaSedeReduzidaPorTempo / statsJogador.consumoEnergiaPorSegundo) * Time.deltaTime);
 				speedChangeAbility.StartAbility();
 			}
 			else

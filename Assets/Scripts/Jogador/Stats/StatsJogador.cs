@@ -16,11 +16,15 @@ public class StatsJogador : MonoBehaviour
     [SerializeField] public float fomeMaxima = 100, sedeMaxima = 100, energiaMaxima = 100;
 
     //STATS CURRENT
-    [SerializeField] [HideInInspector] public float fomeAtual, sedeAtual, energiaAtual;
+    [SerializeField] public float fomeAtual, sedeAtual, energiaAtual;
 
-    [SerializeField] public float tempoPraDiminuirStatsFomeSedePorSegundos = 60*2, valorDiminuiFomePorTempo = 5, valorDiminuiSedePorTempo = 10;
+    [SerializeField] public float tempoPraDiminuirStatsFomeSedePorSegundos = 60 * 2, tempoPraDiminuirStatsFeridasInternasPorSegundos = 60 * 2;
+    [SerializeField] public float valorDaFomeReduzidaPorTempo = 5, valorDaSedeReduzidaPorTempo = 10;
     public float consumoEnergiaPorSegundo = 5.0f;
     public float recuperacaoEnergiaPorSegundo = 2.0f;
+
+    //Feridas internas
+    public bool isFraturado = false, isAbstinencia = false, isSangrando = false;
 
     private void Awake()
     {
@@ -36,18 +40,51 @@ public class StatsJogador : MonoBehaviour
         setarSedeAtual(sedeMaxima);
         setarEnergiaAtual(energiaMaxima);
         InvokeRepeating("DiminuirStatsPorTempo", 0, tempoPraDiminuirStatsFomeSedePorSegundos);
+        InvokeRepeating("VerificarStatsFeridasInternas", 0, tempoPraDiminuirStatsFeridasInternasPorSegundos);
     }
 
     void DiminuirStatsPorTempo()
     {
-        setarFomeAtual(fomeAtual - valorDiminuiFomePorTempo);
-        setarSedeAtual(sedeAtual - valorDiminuiSedePorTempo);
+        setarFomeAtual(fomeAtual - valorDaFomeReduzidaPorTempo);
+        setarSedeAtual(sedeAtual - valorDaSedeReduzidaPorTempo);
         if(sedeAtual <= 0 || fomeAtual <= 0)
         {
             TakeDamageHealth(10);
         }
+        if (isAbstinencia)
+        {
+            TakeDamageHealth(10);
+        }
+        if (isFraturado)
+        {
+            TakeDamageHealth(10);
+        }
+        if (isSangrando)
+        {
+            TakeDamageHealth(10);
+        }
+    }
+    
+    void VerificarStatsFeridasInternas()
+    {
+        verificarAbstinencia();
     }
 
+    int countAbstinencia = 0;
+    private void verificarAbstinencia()
+    {
+        if (isAbstinencia) return; //Ja esta com abstinencia
+        if (fomeAtual <= fomeMaxima * 0.15f || sedeAtual <= sedeMaxima * 0.15f)
+        {
+            countAbstinencia++;
+        }
+        if(countAbstinencia >= 3) //Causa abstinencia
+        {
+            isAbstinencia = true;
+            countAbstinencia = 0;
+            AtualizarImgAbstinencia();
+        }
+    }
 
     public void TakeDamageHealth(float value)
     {
@@ -64,6 +101,16 @@ public class StatsJogador : MonoBehaviour
     public void AtualizarImgVida()
     {
         hudJogador.atualizarImgVida(playerController.characterHealth.HealthValue, ObterVidaMaximaHealth());
+    }
+
+    public void AtualizarImgAbstinencia()
+    {
+        hudJogador.atualizarImgAbstinencia(isAbstinencia);
+    }
+
+    public void AtualizarImgSangrando()
+    {
+        hudJogador.atualizarImgSangrando(isSangrando);
     }
 
     public float ObterVidaMaximaHealth()
