@@ -75,43 +75,6 @@ public class StatsJogador : MonoBehaviour
             TakeDamageHealth(10, false);
         }
     }
-    
-    void VerificarStatsFeridasInternas()
-    {
-        verificarAbstinencia();
-    }
-
-    int countAbstinencia = 0;
-    private void verificarAbstinencia()
-    {
-        if (isAbstinencia) return; //Ja esta com abstinencia
-        if (fomeAtual <= fomeMaxima * 0.15f || sedeAtual <= sedeMaxima * 0.15f)
-        {
-            countAbstinencia++;
-        }
-        if(countAbstinencia >= 3) //Causa abstinencia
-        {
-            isAbstinencia = true;
-            countAbstinencia = 0;
-            AtualizarImgAbstinencia();
-        }
-    }
-
-    public void FraturarJogador()
-    {
-        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue * 0.3f;
-        playerController.jumpAbility.Force = 0.05f;
-        isFraturado = true;
-        AtualizarImgFraturado();
-    }
-
-    public void CurarFraturaJogador()
-    {
-        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue;
-        playerController.jumpAbility.Force = playerController.jumpForceValue;
-        isFraturado = false;
-        AtualizarImgFraturado();
-    }
 
     public void TakeDamageHealth(float value, bool isPodeCausarSangramento)
     {
@@ -199,4 +162,44 @@ public class StatsJogador : MonoBehaviour
         ResetarStatsFeridasInternas();
     }
 
+    // INICIO VERIFICAR STATS FERIDAS E DOENCAS
+    void VerificarStatsFeridasInternas()
+    {
+        verificarAbstinencia();
+    }
+
+    int countAbstinencia = 0;
+    private void verificarAbstinencia()
+    {
+        if (isAbstinencia) return; //Ja esta com abstinencia
+        if (fomeAtual <= fomeMaxima * 0.15f || sedeAtual <= sedeMaxima * 0.15f)
+        {
+            countAbstinencia++;
+        }
+        if (countAbstinencia >= 3) //Causa abstinencia
+        {
+            isAbstinencia = true;
+            countAbstinencia = 0;
+            AtualizarImgAbstinencia();
+        }
+    }
+
+    // FIM VERIFICAR STATS FERIDAS E DOENCAS
+    //INICIO FERIDAS E DOENÇAS
+    public void FraturarJogador()
+    {
+        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue * 0.3f;
+        playerController.jumpAbility.Force = 0.05f;
+        isFraturado = true;
+        AtualizarImgFraturado();
+    }
+
+    public void CurarFraturaJogador()
+    {
+        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue;
+        playerController.jumpAbility.Force = playerController.jumpForceValue;
+        isFraturado = false;
+        AtualizarImgFraturado();
+    }
+    //FIM FERIDAS E DOENÇAS
 }
