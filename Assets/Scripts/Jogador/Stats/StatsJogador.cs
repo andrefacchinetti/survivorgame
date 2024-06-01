@@ -99,7 +99,17 @@ public class StatsJogador : MonoBehaviour
 
     public void FraturarJogador()
     {
+        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue * 0.3f;
+        playerController.jumpAbility.Force = 0.05f;
         isFraturado = true;
+        AtualizarImgFraturado();
+    }
+
+    public void CurarFraturaJogador()
+    {
+        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue;
+        playerController.jumpAbility.Force = playerController.jumpForceValue;
+        isFraturado = false;
         AtualizarImgFraturado();
     }
 

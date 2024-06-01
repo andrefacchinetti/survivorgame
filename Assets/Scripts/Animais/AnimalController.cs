@@ -336,10 +336,10 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
         else
         {
-            if (PodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))
+            if (PodeAtacarAlvo(transform, targetInimigo.transform.position))
             {
                 Debug.Log("Atacando inimigo");
-                AtacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
+                AtacarAlvo(targetInimigo.transform.position);
             }
             else
             {
@@ -400,7 +400,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
             Vector3 randomOffset = Random.insideUnitSphere * animalStats.destinationOffset;
 
-            Vector3 destination = predictedPosition + (predictedPosition - targetInimigo.obterTransformPositionDoCollider().position).normalized * animalStats.leadDistance + randomOffset;
+            Vector3 destination = predictedPosition + (predictedPosition - targetInimigo.transform.position).normalized * animalStats.leadDistance + randomOffset;
 
             if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > pathUpdateDistanceThreshold))
             {
@@ -415,7 +415,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
             if (agent.velocity == Vector3.zero)
             {
                 Debug.Log("Perseguindo inimigo 2");
-                MoveToPosition(targetInimigo.obterTransformPositionDoCollider().position);
+                MoveToPosition(targetInimigo.transform.position);
             }
         }
     }
@@ -426,7 +426,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
         {
             return characterController.velocity.normalized;
         }
-        else if (target.obterTransformPositionDoCollider().TryGetComponent(out NavMeshAgent navMeshAgent))
+        else if (target.transform.TryGetComponent(out NavMeshAgent navMeshAgent))
         {
             return navMeshAgent.velocity.normalized;
         }
@@ -435,7 +435,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private Vector3 PredictTargetPosition(StatsGeral target, Vector3 velocity)
     {
-        return target.obterTransformPositionDoCollider().position + velocity * animalStats.leadTime;
+        return target.transform.position + velocity * animalStats.leadTime;
     }
 
     void CorrerOuAndarEmPerseguicao()

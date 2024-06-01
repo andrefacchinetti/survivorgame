@@ -239,9 +239,10 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
-    public Transform obterTransformPositionDoCollider()
+    public bool isVivo()
     {
-        return transform;
+        if (jogadorStats != null) return jogadorStats.playerController.characterHealth.IsAlive();
+        return health.IsAlive();
     }
 
 }

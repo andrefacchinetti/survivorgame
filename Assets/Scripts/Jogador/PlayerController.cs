@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public BeberAguaRio beberAguaRioAbility;
 	[SerializeField] [HideInInspector] public EncherGarrafaRio encherGarrafaRioAbility;
 	[SerializeField] [HideInInspector] public Revive reviveAbility;
+	[SerializeField] [HideInInspector] public Jump jumpAbility;
 
 	[HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
 	[HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
@@ -60,6 +61,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	public float pesoGrab = 0.0f;
 
 	public PhotonView PV;
+
+	//PARAMETROS Configurados automaticamente pelas Abilitys
+	[HideInInspector] public float maxSpeedChangeValue, jumpForceValue; 
 
 	void Awake()
 	{
@@ -86,7 +90,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		beberAguaRioAbility = characterLocomotion.GetAbility<BeberAguaRio>();
 		encherGarrafaRioAbility = characterLocomotion.GetAbility<EncherGarrafaRio>();
 		reviveAbility = characterLocomotion.GetAbility<Revive>();
+		jumpAbility = characterLocomotion.GetAbility<Jump>();
 
+		maxSpeedChangeValue = speedChangeAbility.MaxSpeedChangeValue;
+		jumpForceValue = jumpAbility.Force;
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
 
@@ -110,7 +117,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			}
 
 			bool isRunning = Input.GetButton("Change Speeds") && pesoGrab == 0 && !recarregandoEnergia;
-			if (isRunning)
+			if (isRunning && !statsJogador.isFraturado)
 			{
 				statsJogador.setarEnergiaAtual(statsJogador.energiaAtual - statsJogador.consumoEnergiaPorSegundo * Time.deltaTime);
 				statsJogador.setarSedeAtual(statsJogador.sedeAtual - (statsJogador.valorDaSedeReduzidaPorTempo / statsJogador.consumoEnergiaPorSegundo) * Time.deltaTime);

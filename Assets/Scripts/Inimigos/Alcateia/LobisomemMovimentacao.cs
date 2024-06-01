@@ -50,9 +50,9 @@ public class LobisomemMovimentacao : MonoBehaviour
 
         if (targetInimigo != null)
         {
-            if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))
+            if (isPodeAtacarAlvo(transform, targetInimigo.transform.position))
             {
-                atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
+                atacarAlvo(targetInimigo.transform.position);
             }
             else
             {
@@ -109,9 +109,9 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else
         {
-            if (isPodeAtacarAlvo(transform, targetInimigo.obterTransformPositionDoCollider().position))
+            if (isPodeAtacarAlvo(transform, targetInimigo.transform.position))
             {
-                atacarAlvo(targetInimigo.obterTransformPositionDoCollider().position);
+                atacarAlvo(targetInimigo.transform.position);
             }
             else
             {
@@ -171,7 +171,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     // Função para prever a posição futura do alvo
     private Vector3 PreverPosicaoAlvo(Vector3 positionAlvo)
     {
-        Vector3 alvoPosition = targetInimigo.obterTransformPositionDoCollider().position;
+        Vector3 alvoPosition = targetInimigo.transform.position;
         Vector3 alvoVelocity = (alvoPosition - targetInimigo.transform.position) / detectionInterval;
         Vector3 predictedPosition = alvoPosition + alvoVelocity * preditorMultiplicador;
         return predictedPosition;
@@ -208,7 +208,7 @@ public class LobisomemMovimentacao : MonoBehaviour
                 timer = 0;
                 MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
             }
-            else if (Vector3.Distance(transform.position, targetInimigo.obterTransformPositionDoCollider().position) > raioDeDistanciaMaxParaPerseguirAlvo)
+            else if (Vector3.Distance(transform.position, targetInimigo.transform.position) > raioDeDistanciaMaxParaPerseguirAlvo)
             {
                 targetInimigo = null;
                 timer = 0;
@@ -261,7 +261,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     public void perseguirInimigo()
     {
         if (targetInimigo == null) return;
-        Vector3 alvoPosition = targetInimigo.obterTransformPositionDoCollider().position;
+        Vector3 alvoPosition = targetInimigo.transform.position;
         Vector3 alvoVelocity = (alvoPosition - targetInimigo.transform.position) / detectionInterval;
         Vector3 predictedPosition = alvoPosition + alvoVelocity * preditorMultiplicador;
 

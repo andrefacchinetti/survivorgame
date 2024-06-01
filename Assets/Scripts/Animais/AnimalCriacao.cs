@@ -1,7 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
-using Opsive.Shared.Inventory;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class AnimalCriacao : MonoBehaviour
 {
@@ -13,7 +13,8 @@ public class AnimalCriacao : MonoBehaviour
 
     float tempoDeVida = 0, tempoEngravidou = 0;
     [SerializeField] float tempoParaVirarAdulto = 300, tempoParaEngravidarDenovo = 800; // Tempo em segundos para se tornar adulto (300 = 5 minutos)
-    [SerializeField] float distanciaProcriacao = 5.0f; // Distância para considerar outro animal próximo
+    [SerializeField] float distanciaProcriacao = 5.0f; // Distï¿½ncia para considerar outro animal prï¿½ximo
+    [SerializeField] GameObject objIconAmor;
 
     PhotonView PV;
     private AnimalCriacao parceiroAtual;
@@ -21,6 +22,7 @@ public class AnimalCriacao : MonoBehaviour
     LayerMask enemyLayerMask;
 
     StatsGeral statsGeral;
+    NavMeshAgent agent;
 
     public enum Idade
     {
@@ -48,6 +50,7 @@ public class AnimalCriacao : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         statsGeral = GetComponent<StatsGeral>();
+        agent = GetComponent<NavMeshAgent>();
 
         idade = (Idade)Random.Range(0, System.Enum.GetValues(typeof(Idade)).Length);
         enemyLayerMask = LayerMask.GetMask("Enemy");
@@ -55,6 +58,7 @@ public class AnimalCriacao : MonoBehaviour
 
     void Start()
     {
+        objIconAmor.SetActive(false);
         tempoDeVida = 0;
         if (idade == Idade.Filhote)
         {
@@ -78,7 +82,7 @@ public class AnimalCriacao : MonoBehaviour
             tempoEngravidou += Time.deltaTime;
         }
 
-        // Verificar se o animal é um filhote e se o tempo para virar adulto foi atingido
+        // Verificar se o animal ï¿½ um filhote e se o tempo para virar adulto foi atingido
         if (idade == Idade.Filhote && tempoDeVida >= tempoParaVirarAdulto)
         {
             TransformarFilhoteEmAdulto();
@@ -131,18 +135,23 @@ public class AnimalCriacao : MonoBehaviour
 
     private void VerificarParceiroProximo()
     {
-        if (parceiroAtual == null || Vector3.Distance(transform.position, parceiroAtual.transform.position) > distanciaProcriacao)
+        if (parceiroAtual == null || !parceiroAtual.statsGeral.isVivo() || Vector3.Distance(transform.position, parceiroAtual.transform.position) > distanciaProcriacao) //Parceiro nao esta mais perto
         {
             CancelInvoke("VerificarParceiroProximo");
-            return; // Se o parceiro se distanciar, sai do método
+            objIconAmor.SetActive(false);
+            return; // Se o parceiro se distanciar, sai do mï¿½todo
         }
 
         verificacoes++;
-        if (verificacoes >= 3)
+        objIconAmor.SetActive(true);
+        agent.ResetPath();
+
+        if (verificacoes >= 3) //Engravidou
         {
-            // Se passar pelas 3 verificações, instancia o novo prefab e reinicia o tempo de engorda
+            // Se passar pelas 3 verificaï¿½ï¿½es, instancia o novo prefab e reinicia o tempo de engorda
             InstanciarNovoAnimal();
             tempoEngravidou = 1; // Reinicia o contador de tempo para engravidar
+            objIconAmor.SetActive(false);
             CancelInvoke("VerificarParceiroProximo");
         }
     }
@@ -175,7 +184,7 @@ public class AnimalCriacao : MonoBehaviour
         List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
         foreach (Item.ItemDropStruct itemDropScruct in statsGeral.dropsItems)
         {
-            foreach(Item.ItemDropStruct itemExtra in itemsExtraAdultos)
+            foreach (Item.ItemDropStruct itemExtra in itemsExtraAdultos)
             {
                 if (itemDropScruct.itemDefinition.Equals(itemExtra.itemDefinition) && itemDropScruct.materialPersonalizado == itemExtra.materialPersonalizado)
                 {
@@ -195,5 +204,4 @@ public class AnimalCriacao : MonoBehaviour
         }
         statsGeral.dropsItems = itemDrops;
     }
-
 }
