@@ -127,12 +127,12 @@ public class StatsJogador : MonoBehaviour
 
     public void AtualizarImgIndigestao()
     {
-        hudJogador.atualizarImgIndigestao(isFraturado);
+        hudJogador.atualizarImgIndigestao(isIndigestao);
     }
 
     public void AtualizarImgInfeccionado()
     {
-        hudJogador.atualizarImgInfeccionado(isFraturado);
+        hudJogador.atualizarImgInfeccionado(isInfeccionado);
     }
 
     public float ObterVidaMaximaHealth()
@@ -269,6 +269,18 @@ public class StatsJogador : MonoBehaviour
     {
         isIndigestao = true;
         AtualizarImgIndigestao();
+    }
+
+    public void CurarIndigestao()
+    {
+        isIndigestao = false;
+        AtualizarImgIndigestao();
+    }
+
+    public void CurarInfeccao()
+    {
+        isInfeccionado = false;
+        AtualizarImgInfeccionado();
     }
     //FIM FERIDAS E DOENÇAS
 }

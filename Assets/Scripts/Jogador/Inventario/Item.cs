@@ -18,6 +18,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public bool isConsumivel;
     [SerializeField] public EstadoConsumivel estadoConsumivel;
     [SerializeField] public int curaSede, curaFome, curaVida;
+    [SerializeField] public bool isCuraIndigestao, isCuraInfeccao;
     [SerializeField] public int quantidade = 0;
 
     [SerializeField] public Inventario inventario;
@@ -69,6 +70,7 @@ public class Item : MonoBehaviourPunCallbacks
         public bool isConsumivel;
         public EstadoConsumivel estadoConsumivel;
         public int curaSede, curaFome, curaVida;
+        public bool isCuraIndigestao, isCuraInfeccao;
         public Texture textureImgItem;
         public GameObject objInventario;
     }
@@ -95,6 +97,8 @@ public class Item : MonoBehaviourPunCallbacks
         curaSede = itemResponse.curaSede;
         curaFome = itemResponse.curaFome;
         curaVida = itemResponse.curaVida;
+        isCuraIndigestao = itemResponse.isCuraIndigestao;
+        isCuraInfeccao = itemResponse.isCuraInfeccao;
         quantidade = 1;
         imagemItem.texture = itemResponse.textureImgItem;
         inventario = itemResponse.objInventario.GetComponent<Inventario>();
@@ -283,14 +287,22 @@ public class Item : MonoBehaviourPunCallbacks
         if (isConsumivel)
         {
             float percentIndigestao = 0;
-            if (EstadoConsumivel.Cru.Equals(estadoConsumivel)) percentIndigestao = 30;
-            if (EstadoConsumivel.Estragado.Equals(estadoConsumivel)) percentIndigestao = 50;
-            if (EstadoConsumivel.Queimado.Equals(estadoConsumivel)) percentIndigestao = 15;
+
+            // Determina a chance de indigestão com base no estado do consumível
+            if (estadoConsumivel == EstadoConsumivel.Cru) percentIndigestao = 20;
+            else if (estadoConsumivel == EstadoConsumivel.Estragado) percentIndigestao = 50;
+            else if (estadoConsumivel == EstadoConsumivel.Queimado) percentIndigestao = 10;
+
+            // Calcula se deve aplicar indigestão
             int calcIndigestao = Random.Range(0, 100);
-            if(calcIndigestao < percentIndigestao)
+            if (calcIndigestao < percentIndigestao)
             {
                 inventario.statsJogador.AplicarIndigestao();
             }
+
+            // Aplica cura para indigestão e infecção se aplicável
+            if (isCuraIndigestao) inventario.statsJogador.CurarIndigestao();
+            if (isCuraInfeccao) inventario.statsJogador.CurarInfeccao();
         }
     }
 
