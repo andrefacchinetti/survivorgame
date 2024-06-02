@@ -9,6 +9,7 @@ public class HudJogador : MonoBehaviour
 
     public RawImage imgVida, imgFome, imgSede, imgEnergia; //Stats Principais
     public GameObject imgAbstinencia, imgFraturado, imgSangrando;
+    public GameObject imgIndigestao, imgInfeccionado, imgEnvenenado;
 
     public Texture[] listImgsVida, listImgsFome, listImgsSede, listImgsEnergia;
 
@@ -60,6 +61,21 @@ public class HudJogador : MonoBehaviour
     public void atualizarImgSangrando(bool isSangrando)
     {
         imgSangrando.SetActive(isSangrando);
+    }
+
+    public void atualizarImgIndigestao(bool isIndigestao)
+    {
+        imgIndigestao.SetActive(isIndigestao);
+    }
+
+    public void atualizarImgInfeccionado(bool isInfeccionado)
+    {
+        imgInfeccionado.SetActive(isInfeccionado);
+    }
+
+    public void atualizarImgEnvenenado(bool isEnvenenado)
+    {
+        imgEnvenenado.SetActive(isEnvenenado);
     }
 
 }

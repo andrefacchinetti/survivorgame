@@ -9,25 +9,29 @@ using Opsive.UltimateCharacterController.Inventory;
 
 public class Item : MonoBehaviourPunCallbacks
 {
+    //VARIAVEIS CRIADAS VIA ItemStruct
     [SerializeField] public TiposItems tipoItem;
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField] public ItemIdentifierAmount itemIdentifierAmount;
     [SerializeField] public ItemDefinitionBase tipoMunicao;
     [SerializeField] public int groupIndex;
     [SerializeField] public bool isConsumivel;
+    [SerializeField] public EstadoConsumivel estadoConsumivel;
     [SerializeField] public int curaSede, curaFome, curaVida;
-    [SerializeField] public int quantidade = 0, clicks;
+    [SerializeField] public int quantidade = 0;
 
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
     [SerializeField] public Armaduras armaduras;
     [SerializeField] public ArrastarItensInventario arrastarItensInventario;
+    //FIM VARIAVEIS CRIADAS VIA ItemStruct
 
     //PADRAO
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     PhotonView PV;
     private float lastTimeClicked;
+    [HideInInspector] public int clicks;
 
 
     public enum TiposItems
@@ -63,9 +67,19 @@ public class Item : MonoBehaviourPunCallbacks
         public int groupIndex;
         public string nomePortugues, nomeIngles;
         public bool isConsumivel;
+        public EstadoConsumivel estadoConsumivel;
         public int curaSede, curaFome, curaVida;
         public Texture textureImgItem;
         public GameObject objInventario;
+    }
+
+    [System.Serializable]
+    public enum EstadoConsumivel
+    {
+        Cozido,
+        Cru,
+        Queimado,
+        Estragado
     }
 
     public Item setupItemFromItemStruct(ItemStruct itemResponse)
@@ -77,6 +91,7 @@ public class Item : MonoBehaviourPunCallbacks
         tipoMunicao = itemResponse.tipoMunicao;
         groupIndex = itemResponse.groupIndex;
         isConsumivel = itemResponse.isConsumivel;
+        estadoConsumivel = itemResponse.estadoConsumivel;
         curaSede = itemResponse.curaSede;
         curaFome = itemResponse.curaFome;
         curaVida = itemResponse.curaVida;
@@ -258,8 +273,25 @@ public class Item : MonoBehaviourPunCallbacks
     {
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + curaFome);
-        if(curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida), false);
+        aplicarEfeitosConsumivelPorEstado();
+        if (curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida), false);
         else inventario.statsJogador.TakeHealHealth(curaVida);
+    }
+
+    private void aplicarEfeitosConsumivelPorEstado()
+    {
+        if (isConsumivel)
+        {
+            float percentIndigestao = 0;
+            if (EstadoConsumivel.Cru.Equals(estadoConsumivel)) percentIndigestao = 30;
+            if (EstadoConsumivel.Estragado.Equals(estadoConsumivel)) percentIndigestao = 50;
+            if (EstadoConsumivel.Queimado.Equals(estadoConsumivel)) percentIndigestao = 15;
+            int calcIndigestao = Random.Range(0, 100);
+            if(calcIndigestao < percentIndigestao)
+            {
+                inventario.statsJogador.AplicarIndigestao();
+            }
+        }
     }
 
     public void diminuirQuantidade(int valorQtd)

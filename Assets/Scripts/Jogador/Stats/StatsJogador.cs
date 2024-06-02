@@ -18,13 +18,14 @@ public class StatsJogador : MonoBehaviour
     //STATS CURRENT
     [SerializeField] public float fomeAtual, sedeAtual, energiaAtual;
 
-    [SerializeField] public float tempoPraDiminuirStatsFomeSedePorSegundos = 60 * 2, tempoPraDiminuirStatsFeridasInternasPorSegundos = 60 * 2;
+    [SerializeField] public float tempoPraDiminuirStatsFomeSedePorSegundos = 60 * 1, tempoPraDiminuirStatsFeridasInternasPorSegundos = 60 * 2, tempoPraDiminuirStatsDoencasPorSegundos = 60*4;
     [SerializeField] public float valorDaFomeReduzidaPorTempo = 5, valorDaSedeReduzidaPorTempo = 10;
     public float consumoEnergiaPorSegundo = 5.0f;
     public float recuperacaoEnergiaPorSegundo = 2.0f;
 
     //Feridas internas
     public bool isFraturado = false, isAbstinencia = false, isSangrando = false;
+    public bool isIndigestao = false, isInfeccionado = false, isEnvenenado = false;
 
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class StatsJogador : MonoBehaviour
         ResetarStatsFeridasInternas();
         InvokeRepeating("DiminuirStatsPorTempo", 0, tempoPraDiminuirStatsFomeSedePorSegundos);
         InvokeRepeating("VerificarStatsFeridasInternas", 0, tempoPraDiminuirStatsFeridasInternasPorSegundos);
+        InvokeRepeating("VerificarStatsDoencas", 0, tempoPraDiminuirStatsDoencasPorSegundos);
     }
 
     public void ResetarStatsFeridasInternas()
@@ -49,9 +51,15 @@ public class StatsJogador : MonoBehaviour
         isSangrando = false;
         isFraturado = false;
         isAbstinencia = false;
+        isIndigestao = false;
+        isInfeccionado = false;
+        isEnvenenado = false;
         AtualizarImgSangrando();
         AtualizarImgAbstinencia();
         AtualizarImgFraturado();
+        AtualizarImgIndigestao();
+        AtualizarImgInfeccionado();
+        AtualizarImgEnvenenado();
     }
 
     void DiminuirStatsPorTempo()
@@ -59,18 +67,6 @@ public class StatsJogador : MonoBehaviour
         setarFomeAtual(fomeAtual - valorDaFomeReduzidaPorTempo);
         setarSedeAtual(sedeAtual - valorDaSedeReduzidaPorTempo);
         if(sedeAtual <= 0 || fomeAtual <= 0)
-        {
-            TakeDamageHealth(10, false);
-        }
-        if (isAbstinencia)
-        {
-            TakeDamageHealth(10, false);
-        }
-        if (isFraturado)
-        {
-            TakeDamageHealth(10, false);
-        }
-        if (isSangrando)
         {
             TakeDamageHealth(10, false);
         }
@@ -112,6 +108,21 @@ public class StatsJogador : MonoBehaviour
     public void AtualizarImgFraturado()
     {
         hudJogador.atualizarImgFraturado(isFraturado);
+    }
+
+    public void AtualizarImgIndigestao()
+    {
+        hudJogador.atualizarImgIndigestao(isFraturado);
+    }
+
+    public void AtualizarImgInfeccionado()
+    {
+        hudJogador.atualizarImgInfeccionado(isFraturado);
+    }
+
+    public void AtualizarImgEnvenenado()
+    {
+        hudJogador.atualizarImgEnvenenado(isFraturado);
     }
 
     public float ObterVidaMaximaHealth()
@@ -166,6 +177,26 @@ public class StatsJogador : MonoBehaviour
     void VerificarStatsFeridasInternas()
     {
         verificarAbstinencia();
+        if (isAbstinencia)
+        {
+            TakeDamageHealth(10, false);
+        }
+        if (isFraturado)
+        {
+            TakeDamageHealth(10, false);
+        }
+        if (isSangrando)
+        {
+            TakeDamageHealth(10, false);
+        }
+    }
+
+    void VerificarStatsDoencas()
+    {
+        if (isIndigestao)
+        {
+            vomitar();
+        }
     }
 
     int countAbstinencia = 0;
@@ -182,6 +213,20 @@ public class StatsJogador : MonoBehaviour
             countAbstinencia = 0;
             AtualizarImgAbstinencia();
         }
+    }
+    
+    int countVomitos = 0;
+    private void vomitar()
+    {
+        TakeDamageHealth(10, false);
+        setarFomeAtual(fomeAtual - 40);
+        setarSedeAtual(sedeAtual - 40);
+        countVomitos++;
+        if (countVomitos >= 3)
+        {
+            isIndigestao = false;
+        }
+        Debug.Log("Jogador vomitou"); //TODO: Som de vomito e animacao (animacao nao pode bugar habilidades em uso)
     }
 
     // FIM VERIFICAR STATS FERIDAS E DOENCAS
@@ -200,6 +245,12 @@ public class StatsJogador : MonoBehaviour
         playerController.jumpAbility.Force = playerController.jumpForceValue;
         isFraturado = false;
         AtualizarImgFraturado();
+    }
+
+    public void AplicarIndigestao()
+    {
+        isIndigestao = true;
+        AtualizarImgIndigestao();
     }
     //FIM FERIDAS E DOENÇAS
 }
