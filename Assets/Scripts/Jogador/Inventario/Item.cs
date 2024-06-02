@@ -18,7 +18,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public bool isConsumivel;
     [SerializeField] public EstadoConsumivel estadoConsumivel;
     [SerializeField] public int curaSede, curaFome, curaVida;
-    [SerializeField] public bool isCuraIndigestao, isCuraInfeccao;
+    [SerializeField] public bool isCuraIndigestao, isCuraInfeccao, isCuraFratura, isCuraSangramento;
     [SerializeField] public int quantidade = 0;
 
     [SerializeField] public Inventario inventario;
@@ -70,7 +70,7 @@ public class Item : MonoBehaviourPunCallbacks
         public bool isConsumivel;
         public EstadoConsumivel estadoConsumivel;
         public int curaSede, curaFome, curaVida;
-        public bool isCuraIndigestao, isCuraInfeccao;
+        public bool isCuraIndigestao, isCuraInfeccao, isCuraFratura, isCuraSangramento;
         public Texture textureImgItem;
         public GameObject objInventario;
     }
@@ -99,6 +99,8 @@ public class Item : MonoBehaviourPunCallbacks
         curaVida = itemResponse.curaVida;
         isCuraIndigestao = itemResponse.isCuraIndigestao;
         isCuraInfeccao = itemResponse.isCuraInfeccao;
+        isCuraFratura = itemResponse.isCuraFratura;
+        isCuraSangramento = itemResponse.isCuraSangramento;
         quantidade = 1;
         imagemItem.texture = itemResponse.textureImgItem;
         inventario = itemResponse.objInventario.GetComponent<Inventario>();
@@ -303,6 +305,8 @@ public class Item : MonoBehaviourPunCallbacks
             // Aplica cura para indigestão e infecção se aplicável
             if (isCuraIndigestao) inventario.statsJogador.CurarIndigestao();
             if (isCuraInfeccao) inventario.statsJogador.CurarInfeccao();
+            if (isCuraFratura) inventario.statsJogador.CurarFratura();
+            if (isCuraSangramento) inventario.statsJogador.CurarSangramento();
         }
     }
 

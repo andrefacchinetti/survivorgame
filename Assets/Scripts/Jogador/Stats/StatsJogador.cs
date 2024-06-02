@@ -282,5 +282,17 @@ public class StatsJogador : MonoBehaviour
         isInfeccionado = false;
         AtualizarImgInfeccionado();
     }
+
+    public void CurarFratura()
+    {
+        isFraturado = false;
+        AtualizarImgFraturado();
+    }
+
+    public void CurarSangramento()
+    {
+        isSangrando = false;
+        AtualizarImgSangrando();
+    }
     //FIM FERIDAS E DOENÇAS
 }

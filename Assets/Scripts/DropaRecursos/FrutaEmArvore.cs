@@ -5,33 +5,37 @@ using UnityEngine;
 
 public class FrutaEmArvore : MonoBehaviour
 {
-
+    [SerializeField] public bool isDestroiArvoreAoPegarFruta = false;
     [SerializeField] public StatsGeral statsGeral;
 
     public void ColetarUmaFruta(ItemDefinitionBase itemDefinitionBase)
     {
-        List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
-        foreach (Item.ItemDropStruct itemDropScruct in statsGeral.dropsItems)
+        if (isDestroiArvoreAoPegarFruta) statsGeral.DestruirGameObject();
+        else
         {
-            if (itemDropScruct.itemDefinition.Equals(itemDefinitionBase))
+            List<Item.ItemDropStruct> itemDrops = new List<Item.ItemDropStruct>();
+            foreach (Item.ItemDropStruct itemDropScruct in statsGeral.dropsItems)
             {
-                if (itemDropScruct.qtdMaxDrops > 0)
+                if (itemDropScruct.itemDefinition.Equals(itemDefinitionBase))
                 {
-                    Item.ItemDropStruct novo = new Item.ItemDropStruct();
-                    novo.itemDefinition = itemDropScruct.itemDefinition;
-                    novo.tipoItem = itemDropScruct.tipoItem;
-                    novo.materialPersonalizado = itemDropScruct.materialPersonalizado;
-                    novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
-                    novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
-                    itemDrops.Add(novo);
+                    if (itemDropScruct.qtdMaxDrops > 0)
+                    {
+                        Item.ItemDropStruct novo = new Item.ItemDropStruct();
+                        novo.itemDefinition = itemDropScruct.itemDefinition;
+                        novo.tipoItem = itemDropScruct.tipoItem;
+                        novo.materialPersonalizado = itemDropScruct.materialPersonalizado;
+                        novo.qtdMinDrops = itemDropScruct.qtdMinDrops - 1;
+                        novo.qtdMaxDrops = itemDropScruct.qtdMaxDrops - 1;
+                        itemDrops.Add(novo);
+                    }
+                }
+                else
+                {
+                    itemDrops.Add(itemDropScruct);
                 }
             }
-            else
-            {
-                itemDrops.Add(itemDropScruct);
-            }
+            statsGeral.dropsItems = itemDrops;
         }
-        statsGeral.dropsItems = itemDrops;
     }
 
 }
