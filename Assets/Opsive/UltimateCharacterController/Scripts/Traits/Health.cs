@@ -349,7 +349,7 @@ namespace Opsive.UltimateCharacterController.Traits
         public virtual void OnDamage(DamageData damageData)
         {
             if (damageData == null) { return; }
-
+            Debug.Log("OnDamage");
             // Add a multiplier if a particular collider was hit. Do not apply a multiplier if the damage is applied through a radius because multiple
             // collider are hit.
             if (damageData.Radius == 0 && damageData.Direction != Vector3.zero && damageData.HitCollider != null) {

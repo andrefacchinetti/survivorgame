@@ -126,6 +126,7 @@ public class StatsGeral : MonoBehaviour
     {
         EventHandler.UnregisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
         EventHandler.UnregisterEvent<float, Vector3, GameObject, Collider>(gameObject, "OnPreHealthDamage", OnPreDamage);
+        EventHandler.UnregisterEvent<float>(gameObject, "OnFallDamage", OnActionFallDamage);
     }
 
     public float ObterVidaMaximaHealth()

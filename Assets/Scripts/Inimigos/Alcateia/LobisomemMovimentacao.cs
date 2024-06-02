@@ -171,6 +171,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     // Função para prever a posição futura do alvo
     private Vector3 PreverPosicaoAlvo(Vector3 positionAlvo)
     {
+        if (targetInimigo == null) return positionAlvo;
         Vector3 alvoPosition = targetInimigo.transform.position;
         Vector3 alvoVelocity = (alvoPosition - targetInimigo.transform.position) / detectionInterval;
         Vector3 predictedPosition = alvoPosition + alvoVelocity * preditorMultiplicador;
