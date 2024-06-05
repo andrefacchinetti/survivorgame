@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-
     [SerializeField] Light luzDoSol;
     [SerializeField] GameObject objMoon, pivotDoSol;
     [SerializeField] float moonRotationSpeed = 10f;
@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
     public int gameMinute = 0;  // Define o minuto atual do jogo
     public int gameSecond = 0;  // Define o minuto atual do jogo
     public int gameDay = 1;  // Define o dia atual do jogo
-    public float gameSpeed = 60f;  // Define a velocidade do tempo do jogo (em segundos do mundo real)
+    public float gameSpeed = 1f;  // Define a velocidade do tempo do jogo (Valor padrão = 1. Diminua para ficar mais rapido)
     private float elapsedTime = 0f;  // Tempo que passou desde o in�cio do jogo
 
     public bool isNoite = false;
@@ -35,23 +35,39 @@ public class GameController : MonoBehaviour
     public float amanhecerHorario = 6f;
     public float meioDiaHorario = 12f;
     public float entardecerHorario = 17f;
-    public float noiteHorario = 00f;
+    public float noiteHorario = 0f;
 
     [SerializeField] [HideInInspector] SpawnController spawnController;
     float deltaTime = 0.0f;
     private float lastGameDayLobos = -1, lastGameDayAnimais = -1;
 
     [SerializeField] public GameObject respawnPointJogador;
+    [SerializeField] public SpawnDropaRecursosManager spawnDropaRecursosManager;
+    [HideInInspector] public List<SpawnLoots> listaSpawnLoots;
 
-    public bool isRespawnarInimigos = true; //DEIXAR TRUE 
+    [SerializeField] public bool isRespawnarInimigos = true; //DEIXAR TRUE ]
+    [HideInInspector] public PhotonView PV;
+    [HideInInspector] public GameObject[] playersOnline;
+
+    private void Awake()
+    {
+        listaSpawnLoots = new List<SpawnLoots>();
+        spawnController = GetComponent<SpawnController>();
+        PV = GetComponent<PhotonView>();
+        Time.fixedDeltaTime = 0.05f; //Unity roda o FixedUpdate a cada 0,02 segundos (50 vezes por segundo). Você pode ajustar isso para reduzir a carga da CPU:
+    }
 
     private void Start()
     {
-        spawnController = GetComponent<SpawnController>();
+        playersOnline = GameObject.FindGameObjectsWithTag("Player");
 
-        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
+        // Mapeia o horário inicial do jogo para o ângulo de rotação do sol
+        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 0f, 24f, -180f, 180f);
         targetRotation = mappedHour;
+
+        // Define a rotação inicial do pivô do sol
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
+        spawnarPorDia();
     }
 
     // Update is called once per frame
@@ -73,12 +89,12 @@ public class GameController : MonoBehaviour
                 {
                     gameHour -= 24;
                     gameDay++;
+                    spawnarLootsPorDia();
+                    spawnDropaRecursosManager.respawnarDropaRecursos(PV.ViewID);
                 }
             }
-
-            spawnarPorDia();
-
             isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario;
+            spawnarPorDia();
             elapsedTime = 0;
         }
 
@@ -112,27 +128,47 @@ public class GameController : MonoBehaviour
         objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);
     }
 
+    private void LateUpdate()
+    {
+        if (playersOnline == null || playersOnline.Length <= 0 )
+        {
+            if (!PhotonNetwork.IsConnected || playersOnline.Length != PhotonNetwork.CurrentRoom.PlayerCount)
+            {
+                playersOnline = GameObject.FindGameObjectsWithTag("Player");
+            }
+        }
+    }
+
     private float targetRotation = 0f;
     private float rotationVelocity = 0f;
+
     void AtualizarRotacaoDoSol()
     {
-        // Mapeia gameHour, gameMinute e gameSegundos para o intervalo desejado (-190, -90, 20)
-        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 4f, 20f, -190f, 20f);
+        // Mapeia gameHour, gameMinute e gameSecond para o intervalo desejado (-180, 180)
+        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 0f, 24f, -180f, 180f);
 
         // Define o novo ângulo de rotação
-        float targetAngle = mappedHour + Mathf.Repeat(deltaTime * multiplicadorVelocidade, 360f);
+        float targetAngle = mappedHour;
 
         // Suaviza a transição entre as posições
         float smoothTime = 1.0f; // Ajuste conforme necessário
-        targetRotation = Mathf.SmoothDamp(targetRotation, targetAngle, ref rotationVelocity, smoothTime);
+        targetRotation = Mathf.SmoothDampAngle(targetRotation, targetAngle, ref rotationVelocity, smoothTime);
 
         pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
     }
 
-    // Fun��o para mapear valores de um intervalo para outro
+    // Função para mapear valores de um intervalo para outro
     float Map(float value, float fromSource, float toSource, float fromTarget, float toTarget)
     {
         return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
+    }
+
+    private void spawnarLootsPorDia()
+    {
+        foreach (SpawnLoots spawnLoots in listaSpawnLoots)
+        {
+            spawnLoots.SpawnarLootPorDias();
+        }
     }
 
     private void spawnarPorDia()
@@ -151,7 +187,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    /*void OnGUI()
+    void OnGUI()
     {
         int w = Screen.width, h = Screen.height;
 
@@ -166,7 +202,5 @@ public class GameController : MonoBehaviour
         float fps = 1.0f / deltaTime;
         string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
         GUI.Label(rect, text, style);
-    }*/
-
-
+    }
 }

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5442059921576646501}
   - component: {fileID: 3074934232896402501}
   - component: {fileID: 5654963878266737733}
-  - component: {fileID: 1989452197231236526}
   - component: {fileID: 5337204135483817510}
   - component: {fileID: 2873838930603725071}
   - component: {fileID: 7588559935027937291}
@@ -85,27 +84,10 @@ MonoBehaviour:
   OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 1989452197231236526}
   - {fileID: 5337204135483817510}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1989452197231236526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4377854677760170102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &5337204135483817510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 7746520582948198587, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  pathPrefab: Prefabs/ItensInventario/Recurso/Metal
   estaSendoComido: 0
 --- !u!136 &7588559935027937291
 CapsuleCollider:
@@ -143,7 +126,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4377854677760170102}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 4b14f995edad1d444b5f291361e80c55, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -186,6 +169,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

@@ -9,7 +9,6 @@ using Opsive.UltimateCharacterController.Character;
 using Opsive.UltimateCharacterController.Character.Abilities;
 using Opsive.UltimateCharacterController.AddOns.Swimming;
 using Opsive.Shared.Events;
-using UnityEngine.Profiling;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -52,6 +51,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] [HideInInspector] public BeberAguaRio beberAguaRioAbility;
 	[SerializeField] [HideInInspector] public EncherGarrafaRio encherGarrafaRioAbility;
 	[SerializeField] [HideInInspector] public Revive reviveAbility;
+	[SerializeField] [HideInInspector] public Jump jumpAbility;
 
 	[HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
 	[HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
@@ -61,6 +61,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	public float pesoGrab = 0.0f;
 
 	public PhotonView PV;
+
+	//PARAMETROS Configurados automaticamente pelas Abilitys
+	[HideInInspector] public float maxSpeedChangeValue, jumpForceValue; 
 
 	void Awake()
 	{
@@ -87,7 +90,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		beberAguaRioAbility = characterLocomotion.GetAbility<BeberAguaRio>();
 		encherGarrafaRioAbility = characterLocomotion.GetAbility<EncherGarrafaRio>();
 		reviveAbility = characterLocomotion.GetAbility<Revive>();
+		jumpAbility = characterLocomotion.GetAbility<Jump>();
 
+		maxSpeedChangeValue = speedChangeAbility.MaxSpeedChangeValue;
+		jumpForceValue = jumpAbility.Force;
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
 
@@ -100,11 +106,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	bool recarregandoEnergia = false;
 	void Update()
 	{
-		if (PV == null) return;
-		if (!PV.IsMine)
-			return;
+		if (PV == null || !PV.IsMine) return;
 
-		Profiler.BeginSample("Script PlayerController: ");
 		if (!inventario.canvasInventario.activeSelf && canMove)
 		{
 			if (Input.GetButtonDown("Crouch"))
@@ -114,10 +117,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			}
 
 			bool isRunning = Input.GetButton("Change Speeds") && pesoGrab == 0 && !recarregandoEnergia;
-			if (isRunning)
+			if (isRunning && !statsJogador.isFraturado)
 			{
 				statsJogador.setarEnergiaAtual(statsJogador.energiaAtual - statsJogador.consumoEnergiaPorSegundo * Time.deltaTime);
-				statsJogador.setarSedeAtual(statsJogador.sedeAtual - (statsJogador.valorDiminuiSedePorTempo / statsJogador.consumoEnergiaPorSegundo) * Time.deltaTime);
+				statsJogador.setarSedeAtual(statsJogador.sedeAtual - (statsJogador.valorDaSedeReduzidaPorTempo / statsJogador.consumoEnergiaPorSegundo) * Time.deltaTime);
 				speedChangeAbility.StartAbility();
 			}
 			else
@@ -164,18 +167,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					jaSaiuDaAgua = true;
 				}
 			}
-
 		}
-
 		if (characterLocomotion.Moving)
 		{
 			PararAbilitys();
 		}
-
-		Profiler.EndSample();
 	}
 
-	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
+    public void TogglePlayerModoConstrucao(bool construcaoAtiva)
     {
 		if (construcaoAtiva)
 		{
@@ -209,6 +208,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		PararAbility(dissecarAbility);
 		PararAbility(beberAguaRioAbility);
 		PararAbility(encherGarrafaRioAbility);
+		PararAbility(capturarAbility);
 	}
 
 	public void PararAbility(Ability habilidade)

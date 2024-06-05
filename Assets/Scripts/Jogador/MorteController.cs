@@ -52,11 +52,10 @@ public class MorteController : MonoBehaviour
             Transform destinoRespawn = playerController.gameController.respawnPointJogador.transform;
             playerController.characterLocomotion.SetPositionAndRotation(destinoRespawn.position, destinoRespawn.rotation, false, false);
             reviverJogador();
-            Debug.Log("Respawnou  jogador na posição: " + playerController.gameController.respawnPointJogador.transform.position);
         }
         else
         {
-            Debug.Log("Erro: Ponto de respawn não está configurado corretamente.");
+            Debug.LogError("Erro: Ponto de respawn não está configurado corretamente.");
         }
     }
 

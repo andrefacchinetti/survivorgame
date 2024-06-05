@@ -9,24 +9,30 @@ using Opsive.UltimateCharacterController.Inventory;
 
 public class Item : MonoBehaviourPunCallbacks
 {
+    //VARIAVEIS CRIADAS VIA ItemStruct
     [SerializeField] public TiposItems tipoItem;
     [SerializeField] public string nomePortugues, nomeIngles;
     [SerializeField] public ItemIdentifierAmount itemIdentifierAmount;
+    [SerializeField] public ItemDefinitionBase tipoMunicao;
     [SerializeField] public int groupIndex;
     [SerializeField] public bool isConsumivel;
+    [SerializeField] public EstadoConsumivel estadoConsumivel;
     [SerializeField] public int curaSede, curaFome, curaVida;
-    [SerializeField] public int quantidade = 0, clicks;
+    [SerializeField] public bool isCuraIndigestao, isCuraInfeccao, isCuraFratura, isCuraSangramento;
+    [SerializeField] public int quantidade = 0;
 
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
     [SerializeField] public Armaduras armaduras;
     [SerializeField] public ArrastarItensInventario arrastarItensInventario;
+    //FIM VARIAVEIS CRIADAS VIA ItemStruct
 
     //PADRAO
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     PhotonView PV;
     private float lastTimeClicked;
+    [HideInInspector] public int clicks;
 
 
     public enum TiposItems
@@ -58,12 +64,24 @@ public class Item : MonoBehaviourPunCallbacks
     {
         public TiposItems tipoItem;
         public ItemIdentifierAmount itemIdentifierAmount;
+        public ItemDefinitionBase tipoMunicao;
         public int groupIndex;
         public string nomePortugues, nomeIngles;
         public bool isConsumivel;
+        public EstadoConsumivel estadoConsumivel;
         public int curaSede, curaFome, curaVida;
+        public bool isCuraIndigestao, isCuraInfeccao, isCuraFratura, isCuraSangramento;
         public Texture textureImgItem;
         public GameObject objInventario;
+    }
+
+    [System.Serializable]
+    public enum EstadoConsumivel
+    {
+        Cozido,
+        Cru,
+        Queimado,
+        Estragado
     }
 
     public Item setupItemFromItemStruct(ItemStruct itemResponse)
@@ -72,11 +90,17 @@ public class Item : MonoBehaviourPunCallbacks
         nomePortugues = itemResponse.nomePortugues;
         nomeIngles = itemResponse.nomeIngles;
         itemIdentifierAmount = itemResponse.itemIdentifierAmount;
+        tipoMunicao = itemResponse.tipoMunicao;
         groupIndex = itemResponse.groupIndex;
         isConsumivel = itemResponse.isConsumivel;
+        estadoConsumivel = itemResponse.estadoConsumivel;
         curaSede = itemResponse.curaSede;
         curaFome = itemResponse.curaFome;
         curaVida = itemResponse.curaVida;
+        isCuraIndigestao = itemResponse.isCuraIndigestao;
+        isCuraInfeccao = itemResponse.isCuraInfeccao;
+        isCuraFratura = itemResponse.isCuraFratura;
+        isCuraSangramento = itemResponse.isCuraSangramento;
         quantidade = 1;
         imagemItem.texture = itemResponse.textureImgItem;
         inventario = itemResponse.objInventario.GetComponent<Inventario>();
@@ -131,11 +155,12 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void DeselecionarItem()
     {
+        inventario.txMunicoesClipHud.text = "";
+        inventario.txMunicoesInventarioHud.text = "";
         inventario.itemNaMao = null;
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
-            inventario.UngrabAnimalCapturado(false);
-            inventario.UngrabObjetoCapturado();
+            DesequiparCordaNasMaos();
         }
         UnequipItemInventory();
     }
@@ -186,31 +211,40 @@ public class Item : MonoBehaviourPunCallbacks
 
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
-            inventario.playerController.cordaWeaponFP = inventario.playerController.contentItemsTP.GetComponentInChildren<CordaWeapon>();
-            inventario.playerController.cordaWeaponTP = inventario.playerController.contentItemsFP.GetComponentInChildren<CordaWeapon>();
-
-            if (inventario.playerController.cordaWeaponFP != null && inventario.playerController.cordaWeaponTP != null)
-            {
-                Debug.LogWarning("equipando corda 1");
-                inventario.playerController.cordaWeaponTP.playerController = inventario.playerController;
-                inventario.playerController.cordaWeaponFP.playerController = inventario.playerController;
-                inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);
-                inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false);
-            }
+            EquiparCordaNasMaos();
         }
 
+        inventario.AtualizarHudMunicoesComArmaAtual();
+
+    }
+
+    public void EquiparCordaNasMaos()
+    {
+        inventario.playerController.cordaWeaponTP = inventario.playerController.contentItemsTP.GetComponentInChildren<CordaWeapon>();
+        inventario.playerController.cordaWeaponFP = inventario.playerController.contentItemsFP.GetComponentInChildren<CordaWeapon>();
+
+        if (inventario.playerController.cordaWeaponFP != null)
+        {
+            inventario.playerController.cordaWeaponTP.playerController = inventario.playerController;
+            inventario.playerController.cordaWeaponFP.playerController = inventario.playerController;
+            inventario.playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false, true);
+            inventario.playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false, false);
+        }
+    }
+
+    public void DesequiparCordaNasMaos()
+    {
+        inventario.UngrabCoisasCapturadasComCorda(false);
     }
 
     private void EquipItemInventory()
     {
-        Debug.Log("equipou com sucesso");
         inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
         inventario.playerController.PararAbilitys();
     }
     
     private void UnequipItemInventory()
     {
-        Debug.Log("unequipou com sucesso");
         inventario.playerController.PararAbilitys();
         inventario.inventory.GetComponent<ItemSetManagerBase>().UnEquipItem(itemIdentifierAmount.ItemIdentifier, groupIndex, true, true);
         IItemIdentifier itemIdBody = inventario.inventory.DefaultLoadout[0].ItemIdentifier;
@@ -245,8 +279,35 @@ public class Item : MonoBehaviourPunCallbacks
     {
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + curaFome);
-        if(curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida));
+        aplicarEfeitosConsumivelPorEstado();
+        if (curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida), false);
         else inventario.statsJogador.TakeHealHealth(curaVida);
+    }
+
+    private void aplicarEfeitosConsumivelPorEstado()
+    {
+        if (isConsumivel)
+        {
+            float percentIndigestao = 0;
+
+            // Determina a chance de indigestão com base no estado do consumível
+            if (estadoConsumivel == EstadoConsumivel.Cru) percentIndigestao = 20;
+            else if (estadoConsumivel == EstadoConsumivel.Estragado) percentIndigestao = 50;
+            else if (estadoConsumivel == EstadoConsumivel.Queimado) percentIndigestao = 10;
+
+            // Calcula se deve aplicar indigestão
+            int calcIndigestao = Random.Range(0, 100);
+            if (calcIndigestao < percentIndigestao)
+            {
+                inventario.statsJogador.AplicarIndigestao();
+            }
+
+            // Aplica cura para indigestão e infecção se aplicável
+            if (isCuraIndigestao) inventario.statsJogador.CurarIndigestao();
+            if (isCuraInfeccao) inventario.statsJogador.CurarInfeccao();
+            if (isCuraFratura) inventario.statsJogador.CurarFratura();
+            if (isCuraSangramento) inventario.statsJogador.CurarSangramento();
+        }
     }
 
     public void diminuirQuantidade(int valorQtd)
@@ -260,7 +321,7 @@ public class Item : MonoBehaviourPunCallbacks
         if (inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
         {
             inventario.ToggleGrabUngrabCorda(isCordaPartindo);
-            inventario.UngrabObjetoCapturado();
+            inventario.UngrabCoisasCapturadasComCorda(isCordaPartindo);
             SetarItemNaMaoNull();
         }
         if (quantidade <= 0)
@@ -285,6 +346,7 @@ public class Item : MonoBehaviourPunCallbacks
             RemoverItemDaMochila();
         }
         inventario.AlertarJogadorComLogItem(this.obterNomeItemTraduzido(), imagemItem.texture, false, quantidadeResponse);
+        
     }
 
     private void SetarItemNaMaoNull()
@@ -308,7 +370,6 @@ public class Item : MonoBehaviourPunCallbacks
     {
         if (!gameObject.activeSelf && inventario.qtdItensAtual >= inventario.qtdItensMaximo)
         {
-            Debug.Log("Inventario cheio");
             return false;
         }
         else
@@ -325,6 +386,7 @@ public class Item : MonoBehaviourPunCallbacks
             txQuantidade.text = quantidade + "";
             gameObject.SetActive(true);
             inventario.AlertarJogadorComLogItem(this.obterNomeItemTraduzido(), imagemItem.texture, true, quantidadeResponse);
+            inventario.AtualizarHudMunicoesComArmaAtual();
             return true;
         }
     }

@@ -24,7 +24,7 @@ GameObject:
   m_TagString: Arvore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1356196933884852553
 Transform:
@@ -81,6 +81,7 @@ MonoBehaviour:
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
   direcaoDrop: 121
+  alturaOffset: 3
   isAttacking: 0
   health: {fileID: 6678325944694581164}
   attributeManager: {fileID: 0}
@@ -188,13 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteQuebravel: 0
-  souObjInteiro: 0
-  souObjRachado: 0
-  souObjNucleoQuebravel: 0
-  arvoreQuebravelBase: {fileID: 0}
-  minhaFileira: {fileID: 0}
-  isPedacoQuebrado: 0
+  pathPrefab: Prefabs/DropaRecursos/NatureForest/Arvores/Beech_Tree_03
   rb: {fileID: 0}
   forcaEmpurraArvore: 2
 --- !u!114 &6678325944694581164
@@ -325,7 +320,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &855712848950955872
 Transform:
@@ -356,6 +351,10 @@ PrefabInstance:
     - target: {fileID: 1358054364387221446, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
       propertyPath: m_Name
       value: prefab_beech_tree_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358054364387221446, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2631121322984271317, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
       propertyPath: m_LocalPosition.x
@@ -396,6 +395,22 @@ PrefabInstance:
     - target: {fileID: 2631121322984271317, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304011570858882722, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3478960022470923984, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697341127176544590, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 9036737509032736694, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3768078253529806067, guid: 016dad81e5bfd3e49a340179fb4e1150, type: 3}
@@ -475,6 +490,10 @@ PrefabInstance:
     - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
       propertyPath: m_Name
       value: Madeira (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -559,6 +578,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Madeira
       objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -641,6 +664,10 @@ PrefabInstance:
     - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
       propertyPath: m_Name
       value: Madeira (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,17 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
-using Opsive.UltimateCharacterController.Inventory;
 using Opsive.Shared.Inventory;
-using UnityEngine.Profiling;
 
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
-    private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAgua = "Agua", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
+    private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAguaPotavel = "AguaPotavel", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
     private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore";
 
@@ -42,7 +36,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             obj.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
         }
     }
-
 
     public void UngrabObject(Rigidbody objRig)
     {
@@ -88,7 +81,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        Profiler.BeginSample("Script GrabObjects: ");
         if (!playerController.podeSeMexer() || inventario.canvasInventario.activeSelf) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
@@ -142,7 +134,6 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             playerController.pesoGrab = 0;
         }
-        Profiler.EndSample();
     }
 
     private void limparViewGrabed()
@@ -180,7 +171,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     transferOwnerPV(hit.transform.gameObject);
                     grabedObj = hit.transform.gameObject;
                 }
-                if (hit.transform.tag == tagItemDrop && Input.GetButtonDown("Use")) //Pega item do chao
+                if (hit.transform.tag == tagItemDrop && Input.GetButton("Use")) //Pega item do chao
                 {
                     transferOwnerPV(hit.transform.gameObject);
                     ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
@@ -259,11 +250,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
             }
         }
-        else if (hit.transform.tag == tagAgua && inventario.itemNaMao == null)
+        else if (hit.transform.tag == tagAguaPotavel && inventario.itemNaMao == null)
         {
             interacaoBeberAgua(hit);
         }
-        else if (hit.transform.tag == tagAgua && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
+        else if (hit.transform.tag == tagAguaPotavel && inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
         {
             interacaoEncherGarrafa(hit);
         }
@@ -487,7 +478,8 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use")) 
         {
             transferOwnerPV(animalController.gameObject);
-            playerController.inventario.ToggleGrabUngrabCorda(false);
+            inventario.itemNaMao.DesequiparCordaNasMaos();
+            inventario.itemNaMao.EquiparCordaNasMaos();
         }
         possibleInteraction = true;
     }

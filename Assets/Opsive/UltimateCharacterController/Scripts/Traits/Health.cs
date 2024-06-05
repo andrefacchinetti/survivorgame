@@ -145,38 +145,54 @@ namespace Opsive.UltimateCharacterController.Traits
         protected override void Awake()
         {
             base.Awake();
-            
+
             m_GameObject = gameObject;
             m_Transform = transform;
             m_ForceObject = m_GameObject.GetCachedComponent<IForceObject>();
             m_Rigidbody = m_GameObject.GetCachedComponent<Rigidbody>();
             m_AttributeManager = GetComponent<AttributeManager>();
-            if (!string.IsNullOrEmpty(m_HealthAttributeName)) {
+            if (!string.IsNullOrEmpty(m_HealthAttributeName))
+            {
                 m_HealthAttribute = m_AttributeManager.GetAttribute(m_HealthAttributeName);
-            } else {
+            }
+            else
+            {
                 m_HealthAttribute = null;
             }
-            if (!string.IsNullOrEmpty(m_ShieldAttributeName)) {
+            if (!string.IsNullOrEmpty(m_ShieldAttributeName))
+            {
                 m_ShieldAttribute = m_AttributeManager.GetAttribute(m_ShieldAttributeName);
-            } else {
+            }
+            else
+            {
                 m_ShieldAttribute = null;
             }
             m_AliveLayer = m_GameObject.layer;
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
-            m_NetworkInfo = m_GameObject.GetCachedComponent<INetworkInfo>();
-            m_NetworkHealthMonitor = m_GameObject.GetCachedComponent<INetworkHealthMonitor>();
-            if (m_NetworkInfo != null && m_NetworkHealthMonitor == null) {
-                Debug.LogError("Error: The object " + m_GameObject.name + " must have a NetworkHealthMonitor component.");
-            }
+    m_NetworkInfo = m_GameObject.GetCachedComponent<INetworkInfo>();
+    m_NetworkHealthMonitor = m_GameObject.GetCachedComponent<INetworkHealthMonitor>();
+    if (m_NetworkInfo != null && m_NetworkHealthMonitor == null) {
+        Debug.LogError("Error: The object " + m_GameObject.name + " must have a NetworkHealthMonitor component.");
+    }
 #endif
 
-            if (m_Hitboxes != null && m_Hitboxes.Length > 0) {
+            if (m_Hitboxes != null && m_Hitboxes.Length > 0)
+            {
                 m_ColliderHitboxMap = new Dictionary<Collider, Hitbox>();
-                for (int i = 0; i < m_Hitboxes.Length; ++i) {
-                    if (m_Hitboxes[i] == null) {
+                for (int i = 0; i < m_Hitboxes.Length; ++i)
+                {
+                    if (m_Hitboxes[i] == null || m_Hitboxes[i].Collider == null)
+                    {
                         continue;
                     }
-                    m_ColliderHitboxMap.Add(m_Hitboxes[i].Collider, m_Hitboxes[i]);
+                    if (!m_ColliderHitboxMap.ContainsKey(m_Hitboxes[i].Collider))
+                    {
+                        m_ColliderHitboxMap.Add(m_Hitboxes[i].Collider, m_Hitboxes[i]);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Hitbox collider {m_Hitboxes[i].Collider} is already in the dictionary.");
+                    }
                 }
                 m_RaycastHits = new RaycastHit[m_MaxHitboxCollisionCount];
                 m_RaycastHitComparer = new Utility.UnityEngineUtility.RaycastHitComparer();
@@ -333,7 +349,7 @@ namespace Opsive.UltimateCharacterController.Traits
         public virtual void OnDamage(DamageData damageData)
         {
             if (damageData == null) { return; }
-
+            Debug.Log("OnDamage");
             // Add a multiplier if a particular collider was hit. Do not apply a multiplier if the damage is applied through a radius because multiple
             // collider are hit.
             if (damageData.Radius == 0 && damageData.Direction != Vector3.zero && damageData.HitCollider != null) {

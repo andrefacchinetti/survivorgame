@@ -21,13 +21,13 @@ MonoBehaviour:
     m_Value: 0
   skyAmbientMode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   planetRadius:
     m_OverrideState: 1
     m_Value: 6378.1
   renderingSpace:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   centerMode:
     m_OverrideState: 1
     m_Value: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Value: 0
   windSpeed:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 100
   fogType:
     m_OverrideState: 1
     m_Value: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
     m_Value: 0.23264056
   airTint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 0.9, g: 0.9, b: 1, a: 1}
   airMaximumAltitude:
     m_OverrideState: 1
     m_Value: 55261.973
@@ -254,13 +254,13 @@ MonoBehaviour:
     m_Value: 1
   ozoneMinimumAltitude:
     m_OverrideState: 1
-    m_Value: 20000
+    m_Value: 10000
   ozoneLayerWidth:
     m_OverrideState: 1
-    m_Value: 20000
+    m_Value: 30000
   groundTint:
     m_OverrideState: 1
-    m_Value: {r: 0.12, g: 0.1, b: 0.09, a: 1}
+    m_Value: {r: 0.12156863, g: 0.105882354, b: 0.09411765, a: 1}
   groundColorTexture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -372,7 +372,7 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: -13
+    m_Value: 0
   tint:
     m_OverrideState: 1
     m_Value: 1
@@ -797,6 +797,15 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 16c7c1d43c1734b4b9fd6e420650bca0, type: 2}
     - {fileID: 11400000, guid: 5a9a2dc462c7bde4f86d0615a19c2c72, type: 2}
     - {fileID: 11400000, guid: ced0ded1002e03b4cbe34e685c502de4, type: 2}
+    - {fileID: 11400000, guid: d64a1ad205414a04a9b4d575e2474241, type: 2}
+    - {fileID: 11400000, guid: e7e14aaf011e30346b0bcf6a5c8ede0d, type: 2}
+    - {fileID: 11400000, guid: 576900b757dc2bb42b835d6ba90283b9, type: 2}
+    - {fileID: 11400000, guid: 2f995df9a3ad4e6499669b35a6ff3a2b, type: 2}
+    - {fileID: 11400000, guid: 127180f36cca13943a0c07f38200ab2a, type: 2}
+    - {fileID: 11400000, guid: f285b103f609638488d95c47455003e4, type: 2}
+    - {fileID: 11400000, guid: 3e863aa73acba1e4d8b7e80026a5a4ee, type: 2}
+    - {fileID: 11400000, guid: f60fd83b817fae94fa9a458f6274a779, type: 2}
+    - {fileID: 11400000, guid: b00025f1e9b0f364aa70024d9413e61a, type: 2}
 --- !u!114 &-1451549854055061849
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1184,22 +1193,22 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.981, y: 0.98, z: 1, w: -0.025412962}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.038119435}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
   shadowsEnd:
     m_OverrideState: 1
-    m_Value: 0.28
+    m_Value: 0.3
   highlightsStart:
     m_OverrideState: 1
-    m_Value: 0.52
+    m_Value: 0.55
   highlightsEnd:
     m_OverrideState: 1
     m_Value: 1
@@ -1965,7 +1974,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.45
+    m_Value: 0.327
   smoothness:
     m_OverrideState: 1
     m_Value: 0.6
@@ -2182,7 +2191,7 @@ MonoBehaviour:
   interCascadeBorders: 1
   maxShadowDistance:
     m_OverrideState: 1
-    m_Value: 6000
+    m_Value: 150
   directionalTransmissionMultiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -2191,25 +2200,25 @@ MonoBehaviour:
     m_Value: 4
   cascadeShadowSplit0:
     m_OverrideState: 1
-    m_Value: 0.012999999
+    m_Value: 0.05
   cascadeShadowSplit1:
     m_OverrideState: 1
-    m_Value: 0.031
+    m_Value: 0.15
   cascadeShadowSplit2:
     m_OverrideState: 1
-    m_Value: 0.146
+    m_Value: 0.3
   cascadeShadowBorder0:
     m_OverrideState: 1
-    m_Value: 0.005515218
+    m_Value: 0.06905067
   cascadeShadowBorder1:
     m_OverrideState: 1
-    m_Value: 0.017309153
+    m_Value: 0.05086228
   cascadeShadowBorder2:
     m_OverrideState: 1
-    m_Value: 0.014684905
+    m_Value: 0
   cascadeShadowBorder3:
     m_OverrideState: 1
-    m_Value: 0.025452232
+    m_Value: 0
 --- !u!114 &6087970676068370512
 MonoBehaviour:
   m_ObjectHideFlags: 3

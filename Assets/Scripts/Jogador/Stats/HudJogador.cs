@@ -8,6 +8,8 @@ public class HudJogador : MonoBehaviour
 {
 
     public RawImage imgVida, imgFome, imgSede, imgEnergia; //Stats Principais
+    public GameObject imgAbstinencia, imgFraturado, imgSangrando;
+    public GameObject imgIndigestao, imgInfeccionado;
 
     public Texture[] listImgsVida, listImgsFome, listImgsSede, listImgsEnergia;
 
@@ -46,6 +48,29 @@ public class HudJogador : MonoBehaviour
         float porcentagem = atual / maxima * 100;
         int index = obterIndexPorPorcentagem(porcentagem);
         imgEnergia.texture = listImgsEnergia[index];
+    }
+
+    public void atualizarImgAbstinencia(bool isAbstinencia)
+    {
+        imgAbstinencia.SetActive(isAbstinencia);
+    }
+    public void atualizarImgFraturado(bool isFraturado)
+    {
+        imgFraturado.SetActive(isFraturado);
+    }
+    public void atualizarImgSangrando(bool isSangrando)
+    {
+        imgSangrando.SetActive(isSangrando);
+    }
+
+    public void atualizarImgIndigestao(bool isIndigestao)
+    {
+        imgIndigestao.SetActive(isIndigestao);
+    }
+
+    public void atualizarImgInfeccionado(bool isInfeccionado)
+    {
+        imgInfeccionado.SetActive(isInfeccionado);
     }
 
 }

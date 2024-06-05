@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &4496178313163244251
 Transform:
@@ -63,7 +63,7 @@ GameObject:
   m_TagString: Arvore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1869720032783295250
 Transform:
@@ -125,6 +125,7 @@ MonoBehaviour:
     qtdMaxDrops: 20
   dropPosition: {fileID: 0}
   direcaoDrop: 121
+  alturaOffset: 3
   isAttacking: 0
   health: {fileID: 7559452782839780639}
   attributeManager: {fileID: 0}
@@ -232,13 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteQuebravel: 0
-  souObjInteiro: 0
-  souObjRachado: 0
-  souObjNucleoQuebravel: 0
-  arvoreQuebravelBase: {fileID: 0}
-  minhaFileira: {fileID: 0}
-  isPedacoQuebrado: 0
+  pathPrefab: Prefabs/DropaRecursos/NatureForest/Arvores/Beech_Tree_04
   rb: {fileID: 0}
   forcaEmpurraArvore: 2
 --- !u!114 &7559452782839780639
@@ -363,9 +358,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1869720032783295250}
     m_Modifications:
+    - target: {fileID: 534213820712025836, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4483900002938371638, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425679599327189057, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5556296651694026700, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
       propertyPath: m_Name
       value: prefab_beech_tree_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556296651694026700, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8881300248400289247, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -406,6 +417,10 @@ PrefabInstance:
     - target: {fileID: 8881300248400289247, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932711620297895623, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5531674706997904650, guid: 19df7a28074cb284a8aa8562718310f5, type: 3}
@@ -485,6 +500,10 @@ PrefabInstance:
     - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
       propertyPath: m_Name
       value: Madeira (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -569,6 +588,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Madeira (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -651,6 +674,10 @@ PrefabInstance:
     - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
       propertyPath: m_Name
       value: Madeira (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -735,6 +762,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Madeira (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -817,6 +848,10 @@ PrefabInstance:
     - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
       propertyPath: m_Name
       value: Madeira (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -901,6 +936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Madeira (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -984,6 +1023,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Madeira
       objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1066,6 +1109,10 @@ PrefabInstance:
     - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
       propertyPath: m_Name
       value: Madeira (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700660070611272654, guid: ecfb01b34a1e2d447ab41c7f5bf8ad30, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

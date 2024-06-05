@@ -20,10 +20,10 @@ GameObject:
   - component: {fileID: 9118475463219261950}
   m_Layer: 0
   m_Name: Pedregulho_rock_03_cut
-  m_TagString: Untagged
+  m_TagString: DropaRecursos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4393775858968214552
 Transform:
@@ -58,14 +58,14 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: -5031240367727733104, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 3
     qtdMaxDrops: 5
   - itemDefinition: {fileID: 7746520582948198587, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 0
     qtdMaxDrops: 2
   dropPosition: {fileID: 0}
@@ -80,7 +80,7 @@ MonoBehaviour:
   reconstruivelStats: {fileID: 0}
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
-  isSangra: 0
+  tipoEstilhaco: 0
 --- !u!114 &1029426983796257742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,13 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteQuebravel: 0
-  souObjInteiro: 0
-  souObjRachado: 0
-  souObjNucleoQuebravel: 0
-  arvoreQuebravelBase: {fileID: 0}
-  minhaFileira: {fileID: 0}
-  isPedacoQuebrado: 0
+  pathPrefab: Prefabs/DropaRecursos/MeadowPack/Pedregulho_rock_03_cut
   rb: {fileID: 0}
   forcaEmpurraArvore: 2
 --- !u!64 &1305669485895720140
@@ -297,6 +291,22 @@ PrefabInstance:
     - target: {fileID: 1013469318305170, guid: 6f3b0b17eaa99dd449dfe134c6cb9b50, type: 3}
       propertyPath: m_Name
       value: prefab_Rock_03_cut
+      objectReference: {fileID: 0}
+    - target: {fileID: 1013469318305170, guid: 6f3b0b17eaa99dd449dfe134c6cb9b50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297973662336260, guid: 6f3b0b17eaa99dd449dfe134c6cb9b50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493432162479144, guid: 6f3b0b17eaa99dd449dfe134c6cb9b50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983492795921186, guid: 6f3b0b17eaa99dd449dfe134c6cb9b50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4573249662776914, guid: 6f3b0b17eaa99dd449dfe134c6cb9b50, type: 3}
       propertyPath: m_LocalPosition.x

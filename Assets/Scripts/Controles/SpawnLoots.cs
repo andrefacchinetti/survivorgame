@@ -9,32 +9,36 @@ using Opsive.Shared.Inventory;
 public class SpawnLoots : MonoBehaviour
 {
 
-    [SerializeField] Item.TiposItems tipoItem;
-    public ItemDefinitionBase[] itens;
+    [SerializeField] Item.ItemDropStruct[] itemsDropStruct;
     private GameObject itemSpawnado;
     [SerializeField] GameController gameController;
 
-    private float lastGameDay = -1;
+    public int qtdDiasParaRespawnar = 2;
+    private float qtdDias = 0;
 
-    PhotonView PV;
 
     private void Start()
     {
         SpawnarRandomLoot();
+        gameController.listaSpawnLoots.Add(this);
     }
 
-    private void LateUpdate()
+    public void SpawnarLootPorDias()
     {
-        if(lastGameDay != gameController.gameDay)
+        if (qtdDias >= qtdDiasParaRespawnar)
         {
             SpawnarRandomLoot();
-            lastGameDay = gameController.gameDay;
+            qtdDias = 0;
+        }
+        else
+        {
+            qtdDias++;
         }
     }
 
     public void SpawnarRandomLoot()
     {
-        if(itemSpawnado != null)
+        if(itemSpawnado != null || itemSpawnado.transform.position.y < -40f)
         {
             Destroy(itemSpawnado);
         }
@@ -44,19 +48,17 @@ public class SpawnLoots : MonoBehaviour
 
     public void InstanciarPrefabPorPathRandomItem()
     {
-        bool isPhotonConnected = PhotonNetwork.IsConnected;
-
-        int randomIndex = Random.Range(0, itens.Length);
+        if (itemsDropStruct == null || itemsDropStruct.Length == 0) return;
+        int randomIndex = Random.Range(0, itemsDropStruct.Length);
+        if (itemsDropStruct[randomIndex].itemDefinition == null) return;
 
         Vector3 position = this.transform.position;
         Quaternion rotation = this.transform.rotation;
-        
-        string nomePrefab = tipoItem + "/" + itens[randomIndex].name;
-        string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
-        GameObject prefab = Resources.Load<GameObject>(prefabPath);
 
-        this.itemSpawnado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, position, rotation, 0, new object[] { PV.ViewID }) : Instantiate(prefab, position, rotation);
-        Debug.Log("Spawnou loot: " + nomePrefab);
+
+        string nomePrefab = itemsDropStruct[randomIndex].itemDefinition.name;
+        string prefabPath = itemsDropStruct[randomIndex].tipoItem + "/" + nomePrefab;
+        this.itemSpawnado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, position, rotation, itemsDropStruct[randomIndex].materialPersonalizado, gameController.PV.ViewID);
     }
 
 

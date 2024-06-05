@@ -20,10 +20,10 @@ GameObject:
   - component: {fileID: 678163487660194345}
   m_Layer: 0
   m_Name: Pedregulho_SM_Small_Rock_01
-  m_TagString: Untagged
+  m_TagString: DropaRecursos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4855372640243143514
 Transform:
@@ -58,14 +58,14 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: -5031240367727733104, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 2
     qtdMaxDrops: 2
   - itemDefinition: {fileID: 7746520582948198587, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 0
     qtdMaxDrops: 2
   dropPosition: {fileID: 0}
@@ -80,7 +80,7 @@ MonoBehaviour:
   reconstruivelStats: {fileID: 0}
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
-  isSangra: 0
+  tipoEstilhaco: 0
 --- !u!114 &4400654975787601305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,13 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteQuebravel: 0
-  souObjInteiro: 0
-  souObjRachado: 0
-  souObjNucleoQuebravel: 0
-  arvoreQuebravelBase: {fileID: 0}
-  minhaFileira: {fileID: 0}
-  isPedacoQuebrado: 0
+  pathPrefab: Prefabs/DropaRecursos/AdvancedRockPack/Pedregulho_SM_Small_Rock_01
   rb: {fileID: 0}
   forcaEmpurraArvore: 2
 --- !u!64 &7451133693436032225
@@ -294,9 +288,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4855372640243143514}
     m_Modifications:
+    - target: {fileID: 1000669639911664, guid: 1ea143e6f1746034aa54ea2428ed411c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1516499723775686, guid: 1ea143e6f1746034aa54ea2428ed411c, type: 3}
       propertyPath: m_Name
       value: prefab_SM_Small_Rock_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516499723775686, guid: 1ea143e6f1746034aa54ea2428ed411c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1702076683441252, guid: 1ea143e6f1746034aa54ea2428ed411c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1729107015496200, guid: 1ea143e6f1746034aa54ea2428ed411c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4022672308209932, guid: 1ea143e6f1746034aa54ea2428ed411c, type: 3}
       propertyPath: m_LocalPosition.x

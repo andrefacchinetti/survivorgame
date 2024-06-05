@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 4230863468112096274}
   - component: {fileID: -5087818694107086952}
   - component: {fileID: -1794876874731449542}
+  - component: {fileID: -2836427637856666213}
   m_Layer: 0
   m_Name: Parede Pedra
   m_TagString: ConstrucaoStats
@@ -210,6 +211,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -314,7 +316,8 @@ MonoBehaviour:
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
   construcaoStats: {fileID: 0}
-  isSangra: 0
+  collisorSofreDano: {fileID: 0}
+  tipoEstilhaco: 0
 --- !u!54 &1407118398203200102
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -471,6 +474,21 @@ MonoBehaviour:
   m_OnDeathEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-2836427637856666213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3280966970121014215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a121b296f415b6f4bab0ab1bd90a933b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemMarteloReparador: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  itemMarteloDemolidor: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcoesController: {fileID: 5805015059697655900}
 --- !u!1 &3502095679115956216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,6 +1237,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:

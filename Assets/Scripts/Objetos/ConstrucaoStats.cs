@@ -5,6 +5,7 @@ public class ConstrucaoStats : MonoBehaviour
 {
 
     [SerializeField] public ItemDefinitionBase itemMarteloReparador, itemMarteloDemolidor;
+    [SerializeField] public ConstrucoesController construcoesController;
 
     public void AcoesTomouDano()
     {
@@ -15,6 +16,7 @@ public class ConstrucaoStats : MonoBehaviour
     public void AcoesMorreu()
     {
         Debug.Log("construcao morreu");
+        construcoesController.MandarDestruirTodasAsConstrucoesConectadas();
     }
 
 }

@@ -12,16 +12,13 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 	{
 		if (playerController.inventario.itemNaMao == null)
 		{
-			Debug.LogWarning("nenhum item consumindo setado");
 			return;
 		}
-		Debug.Log("consumiu: " + playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.ToString());
 		playerController.inventario.itemNaMao.UsarItem();
 	}
 
 	void AnimEventDissecado()
 	{
-		Debug.Log("dissecou");
 		foreach (Item.ItemDropStruct drop in playerController.itemsDropsPosDissecar)
 		{
 			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
@@ -36,20 +33,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		playerController.corpoDissecando = null;
 	}
 
-	void AnimEventCapturou()
-	{
-		Debug.Log("capturou");
-		if (playerController.animalCapturado == null) return;
-		playerController.animalCapturado.isCapturado = true;
-		playerController.animalCapturado.targetCapturador = this.gameObject;
-		playerController.animalCapturado.objColeiraRope.SetActive(true);
-		if(playerController.cordaWeaponTP != null)
-        {
-			playerController.cordaWeaponTP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
-			playerController.cordaWeaponFP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
-		}
-	}
-
 	void AnimEventReanimouJogador()
 	{
 		if (playerController.corpoReanimando != null)
@@ -60,14 +43,12 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 
 	void AnimEventConsertado()
 	{
-		Debug.Log("consertou");
 		playerController.objConsertando.GetComponent<ReconstruivelQuebrado>().ConsertarReconstruivel();
 		playerController.objConsertando = null;
 	}
 
 	void AnimEventArremessoLanca()
 	{
-		Debug.Log("arremessou lan�a");
 		ArremessarItemNaMao();
 	}
 
@@ -113,7 +94,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
             }
             else
             {
-				Debug.Log("bebeu agua na garrafa");
 				playerController.statsJogador.setarSedeAtual(playerController.statsJogador.sedeAtual + qtdAguaBebendo);
 			}
 		}
@@ -162,7 +142,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 
 	void AnimEventAtivarPegandoPeixe()
 	{
-		Debug.Log("pegando peixe");
 		playerController.varaDePescaTP.peixeDaVara.SetActive(true);
 		playerController.varaDePescaFP.peixeDaVara.SetActive(true);
 		playerController.varaDePescaTP.animator.SetTrigger("pegandoPeixe");
@@ -172,7 +151,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 
 	public void TerminouDePescarComSucesso()
 	{
-		Debug.Log("terminou de pescar");
 		if (playerController.pescaPescando == null) return;
 		playerController.inventario.AdicionarItemAoInventario(null, playerController.inventario.itemPeixeCru, 1);
 		playerController.characterLocomotion.TryStopAbility(playerController.pescarAbility);
@@ -181,7 +159,6 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 	void AnimEventColetouItem()
 	{
 		if (playerController.itemDefinitionBaseColentando == null) return;
-		Debug.Log("coletou item: " + playerController.itemDefinitionBaseColentando.name);
 		playerController.inventario.AdicionarItemAoInventario(null, playerController.itemDefinitionBaseColentando, 1);
 		playerController.itemDefinitionBaseColentando = null;
 	}

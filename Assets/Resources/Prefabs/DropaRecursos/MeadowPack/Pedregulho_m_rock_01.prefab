@@ -20,10 +20,10 @@ GameObject:
   - component: {fileID: 7054090131744221102}
   m_Layer: 0
   m_Name: Pedregulho_m_rock_01
-  m_TagString: Untagged
+  m_TagString: DropaRecursos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5722988402408338221
 Transform:
@@ -58,14 +58,14 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: -5031240367727733104, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 1
     qtdMaxDrops: 2
   - itemDefinition: {fileID: 7746520582948198587, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 0
     qtdMaxDrops: 1
   dropPosition: {fileID: 0}
@@ -80,7 +80,7 @@ MonoBehaviour:
   reconstruivelStats: {fileID: 0}
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
-  isSangra: 0
+  tipoEstilhaco: 0
 --- !u!114 &7218222434296603516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,13 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteQuebravel: 0
-  souObjInteiro: 0
-  souObjRachado: 0
-  souObjNucleoQuebravel: 0
-  arvoreQuebravelBase: {fileID: 0}
-  minhaFileira: {fileID: 0}
-  isPedacoQuebrado: 0
+  pathPrefab: Prefabs/DropaRecursos/MeadowPack/Pedregulho_m_rock_01
   rb: {fileID: 0}
   forcaEmpurraArvore: 2
 --- !u!64 &4962467705412809002
@@ -297,6 +291,22 @@ PrefabInstance:
     - target: {fileID: 1352733118662176, guid: c84c1ee840b48e74483ce2b1897f5f99, type: 3}
       propertyPath: m_Name
       value: prefab_m_rock_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352733118662176, guid: c84c1ee840b48e74483ce2b1897f5f99, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377879102233812, guid: c84c1ee840b48e74483ce2b1897f5f99, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1414419427460650, guid: c84c1ee840b48e74483ce2b1897f5f99, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658148484360380, guid: c84c1ee840b48e74483ce2b1897f5f99, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4321119056594112, guid: c84c1ee840b48e74483ce2b1897f5f99, type: 3}
       propertyPath: m_LocalPosition.x

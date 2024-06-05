@@ -479,7 +479,6 @@ GameObject:
   - component: {fileID: 5358632488475697414}
   - component: {fileID: 269315391696910800}
   - component: {fileID: 6424370199210595995}
-  - component: {fileID: 7544594070509556138}
   - component: {fileID: 7920003080818649791}
   - component: {fileID: 4938051935722300260}
   - component: {fileID: 1949541196581522734}
@@ -629,27 +628,6 @@ MonoBehaviour:
   leadDistance: 2
   estaFugindo: 0
   genero: 0
---- !u!65 &7544594070509556138
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1336841924710946}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 14.13, y: 7.68, z: 22.2}
-  m_Center: {x: 0, y: 0, z: 1.5}
 --- !u!114 &7920003080818649791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,6 +659,7 @@ MonoBehaviour:
   raioDeDistanciaMaxParaAndarAleatoriamente: 40
   timerParaAndarAleatoriamente: 5
   pathUpdateDistanceThreshold: 10
+  detectionInterval: 0.5
   gameController: {fileID: 0}
   statsGeral: {fileID: 0}
   animalStats: {fileID: 0}
@@ -691,6 +670,7 @@ MonoBehaviour:
   targetObstaculo: {fileID: 0}
   targetCapturador: {fileID: 0}
   PV: {fileID: 0}
+  detectionRadius: 40
 --- !u!114 &4938051935722300260
 MonoBehaviour:
   m_ObjectHideFlags: 0

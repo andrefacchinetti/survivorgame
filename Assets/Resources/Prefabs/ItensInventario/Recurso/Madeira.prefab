@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7286764447339539070}
   - component: {fileID: 4586315213388029299}
   - component: {fileID: 6589881881713311091}
-  - component: {fileID: 1050030564143955096}
   - component: {fileID: 6852244312215705360}
   - component: {fileID: 3668300920688359481}
   - component: {fileID: 1083246412979580597}
@@ -66,6 +65,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -99,9 +99,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3010870368859697472}
   serializedVersion: 4
-  m_Mass: 500
-  m_Drag: 5
-  m_AngularDrag: 5
+  m_Mass: 100
+  m_Drag: 0.5
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -115,9 +115,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 1
 --- !u!114 &6589881881713311091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,27 +137,10 @@ MonoBehaviour:
   OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 1050030564143955096}
   - {fileID: 6852244312215705360}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1050030564143955096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3010870368859697472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &6852244312215705360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 4048728896585032082, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  pathPrefab: Prefabs/ItensInventario/Recurso/Madeira
   estaSendoComido: 0
 --- !u!136 &1083246412979580597
 CapsuleCollider:
@@ -195,7 +179,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3010870368859697472}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 4b14f995edad1d444b5f291361e80c55, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

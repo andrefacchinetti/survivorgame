@@ -16,13 +16,7 @@ public class AnimalStats : MonoBehaviourPunCallbacks
     [HideInInspector] public bool estaFugindo = false;
     StatsGeral statsGeral;
     AnimalController animalController;
-    public Genero genero;
-
-    public enum Genero
-    {
-        Masculino,
-        Feminino
-    }
+   
 
     private void Awake()
     {
@@ -39,7 +33,6 @@ public class AnimalStats : MonoBehaviourPunCallbacks
 
     public void AcoesMorreu()
     {
-        Debug.Log("animal morreu");        
         animalController.agent.speed = 0;
         animalController.agent.isStopped = true;
     }

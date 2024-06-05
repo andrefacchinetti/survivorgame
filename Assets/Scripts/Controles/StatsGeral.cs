@@ -36,6 +36,7 @@ public class StatsGeral : MonoBehaviour
     {
         EventHandler.RegisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
         EventHandler.RegisterEvent<float, Vector3, GameObject, Collider>(gameObject, "OnPreHealthDamage", OnPreDamage);
+        EventHandler.RegisterEvent<float>(gameObject, "OnFallDamage", OnActionFallDamage);
         PV = GetComponent<PhotonView>();
         lobisomemStats = GetComponentInParent<LobisomemStats>();
         animalStats = GetComponentInParent<AnimalStats>();
@@ -51,10 +52,25 @@ public class StatsGeral : MonoBehaviour
         else if (!EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController = GameObject.FindGameObjectWithTag("BloodController").GetComponent<EstilhacoFxController>();
     }
 
+    private void LateUpdate()
+    {
+        if (transform.position.y < -40)
+        {
+            TakeDamage(999, false);
+        }
+    }
+
+    private void OnActionFallDamage(float fallDamageValue)
+    {
+        if(fallDamageValue >= 20 && jogadorStats != null)
+        {
+            jogadorStats.FraturarJogador();
+        }
+    }
+
     private void OnPreDamage(float dano, Vector3 position, GameObject attacker, Collider hitCollider)
     {
         //Evento que acontece antes de aplicar o damage no Health
-        Debug.Log("on pre damage");
         if(attacker != null)
         {
             if (construcaoStats != null) //Verificar se cura construcao com martelo reparador
@@ -85,14 +101,13 @@ public class StatsGeral : MonoBehaviour
                 }
             }
         }
-        
+        Debug.Log("aplicando dano");
         health.AplicarDanoNoHealth(dano);
     }
 
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
         //Evento que acontece depois de aplicar o damage no Health
-        Debug.Log("Object took " + amount + " damage at position " + position + " with force " + force + " by attacker " + attacker + ". The collider " + hitCollider + " was hit.");
         if (hitCollider != null && EstilhacoFxController.TipoEstilhaco.Sangue.Equals(tipoEstilhaco)) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
         else if (hitCollider != null && !EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController.GerarEstilhaco(tipoEstilhaco, position, attacker.transform.position);
         if (attacker != null)
@@ -103,6 +118,7 @@ public class StatsGeral : MonoBehaviour
                 pc.animatorJogador.SetTrigger("acertouAtaque");
             }
         }
+        Debug.Log("OnDamage");
         AcoesTomouDano();
     }
 
@@ -110,6 +126,7 @@ public class StatsGeral : MonoBehaviour
     {
         EventHandler.UnregisterEvent<float, Vector3, Vector3, GameObject, Collider>(gameObject, "OnHealthDamage", OnDamage);
         EventHandler.UnregisterEvent<float, Vector3, GameObject, Collider>(gameObject, "OnPreHealthDamage", OnPreDamage);
+        EventHandler.UnregisterEvent<float>(gameObject, "OnFallDamage", OnActionFallDamage);
     }
 
     public float ObterVidaMaximaHealth()
@@ -130,11 +147,11 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damageValue) // metodo usadno para Dano causado por fatores externos (sem ser por dano de arma do player)
+    public void TakeDamage(float damageValue, bool isPodeCausarSangramento) // metodo usadno para Dano causado por fatores externos (sem ser por dano de arma do player)
     {
         if (jogadorStats != null) //jogador
         {
-            jogadorStats.TakeDamageHealth(damageValue);
+            jogadorStats.TakeDamageHealth(damageValue, isPodeCausarSangramento);
         }
         else //outros
         {
@@ -195,14 +212,15 @@ public class StatsGeral : MonoBehaviour
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
                 string nomePrefab = drop.itemDefinition.name;
                 string prefabPath = drop.tipoItem + "/" + nomePrefab;
-                Debug.Log("dropando: " + nomePrefab);
                 if(drop.prefabDropMarks != null && drop.prefabDropMarks.Length > 0)
                 {
                     ItemDrop.InstanciarPrefabPorPrefabMark(prefabPath, drop.prefabDropMarks, PV.ViewID);
                 }
                 else
                 {
-                    ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
+                    float alturaObjetoExistente = dropPosition != null ? dropPosition.GetComponent<Collider>().bounds.size.y : 0;
+                    Vector3 spawnPosition = dropPosition.transform.position + new Vector3(0, alturaObjetoExistente, 0);
+                    ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, spawnPosition, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
                 }
             }
         }
@@ -222,18 +240,10 @@ public class StatsGeral : MonoBehaviour
         }
     }
 
-    public Transform obterTransformPositionDoCollider()
+    public bool isVivo()
     {
-        if(lobisomemStats != null)
-        {
-            return GetComponent<LobisomemController>().obterGameObjectFormaAtiva().transform;
-        }
-        else
-        {
-            return transform;
-        }
+        if (jogadorStats != null) return jogadorStats.playerController.characterHealth.IsAlive();
+        return health.IsAlive();
     }
-
-
 
 }

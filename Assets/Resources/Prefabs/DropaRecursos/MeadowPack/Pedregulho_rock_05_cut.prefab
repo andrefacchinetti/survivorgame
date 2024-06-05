@@ -20,10 +20,10 @@ GameObject:
   - component: {fileID: 3319458561591852005}
   m_Layer: 0
   m_Name: Pedregulho_rock_05_cut
-  m_TagString: Untagged
+  m_TagString: DropaRecursos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2360082037260128814
 Transform:
@@ -58,14 +58,14 @@ MonoBehaviour:
   dropsItems:
   - itemDefinition: {fileID: -5031240367727733104, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 3
     qtdMaxDrops: 5
   - itemDefinition: {fileID: 7746520582948198587, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
     tipoItem: 4
+    prefabDropMarks: []
     materialPersonalizado: {fileID: 0}
-    nomePrefabAlternativo: 
     qtdMinDrops: 0
     qtdMaxDrops: 2
   dropPosition: {fileID: 0}
@@ -80,7 +80,7 @@ MonoBehaviour:
   reconstruivelStats: {fileID: 0}
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
-  isSangra: 0
+  tipoEstilhaco: 0
 --- !u!114 &6896294130786061763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,13 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414b21d882e7c844a908bf1cafb8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isParteQuebravel: 0
-  souObjInteiro: 0
-  souObjRachado: 0
-  souObjNucleoQuebravel: 0
-  arvoreQuebravelBase: {fileID: 0}
-  minhaFileira: {fileID: 0}
-  isPedacoQuebrado: 0
+  pathPrefab: Prefabs/DropaRecursos/MeadowPack/Pedregulho_rock_05_cut
   rb: {fileID: 0}
   forcaEmpurraArvore: 2
 --- !u!64 &2918123657211500927
@@ -294,9 +288,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2360082037260128814}
     m_Modifications:
+    - target: {fileID: 1474997219175894, guid: 9495367db89964f47bf85cf0a404acd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1539381344190682, guid: 9495367db89964f47bf85cf0a404acd1, type: 3}
       propertyPath: m_Name
       value: prefab_Rock_05_cut
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539381344190682, guid: 9495367db89964f47bf85cf0a404acd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1740321404916786, guid: 9495367db89964f47bf85cf0a404acd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1783208380951322, guid: 9495367db89964f47bf85cf0a404acd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1798652130496462, guid: 9495367db89964f47bf85cf0a404acd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4508863428485412, guid: 9495367db89964f47bf85cf0a404acd1, type: 3}
       propertyPath: m_LocalPosition.x

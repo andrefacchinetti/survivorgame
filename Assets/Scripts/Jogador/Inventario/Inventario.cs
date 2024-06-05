@@ -9,6 +9,7 @@ using Opsive.Shared.Utility;
 using Opsive.UltimateCharacterController.Items;
 using Opsive.Shared.Events;
 using Opsive.Shared.Inventory;
+using Opsive.UltimateCharacterController.Items.Actions;
 
 public class Inventario : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
     [SerializeField] [HideInInspector] public ArrastarItensInventario arrastarItensInventario;
 
-    [SerializeField] TMP_Text txMsgLogItem;
+    [SerializeField] public TMP_Text txMsgLogItem, txMunicoesClipHud, txMunicoesInventarioHud;
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
 
@@ -211,6 +212,27 @@ public class Inventario : MonoBehaviour
                 return;
             }
         }
+
+    }
+
+    public void AdicionarMunicoesDoClipNoInventarioAposDroparArma(IItemIdentifier itemIdentifier)
+    {
+        if (itemIdentifier != null)
+        {
+            CharacterItem characterItem = inventory.GetCharacterItem(itemIdentifier);
+
+            if(characterItem != null)
+            {
+                CharacterItemAction itemAction = characterItem.ItemActions[0];
+                if (itemAction is ShootableAction)
+                {
+                    var shootableAction = itemAction as ShootableAction;
+                    int qtdNoClip = shootableAction.ClipRemainingCount;
+                    AdicionarItemAoInventario(null, shootableAction.GetAmmoDataInClip(0).ItemIdentifier.GetItemDefinition(), qtdNoClip); //add municoes do clip no inventario
+                    shootableAction.MainClipModule.SetClipRemaining(0); //Remove municoes do clip da arma
+                }
+            }
+        }
     }
 
     public void ConsumirItemDaMao(bool isCordaPartindo)
@@ -273,10 +295,19 @@ public class Inventario : MonoBehaviour
     {
         if (!playerController.cordaWeaponFP.objObiRope.activeSelf) //Grabando Animal
         {
-            playerController.cordaWeaponFP.objCordaMaos.SetActive(false);
-            playerController.cordaWeaponTP.objCordaMaos.SetActive(false);
-            playerController.cordaWeaponFP.objObiRope.SetActive(true);
-            playerController.cordaWeaponTP.objObiRope.SetActive(true);
+            if (playerController.animalCapturado != null)
+            {
+                playerController.animalCapturado.isCapturado = true;
+                playerController.animalCapturado.targetCapturador = this.playerController;
+                playerController.animalCapturado.objColeiraRope.SetActive(true);
+                if (playerController.cordaWeaponTP != null)
+                {
+                    playerController.cordaWeaponTP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+                    playerController.cordaWeaponFP.ropeGrab.objFollowed = playerController.animalCapturado.objRopePivot.transform;
+                }
+            }
+            playerController.cordaWeaponFP.AcoesGrabandoAlvo();
+            playerController.cordaWeaponTP.AcoesGrabandoAlvo();
         }
         else //Ungrab Animal
         {
@@ -290,20 +321,19 @@ public class Inventario : MonoBehaviour
         UngrabObjetoCapturado();
     }
 
-    public void UngrabAnimalCapturado(bool isCordaPartindo)
+    private void UngrabAnimalCapturado(bool isCordaPartindo)
     {
-        Debug.LogWarning("UngrabAnimalCapturado 4");
         if (!isCordaPartindo)
         {
             if (playerController.cordaWeaponTP != null)
             {
-                if(playerController.cordaWeaponTP.objObiRope != null)
+                if (playerController.cordaWeaponTP.objObiRope != null)
                 {
                     playerController.cordaWeaponTP.objObiRope.SetActive(false);
                     playerController.cordaWeaponFP.objObiRope.SetActive(false);
                 }
-                playerController.cordaWeaponFP.objCordaMaos.SetActive(true);
-                playerController.cordaWeaponTP.objCordaMaos.SetActive(true);
+                playerController.cordaWeaponFP.AtivarCordaMaosSemGrab();
+                playerController.cordaWeaponTP.AtivarCordaMaosSemGrab();
             }
         }
         if (playerController.animalCapturado != null)
@@ -321,9 +351,8 @@ public class Inventario : MonoBehaviour
         }
     }
 
-    public void UngrabObjetoCapturado()
+    private void UngrabObjetoCapturado()
     {
-        Debug.LogWarning("UngrabObjetoCapturado");
         if (playerController.objCapturado != null)
         {
             playerController.objCapturado.GetComponent<ObjetoGrab>().DesativarCordaGrab();
@@ -338,11 +367,10 @@ public class Inventario : MonoBehaviour
 
     public void SumirObjRopeStart()
     {
-        Debug.LogWarning("SumirObjRopeStart");
-        if (playerController.cordaWeaponFP != null && playerController.cordaWeaponTP != null)
+        if (playerController.cordaWeaponFP)
         {
-            playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false);
-            playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false);
+            playerController.cordaWeaponTP.AcoesRenovarCordaEstourada(false, true);
+            playerController.cordaWeaponFP.AcoesRenovarCordaEstourada(false, false);
         }
     }
 
@@ -356,6 +384,44 @@ public class Inventario : MonoBehaviour
             }
         }
         return "";
+    }
+
+    public void AtualizarHudMunicoesComArmaAtual()
+    {
+        this.txMunicoesClipHud.text = "";
+        this.txMunicoesInventarioHud.text = "";
+        if (itemNaMao != null && itemNaMao.tipoMunicao != null) //Quando equipa uma arma, verifica se existe um tipo de municao
+        {
+            int qtdMunicaoNoInventario = ObterQtdItemNoInventario(itemNaMao.tipoMunicao);
+            CharacterItem characterItem = inventory.GetActiveCharacterItem(1);
+            if (characterItem == null) characterItem = inventory.GetActiveCharacterItem(0);
+           
+            if (characterItem != null)
+            {
+                CharacterItemAction itemAction = characterItem.ItemActions[0];
+                if (itemAction is ShootableAction)
+                {
+                    var shootableAction = itemAction as ShootableAction;
+                    this.txMunicoesClipHud.text = shootableAction.ClipRemainingCount + " / " + shootableAction.ClipSize;
+                    this.txMunicoesInventarioHud.text = "(" + qtdMunicaoNoInventario + ")";
+                }
+            }
+            
+        }
+    }
+
+    public int ObterQtdItemNoInventario(ItemDefinitionBase itemDefinition)
+    {
+        int qtdItemAtual = 0;
+        foreach (Item item in itens)
+        {
+            if (item.itemIdentifierAmount.ItemDefinition.name.Equals(itemDefinition.name))
+            {
+                qtdItemAtual += item.quantidade;
+                break; //Tirar break se as municoes poderem ficar em slots diferentes
+            }
+        }
+        return qtdItemAtual;
     }
 
     public void AlertarJogadorComLogItem(string nomeItemTraduzido, Texture imgItem, bool isAumentandoQtd, int quantidade)
