@@ -10,6 +10,7 @@ public class StatsJogador : MonoBehaviour
     [SerializeField] [HideInInspector] public PlayerController playerController;
     [SerializeField] [HideInInspector] public CharacterAttributeManager characterAttributeManager;
     [SerializeField] [HideInInspector] public StatsGeral statsGeral;
+    [SerializeField] [HideInInspector] public OverlayController overlayController;
     [SerializeField] HudJogador hudJogador;
 
     // STATS MAXIMO
@@ -35,6 +36,7 @@ public class StatsJogador : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         statsGeral = GetComponent<StatsGeral>();
         characterAttributeManager = GetComponent<CharacterAttributeManager>();
+        overlayController = GetComponent<OverlayController>();
     }
 
     private void Start()
@@ -107,17 +109,22 @@ public class StatsJogador : MonoBehaviour
 
     public void AtualizarImgVida()
     {
-        hudJogador.atualizarImgVida(playerController.characterHealth.HealthValue, ObterVidaMaximaHealth());
+        float vidaAtual = playerController.characterHealth.HealthValue;
+        float vidaMaxima = ObterVidaMaximaHealth();
+        hudJogador.atualizarImgVida(vidaAtual, vidaMaxima);
+        overlayController.TakeDamageOverlay(vidaAtual, vidaMaxima);
     }
 
     public void AtualizarImgAbstinencia()
     {
         hudJogador.atualizarImgAbstinencia(isAbstinencia);
+        overlayController.AtualizarAbstinenciaOverlay(isAbstinencia);
     }
 
     public void AtualizarImgSangrando()
     {
-        hudJogador.atualizarImgSangrando(isSangrando);
+        hudJogador.atualizarImgSangrando(isSangrando); //Se pa que nem precisa desse indicador na hud, pois ja vai ter na overlay
+        overlayController.AtualizarBloodOverlay(isSangrando);
     }
 
     public void AtualizarImgFraturado()
