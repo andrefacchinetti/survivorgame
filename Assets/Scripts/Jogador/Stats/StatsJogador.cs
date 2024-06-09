@@ -22,7 +22,7 @@ public class StatsJogador : MonoBehaviour
     [SerializeField] public float tempoPraDiminuirStatsFomeSedeEmSegundos = 60*1;
     [SerializeField] public float tempoPraDiminuirStatsFeridasInternasEmSegundos = 60*2;
     [SerializeField] public float tempoPraDiminuirStatsDoencasEmSegundos = 60*4;
-    [SerializeField] public float tempoPraDiminuirStatsDanoRapidoPorSegundo = 30; //ex: sangramento perde dano a cada 30 segundos
+    [SerializeField] public float tempoPraDiminuirStatsDanoRapidoPorSegundo = 1; //ex: sangramento perde dano a cada x segundos
     [SerializeField] public float valorDaFomeReduzidaPorTempo = 5, valorDaSedeReduzidaPorTempo = 10;
     public float consumoEnergiaPorSegundo = 5.0f;
     public float recuperacaoEnergiaPorSegundo = 2.0f;
@@ -212,7 +212,7 @@ public class StatsJogador : MonoBehaviour
         }
         if (isInfeccionado)
         {
-            TakeDamageHealth(15, false);
+            TakeDamageHealth(20, false);
         }
     }
 
@@ -220,7 +220,7 @@ public class StatsJogador : MonoBehaviour
     {
         if (isSangrando)
         {
-            TakeDamageHealth(5, false);
+            TakeDamageHealth(2, false);
         }
     }
 
