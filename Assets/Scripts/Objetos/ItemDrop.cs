@@ -54,14 +54,21 @@ public class ItemDrop : MonoBehaviourPunCallbacks
                 GameObject prefab = Resources.Load<GameObject>(prefabPath);
                 objInstanciado = Instantiate(prefab, prefabMarks[i].transform.position, prefabMarks[i].transform.rotation);
             }
-            objInstanciado.GetComponent<MeshRenderer>().material = prefabMarks[i].GetComponent<MeshRenderer>().material;
+            MeshRenderer meshRenderer = objInstanciado.GetComponent<MeshRenderer>();
+            if(meshRenderer != null)
+            {
+                objInstanciado.GetComponent<MeshRenderer>().material = prefabMarks[i].GetComponent<MeshRenderer>().material;
+            }
             objInstanciado.transform.localScale = prefabMarks[i].transform.lossyScale;
             if(force != Vector3.zero)
             {
-                Rigidbody rigid = objInstanciado.GetComponent<Rigidbody>();
-                if (rigid != null)
+                Rigidbody[] filhosRB = objInstanciado.GetComponentsInChildren<Rigidbody>();
+                foreach(Rigidbody rigid in filhosRB)
                 {
-                    rigid.AddForce(force, ForceMode.Impulse);
+                    if (rigid != null)
+                    {
+                        rigid.AddForce(force, ForceMode.Impulse);
+                    }
                 }
             }
         }

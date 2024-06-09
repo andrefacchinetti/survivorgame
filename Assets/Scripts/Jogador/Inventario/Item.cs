@@ -65,7 +65,6 @@ public class Item : MonoBehaviourPunCallbacks
     {
         public GameObject[] prefabDropMarks;
         public string prefabPath;
-        public Material materialPersonalizado;
     }
 
     [System.Serializable]

@@ -231,7 +231,7 @@ public class StatsGeral : MonoBehaviour
 
     public void DroparObjetosAoSerDestruido()
     {
-        Vector3 force = new Vector3(50, 0, 70);
+        Vector3 force = new Vector3(10, 0, 10);
         foreach (Item.ObjDropStruct drop in dropsObjs)
         {
             string prefabPath = drop.prefabPath;
