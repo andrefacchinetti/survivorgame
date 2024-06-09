@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3341153817672791114}
   - component: {fileID: 8204890920499015037}
   m_Layer: 0
-  m_Name: "Ch\xE3o Pedra"
+  m_Name: chao_pedra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,6 +73,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -258,6 +259,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -319,6 +321,7 @@ MonoBehaviour:
   damage: 0
   objPaiParaDestruir: {fileID: 22490473466427295}
   dropsItems: []
+  dropsObjs: []
   dropPosition: {fileID: 0}
   direcaoDrop: 121
   isAttacking: 0
@@ -330,7 +333,8 @@ MonoBehaviour:
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
   construcaoStats: {fileID: 0}
-  isSangra: 0
+  collisorSofreDano: {fileID: 0}
+  tipoEstilhaco: 3
 --- !u!54 &7676619221486442947
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -406,6 +410,7 @@ MonoBehaviour:
   isPlataforma: 0
   plataformaPai: {fileID: 0}
   listaConstrucoesConectadas: []
+  statsGeral: {fileID: 0}
 --- !u!114 &7947874474521614798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,6 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemMarteloReparador: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   itemMarteloDemolidor: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcoesController: {fileID: 0}
 --- !u!114 &6786492235848486394
 MonoBehaviour:
   m_ObjectHideFlags: 0

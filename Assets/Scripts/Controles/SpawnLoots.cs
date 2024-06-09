@@ -56,8 +56,8 @@ public class SpawnLoots : MonoBehaviour
         Quaternion rotation = this.transform.rotation;
 
 
-        string nomePrefab = itemsDropStruct[randomIndex].itemDefinition.name;
-        string prefabPath = itemsDropStruct[randomIndex].tipoItem + "/" + nomePrefab;
+        string nomePrefab = itemsDropStruct[randomIndex].tipoItem + "/" + itemsDropStruct[randomIndex].itemDefinition.name;
+        string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
         this.itemSpawnado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, position, rotation, itemsDropStruct[randomIndex].materialPersonalizado, gameController.PV.ViewID);
     }
 

@@ -10,10 +10,9 @@ public class ItemDrop : MonoBehaviourPunCallbacks
     [SerializeField] public string pathPrefab;
     public bool estaSendoComido = false;
 
-    public static GameObject InstanciarPrefabPorPath(string nomePrefab, int quantidade, Vector3 position, Quaternion rotation, Material materialPersonalizado, int viewID)
+    public static GameObject InstanciarPrefabPorPath(string prefabPath, int quantidade, Vector3 position, Quaternion rotation, Material materialPersonalizado, int viewID)
     {
         GameObject objInstanciado = null;
-        string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
 
         for (int i = 0; i < quantidade; i++)
         {            
@@ -39,10 +38,9 @@ public class ItemDrop : MonoBehaviourPunCallbacks
         return objInstanciado;
     }
 
-    public static GameObject InstanciarPrefabPorPrefabMark(string nomePrefab, GameObject[] prefabMarks, int viewID)
+    public static GameObject InstanciarPrefabPorPrefabMark(string prefabPath, GameObject[] prefabMarks, Vector3 force, int viewID)
     {
         GameObject objInstanciado = null;
-        string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
         Debug.Log(prefabPath);
 
         for (int i = 0; i < prefabMarks.Length; i++)
@@ -58,6 +56,14 @@ public class ItemDrop : MonoBehaviourPunCallbacks
             }
             objInstanciado.GetComponent<MeshRenderer>().material = prefabMarks[i].GetComponent<MeshRenderer>().material;
             objInstanciado.transform.localScale = prefabMarks[i].transform.lossyScale;
+            if(force != Vector3.zero)
+            {
+                Rigidbody rigid = objInstanciado.GetComponent<Rigidbody>();
+                if (rigid != null)
+                {
+                    rigid.AddForce(force, ForceMode.Impulse);
+                }
+            }
         }
 
         return objInstanciado;

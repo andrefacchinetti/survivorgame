@@ -5,6 +5,7 @@ using Photon.Pun;
 using Opsive.Shared.Inventory;
 using Opsive.Shared.Events;
 using Opsive.UltimateCharacterController.Traits;
+using System.IO;
 
 public class StatsGeral : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class StatsGeral : MonoBehaviour
     [SerializeField] public float damage;
     [SerializeField] public GameObject objPaiParaDestruir;
     [SerializeField] public List<Item.ItemDropStruct> dropsItems;
+    [SerializeField] public List<Item.ObjDropStruct> dropsObjs;
     [SerializeField] public GameObject dropPosition;
     [SerializeField] public char direcaoDrop = 'y';
     [HideInInspector] public bool isAttacking;
@@ -198,7 +200,8 @@ public class StatsGeral : MonoBehaviour
         {
             int quantidade = item.quantidade;
             string nomePrefab = item.tipoItem + "/" + item.itemIdentifierAmount.ItemDefinition.name;
-            ItemDrop.InstanciarPrefabPorPath(nomePrefab, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, null, PV.ViewID);
+            string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
+            ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, dropPosition.transform.position, dropPosition.transform.rotation, null, PV.ViewID);
             jogadorStats.playerController.inventario.RemoverItemDoInventario(item, quantidade);
         }
     }
@@ -210,11 +213,11 @@ public class StatsGeral : MonoBehaviour
             if (!Item.TiposItems.Nenhum.ToString().Equals(drop.tipoItem))
             {
                 int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-                string nomePrefab = drop.itemDefinition.name;
-                string prefabPath = drop.tipoItem + "/" + nomePrefab;
-                if(drop.prefabDropMarks != null && drop.prefabDropMarks.Length > 0)
+                string nomePrefab = drop.tipoItem + "/" + drop.itemDefinition.name;
+                string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
+                if (drop.prefabDropMarks != null && drop.prefabDropMarks.Length > 0)
                 {
-                    ItemDrop.InstanciarPrefabPorPrefabMark(prefabPath, drop.prefabDropMarks, PV.ViewID);
+                    ItemDrop.InstanciarPrefabPorPrefabMark(prefabPath, drop.prefabDropMarks, Vector3.zero, PV.ViewID);
                 }
                 else
                 {
@@ -222,6 +225,19 @@ public class StatsGeral : MonoBehaviour
                     Vector3 spawnPosition = dropPosition.transform.position + new Vector3(0, alturaObjetoExistente, 0);
                     ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, spawnPosition, dropPosition.transform.rotation, drop.materialPersonalizado, PV.ViewID);
                 }
+            }
+        }
+    }
+
+    public void DroparObjetosAoSerDestruido()
+    {
+        Vector3 force = new Vector3(50, 0, 70);
+        foreach (Item.ObjDropStruct drop in dropsObjs)
+        {
+            string prefabPath = drop.prefabPath;
+            if (drop.prefabDropMarks != null && drop.prefabDropMarks.Length > 0)
+            {
+                ItemDrop.InstanciarPrefabPorPrefabMark(prefabPath, drop.prefabDropMarks, force, PV.ViewID);
             }
         }
     }
@@ -235,8 +251,8 @@ public class StatsGeral : MonoBehaviour
         }
         else
         {
-            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
-            else GameObject.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir : this.gameObject);
+            if (PhotonNetwork.IsConnected) PhotonNetwork.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir.gameObject : this.gameObject);
+            else GameObject.Destroy(objPaiParaDestruir != null ? objPaiParaDestruir.gameObject : this.gameObject);
         }
     }
 

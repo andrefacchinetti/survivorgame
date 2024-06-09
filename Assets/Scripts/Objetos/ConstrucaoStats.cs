@@ -10,7 +10,6 @@ public class ConstrucaoStats : MonoBehaviour
     public void AcoesTomouDano()
     {
         Debug.Log("construcao tomou dano");
-        //TODO: Mostrar dano visual
     }
 
     public void AcoesMorreu()

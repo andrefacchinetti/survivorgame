@@ -9,11 +9,13 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
     [SerializeField] public bool isPlataforma;
     [HideInInspector] public ConstrucoesController plataformaPai;
     [HideInInspector] public List<ConstrucoesController> listaConstrucoesConectadas;
+    [HideInInspector] public StatsGeral statsGeral;
 
     private void Awake()
     {
         transform.tag = "ConstrucaoStats";
         listaConstrucoesConectadas = new List<ConstrucoesController>();
+        statsGeral = GetComponent<StatsGeral>();
     }
 
     private bool isTenhoPai()
@@ -82,7 +84,8 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
     {
         //TODO: EFEITO DA CONSTRUCAO SENDO DESTRUIDA EM PEDAÇOS
         GameObject objPaiParaDestruir = objConstrucao.GetComponent<StatsGeral>().objPaiParaDestruir != null ? objConstrucao.GetComponent<StatsGeral>().objPaiParaDestruir : objConstrucao;
-        PhotonNetwork.Destroy(objPaiParaDestruir);
+        objPaiParaDestruir.GetComponent<StatsGeral>().DroparObjetosAoSerDestruido();
+        PhotonNetwork.Destroy(objPaiParaDestruir.gameObject);
     }
 
 }

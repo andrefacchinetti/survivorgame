@@ -6,6 +6,7 @@ using Photon.Pun;
 using UnityEngine.EventSystems;
 using Opsive.Shared.Inventory;
 using Opsive.UltimateCharacterController.Inventory;
+using System.IO;
 
 public class Item : MonoBehaviourPunCallbacks
 {
@@ -57,6 +58,14 @@ public class Item : MonoBehaviourPunCallbacks
         public Material materialPersonalizado;
         public int qtdMinDrops;
         public int qtdMaxDrops;
+    }
+
+    [System.Serializable]
+    public struct ObjDropStruct
+    {
+        public GameObject[] prefabDropMarks;
+        public string prefabPath;
+        public Material materialPersonalizado;
     }
 
     [System.Serializable]
@@ -255,7 +264,8 @@ public class Item : MonoBehaviourPunCallbacks
     {
         int quantidade = 1;
         if (this.tipoItem.Equals(TiposItems.Nenhum)) return;
-        string prefabPath = this.tipoItem + "/"+ this.itemIdentifierAmount.ItemDefinition.name.ToString();
+        string nomePrefab = this.tipoItem + "/"+ this.itemIdentifierAmount.ItemDefinition.name.ToString();
+        string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
         GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, new Vector3(transform.root.position.x, 
             transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, null, PV.ViewID);
         if (this.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))

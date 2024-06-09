@@ -41,6 +41,7 @@ public class EstilhacoFxController : MonoBehaviour
 
 	public void GerarEstilhaco(TipoEstilhaco tipoEstilhaco, Vector3 colliderArma, Vector3 attacker)
     {
+		Debug.Log("GERANDO ESTILHAÇO: " + tipoEstilhaco.ToString());
 		GameObject particle = spawnParticle(tipoEstilhaco, colliderArma, attacker);
     }
 

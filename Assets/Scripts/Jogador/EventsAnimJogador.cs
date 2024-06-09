@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.IO;
 
 public class EventsAnimJogador : MonoBehaviourPunCallbacks
 {
@@ -22,8 +23,8 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 		foreach (Item.ItemDropStruct drop in playerController.itemsDropsPosDissecar)
 		{
 			int quantidade = Random.Range(drop.qtdMinDrops, drop.qtdMaxDrops);
-			string nomePrefab = drop.itemDefinition.name;
-			string prefabPath = drop.tipoItem + "/" + nomePrefab;
+			string nomePrefab = drop.tipoItem + "/" + drop.itemDefinition.name;
+			string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
 			ItemDrop.InstanciarPrefabPorPath(prefabPath, quantidade, playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.position,
 				playerController.corpoDissecando.GetComponent<StatsGeral>().dropPosition.transform.rotation, drop.materialPersonalizado, playerController.PV.ViewID);
 		}
@@ -67,8 +68,8 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 			Vector3 direction = hit.point - transform.position;
 			direction.Normalize();
 
-			string nomePrefab = playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name;
-			string prefabPath = playerController.inventario.itemNaMao.tipoItem + "/" + nomePrefab;
+			string nomePrefab = playerController.inventario.itemNaMao.tipoItem + "/" + playerController.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name;
+			string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
 			GameObject meuObjLancado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, transform.position, Quaternion.LookRotation(direction), null, playerController.PV.ViewID);
 			// Aplica a for�a na dire��o calculada
 			meuObjLancado.GetComponent<Rigidbody>().AddForce(direction * throwForce, ForceMode.Impulse);

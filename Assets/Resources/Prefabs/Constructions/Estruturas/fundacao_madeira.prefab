@@ -309,6 +309,7 @@ MonoBehaviour:
   damage: 0
   objPaiParaDestruir: {fileID: 4702809760384519802}
   dropsItems: []
+  dropsObjs: []
   dropPosition: {fileID: 0}
   direcaoDrop: 121
   isAttacking: 0
@@ -320,7 +321,8 @@ MonoBehaviour:
   dropaRecursosStats: {fileID: 0}
   reconstruivelStats: {fileID: 0}
   construcaoStats: {fileID: 0}
-  isSangra: 0
+  collisorSofreDano: {fileID: 0}
+  tipoEstilhaco: 2
 --- !u!54 &18433503599738745
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -380,6 +382,7 @@ MonoBehaviour:
   isPlataforma: 0
   plataformaPai: {fileID: 0}
   listaConstrucoesConectadas: []
+  statsGeral: {fileID: 0}
 --- !u!114 &6169553812363762684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemMarteloReparador: {fileID: -5697923567735730074, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
   itemMarteloDemolidor: {fileID: 5646891891637339583, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
+  construcoesController: {fileID: 0}
 --- !u!114 &3574917889974679698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +575,7 @@ GameObject:
   - component: {fileID: 6911746428779140160}
   - component: {fileID: 3745824593272292760}
   m_Layer: 0
-  m_Name: "Funda\xE7\xE3o"
+  m_Name: fundacao_madeira
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -626,6 +630,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
