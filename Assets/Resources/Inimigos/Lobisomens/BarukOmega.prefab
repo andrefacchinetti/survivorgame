@@ -1118,11 +1118,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 904ee8dc07d5808488c41690d38d604d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objFormaLobo: {fileID: 0}
   gameController: {fileID: 0}
   lobisomemStats: {fileID: 0}
   statsGeral: {fileID: 0}
   lobisomemMovimentacao: {fileID: 0}
+  attributeManager: {fileID: 0}
+  caracteristica: 0
   limiteDistanciaAteJogadores: 80
 --- !u!114 &7903728559268399649
 MonoBehaviour:
@@ -1151,6 +1152,7 @@ MonoBehaviour:
     materialPersonalizado: {fileID: 0}
     qtdMinDrops: 8
     qtdMaxDrops: 10
+  dropsObjs: []
   dropPosition: {fileID: 0}
   direcaoDrop: 121
   isAttacking: 0
@@ -1325,13 +1327,15 @@ MonoBehaviour:
   raioDeDistanciaMaxParaPerseguirAlvo: 40
   timerParaAndarAleatoriamente: 5
   preditorMultiplicador: 1.5
+  statsGeral: {fileID: 7903728559268399649}
+  lobisomemStats: {fileID: 267380533}
+  lobisomemController: {fileID: 0}
+  agent: {fileID: 0}
+  animator: {fileID: 0}
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
   targetObstaculo: {fileID: 0}
-  agent: {fileID: 0}
-  animator: {fileID: 0}
-  statsGeral: {fileID: 7903728559268399649}
-  lobisomemStats: {fileID: 267380533}
+  arbustoDestino: {fileID: 0}
   detectionRadius: 10
 --- !u!95 &3532485600327974575
 Animator:

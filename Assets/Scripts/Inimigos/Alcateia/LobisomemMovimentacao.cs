@@ -11,14 +11,16 @@ public class LobisomemMovimentacao : MonoBehaviour
     public float timerParaAndarAleatoriamente = 5f;
     public float preditorMultiplicador = 1.5f;
 
-    // Referências a outros componentes
-    [HideInInspector] public StatsGeral targetInimigo;
-    [HideInInspector] public GameObject targetComida;
-    [HideInInspector] public Transform targetObstaculo;
+    [HideInInspector] public StatsGeral statsGeral;
+    [HideInInspector] public LobisomemStats lobisomemStats;
+    [HideInInspector] public LobisomemController lobisomemController;
     [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public Animator animator;
-    public StatsGeral statsGeral;
-    public LobisomemStats lobisomemStats;
+
+    // Referências a outros componentes
+     public StatsGeral targetInimigo;
+    [HideInInspector] public GameObject targetComida;
+    [HideInInspector] public Transform targetObstaculo;
 
     // Variáveis privadas para controle de tempo
     private float timer;
@@ -31,6 +33,9 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        statsGeral = GetComponent<StatsGeral>();
+        lobisomemStats = GetComponent<LobisomemStats>();
+        lobisomemController = GetComponent<LobisomemController>();
 
         timer = timerParaAndarAleatoriamente;
         proximaAtualizacaoCaminho = Time.time;
@@ -48,6 +53,61 @@ public class LobisomemMovimentacao : MonoBehaviour
             DetectNearbyObjects();
         }
 
+        UpdateMovimentacaoCaracteristicaNormal();
+        UpdateMovimentacaoCaracteristicaStealth();
+
+        verificarProximoComida();
+        verificarAtaque();
+        verificarCorrerAndar();
+    }
+
+    // ------------------- UPDATES POR CARACTERISTICA -------------------------
+
+    private void UpdateMovimentacaoCaracteristicaNormal()
+    {
+        if (!(LobisomemController.CaracteristicasLobisomem.Normal == lobisomemController.caracteristica
+            || LobisomemController.CaracteristicasLobisomem.Veloz == lobisomemController.caracteristica
+            || LobisomemController.CaracteristicasLobisomem.Tank == lobisomemController.caracteristica)) return;
+
+        perseguirAndAtacar();
+    }
+
+    [SerializeField] GameObject arbustoDestino;
+    private void UpdateMovimentacaoCaracteristicaStealth()
+    {
+        if (!(LobisomemController.CaracteristicasLobisomem.Stealth == lobisomemController.caracteristica)) return;
+
+        if (estaProximoDoAlvo()) 
+        {
+            perseguirAndAtacar(); //Perseguir e atacar
+        }
+        else
+        {
+            if (arbustoDestino == null) movimentarAleatoriamentePeloMapa();
+            else
+            {
+                Debug.Log("indo ate arbusto");
+                MoveToPosition(arbustoDestino.transform.position);
+            }
+        }
+    }
+
+    // ------------------- FUNCOES ESPECIFICAS POR CARACTERISTICA -------------------------
+
+  
+
+    // ------------------- FUNCOES BASICAS -------------------------
+
+    private bool estaProximoDoAlvo() //Se o lobisomem está a 10m do jogador, é pq ele ta perto
+    {
+        if (targetInimigo == null) return false;
+        float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.transform.position);
+        return distanceToTarget < 15;
+    }
+
+    private void perseguirAndAtacar() 
+    {
+        Debug.Log("perseguindo e atacando");
         if (targetInimigo != null)
         {
             if (isPodeAtacarAlvo(transform, targetInimigo.transform.position))
@@ -63,10 +123,6 @@ public class LobisomemMovimentacao : MonoBehaviour
         {
             movimentarAleatoriamentePeloMapa();
         }
-
-        verificarProximoComida();
-        verificarAtaque();
-        verificarCorrerAndar();
     }
 
     private void verificarProximoComida()
@@ -202,6 +258,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo")) return;
 
+        Debug.Log("movimentando aleatoriamente pelo mapa");
         if (timer >= timerParaAndarAleatoriamente)
         {
             if (targetInimigo == null)
@@ -230,14 +287,6 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 agent.SetDestination(hit.position);
             }
-            else
-            {
-                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
-            }
-        }
-        else
-        {
-            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMinParaAndarAleatoriamente);
         }
 
         proximaAtualizacaoCaminho = Time.time + caminhoCooldown;
@@ -274,8 +323,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                // Se o agente estiver muito perto do destino, pare de perseguir
-                agent.ResetPath();
+                agent.ResetPath(); // Se o agente estiver muito perto do destino, pare de perseguir
             }
             else
             {
@@ -292,6 +340,9 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void DetectNearbyObjects()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        float shortestDistance = float.MaxValue;
+        GameObject nearestArbusto = null;
+
         foreach (var hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("PlayerCollider") || hitCollider.CompareTag("AnimalCollider"))
@@ -311,6 +362,26 @@ public class LobisomemMovimentacao : MonoBehaviour
                     targetComida = hitCollider.gameObject;
                 }
             }
+            else if (hitCollider.CompareTag("Arvore") && hitCollider.gameObject.layer == LayerMask.NameToLayer("ArbustoStealth"))
+            {
+                if (targetInimigo != null)
+                {
+                    float distanceToLobisomem = Vector3.Distance(transform.position, hitCollider.transform.position);
+                    float distanceToPlayer = Vector3.Distance(targetInimigo.transform.position, hitCollider.transform.position);
+                    float averageDistance = (distanceToLobisomem + distanceToPlayer) / 2;
+
+                    if (averageDistance < shortestDistance)
+                    {
+                        shortestDistance = averageDistance;
+                        nearestArbusto = hitCollider.gameObject;
+                    }
+                }
+            }
+        }
+
+        if (nearestArbusto != null)
+        {
+            arbustoDestino = nearestArbusto;
         }
     }
 
