@@ -10,6 +10,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     public float raioDeDistanciaMaxParaPerseguirAlvo = 40f;
     public float timerParaAndarAleatoriamente = 5f;
     public float preditorMultiplicador = 1.5f;
+    public float paramDistanciaProximoDoAlvo = 15f;
 
     [HideInInspector] public StatsGeral statsGeral;
     [HideInInspector] public LobisomemStats lobisomemStats;
@@ -53,8 +54,11 @@ public class LobisomemMovimentacao : MonoBehaviour
             DetectNearbyObjects();
         }
 
+        //BEGIN Update movimentacao por Caracteristicas
         UpdateMovimentacaoCaracteristicaNormal();
         UpdateMovimentacaoCaracteristicaStealth();
+        UpdateMovimentacaoCaracteristicaMedroso();
+        //END Update movimentacao por Caracteristicas
 
         verificarProximoComida();
         verificarAtaque();
@@ -92,9 +96,49 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    bool isEntrouEmCombate = false;
+    private void UpdateMovimentacaoCaracteristicaMedroso()
+    {
+        if (!(LobisomemController.CaracteristicasLobisomem.Medroso == lobisomemController.caracteristica)) return;
+
+        if(targetInimigo == null)
+        {
+            movimentarAleatoriamentePeloMapa();
+            isEntrouEmCombate = false;
+        }
+        else
+        {
+            if (estaProximoDoAlvo() || isEntrouEmCombate)
+            {
+                perseguirAndAtacar(); //Perseguir e atacar
+            }
+            else
+            {
+                if (isAlvoEstaArmado())
+                {
+                    //Movimentar para uma distancia segura do raio do jogador
+                }
+                else
+                {
+                    isEntrouEmCombate = true;
+                    MoveToPosition(targetInimigo.transform.position);
+                }
+            }
+        }
+    }
+
     // ------------------- FUNCOES ESPECIFICAS POR CARACTERISTICA -------------------------
 
-  
+    private bool isAlvoEstaArmado()
+    {
+        if(targetInimigo != null && targetInimigo.jogadorStats.playerController.inventario.itemNaMao != null &&
+            targetInimigo.jogadorStats.playerController.inventario.itemNaMao.tipoItem == Item.TiposItems.Arma)
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     // ------------------- FUNCOES BASICAS -------------------------
 
@@ -102,7 +146,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (targetInimigo == null) return false;
         float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.transform.position);
-        return distanceToTarget < 15;
+        return distanceToTarget < paramDistanciaProximoDoAlvo;
     }
 
     private void perseguirAndAtacar() 
@@ -290,6 +334,27 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
 
         proximaAtualizacaoCaminho = Time.time + caminhoCooldown;
+    }
+
+    float distanciaSegura = 20f;
+    private void MoverParaDistanciaSeguraDoAlvo()
+    {
+        if (targetInimigo == null) return;
+
+        // Calcula a direção do lobisomem para o alvo
+        Vector3 directionToTarget = (transform.position - targetInimigo.transform.position).normalized;
+        // Calcula a posição que está a 'distanciaSegura' do alvo
+        Vector3 targetPosition = targetInimigo.transform.position + directionToTarget * distanciaSegura;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(targetPosition, out hit, distanciaSegura, NavMesh.AllAreas))
+        {
+            // Verifica se a posição projetada está dentro do NavMesh
+            if (hit.hit)
+            {
+                agent.SetDestination(hit.position);
+            }
+        }
     }
 
     private void MoveToRandomPosition(float minDistance, float maxDistance)
