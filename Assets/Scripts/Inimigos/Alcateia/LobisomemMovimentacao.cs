@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -62,6 +63,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         UpdateMovimentacaoCaracteristicaNormal();
         UpdateMovimentacaoCaracteristicaStealth();
         UpdateMovimentacaoCaracteristicaMedroso();
+        UpdateMovimentacaoCaracteristicaCovarde();
         //END Update movimentacao por Caracteristicas
 
         verificarProximoComida();
@@ -85,7 +87,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (!(LobisomemController.CaracteristicasLobisomem.Stealth == lobisomemController.caracteristica)) return;
 
-        if (estaProximoDoAlvo()) 
+        if (estaProximoDoAlvo(paramDistanciaProximoDoAlvo)) 
         {
             perseguirAndAtacar(); //Perseguir e atacar
         }
@@ -112,7 +114,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
         else
         {
-            if (estaProximoDoAlvo() || isEntrouEmCombate)
+            if (estaProximoDoAlvo(paramDistanciaProximoDoAlvo) || isEntrouEmCombate)
             {
                 perseguirAndAtacar(); //Perseguir e atacar
             }
@@ -131,6 +133,34 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    private void UpdateMovimentacaoCaracteristicaCovarde()
+    {
+        if (!(LobisomemController.CaracteristicasLobisomem.Covarde == lobisomemController.caracteristica)) return;
+
+        if (targetInimigo == null)
+        {
+            movimentarAleatoriamentePeloMapa();
+        }
+        else
+        {
+            if (estaProximoDoAlvo(paramDistanciaProximoDoAlvo / 2))
+            {
+                perseguirAndAtacar(); //Perseguir e atacar
+            }
+            else
+            {
+                if (isJogadorEstaOlhandoParaLobisomem())
+                {
+                    MoverPertoDasCostasDoJogador();
+                }
+                else
+                {
+                    MoveToPosition(targetInimigo.transform.position);
+                }
+            }
+        }
+    }
+
     // ------------------- FUNCOES ESPECIFICAS POR CARACTERISTICA -------------------------
 
     private bool isAlvoEstaArmado()
@@ -143,14 +173,29 @@ public class LobisomemMovimentacao : MonoBehaviour
         return false;
     }
 
+    private bool isJogadorEstaOlhandoParaLobisomem()
+    {
+        if (targetInimigo == null) return false;
+        // Obtém o vetor de direção do jogador
+        Vector3 direcaoDoOlharDoJogador = targetInimigo.transform.forward;
+        // Obtém o vetor de direção do jogador até o lobisomem
+        Vector3 direcaoParaLobisomem = (transform.position - targetInimigo.transform.position).normalized;
+        // Calcula o produto escalar entre as duas direções
+        float dotProduct = Vector3.Dot(direcaoDoOlharDoJogador, direcaoParaLobisomem);
+        // Calcula o ângulo entre as duas direções
+        float angulo = Mathf.Acos(dotProduct) * Mathf.Rad2Deg;
+        // Verifica se o ângulo está dentro do limite
+        return angulo <= 45f;
+    }
+
 
     // ------------------- FUNCOES BASICAS -------------------------
 
-    private bool estaProximoDoAlvo() //Se o lobisomem está a 10m do jogador, é pq ele ta perto
+    private bool estaProximoDoAlvo(float distanciaProx) //Se o lobisomem está a 10m do jogador, é pq ele ta perto
     {
         if (targetInimigo == null) return false;
         float distanceToTarget = Vector3.Distance(transform.position, targetInimigo.transform.position);
-        return distanceToTarget < paramDistanciaProximoDoAlvo;
+        return distanceToTarget < distanciaProx;
     }
 
     private void perseguirAndAtacar() 
@@ -404,7 +449,67 @@ public class LobisomemMovimentacao : MonoBehaviour
         agent.speed = lobisomemStats.runSpeed;
     }
 
-    public float detectionRadius = 80f;
+    private void MoverPertoDasCostasDoJogador()
+    {
+        if (targetInimigo == null) return;
+        Debug.Log("movendo para as costas do jogador");
+
+        Vector3 alvoPosition = targetInimigo.transform.position;
+        Vector3 alvoDirection = targetInimigo.transform.forward;
+        float anguloIncremento = 45f; // Incremento de ângulo para verificar pontos ao redor do jogador
+
+        List<Vector3> potentialPositions = new List<Vector3>();
+
+        // Gera posições ao redor do jogador
+        for (float angle = -90; angle <= 90; angle += anguloIncremento)
+        {
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * alvoDirection;
+            Vector3 position = alvoPosition - direction * distanciaSegura;
+            potentialPositions.Add(position);
+        }
+
+        // Verifica a posição navegável mais próxima
+        Vector3 melhorPosicao = alvoPosition;
+        float menorDistancia = float.MaxValue;
+        NavMeshHit hit;
+
+        foreach (Vector3 pos in potentialPositions)
+        {
+            if (NavMesh.SamplePosition(pos, out hit, distanciaSegura, NavMesh.AllAreas))
+            {
+                float distancia = Vector3.Distance(transform.position, hit.position);
+                if (distancia < menorDistancia)
+                {
+                    melhorPosicao = hit.position;
+                    menorDistancia = distancia;
+                }
+            }
+        }
+
+        if (melhorPosicao != alvoPosition)
+        {
+            if (Time.time >= proximaAtualizacaoCaminho && agent.isOnNavMesh)
+            {
+                if (!agent.hasPath || agent.remainingDistance > lobisomemStats.pathUpdateDistanceThreshold)
+                {
+                    MoveToPosition(melhorPosicao);
+                }
+                else if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    agent.ResetPath(); // Se o agente estiver muito perto do destino, pare de perseguir
+                }
+                else
+                {
+                    targetInimigo = null;
+                    movimentarAleatoriamentePeloMapa();
+                }
+            }
+
+            agent.speed = lobisomemStats.runSpeed;
+        }
+    }
+
+    public float detectionRadius = 100f;
 
     private void DetectarJogadores()
     {
