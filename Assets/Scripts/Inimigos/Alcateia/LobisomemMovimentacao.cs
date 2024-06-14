@@ -51,7 +51,11 @@ public class LobisomemMovimentacao : MonoBehaviour
         if (detectionTimer >= detectionInterval)
         {
             detectionTimer = 0;
-            DetectNearbyObjects();
+            //Otimizar: detectar em tempos diferentes
+            DetectarJogadores();
+            DetectarAnimais();
+            DetectarArbustos();
+            DetectarItensDrop();
         }
 
         //BEGIN Update movimentacao por Caracteristicas
@@ -116,7 +120,7 @@ public class LobisomemMovimentacao : MonoBehaviour
             {
                 if (isAlvoEstaArmado())
                 {
-                    //Movimentar para uma distancia segura do raio do jogador
+                    MoverParaDistanciaSeguraDoAlvo();
                 }
                 else
                 {
@@ -400,53 +404,92 @@ public class LobisomemMovimentacao : MonoBehaviour
         agent.speed = lobisomemStats.runSpeed;
     }
 
-    public float detectionRadius = 10f;
+    public float detectionRadius = 80f;
 
-    private void DetectNearbyObjects()
+    private void DetectarJogadores()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
-        float shortestDistance = float.MaxValue;
-        GameObject nearestArbusto = null;
+        if (targetInimigo != null) return;
+        int layerMask = LayerMask.GetMask("SubCharacter");
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("PlayerCollider") || hitCollider.CompareTag("AnimalCollider"))
+            StatsGeral statsGeralEnemy = hitCollider.transform.GetComponentInParent<StatsGeral>();
+            if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive())
+            {
+                targetInimigo = statsGeralEnemy;
+                targetComida = null;
+                break;
+            }
+        }
+    }
+
+    private void DetectarAnimais()
+    {
+        if (targetInimigo != null) return;
+        int layerMask = LayerMask.GetMask("Enemy");
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("AnimalCollider"))
             {
                 StatsGeral statsGeralEnemy = hitCollider.transform.GetComponentInParent<StatsGeral>();
                 if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive())
                 {
                     targetInimigo = statsGeralEnemy;
                     targetComida = null;
+                    break;
                 }
             }
-            else if (hitCollider.CompareTag("ItemDrop"))
+        }
+    }
+
+    private void DetectarArbustos()
+    {
+        int layerMask = LayerMask.GetMask("ArbustoStealth");
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
+
+        float shortestDistance = float.MaxValue;
+        GameObject nearestArbusto = null;
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (targetInimigo != null)
+            {
+                float distanceToLobisomem = Vector3.Distance(transform.position, hitCollider.transform.position);
+                float distanceToPlayer = Vector3.Distance(targetInimigo.transform.position, hitCollider.transform.position);
+                float averageDistance = (distanceToLobisomem + distanceToPlayer) / 2;
+
+                if (averageDistance < shortestDistance)
+                {
+                    shortestDistance = averageDistance;
+                    nearestArbusto = hitCollider.gameObject;
+                }
+            }
+        }
+        if (nearestArbusto != null)
+        {
+            arbustoDestino = nearestArbusto;
+        }
+    }
+
+    private void DetectarItensDrop()
+    {
+        if (targetInimigo != null) return;
+        int layerMask = LayerMask.GetMask("InteracaoComGrab");
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
+        foreach (var hitCollider in hitColliders)
+        {
+             if (hitCollider.CompareTag("ItemDrop"))
             {
                 Consumivel consumivel = hitCollider.GetComponent<Consumivel>();
                 if (consumivel != null && consumivel.tipoConsumivel.Equals(Consumivel.TipoConsumivel.Carne))
                 {
                     targetComida = hitCollider.gameObject;
+                    break;
                 }
             }
-            else if (hitCollider.CompareTag("Arvore") && hitCollider.gameObject.layer == LayerMask.NameToLayer("ArbustoStealth"))
-            {
-                if (targetInimigo != null)
-                {
-                    float distanceToLobisomem = Vector3.Distance(transform.position, hitCollider.transform.position);
-                    float distanceToPlayer = Vector3.Distance(targetInimigo.transform.position, hitCollider.transform.position);
-                    float averageDistance = (distanceToLobisomem + distanceToPlayer) / 2;
-
-                    if (averageDistance < shortestDistance)
-                    {
-                        shortestDistance = averageDistance;
-                        nearestArbusto = hitCollider.gameObject;
-                    }
-                }
-            }
-        }
-
-        if (nearestArbusto != null)
-        {
-            arbustoDestino = nearestArbusto;
         }
     }
 
