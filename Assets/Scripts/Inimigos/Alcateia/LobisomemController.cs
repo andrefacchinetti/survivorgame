@@ -24,7 +24,6 @@ public class LobisomemController : MonoBehaviour
         Covarde,
         Protetor,
         Astuto,
-        Assustador,
         Beserker
     }
 

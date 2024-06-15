@@ -82,7 +82,8 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (!(LobisomemController.CaracteristicasLobisomem.Normal == lobisomemController.caracteristica
             || LobisomemController.CaracteristicasLobisomem.Veloz == lobisomemController.caracteristica
-            || LobisomemController.CaracteristicasLobisomem.Tank == lobisomemController.caracteristica)) return;
+            || LobisomemController.CaracteristicasLobisomem.Tank == lobisomemController.caracteristica
+            || LobisomemController.CaracteristicasLobisomem.Beserker == lobisomemController.caracteristica)) return;
 
         perseguirAndAtacar();
     }

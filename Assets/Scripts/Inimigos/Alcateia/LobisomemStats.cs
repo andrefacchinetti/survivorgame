@@ -26,6 +26,17 @@ public class LobisomemStats : MonoBehaviour
 	public void AcoesTomouDano()
 	{
         lobisomemController.lobisomemMovimentacao.animator.SetTrigger("hit");
+        if(LobisomemController.CaracteristicasLobisomem.Beserker == lobisomemController.caracteristica)
+        {
+            if (lobisomemController.attributeManager.GetAttribute("Health").Value < lobisomemController.attributeManager.GetAttribute("Health").MaxValue / 2)
+            {
+                attackInterval = attackInterval / 2;
+            }
+            else if (lobisomemController.attributeManager.GetAttribute("Health").Value < lobisomemController.attributeManager.GetAttribute("Health").MaxValue / 3)
+            {
+                attackInterval = attackInterval / 3;
+            }
+        }
     }
 
     public void AcoesMorreu()
