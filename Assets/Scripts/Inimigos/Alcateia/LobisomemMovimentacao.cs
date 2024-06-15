@@ -12,6 +12,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     public float timerParaAndarAleatoriamente = 5f;
     public float preditorMultiplicador = 1.5f;
     public float paramDistanciaProximoDoAlvo = 15f;
+    public float paramDistanciaMaximaDoLocalProtecao = 20f;
 
     [HideInInspector] public StatsGeral statsGeral;
     [HideInInspector] public LobisomemStats lobisomemStats;
@@ -23,6 +24,7 @@ public class LobisomemMovimentacao : MonoBehaviour
      public StatsGeral targetInimigo;
     [HideInInspector] public GameObject targetComida;
     [HideInInspector] public Transform targetObstaculo;
+    [HideInInspector] public Vector3 positionProtecao; //Posicao que os lobisomens Protetores irão proteger
 
     // Variáveis privadas para controle de tempo
     private float timer;
@@ -65,6 +67,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         UpdateMovimentacaoCaracteristicaMedroso();
         UpdateMovimentacaoCaracteristicaCovarde();
         UpdateMovimentacaoCaracteristicaAstuto();
+        UpdateMovimentacaoCaracteristicaProtetor();
         //END Update movimentacao por Caracteristicas
 
         if (!estouFingindoDeMorto)
@@ -204,6 +207,27 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    private void UpdateMovimentacaoCaracteristicaProtetor()
+    {
+        if (!(LobisomemController.CaracteristicasLobisomem.Protetor == lobisomemController.caracteristica)) return;
+        if (estouLongeDoLocalProtecao())
+        {
+            targetInimigo = null;
+            MoveToPosition(positionProtecao);
+        }
+        else
+        {
+            if (targetInimigo == null)
+            {
+                movimentarAleatoriamentePeloMapa();
+            }
+            else
+            {
+                perseguirAndAtacar();
+            }
+        }
+    }
+
     // ------------------- FUNCOES ESPECIFICAS POR CARACTERISTICA -------------------------
 
     private bool isAlvoEstaArmado()
@@ -254,6 +278,12 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         possoPararDeFingirDeMorto = true;
         Debug.Log("POSSO PARAR DE FINGIR DE MORTO");
+    }
+
+    private bool estouLongeDoLocalProtecao() //Se o lobisomem está a 10m do jogador, é pq ele ta perto
+    {
+        float distanceToTarget = Vector3.Distance(transform.position, positionProtecao);
+        return distanceToTarget > paramDistanciaMaximaDoLocalProtecao;
     }
 
     // ------------------- FUNCOES BASICAS -------------------------
@@ -439,6 +469,7 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void MoverParaDistanciaSeguraDoAlvo()
     {
         if (targetInimigo == null) return;
+        if (Time.time < proximaAtualizacaoCaminho) return;
 
         // Calcula a direção do lobisomem para o alvo
         Vector3 directionToTarget = (transform.position - targetInimigo.transform.position).normalized;
@@ -454,6 +485,8 @@ public class LobisomemMovimentacao : MonoBehaviour
                 agent.SetDestination(hit.position);
             }
         }
+
+        proximaAtualizacaoCaminho = Time.time + caminhoCooldown;
     }
 
     private void MoveToRandomPosition(float minDistance, float maxDistance)

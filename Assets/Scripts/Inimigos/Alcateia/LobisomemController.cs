@@ -13,6 +13,7 @@ public class LobisomemController : MonoBehaviour
 
     [SerializeField] public CaracteristicasLobisomem caracteristica;
     [SerializeField] float limiteDistanciaAteJogadores = 80;
+    [SerializeField] bool caracteristicaAleatoria = true;
 
     public enum CaracteristicasLobisomem
     {
@@ -22,9 +23,9 @@ public class LobisomemController : MonoBehaviour
         Stealth,
         Medroso,
         Covarde,
-        Protetor,
         Astuto,
-        Beserker
+        Beserker,
+        Protetor
     }
 
     private void Awake()
@@ -37,7 +38,11 @@ public class LobisomemController : MonoBehaviour
 
     private void Start()
     {
-        //TODO: INSERIR CARACTERISTICA ALEATORIA
+        if(caracteristicaAleatoria)
+        {
+            int indexCaracteristica = Random.Range(0, System.Enum.GetValues(typeof(CaracteristicasLobisomem)).Length-1);
+            caracteristica = (CaracteristicasLobisomem)indexCaracteristica;
+        }
         atualizarStatsPorCaracteristica();
     }
 
@@ -79,6 +84,8 @@ public class LobisomemController : MonoBehaviour
             attributeManager.GetAttribute("Health").MaxValue *= 1.5f;
             attributeManager.GetAttribute("Health").Value = attributeManager.GetAttribute("Health").MaxValue;
         }
+        
+        lobisomemMovimentacao.positionProtecao = transform.position;
     }
 
 }
