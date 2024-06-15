@@ -64,11 +64,16 @@ public class LobisomemMovimentacao : MonoBehaviour
         UpdateMovimentacaoCaracteristicaStealth();
         UpdateMovimentacaoCaracteristicaMedroso();
         UpdateMovimentacaoCaracteristicaCovarde();
+        UpdateMovimentacaoCaracteristicaAstuto();
         //END Update movimentacao por Caracteristicas
 
-        verificarProximoComida();
-        verificarAtaque();
-        verificarCorrerAndar();
+        if (!estouFingindoDeMorto)
+        {
+            verificarProximoComida();
+            atacarObstaculoSeTiver();
+            verificarCorrerAndar();
+        }
+        
     }
 
     // ------------------- UPDATES POR CARACTERISTICA -------------------------
@@ -161,6 +166,43 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
+    bool jaFingiuDeMorto = false, estouFingindoDeMorto = false;
+    private void UpdateMovimentacaoCaracteristicaAstuto()
+    {
+        if (!(LobisomemController.CaracteristicasLobisomem.Astuto == lobisomemController.caracteristica)) return;
+        if(!jaFingiuDeMorto && !estouFingindoDeMorto && lobisomemController.attributeManager.GetAttribute("Health").Value < lobisomemController.attributeManager.GetAttribute("Health").MaxValue / 2)
+        {
+            fingirDeMorto();
+        }
+        else
+        {
+            if (!estouFingindoDeMorto)
+            {
+                AnimatorStateInfo currentAnimatorState = animator.GetCurrentAnimatorStateInfo(0);
+
+                if (!currentAnimatorState.IsName("death"))
+                {
+                    if (targetInimigo == null)
+                    {
+                        movimentarAleatoriamentePeloMapa();
+                    }
+                    else
+                    {
+                        perseguirAndAtacar();
+                    }
+                }
+                
+            }
+            else
+            {
+                if (!jaFingiuDeMorto && estaProximoDoAlvo(paramDistanciaProximoDoAlvo))
+                {
+                    pararDeFingirDeMorto();
+                }
+            }
+        }
+    }
+
     // ------------------- FUNCOES ESPECIFICAS POR CARACTERISTICA -------------------------
 
     private bool isAlvoEstaArmado()
@@ -188,6 +230,30 @@ public class LobisomemMovimentacao : MonoBehaviour
         return angulo <= 45f;
     }
 
+    private void fingirDeMorto()
+    {
+        agent.ResetPath();
+        estouFingindoDeMorto = true;
+        possoPararDeFingirDeMorto = false;
+        animator.SetBool("fingindoMorto", true);
+        Invoke("TempoFingindoDeMorto", Random.Range(5, 10));
+    }
+
+    private void pararDeFingirDeMorto()
+    {
+        if (!possoPararDeFingirDeMorto) return;
+        Debug.Log("Parou de fingir de morto ");
+        estouFingindoDeMorto = false;
+        jaFingiuDeMorto = true;
+        animator.SetBool("fingindoMorto", false);
+    }
+
+    bool possoPararDeFingirDeMorto = false;
+    void TempoFingindoDeMorto()
+    {
+        possoPararDeFingirDeMorto = true;
+        Debug.Log("POSSO PARAR DE FINGIR DE MORTO");
+    }
 
     // ------------------- FUNCOES BASICAS -------------------------
 
@@ -203,7 +269,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         Debug.Log("perseguindo e atacando");
         if (targetInimigo != null)
         {
-            if (isPodeAtacarAlvo(transform, targetInimigo.transform.position))
+            if (isPodeAtacarAlvo())
             {
                 atacarAlvo(targetInimigo.transform.position);
             }
@@ -244,38 +310,20 @@ public class LobisomemMovimentacao : MonoBehaviour
         }
     }
 
-    private void verificarAtaque()
+    private bool isPodeAtacarAlvo()
     {
-        if (targetInimigo == null)
-        {
-            atacarObstaculoOuInimigo();
-            return;
-        }
-
-        if (!targetInimigo.health.IsAlive())
-        {
-            targetInimigo = null;
-        }
-        else
-        {
-            if (isPodeAtacarAlvo(transform, targetInimigo.transform.position))
-            {
-                atacarAlvo(targetInimigo.transform.position);
-            }
-            else
-            {
-                atacarObstaculoOuInimigo();
-            }
-        }
-    }
-
-    private bool isPodeAtacarAlvo(Transform transformInicial, Vector3 positionTarget)
-    {
-        float distanceToInimigo = Vector3.Distance(transformInicial.position, positionTarget);
+        if (targetInimigo == null) return false;
+        float distanceToInimigo = Vector3.Distance(transform.position, targetInimigo.transform.position);
         return distanceToInimigo <= lobisomemStats.distanciaDeAtaque*2;
     }
 
-    private void atacarObstaculoOuInimigo()
+    private bool isPodeAtacarObstaculo()
+    {
+        float distanceToInimigo = Vector3.Distance(transform.position, targetObstaculo.transform.position);
+        return distanceToInimigo <= lobisomemStats.distanciaDeAtaque * 2;
+    }
+
+    private void atacarObstaculoSeTiver()
     {
         if (targetObstaculo != null)
         {
@@ -285,7 +333,8 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else
             {
-                if (isPodeAtacarAlvo(transform, targetObstaculo.position))
+                Debug.Log("atacarObstaculoSeTiver");
+                if (isPodeAtacarObstaculo())
                 {
                     atacarAlvo(targetObstaculo.position);
                 }

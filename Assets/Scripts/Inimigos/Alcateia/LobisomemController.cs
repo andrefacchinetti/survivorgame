@@ -75,6 +75,11 @@ public class LobisomemController : MonoBehaviour
             lobisomemMovimentacao.detectionRadius = 100;
             lobisomemMovimentacao.agent.stoppingDistance = 3;
         }
+        else if (CaracteristicasLobisomem.Astuto == caracteristica)
+        {
+            attributeManager.GetAttribute("Health").MaxValue *= 1.5f;
+            attributeManager.GetAttribute("Health").Value = attributeManager.GetAttribute("Health").MaxValue;
+        }
     }
 
 }
