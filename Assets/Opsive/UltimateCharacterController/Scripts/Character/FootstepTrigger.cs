@@ -14,6 +14,12 @@ namespace Opsive.UltimateCharacterController.Character
     /// </summary>
     public class FootstepTrigger : MonoBehaviour
     {
+        [SerializeField] PhysicsMaterial iceMaterial;
+        [SerializeField] UltimateCharacterLocomotion locomotion;
+        [SerializeField] bool isPeDireito;
+        [SerializeField] float slidingForce = 10f; // A força a ser aplicada para simular o deslize
+        private bool onIce = false; // Flag para verificar se o jogador está no gelo
+
         [Tooltip("Should the footprint texture be flipped?")]
         [SerializeField] protected bool m_FlipFootprint;
 
@@ -22,6 +28,7 @@ namespace Opsive.UltimateCharacterController.Character
         private Transform m_Transform;
         private CharacterFootEffects m_FootEffects;
         private CharacterLayerManager m_CharacterLayerManager;
+        
 
         /// <summary>
         /// Initialize the default values.
@@ -33,6 +40,14 @@ namespace Opsive.UltimateCharacterController.Character
             m_CharacterLayerManager = GetComponentInParent<CharacterLayerManager>();
         }
 
+        private bool CompareMaterialNames(string name1, string name2)
+        {
+            // Remove "(Instance)" do final dos nomes se existir
+            name1 = name1.Replace(" (Instance)", "");
+            name2 = name2.Replace(" (Instance)", "");
+            return name1 == name2;
+        }
+
         /// <summary>
         /// The trigger has collided with another object.
         /// </summary>
@@ -42,6 +57,32 @@ namespace Opsive.UltimateCharacterController.Character
             // Notify the CharacterFootEffects component if the layer is valid.
             if (MathUtility.InLayerMask(other.gameObject.layer, m_CharacterLayerManager.IgnoreInvisibleCharacterWaterLayers)) {
                 m_FootEffects.TriggerFootStep(m_Transform, m_FlipFootprint);
+            }
+
+            if (isPeDireito && other.material != null && CompareMaterialNames(other.material.name, iceMaterial.name))
+            {
+                Debug.Log("Entrou em contato com o material de gelo!");
+                onIce = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (isPeDireito && other.material != null && CompareMaterialNames(other.material.name, iceMaterial.name))
+            {
+                Debug.Log("Saiu do contato com o material de gelo!");
+                onIce = false;
+            }
+        }
+
+        void FixedUpdate()
+        {
+            if (!isPeDireito) return;
+            if (onIce)
+            {
+                // Aplica uma força constante para frente
+                Debug.Log(" Aplica uma força constante para frente!");
+                locomotion.AddForce(locomotion.transform.forward * slidingForce);
             }
         }
     }

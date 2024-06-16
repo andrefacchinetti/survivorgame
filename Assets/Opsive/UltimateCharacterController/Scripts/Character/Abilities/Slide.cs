@@ -60,6 +60,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         {
             // An attribute may prevent the ability from starting.
             if (!base.CanStartAbility()) {
+                Debug.Log("nao pode startar slide");
                 return false;
             }
 
@@ -74,6 +75,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         {
             // The character cannot slide in the air.
             if (!m_CharacterLocomotion.Grounded) {
+                Debug.Log("nao pode startar slide !m_CharacterLocomotion.Grounded");
                 return false;
             }
 
@@ -82,19 +84,22 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             var slopeAngle = Vector3.Angle(m_CharacterLocomotion.GroundedRaycastHit.normal, upDirection);
             var ray = new Ray(m_CharacterLocomotion.TargetPosition + m_CharacterLocomotion.Up * m_CharacterLocomotion.ColliderSpacing * 2, -upDirection);
             if (!Physics.Raycast(ray, m_CharacterLocomotion.MaxStepHeight, m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
+                Debug.Log("slopeAngle 87");
                 return slopeAngle >= m_EdgeSlideLimit - 0.001f;
             }
 
             ray = new Ray(m_CharacterLocomotion.GroundedRaycastHit.point + m_CharacterLocomotion.GroundedRaycastHit.normal * m_CharacterLocomotion.ColliderSpacing, -m_CharacterLocomotion.GroundedRaycastHit.normal);
             if (!Physics.Raycast(ray, out var slopeRaycastHit, m_CharacterLocomotion.ColliderSpacing * 2, m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
+                Debug.Log("nao pode startar slide Raycast 92");
                 return false;
             }
 
             // The character cannot slide if the slope isn't steep enough or is too steep.
-            slopeAngle = Vector3.Angle(slopeRaycastHit.normal, upDirection);
+            /*slopeAngle = Vector3.Angle(slopeRaycastHit.normal, upDirection);
             if (slopeAngle < m_SlideLimit.MinValue + 0.001f || slopeAngle > m_SlideLimit.MaxValue - 0.001f) {
+                Debug.Log("nao pode startar slide slopeAngle 99");
                 return false;
-            }
+            }*/
 
             // The character can slide.
             return true;
