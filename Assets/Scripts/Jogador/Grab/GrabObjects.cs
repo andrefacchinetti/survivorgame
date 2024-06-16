@@ -6,7 +6,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAguaPotavel = "AguaPotavel", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
-    private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
+    private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagCorpoMortoCollider = "CorpoMortoCollider", tagEnemyCollider = "EnemyCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
     private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore";
 
     [Tooltip("Force to apply in object")]
@@ -220,7 +220,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 possibleGrab = true;
             }
         }
-        else if (hit.transform.tag == tagAnimalCollider && inventario.itemNaMao != null
+        else if ((hit.transform.tag == tagCorpoMortoCollider || hit.transform.tag == tagEnemyCollider) && inventario.itemNaMao != null
             && (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemFaca)))
         {
             StatsGeral objPai = hit.transform.GetComponentInParent<StatsGeral>();

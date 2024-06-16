@@ -698,7 +698,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3480488334132052623}
-  - component: {fileID: 5050412400933730395}
   m_Layer: 0
   m_Name: L Clavicle
   m_TagString: Untagged
@@ -722,29 +721,6 @@ Transform:
   - {fileID: 3480488334505856752}
   m_Father: {fileID: 3480488334835364413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &5050412400933730395
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3480488334132052608}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 1.84
-  m_Height: 1.23
-  m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3480488334146713817
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,7 +924,7 @@ GameObject:
   - component: {fileID: 3480488334236197820}
   - component: {fileID: 909401057140708572}
   - component: {fileID: 334608350761124789}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: L Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1032,7 +1008,7 @@ GameObject:
   - component: {fileID: 3480488334260392536}
   - component: {fileID: 7580281049643621328}
   - component: {fileID: 4354517010406044413}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: R Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1431,7 +1407,7 @@ GameObject:
   - component: {fileID: 3480488334505856752}
   - component: {fileID: 7029341327074648511}
   - component: {fileID: 2826950485979508525}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: L UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1611,7 +1587,7 @@ GameObject:
   - component: {fileID: 3480488334529979427}
   - component: {fileID: 3480488334529979426}
   - component: {fileID: 7318189716716079760}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1654,7 +1630,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.21397425
-  m_Height: 1.67
+  m_Height: 1.32
   m_Direction: 0
   m_Center: {x: -0.29, y: 0, z: 0}
 --- !u!54 &7318189716716079760
@@ -1883,7 +1859,7 @@ GameObject:
   - component: {fileID: 3480488334697512564}
   - component: {fileID: 8760956477225104899}
   - component: {fileID: 6809162051395436261}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: R Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2122,7 +2098,7 @@ GameObject:
   - component: {fileID: 3480488334801327227}
   - component: {fileID: 5932069365371270681}
   - component: {fileID: 8513565422519143236}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2208,7 +2184,7 @@ GameObject:
   - component: {fileID: 319982172497044730}
   - component: {fileID: 5835080476066121650}
   - component: {fileID: 3791187016628030036}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2376,7 +2352,7 @@ GameObject:
   - component: {fileID: 3480488334835364413}
   - component: {fileID: 3480488334835364412}
   - component: {fileID: 8766516152376409489}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2588,7 +2564,7 @@ GameObject:
   - component: {fileID: 3480488334912297280}
   - component: {fileID: 7447158678249916676}
   - component: {fileID: 6512096553913079131}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: L Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2725,6 +2701,7 @@ MonoBehaviour:
   attributeManager: {fileID: 0}
   caracteristica: 0
   limiteDistanciaAteJogadores: 80
+  caracteristicaAleatoria: 1
 --- !u!114 &8094014223833661833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2972,6 +2949,7 @@ MonoBehaviour:
   timerParaAndarAleatoriamente: 5
   preditorMultiplicador: 1.5
   paramDistanciaProximoDoAlvo: 15
+  paramDistanciaMaximaDoLocalProtecao: 20
   statsGeral: {fileID: 8817566113519457645}
   lobisomemStats: {fileID: 8094014223833661833}
   lobisomemController: {fileID: 0}
@@ -2980,6 +2958,7 @@ MonoBehaviour:
   targetInimigo: {fileID: 0}
   targetComida: {fileID: 0}
   targetObstaculo: {fileID: 0}
+  positionProtecao: {x: 0, y: 0, z: 0}
   arbustoDestino: {fileID: 0}
   detectionRadius: 100
 --- !u!114 &4508698092928561800
@@ -3289,9 +3268,9 @@ GameObject:
   - component: {fileID: 3480488335098715517}
   - component: {fileID: 3480488335098715516}
   - component: {fileID: 4114118383951102095}
-  m_Layer: 26
+  m_Layer: 11
   m_Name: Spine1
-  m_TagString: Untagged
+  m_TagString: CorpoMortoCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3319,7 +3298,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3480488335098715518}
-  m_Material: {fileID: 13400000, guid: 0d242f91ab1d749a8b6230e6da662881, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3327,14 +3306,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.21397425
-  m_Height: 0.5228634
+  m_Radius: 0.3
+  m_Height: 1.35
   m_Direction: 0
-  m_Center: {x: -0.121322304, y: 0.00000002170303, z: 0.000000011922383}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4114118383951102095
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3355,13 +3334,13 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!1 &3480488335117440887
 GameObject:
   m_ObjectHideFlags: 0
@@ -3473,7 +3452,7 @@ GameObject:
   - component: {fileID: 3480488335155332721}
   - component: {fileID: 1261061224392264329}
   - component: {fileID: 2386744715965376145}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3913,7 +3892,7 @@ GameObject:
   - component: {fileID: 3480488335382910368}
   - component: {fileID: 2975728722026657392}
   - component: {fileID: 7592032886492881188}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: L Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
