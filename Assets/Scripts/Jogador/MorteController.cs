@@ -1,7 +1,6 @@
-using System.Collections;
 using TMPro;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MorteController : MonoBehaviour
 {
@@ -11,6 +10,8 @@ public class MorteController : MonoBehaviour
     [SerializeField] float tempoRespawn = 60.0f; // Tempo em segundos para o respawn
     [SerializeField] TMP_Text textoTempoRestante;
     [SerializeField] Image barraTempo;
+
+    private float tempoAtual;
 
     private void Awake()
     {
@@ -31,16 +32,33 @@ public class MorteController : MonoBehaviour
                 if (Input.GetButtonDown("Use"))
                 {
                     tempoAtual = 0;
+                    CancelInvoke("DecrementarTempo");
+                    RespawnarJogador();
                 }
             }
-            
         }
     }
 
     private void AttHudJogadorMorreu()
     {
         hudMorte.SetActive(true);
-        StartCoroutine(TemporizadorRespawn());
+        tempoAtual = tempoRespawn;
+        AtualizarTempo(tempoAtual);
+        InvokeRepeating("DecrementarTempo", 1.0f, 1.0f);
+    }
+
+    private void DecrementarTempo()
+    {
+        if (tempoAtual > 0)
+        {
+            tempoAtual--;
+            AtualizarTempo(tempoAtual);
+        }
+        else
+        {
+            CancelInvoke("DecrementarTempo");
+            RespawnarJogador();
+        }
     }
 
     public void RespawnarJogador()
@@ -61,7 +79,7 @@ public class MorteController : MonoBehaviour
 
     public void ReanimarJogador()
     {
-        StopCoroutine(TemporizadorRespawn());
+        CancelInvoke("DecrementarTempo");
         reviverJogador();
     }
 
@@ -69,20 +87,6 @@ public class MorteController : MonoBehaviour
     {
         hudMorte.SetActive(false);
         statsGeral.jogadorStats.AcoesReviveu();
-    }
-
-    float tempoAtual;
-    IEnumerator TemporizadorRespawn()
-    {
-        tempoAtual = tempoRespawn;
-        while (tempoAtual > 0)
-        {
-            AtualizarTempo(tempoAtual);
-            yield return new WaitForSeconds(1.0f);
-            tempoAtual--;
-        }
-        RespawnarJogador();
-        StopAllCoroutines();
     }
 
     public void AtualizarTempo(float tempoRestante) // Atualiza a HUD com o tempo restante
@@ -99,5 +103,4 @@ public class MorteController : MonoBehaviour
         float fillAmount = tempoRestante / tempoRespawn; // Calcula a porcentagem preenchida da barra
         barraTempo.fillAmount = fillAmount; // Atualiza a largura da barra de acordo com a porcentagem de preenchimento
     }
-
 }

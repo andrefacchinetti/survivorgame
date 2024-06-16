@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	{
 		if (PV == null || !PV.IsMine) return;
 
-		if (!inventario.canvasInventario.activeSelf && canMove)
+		if (!inventario.canvasInventario.activeSelf && podeSeMexer())
 		{
 			if (Input.GetButtonDown("Crouch"))
 			{
