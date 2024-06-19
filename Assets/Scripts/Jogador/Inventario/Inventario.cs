@@ -150,13 +150,23 @@ public class Inventario : MonoBehaviour
 
     public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
+        
         if (itemDrop == null || !itemDrop.item.Equals(itemGarrafa)) //itens que nao stackam
         {
             foreach (Item item in itens)
             {
                 if (item.itemIdentifierAmount.ItemDefinition.name.Equals(itemStructResponse.itemIdentifierAmount.ItemDefinition.name))
                 {
-                    return item.aumentarQuantidade(quantidadeResponse); //stackando item
+                    if (podeAdicionarItemNaMochila(item.peso))
+                    {
+                        return item.aumentarQuantidade(quantidadeResponse); //stackando item
+                    }
+                    else
+                    {
+                        playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaPesoMochilaExcedido());
+                        return false;
+                    }
+                    
                 }
             }
         }
@@ -422,6 +432,11 @@ public class Inventario : MonoBehaviour
             }
         }
         return qtdItemAtual;
+    }
+
+    private bool podeAdicionarItemNaMochila(int pesoNovoItem)
+    {
+        return pesoAtual + pesoNovoItem < pesoCapacidadeMaxima;
     }
 
     public void AlertarJogadorComLogItem(string nomeItemTraduzido, Texture imgItem, bool isAumentandoQtd, int quantidade)

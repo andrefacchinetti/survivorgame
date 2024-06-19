@@ -28,4 +28,10 @@ public static class EnumMensagens
         return "The bottle is empty";
     }
 
+    public static string ObterAlertaPesoMochilaExcedido()
+    {
+        if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "A mochila está muito pesada";
+        return "The backpack is very heavy";
+    }
+
 }

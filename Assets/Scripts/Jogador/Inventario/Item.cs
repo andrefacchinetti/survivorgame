@@ -21,6 +21,7 @@ public class Item : MonoBehaviourPunCallbacks
     [SerializeField] public int curaSede, curaFome, curaVida;
     [SerializeField] public bool isCuraIndigestao, isCuraInfeccao, isCuraFratura, isCuraSangramento;
     [SerializeField] public int quantidade = 0;
+    [SerializeField] public int peso = 0;
 
     [SerializeField] public Inventario inventario;
     [SerializeField] public Hotbar hotbar;
@@ -72,6 +73,7 @@ public class Item : MonoBehaviourPunCallbacks
     {
         public TiposItems tipoItem;
         public ItemIdentifierAmount itemIdentifierAmount;
+        public int peso;
         public ItemDefinitionBase tipoMunicao;
         public int groupIndex;
         public string nomePortugues, nomeIngles;
@@ -110,6 +112,7 @@ public class Item : MonoBehaviourPunCallbacks
         isCuraFratura = itemResponse.isCuraFratura;
         isCuraSangramento = itemResponse.isCuraSangramento;
         quantidade = 1;
+        peso = itemResponse.peso;
         imagemItem.texture = itemResponse.textureImgItem;
         inventario = itemResponse.objInventario.GetComponent<Inventario>();
         hotbar = itemResponse.objInventario.GetComponent<Hotbar>();

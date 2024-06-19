@@ -194,7 +194,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                             }
                             else
                             {
-                                Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+                                playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaPesoMochilaExcedido());
                             }
                             return;
                         }
@@ -309,13 +309,15 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             transferOwnerPV(hit.transform.gameObject);
             ItemDrop itemDrop = hit.transform.gameObject.GetComponent<ItemDrop>();
-            playerController.inventario.AdicionarItemAoInventario(null, itemDrop.item, 1);
-            FrutaEmArvore frutaEmArvore = hit.transform.gameObject.GetComponent<FrutaEmArvore>();
-            if (frutaEmArvore != null)
+            if(playerController.inventario.AdicionarItemAoInventario(null, itemDrop.item, 1))
             {
-                frutaEmArvore.ColetarUmaFruta(itemDrop.item);
+                FrutaEmArvore frutaEmArvore = hit.transform.gameObject.GetComponent<FrutaEmArvore>();
+                if (frutaEmArvore != null)
+                {
+                    frutaEmArvore.ColetarUmaFruta(itemDrop.item);
+                }
+                DestruirObjeto(hit.transform.gameObject);
             }
-            DestruirObjeto(hit.transform.gameObject);
         }
         possibleGrab = true;
     }
@@ -523,7 +525,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("nao foi possivel adicionar ao inventario do jogador");
+            playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaPesoMochilaExcedido());
         }
     }
 

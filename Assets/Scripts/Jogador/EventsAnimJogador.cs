@@ -153,14 +153,20 @@ public class EventsAnimJogador : MonoBehaviourPunCallbacks
 	public void TerminouDePescarComSucesso()
 	{
 		if (playerController.pescaPescando == null) return;
-		playerController.inventario.AdicionarItemAoInventario(null, playerController.inventario.itemPeixeCru, 1);
+		if(!playerController.inventario.AdicionarItemAoInventario(null, playerController.inventario.itemPeixeCru, 1))
+        {
+			//TODO: DROPAR PEIXE NO CHAO
+        }
 		playerController.characterLocomotion.TryStopAbility(playerController.pescarAbility);
 	}
 
 	void AnimEventColetouItem()
 	{
 		if (playerController.itemDefinitionBaseColentando == null) return;
-		playerController.inventario.AdicionarItemAoInventario(null, playerController.itemDefinitionBaseColentando, 1);
+		if(!playerController.inventario.AdicionarItemAoInventario(null, playerController.itemDefinitionBaseColentando, 1))
+        {
+			Debug.Log("AnimEventColetouItem: inventario cheio");
+		}
 		playerController.itemDefinitionBaseColentando = null;
 	}
 
