@@ -380,8 +380,9 @@ public class Item : MonoBehaviourPunCallbacks
 
     public bool aumentarQuantidade(int quantidadeResponse) ///INVENTORY PICKUP ITEM
     {
-        if (!gameObject.activeSelf && inventario.qtdItensAtual >= inventario.qtdItensMaximo)
+        if (!gameObject.activeSelf)
         {
+            Debug.Log("nao aumentou item, pq ja tava inativo");
             return false;
         }
         else

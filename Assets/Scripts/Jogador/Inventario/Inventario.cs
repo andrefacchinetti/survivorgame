@@ -15,9 +15,9 @@ public class Inventario : MonoBehaviour
 {
 
     [SerializeField] public Inventory inventory;
-    [SerializeField] public int pesoCapacidadeMaxima, qtdItensMaximo;
+    [SerializeField] public int pesoCapacidadeMaxima;
     [SerializeField] public TMP_Text txPesoInventario, txQtdItensInventario;
-    [SerializeField][HideInInspector] public int pesoAtual, qtdItensAtual;
+    [HideInInspector] public int pesoAtual, qtdItensAtual;
     [SerializeField] public GameObject canvasInventario, cameraInventario;
     [SerializeField] GameObject contentItensMochila;
     [SerializeField] public GameObject prefabItem;
@@ -26,7 +26,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] public List<Item.ItemStruct> itensStruct;
 
     [HideInInspector] public List<Item> itens;
-    [SerializeField] public Item itemNaMao;
+    [HideInInspector] public Item itemNaMao;
     [SerializeField] [HideInInspector] public PlayerController playerController;
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
@@ -84,7 +84,7 @@ public class Inventario : MonoBehaviour
     {
         qtdItensAtual = valor;
         txQtdItensInventario.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? "Itens: " : "Items: ";
-        txQtdItensInventario.text += qtdItensAtual + "/" + qtdItensMaximo;
+        txQtdItensInventario.text += qtdItensAtual;
         craftMaos.LimparTodosSlotsCraft();
     }
 
@@ -148,6 +148,7 @@ public class Inventario : MonoBehaviour
         return false;
     }
 
+    //METODO CONTROLADOR PARA ADICIONAR ITEM AO INVENTARIO
     public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
         
@@ -159,6 +160,7 @@ public class Inventario : MonoBehaviour
                 {
                     if (podeAdicionarItemNaMochila(item.peso))
                     {
+                        pesoAtual += item.peso;
                         return item.aumentarQuantidade(quantidadeResponse); //stackando item
                     }
                     else
@@ -171,18 +173,30 @@ public class Inventario : MonoBehaviour
             }
         }
 
+        Item.ItemStruct itemStruct = ObterItemStructPeloNome(itemDrop.item);
         //Adiciona um novo item na mochila
-        GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
-        novoObjeto.transform.SetParent(contentItensMochila.transform);
-        if (itemDrop != null && itemDrop.item.Equals(itemGarrafa))
+        if (podeAdicionarItemNaMochila(itemStruct.peso))
         {
-            novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
+            pesoAtual += itemStruct.peso;
+            qtdItensAtual++;
+            GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
+            novoObjeto.transform.SetParent(contentItensMochila.transform);
+            if (itemDrop != null && itemDrop.item.Equals(itemGarrafa))
+            {
+                novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
+            }
+            Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
+            itens.Add(novoItem);
+            AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
+            inventory.AddItemIdentifierAmount(novoItem.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
+            return true;
         }
-        Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
-        itens.Add(novoItem);
-        AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
-        inventory.AddItemIdentifierAmount(novoItem.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
-        return true;
+        else
+        {
+            playerController.AlertarJogadorComMensagem(EnumMensagens.ObterAlertaPesoMochilaExcedido());
+            return false;
+        }
+        
     }
 
     public void RemoverItemsDoInventarioPorNome(ItemIdentifierAmount[] ingredientes)
