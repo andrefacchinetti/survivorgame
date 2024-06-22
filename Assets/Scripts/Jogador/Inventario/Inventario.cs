@@ -10,6 +10,7 @@ using Opsive.UltimateCharacterController.Items;
 using Opsive.Shared.Events;
 using Opsive.Shared.Inventory;
 using Opsive.UltimateCharacterController.Items.Actions;
+using Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable;
 
 public class Inventario : MonoBehaviour
 {
@@ -252,8 +253,12 @@ public class Inventario : MonoBehaviour
                 {
                     var shootableAction = itemAction as ShootableAction;
                     int qtdNoClip = shootableAction.ClipRemainingCount;
-                    AdicionarItemAoInventario(null, shootableAction.GetAmmoDataInClip(0).ItemIdentifier.GetItemDefinition(), qtdNoClip); //add municoes do clip no inventario
-                    shootableAction.MainClipModule.SetClipRemaining(0); //Remove municoes do clip da arma
+                    ShootableAmmoData ammoData = shootableAction.GetAmmoDataInClip(0);
+                    if (qtdNoClip > 0 && !ammoData.Equals(ShootableAmmoData.None))
+                    {
+                        AdicionarItemAoInventario(null, shootableAction.GetAmmoDataInClip(0).ItemIdentifier.GetItemDefinition(), qtdNoClip); //add municoes do clip no inventario
+                        shootableAction.MainClipModule.SetClipRemaining(0); //Remove municoes do clip da arma
+                    }
                 }
             }
         }
