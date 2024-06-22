@@ -7,7 +7,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAguaPotavel = "AguaPotavel", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagCorpoMortoCollider = "CorpoMortoCollider", tagEnemyCollider = "EnemyCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
-    private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore";
+    private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore", tagArmazenamento = "Armazenamento";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -297,9 +297,14 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         else if(hit.transform.tag == tagNote)
         {
             interacaoComNote(hit);
-        }else if (hit.transform.tag == tagFrutaEmArvore)
+        }
+        else if (hit.transform.tag == tagFrutaEmArvore)
         {
             interacaoComFrutaEmArvore(hit);
+        }
+        else if (hit.transform.tag == tagArmazenamento)
+        {
+            interacaoArmazenamento(hit);
         }
     }
 
@@ -568,6 +573,15 @@ public class GrabObjects : MonoBehaviourPunCallbacks
             VisualizarNote note = hit.transform.GetComponent<VisualizarNote>();
             note.ToggleVisualizarNote(playerController.gameObject);
             noteSendoVisualizada = note;
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoArmazenamento(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            playerController.inventario.AcessarArmazenamento(hit.transform.GetComponent<Armazenamento>());
         }
         possibleInteraction = true;
     }

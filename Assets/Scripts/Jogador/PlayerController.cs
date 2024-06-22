@@ -97,6 +97,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
 
+	public void OnDestroy()
+	{
+		EventHandler.UnregisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
+	}
+
 	void Start()
 	{
 		if (PV == null) return;
@@ -264,9 +269,5 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		}
 	}
 
-	public void OnDestroy()
-	{
-		EventHandler.UnregisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
-	}
 
 }

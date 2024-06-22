@@ -19,7 +19,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] public int pesoCapacidadeMaxima;
     [SerializeField] public TMP_Text txPesoInventario, txQtdItensInventario;
     [HideInInspector] public int pesoAtual, qtdItensAtual;
-    [SerializeField] public GameObject canvasInventario, cameraInventario;
+    [SerializeField] public GameObject canvasInventario, cameraInventario, canvasArmazenamento;
     [SerializeField] GameObject contentItensMochila;
     [SerializeField] public GameObject prefabItem;
     [SerializeField] public Hotbar hotbar;
@@ -483,6 +483,25 @@ public class Inventario : MonoBehaviour
     {
         txMsgLogItem.text = "";
         imgLogItem.texture = texturaTransparente;
+    }
+
+
+    ///////////// acoes armazenamento //////////////////
+    
+    [HideInInspector] public Armazenamento armazenamentoEmUso;
+
+    public void AcessarArmazenamento(Armazenamento armazenamento)
+    {
+        armazenamentoEmUso = armazenamento;
+        //Add itens na hud
+        canvasArmazenamento.SetActive(true);
+    }
+
+    public void SairArmazenamento()
+    {
+        //Limpar itens da hud
+        armazenamentoEmUso = null;
+        canvasArmazenamento.SetActive(false);
     }
 
 }
