@@ -11,7 +11,8 @@ public class SlotHotbar : MonoBehaviour
     [SerializeField] public Hotbar hotbar;
     [SerializeField] public CraftMaos craftMaos;
     [SerializeField] public Inventario inventario;
-    [SerializeField] public bool isSlotCraft = false;
+    [SerializeField] public ArmazenamentoInventario armazenamentoinventario;
+    [SerializeField] public bool isSlotCraft = false, isSlotArmazenamento = false;
 
     [SerializeField] public TMP_Text txTeclaAtalho, txNomeItem ,txQuantidade;
     [SerializeField] public RawImage imagemItem;
@@ -48,6 +49,7 @@ public class SlotHotbar : MonoBehaviour
     {
         if (itemResponse == null) return;
         if (isSlotCraft) setupSlotHotbarCraft(itemResponse);
+        else if (isSlotArmazenamento) setupSlotHotbarArmazenamento(itemResponse);
         else setupSlotHotbarAtalhos(itemResponse);
     }
 
@@ -71,7 +73,6 @@ public class SlotHotbar : MonoBehaviour
 
     private void setupSlotHotbarCraft(Item itemResponse)
     {
-        Debug.LogWarning("setup hotbar");
         int countItens = 1;
         foreach (SlotHotbar slot in craftMaos.slots)
         {
@@ -80,7 +81,6 @@ public class SlotHotbar : MonoBehaviour
                 if(slot.qtdItemNoSlot < itemResponse.quantidade)
                 {
                     countItens += slot.qtdItemNoSlot;
-                    Debug.LogWarning("stackando qtd item no slot");
                 }
                 slot.ResetSlotHotbar();
             }
@@ -94,7 +94,35 @@ public class SlotHotbar : MonoBehaviour
         craftMaos.AtualizarPreviewResultado();
     }
 
+    private void setupSlotHotbarArmazenamento(Item itemResponse)
+    {
+        Debug.Log("setup hotbar armazenamento");
+        int countItens = 1;
+        foreach (SlotHotbar slot in armazenamentoinventario.slots)
+        {
+            if (slot.item == itemResponse)
+            {
+                if (slot.qtdItemNoSlot < itemResponse.quantidade)
+                {
+                    countItens += slot.qtdItemNoSlot;
+                    Debug.LogWarning("stackando qtd item no slot");
+                }
+                slot.ResetSlotHotbar();
+            }
+        }
+        qtdItemNoSlot = countItens;
+        item = itemResponse;
+        txNomeItem.text = item.obterNomeItemTraduzido();
+        txQuantidade.text = qtdItemNoSlot + "";
+        imagemItem.texture = item.imagemItem.texture;
+        objEmbacarImg.SetActive(item.quantidade <= 0);
+        armazenamentoinventario.armazenamentoEmUso.GuardarItem(itemResponse);
+    }
+
     public void ResetSlotHotbar(){
+        Debug.Log("ResetSlotHotbar");
+        if (isSlotArmazenamento) inventario.AdicionarItemAoInventarioPorNome(item.itemIdentifierAmount.ItemDefinition, 1);
+        if (isSlotArmazenamento) inventario.armazenamentoInventario.armazenamentoEmUso.PegarItem(item);
         item = null;
         qtdItemNoSlot = 0;
         txNomeItem.text = "";

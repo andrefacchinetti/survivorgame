@@ -19,7 +19,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] public int pesoCapacidadeMaxima;
     [SerializeField] public TMP_Text txPesoInventario, txQtdItensInventario;
     [HideInInspector] public int pesoAtual, qtdItensAtual;
-    [SerializeField] public GameObject canvasInventario, cameraInventario, canvasArmazenamento;
+    [SerializeField] public GameObject canvasInventario, cameraInventario;
     [SerializeField] GameObject contentItensMochila;
     [SerializeField] public GameObject prefabItem;
     [SerializeField] public Hotbar hotbar;
@@ -32,6 +32,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public StatsJogador statsJogador;
     [SerializeField] [HideInInspector] public CraftMaos craftMaos;
     [SerializeField] [HideInInspector] public ArrastarItensInventario arrastarItensInventario;
+    [SerializeField] [HideInInspector] public ArmazenamentoInventario armazenamentoInventario;
 
     [SerializeField] public TMP_Text txMsgLogItem, txMunicoesClipHud, txMunicoesInventarioHud;
     [SerializeField] RawImage imgLogItem;
@@ -47,6 +48,7 @@ public class Inventario : MonoBehaviour
         statsJogador = GetComponentInParent<StatsJogador>();
         craftMaos = GetComponent<CraftMaos>();
         arrastarItensInventario = GetComponent<ArrastarItensInventario>();
+        armazenamentoInventario = GetComponent<ArmazenamentoInventario>();
     }
 
     void Start()
@@ -114,6 +116,7 @@ public class Inventario : MonoBehaviour
         craftMaos.LimparTodosSlotsCraft();
         canvasInventario.SetActive(false);
         cameraInventario.SetActive(false);
+        armazenamentoInventario.canvasArmazenamento.SetActive(false);
         playerController.canMove = true;
         EventHandler.ExecuteEvent(playerController.gameObject, "OnEnableGameplayInput", true);
         Cursor.lockState = CursorLockMode.Locked;
@@ -483,25 +486,6 @@ public class Inventario : MonoBehaviour
     {
         txMsgLogItem.text = "";
         imgLogItem.texture = texturaTransparente;
-    }
-
-
-    ///////////// acoes armazenamento //////////////////
-    
-    [HideInInspector] public Armazenamento armazenamentoEmUso;
-
-    public void AcessarArmazenamento(Armazenamento armazenamento)
-    {
-        armazenamentoEmUso = armazenamento;
-        //Add itens na hud
-        canvasArmazenamento.SetActive(true);
-    }
-
-    public void SairArmazenamento()
-    {
-        //Limpar itens da hud
-        armazenamentoEmUso = null;
-        canvasArmazenamento.SetActive(false);
     }
 
 }

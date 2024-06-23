@@ -13,12 +13,14 @@ public class Armazenamento : MonoBehaviour
 
     public void GuardarItem(Item item)
     {
-        
+        Debug.Log("guardando item");
+        itensArmazenados.Add(item);
     }
 
     public void PegarItem(Item item)
     {
-
+        Debug.Log("pegando item");
+        itensArmazenados.Remove(item);
     }
 
 }

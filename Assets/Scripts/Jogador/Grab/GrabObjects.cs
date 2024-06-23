@@ -581,7 +581,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (Input.GetButtonDown("Use"))
         {
-            playerController.inventario.AcessarArmazenamento(hit.transform.GetComponent<Armazenamento>());
+            playerController.inventario.armazenamentoInventario.AcessarArmazenamento(hit.transform.GetComponent<Armazenamento>());
         }
         possibleInteraction = true;
     }

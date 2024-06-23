@@ -13,7 +13,6 @@ public class ConstrucoesController : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        transform.tag = "ConstrucaoStats";
         listaConstrucoesConectadas = new List<ConstrucoesController>();
         statsGeral = GetComponent<StatsGeral>();
     }
