@@ -155,7 +155,7 @@ public class Inventario : MonoBehaviour
     //METODO CONTROLADOR PARA ADICIONAR ITEM AO INVENTARIO
     public bool AdicionarItemAoInventario(ItemDrop itemDrop, Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
-        
+        Debug.Log("AdicionarItemAoInventario");
         if (itemDrop == null || !itemDrop.item.Equals(itemGarrafa)) //itens que nao stackam
         {
             foreach (Item item in itens)
@@ -165,6 +165,7 @@ public class Inventario : MonoBehaviour
                     if (podeAdicionarItemNaMochila(item.peso))
                     {
                         pesoAtual += item.peso;
+                        Debug.Log("item adicionado ao inventario stack");
                         return item.aumentarQuantidade(quantidadeResponse); //stackando item
                     }
                     else
@@ -193,6 +194,7 @@ public class Inventario : MonoBehaviour
             itens.Add(novoItem);
             AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
             inventory.AddItemIdentifierAmount(novoItem.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
+            Debug.Log("item adicionado ao inventario");
             return true;
         }
         else

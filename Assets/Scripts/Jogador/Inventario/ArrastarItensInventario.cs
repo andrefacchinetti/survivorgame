@@ -65,6 +65,7 @@ public class ArrastarItensInventario : MonoBehaviour
 
     public void DragStartItemInventario(Item itemDrag, GameObject go1){
         if (itemDrag == null) return;
+        Debug.Log("setou DragStartItemInventario");
         item = itemDrag;
         placeHolder.GetComponent<RawImage>().texture = itemDrag.imagemItem.texture;
         placeHolder.SetActive(true);
@@ -72,14 +73,18 @@ public class ArrastarItensInventario : MonoBehaviour
     }
 
     public void DragEndItemInventario(SlotHotbar slotHotbar){
+        Debug.Log("DragEndItemInventario slotHotbar");
         slotHotbar.SetupSlotHotbar(item);
         item = null;
+        placeHolder.SetActive(false);
     }
 
     public void DragEndItemInventario(ItemArmadura slotArmadura)
     {
+        Debug.Log("DragEndItemInventario slotArmadura");
         slotArmadura.ColocarItemNoSlot(item);
         item = null;
+        placeHolder.SetActive(false);
     }
 
     public void TrocarLugarInventario(GameObject go2){
@@ -103,7 +108,8 @@ public class ArrastarItensInventario : MonoBehaviour
 
     public void SoltarItemNoPlayer(){
         if (item == null) return;
-        if(item.tipoItem.Equals(Item.TiposItems.Armadura.ToString())){
+        Debug.Log("SoltarItemNoPlayer");
+        if (item.tipoItem.Equals(Item.TiposItems.Armadura.ToString())){
             foreach(ItemArmadura armadura in slotsArmaduras){
                 armadura.ColocarItemNoSlot(item);
             }
@@ -116,7 +122,12 @@ public class ArrastarItensInventario : MonoBehaviour
 
     public void StopDrag()
     {
-        Debug.Log("Soltou item");
+        Debug.Log("Soltou item: " + (item != null) + (slot1 != null) );
+        if (item != null && slot1 != null && slot1.GetComponent<SlotHotbar>().isSlotArmazenamento) 
+        {
+            inventario.AdicionarItemAoInventarioPorNome(item.itemIdentifierAmount.ItemDefinition, 1);
+            inventario.armazenamentoInventario.armazenamentoEmUso.PegarItem(item);
+        }
         placeHolder.SetActive(false);
         item = null;
     }

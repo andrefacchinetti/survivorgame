@@ -117,12 +117,11 @@ public class SlotHotbar : MonoBehaviour
         imagemItem.texture = item.imagemItem.texture;
         objEmbacarImg.SetActive(item.quantidade <= 0);
         armazenamentoinventario.armazenamentoEmUso.GuardarItem(itemResponse);
+        armazenamentoinventario.inventario.RemoverItemDoInventario(itemResponse, 1);
     }
 
     public void ResetSlotHotbar(){
-        Debug.Log("ResetSlotHotbar");
-        if (isSlotArmazenamento) inventario.AdicionarItemAoInventarioPorNome(item.itemIdentifierAmount.ItemDefinition, 1);
-        if (isSlotArmazenamento) inventario.armazenamentoInventario.armazenamentoEmUso.PegarItem(item);
+        Debug.Log("ResetSlotHotbar ");
         item = null;
         qtdItemNoSlot = 0;
         txNomeItem.text = "";
@@ -134,18 +133,19 @@ public class SlotHotbar : MonoBehaviour
 
 
     public void OnDropDelegate(PointerEventData data){
-        Debug.Log("OnDropDelegate drag");
+        Debug.Log("OnDropDelegate drag: "+item != null);
         arrastarItensInventario.DragEndItemInventario(this);
     }
 
     public void OnPointerClickDelegate(PointerEventData data){
         if(data.button == PointerEventData.InputButton.Left){
-            
-        }else if(data.button == PointerEventData.InputButton.Right){
+            Debug.Log("OnPointerClickDelegate: Left");
+        }
+        else if(data.button == PointerEventData.InputButton.Right){
             Debug.Log("Apertou o botão direito sobre: " + name);
             ResetSlotHotbar();
         }else if(data.button == PointerEventData.InputButton.Middle){
-
+            Debug.Log("OnPointerClickDelegate: Middle");
         }
     }
     
@@ -158,7 +158,7 @@ public class SlotHotbar : MonoBehaviour
 
     public void OnEndDragDelegate(PointerEventData data)
     {
-        Debug.Log("OnEndDragDelegate drag");
+        Debug.Log("OnEndDragDelegate  drag: "+ item!=null);
         arrastarItensInventario.StopDrag();
         ResetSlotHotbar();
     }
