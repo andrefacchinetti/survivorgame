@@ -68,7 +68,6 @@ public class SlotHotbar : MonoBehaviour
         txNomeItem.text = item.obterNomeItemTraduzido();
         txQuantidade.text = item.quantidade + "";
         imagemItem.texture = item.imagemItem.texture;
-        objEmbacarImg.SetActive(item.quantidade <= 0);
     }
 
     private void setupSlotHotbarCraft(Item itemResponse)
@@ -97,14 +96,11 @@ public class SlotHotbar : MonoBehaviour
     private void setupSlotHotbarArmazenamento(Item itemResponse)
     {
         Debug.Log("setup hotbar armazenamento");
-        int countItens = 1;
-        //TODO: STACKAR ITENS
-        qtdItemNoSlot = countItens;
+        qtdItemNoSlot = itemResponse.quantidade;
         item = itemResponse;
         txNomeItem.text = item.obterNomeItemTraduzido();
         txQuantidade.text = qtdItemNoSlot + "";
         imagemItem.texture = item.imagemItem.texture;
-        objEmbacarImg.SetActive(item.quantidade <= 0);
     }
 
     public void ResetSlotHotbar(){
@@ -147,10 +143,9 @@ public class SlotHotbar : MonoBehaviour
     {
         Debug.Log("OnEndDragDelegate  drag");
         arrastarItensInventario.StopDrag();
-        //ResetSlotHotbar();
     }
 
-    public void SetupItemNoSlot(Item itemResponse)
+    public void SetupItemNoSlot(Item itemResponse, int quantidadeResponse)
     {
         item = itemResponse;
         if (itemResponse == null)
@@ -162,7 +157,7 @@ public class SlotHotbar : MonoBehaviour
         else
         {
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
-            txQuantidade.text = itemResponse.quantidade + "";
+            txQuantidade.text = quantidadeResponse + "";
             imagemItem.texture = itemResponse.imagemItem.texture;
         }
     }

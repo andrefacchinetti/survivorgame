@@ -194,11 +194,11 @@ public class Inventario : MonoBehaviour
             {
                 novoObjeto.GetComponent<Garrafa>().Setup(itemDrop.GetComponent<Garrafa>());
             }
-            Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse);
+            Item novoItem = novoObjeto.GetComponent<Item>().setupItemFromItemStruct(itemStructResponse, quantidadeResponse);
             itens.Add(novoItem);
             AlertarJogadorComLogItem(novoItem.obterNomeItemTraduzido(), novoItem.imagemItem.texture, true, quantidadeResponse);
             inventory.AddItemIdentifierAmount(novoItem.itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
-            Debug.Log("item adicionado ao inventario");
+            Debug.Log("item adicionado ao inventario: "+ quantidadeResponse);
             return true;
         }
         else

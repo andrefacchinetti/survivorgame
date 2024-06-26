@@ -94,7 +94,7 @@ public class Item : MonoBehaviourPunCallbacks
         Estragado
     }
 
-    public Item setupItemFromItemStruct(ItemStruct itemResponse)
+    public Item setupItemFromItemStruct(ItemStruct itemResponse, int quantidadeResponse)
     {
         tipoItem = itemResponse.tipoItem;
         nomePortugues = itemResponse.nomePortugues;
@@ -111,7 +111,7 @@ public class Item : MonoBehaviourPunCallbacks
         isCuraInfeccao = itemResponse.isCuraInfeccao;
         isCuraFratura = itemResponse.isCuraFratura;
         isCuraSangramento = itemResponse.isCuraSangramento;
-        quantidade = 1;
+        quantidade = quantidadeResponse;
         peso = itemResponse.peso;
         imagemItem.texture = itemResponse.textureImgItem;
         inventario = itemResponse.objInventario.GetComponent<Inventario>();
