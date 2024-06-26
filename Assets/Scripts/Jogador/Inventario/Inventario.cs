@@ -178,7 +178,11 @@ public class Inventario : MonoBehaviour
             }
         }
 
-        Item.ItemStruct itemStruct = ObterItemStructPeloNome(itemDrop.item);
+        Item.ItemStruct itemStruct = itemStructResponse;
+        if (itemDrop != null)
+        {
+            itemStruct = ObterItemStructPeloNome(itemDrop.item);
+        }
         //Adiciona um novo item na mochila
         if (podeAdicionarItemNaMochila(itemStruct.peso))
         {

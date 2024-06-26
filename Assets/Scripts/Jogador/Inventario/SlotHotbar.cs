@@ -98,30 +98,16 @@ public class SlotHotbar : MonoBehaviour
     {
         Debug.Log("setup hotbar armazenamento");
         int countItens = 1;
-        foreach (SlotHotbar slot in armazenamentoinventario.slots)
-        {
-            if (slot.item == itemResponse)
-            {
-                if (slot.qtdItemNoSlot < itemResponse.quantidade)
-                {
-                    countItens += slot.qtdItemNoSlot;
-                    Debug.LogWarning("stackando qtd item no slot");
-                }
-                slot.ResetSlotHotbar();
-            }
-        }
+        //TODO: STACKAR ITENS
         qtdItemNoSlot = countItens;
         item = itemResponse;
         txNomeItem.text = item.obterNomeItemTraduzido();
         txQuantidade.text = qtdItemNoSlot + "";
         imagemItem.texture = item.imagemItem.texture;
         objEmbacarImg.SetActive(item.quantidade <= 0);
-        armazenamentoinventario.armazenamentoEmUso.GuardarItem(itemResponse);
-        armazenamentoinventario.inventario.RemoverItemDoInventario(itemResponse, 1);
     }
 
     public void ResetSlotHotbar(){
-        Debug.Log("ResetSlotHotbar ");
         item = null;
         qtdItemNoSlot = 0;
         txNomeItem.text = "";
@@ -131,9 +117,8 @@ public class SlotHotbar : MonoBehaviour
         if (isSlotCraft) craftMaos.AtualizarPreviewResultado();
     }
 
-
     public void OnDropDelegate(PointerEventData data){
-        Debug.Log("OnDropDelegate drag: "+item != null);
+        Debug.Log("OnDropDelegate drag: ");
         arrastarItensInventario.DragEndItemInventario(this);
     }
 
@@ -143,7 +128,10 @@ public class SlotHotbar : MonoBehaviour
         }
         else if(data.button == PointerEventData.InputButton.Right){
             Debug.Log("Apertou o botão direito sobre: " + name);
-            ResetSlotHotbar();
+            if (!isSlotArmazenamento)
+            {
+                ResetSlotHotbar();
+            }
         }else if(data.button == PointerEventData.InputButton.Middle){
             Debug.Log("OnPointerClickDelegate: Middle");
         }
@@ -153,14 +141,13 @@ public class SlotHotbar : MonoBehaviour
     {
         Debug.Log("OnBeginDragDelegate drag");
         arrastarItensInventario.DragStartItemInventario(this.item, this.gameObject);
-        SetupItemNoSlot(null);
     }
 
     public void OnEndDragDelegate(PointerEventData data)
     {
-        Debug.Log("OnEndDragDelegate  drag: "+ item!=null);
+        Debug.Log("OnEndDragDelegate  drag");
         arrastarItensInventario.StopDrag();
-        ResetSlotHotbar();
+        //ResetSlotHotbar();
     }
 
     public void SetupItemNoSlot(Item itemResponse)

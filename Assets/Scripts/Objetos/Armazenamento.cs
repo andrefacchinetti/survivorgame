@@ -11,16 +11,16 @@ public class Armazenamento : MonoBehaviour
         itensArmazenados = new List<Item>();
     }
 
-    public void GuardarItem(Item item)
+    public void GuardarItem(Item itemBase)
     {
         Debug.Log("guardando item");
-        itensArmazenados.Add(item);
+        itensArmazenados.Add(itemBase);
     }
 
-    public void PegarItem(Item item)
+    public void PegarItem(Item itemBase)
     {
         Debug.Log("pegando item");
-        itensArmazenados.Remove(item);
+        itensArmazenados.Remove(itemBase);
     }
 
 }
