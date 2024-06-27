@@ -54,4 +54,15 @@ public class Armazenamento : MonoBehaviour
         }
     }
 
+    public void DroparTodosItensNoChao()
+    {
+        foreach (KeyValuePair<Item, int> item in itensArmazenados)
+        {
+            Debug.Log("Dropping item: " + item.Key.name + " Quantity: " + item.Value);
+            item.Key.DroparItem(item.Value);
+        }
+        // Limpar o dicionário após dropar todos os itens
+        itensArmazenados.Clear();
+    }
+
 }

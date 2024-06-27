@@ -262,19 +262,21 @@ public class Item : MonoBehaviourPunCallbacks
         inventario.inventory.GetComponent<ItemSetManagerBase>().EquipItem(itemIdBody, groupIndex, true, true);
     }
 
-    public void DroparItem()
+    public void DroparItem(int qtdResponse)
     {
-        int quantidade = 1;
         if (this.tipoItem.Equals(TiposItems.Nenhum)) return;
         string nomePrefab = this.tipoItem + "/"+ this.itemIdentifierAmount.ItemDefinition.name.ToString();
         string prefabPath = Path.Combine("Prefabs/ItensInventario/", nomePrefab);
-        GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, new Vector3(transform.root.position.x, 
-            transform.root.position.y+1, transform.root.position.z) + transform.root.forward , transform.root.rotation, null, PV.ViewID);
-        if (this.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
+        for(int i = 0; i < qtdResponse; i++)
         {
-            objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
+            GameObject objDropado = ItemDrop.InstanciarPrefabPorPath(prefabPath, 1, new Vector3(transform.root.position.x,
+            transform.root.position.y + 1 + i/qtdResponse, transform.root.position.z) + transform.root.forward, transform.root.rotation, null, PV.ViewID);
+            if (this.itemIdentifierAmount.ItemDefinition.Equals(inventario.itemGarrafa))
+            {
+                objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
+            }
         }
-        inventario.RemoverItemDoInventarioPorItemIdentifier(itemIdentifierAmount.ItemIdentifier, quantidade);
+        inventario.RemoverItemDoInventarioPorItemIdentifier(itemIdentifierAmount.ItemIdentifier, qtdResponse);
     }
 
     public void UsarItem() //Usa item qdo aperta o botoa do mouse com o item na mao

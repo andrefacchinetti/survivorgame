@@ -17,7 +17,7 @@ public class SelecaoItemClick : MonoBehaviour, IPointerClickHandler
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            item.DroparItem();
+            item.DroparItem(1);
         }
     }
 

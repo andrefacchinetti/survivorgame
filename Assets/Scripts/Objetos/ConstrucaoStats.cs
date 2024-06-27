@@ -6,6 +6,12 @@ public class ConstrucaoStats : MonoBehaviour
 
     [SerializeField] public ItemDefinitionBase itemMarteloReparador, itemMarteloDemolidor;
     [SerializeField] public ConstrucoesController construcoesController;
+    private Armazenamento armazenamento;
+
+    private void Awake()
+    {
+        armazenamento = GetComponent<Armazenamento>();
+    }
 
     public void AcoesTomouDano()
     {
@@ -16,6 +22,7 @@ public class ConstrucaoStats : MonoBehaviour
     {
         Debug.Log("construcao morreu");
         construcoesController.MandarDestruirTodasAsConstrucoesConectadas();
+        if (armazenamento != null) armazenamento.DroparTodosItensNoChao();
     }
 
 }

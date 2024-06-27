@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
 				if (Input.GetButtonDown("Dropar"))
 				{
-					inventario.itemNaMao.DroparItem();
+					inventario.itemNaMao.DroparItem(1);
 				}
 			}
             if (Input.GetButtonDown("Use"))
