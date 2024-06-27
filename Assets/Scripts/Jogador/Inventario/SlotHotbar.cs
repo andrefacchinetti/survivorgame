@@ -45,10 +45,10 @@ public class SlotHotbar : MonoBehaviour
         trigger.triggers.Add(entry4);
     }
 
-    public void SetupSlotHotbar(Item itemResponse)
+    public void SetupSlotHotbar(Item itemResponse, bool craftParaCraft)
     {
         if (itemResponse == null) return;
-        if (isSlotCraft) setupSlotHotbarCraft(itemResponse);
+        if (isSlotCraft) setupSlotHotbarCraft(itemResponse, craftParaCraft);
         else if (isSlotArmazenamento) setupSlotHotbarArmazenamento(itemResponse);
         else setupSlotHotbarAtalhos(itemResponse);
     }
@@ -70,9 +70,10 @@ public class SlotHotbar : MonoBehaviour
         imagemItem.texture = item.imagemItem.texture;
     }
 
-    private void setupSlotHotbarCraft(Item itemResponse)
+    private void setupSlotHotbarCraft(Item itemResponse, bool craftParaCraft)
     {
-        int countItens = 1;
+        int countItens = craftParaCraft ? qtdItemNoSlot : 1;
+        Debug.Log("qtdItemNoSlot: " + qtdItemNoSlot);
         foreach (SlotHotbar slot in craftMaos.slots)
         {
             if (slot.item == itemResponse)
@@ -148,6 +149,7 @@ public class SlotHotbar : MonoBehaviour
     public void SetupItemNoSlot(Item itemResponse, int quantidadeResponse)
     {
         item = itemResponse;
+        qtdItemNoSlot = quantidadeResponse;
         if (itemResponse == null)
         {
             txNomeItem.text = "";
@@ -156,9 +158,9 @@ public class SlotHotbar : MonoBehaviour
         }
         else
         {
-            txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
-            txQuantidade.text = quantidadeResponse + "";
-            imagemItem.texture = itemResponse.imagemItem.texture;
+            txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? item.nomePortugues : item.nomeIngles;
+            txQuantidade.text = qtdItemNoSlot + "";
+            imagemItem.texture = item.imagemItem.texture;
         }
     }
 

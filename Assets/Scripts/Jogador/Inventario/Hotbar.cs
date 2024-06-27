@@ -20,7 +20,7 @@ public class Hotbar : MonoBehaviour
 
     public void SelecionouItemParaSlotHotbar(Item item)
     {
-        slotHotbarSelecionada.SetupSlotHotbar(item);
+        slotHotbarSelecionada.SetupSlotHotbar(item, false);
         estaSelecionandoSlotHotbar = false;
     }
 

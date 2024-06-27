@@ -31,49 +31,31 @@ public class ArrastarItensInventario : MonoBehaviour
     void Update()
     {
         if(itemHover!=null && item==null && inventario.canvasInventario.activeSelf){
-            //Debug.Log("Mouse sobre: " + itemHover);
-            if(Input.GetButtonDown("HotbarButton_1")){
-                hotbar1.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_2"))
-            {
-                    hotbar2.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_3"))
-            {
-                    hotbar3.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_4"))
-            {
-                    hotbar4.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_5"))
-            {
-                    hotbar5.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_6"))
-            {
-                    hotbar6.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_7"))
-            {
-                    hotbar7.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_8"))
-            {
-                    hotbar8.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_9"))
-            {
-                    hotbar9.SetupSlotHotbar(itemHover);
-            }else if (Input.GetButtonDown("HotbarButton_0"))
-            {
-                    hotbar0.SetupSlotHotbar(itemHover);
-            }
+            if (Input.GetButtonDown("HotbarButton_1")) hotbar1.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_2")) hotbar2.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_3")) hotbar3.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_4")) hotbar4.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_5")) hotbar5.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_6")) hotbar6.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_7")) hotbar7.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_8")) hotbar8.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_9")) hotbar9.SetupSlotHotbar(itemHover, false);
+            else if (Input.GetButtonDown("HotbarButton_0")) hotbar0.SetupSlotHotbar(itemHover, false);
         }
     }
 
     public void DragStartItemInventario(Item itemDrag, GameObject slotResponse){
         if (itemDrag == null) return;
         Debug.Log("setou DragStartItemInventario: "+ itemDrag.quantidade);
-        item = itemDrag;
-        qtdItem = itemDrag.quantidade;
         if(slotResponse.GetComponent<SlotHotbar>() != null && slotResponse.GetComponent<SlotHotbar>().isSlotCraft)
         {
-            qtdItem = 1; //no craft, transfere item de 1 em 1
+            qtdItem = slotResponse.GetComponent<SlotHotbar>().qtdItemNoSlot;
         }
+        else
+        {
+            qtdItem = itemDrag.quantidade;
+        }
+        item = itemDrag;
         placeHolder.GetComponent<RawImage>().texture = itemDrag.imagemItem.texture;
         placeHolder.SetActive(true);
         slotStart = slotResponse;
@@ -105,7 +87,7 @@ public class ArrastarItensInventario : MonoBehaviour
                         Debug.Log("Inventario para armazenamento com sem item no slot: "+item.quantidade);
                         Item.ItemStruct itemStructResponse = inventario.ObterItemStructPeloNome(item.itemIdentifierAmount.ItemDefinition);
                         Item novoItem = criarNovoItemParaArmazenar(itemStructResponse, item.quantidade);
-                        slotChegada.SetupSlotHotbar(novoItem);
+                        slotChegada.SetupSlotHotbar(novoItem, false);
                         inventario.armazenamentoInventario.armazenamentoEmUso.GuardarItem(novoItem, novoItem.quantidade);
                         inventario.RemoverItemDoInventarioPorNome(item.itemIdentifierAmount.ItemDefinition, novoItem.quantidade);
                     }
@@ -130,7 +112,8 @@ public class ArrastarItensInventario : MonoBehaviour
                 Debug.Log("inventario para craft/armamento");
                 if (item != null)
                 {
-                    slotChegada.SetupSlotHotbar(item);
+                    bool craftParaCraft = slotStart.GetComponent<SlotHotbar>() != null && slotStart.GetComponent<SlotHotbar>().isSlotCraft;
+                    slotChegada.SetupSlotHotbar(item, craftParaCraft);
                 }
             }
         }
@@ -146,7 +129,7 @@ public class ArrastarItensInventario : MonoBehaviour
                 }
                 else if(slotChegada.isSlotArmazenamento)
                 {
-                    Debug.Log("craft para craft");
+                    Debug.Log("craft para armazenamento");
                 }
                 else
                 {
@@ -159,8 +142,8 @@ public class ArrastarItensInventario : MonoBehaviour
                 if (slotChegada.isSlotCraft)
                 {
                     Debug.Log("armazenamento para craft");
-                    slotChegada.SetupItemNoSlot(item, qtdItem);
-                    slotStart.GetComponent<SlotHotbar>().ResetSlotHotbar();
+                    //slotChegada.SetupItemNoSlot(item, qtdItem);
+                    //slotStart.GetComponent<SlotHotbar>().ResetSlotHotbar();
                 }
                 else if (slotChegada.isSlotArmazenamento) //Armazenamento para armazenamento
                 {
