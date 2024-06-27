@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using Opsive.Shared.Inventory;
 using Opsive.UltimateCharacterController.Inventory;
 using System.IO;
+using System.Collections;
 
 public class Item : MonoBehaviourPunCallbacks
 {
@@ -144,24 +145,31 @@ public class Item : MonoBehaviourPunCallbacks
         EventTrigger.Entry entry4 = new EventTrigger.Entry();
         EventTrigger.Entry entry5 = new EventTrigger.Entry();
         EventTrigger.Entry entry6 = new EventTrigger.Entry();
+        EventTrigger.Entry entry7 = new EventTrigger.Entry();
+
         entry.eventID = EventTriggerType.BeginDrag;
         entry2.eventID = EventTriggerType.EndDrag;
         entry3.eventID = EventTriggerType.Drop;
         entry4.eventID = EventTriggerType.PointerEnter;
         entry5.eventID = EventTriggerType.PointerExit;
         entry6.eventID = EventTriggerType.PointerDown;
+        entry7.eventID = EventTriggerType.PointerEnter;
+
         entry.callback.AddListener((data) => { OnBeginDragDelegate((PointerEventData)data); });
         entry2.callback.AddListener((data) => { OnEndDragDelegate((PointerEventData)data); });
         entry3.callback.AddListener((data) => { OnDropDelegate((PointerEventData)data); });
         entry4.callback.AddListener((data) => { OnPointerEnterDelegate((PointerEventData)data);});
         entry5.callback.AddListener((data) => { OnPointerExitDelegate((PointerEventData)data);});
         entry6.callback.AddListener((data) => { OnPointerDownDelegate((PointerEventData)data);});
+        entry7.callback.AddListener((data) => { OnPointerEnterAndKeyPressDelegate((PointerEventData)data); });
+
         trigger.triggers.Add(entry);
         trigger.triggers.Add(entry2);
         trigger.triggers.Add(entry3);
         trigger.triggers.Add(entry4);
         trigger.triggers.Add(entry5);
         trigger.triggers.Add(entry6);
+        trigger.triggers.Add(entry7);
     }
 
     public void DeselecionarItem()
@@ -452,6 +460,24 @@ public class Item : MonoBehaviourPunCallbacks
                 clicks = 1;
             }
             lastTimeClicked = Time.time;
+        }
+    }
+
+    private void OnPointerEnterAndKeyPressDelegate(PointerEventData data)
+    {
+        StartCoroutine(CheckForKeyPress());
+    }
+
+    private IEnumerator CheckForKeyPress()
+    {
+        while (true)
+        {
+            if (Input.GetButtonDown("Dropar"))
+            {
+                DroparItem(1);
+                yield break;
+            }
+            yield return null;
         }
     }
 
