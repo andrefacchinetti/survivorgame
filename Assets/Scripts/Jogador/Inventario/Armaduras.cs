@@ -8,7 +8,6 @@ public class Armaduras : MonoBehaviour
     [SerializeField] public Inventario inventario;
     [SerializeField] public List<ItemArmadura> slotsItemArmadura;
     [SerializeField] [HideInInspector] public ItemArmadura slotItemArmaduraSelecionada;
-    [SerializeField] public ItemArmadura slotAljava, slotLanterna;
     [SerializeField] public bool estaSelecionandoSlotArmadura;
 
     public void SelecionouItemParaSlotArmadura(Item item)
@@ -18,11 +17,6 @@ public class Armaduras : MonoBehaviour
             Debug.Log("O item não pertence a essa categoria de slot");
         }
         estaSelecionandoSlotArmadura = false;
-    }
-
-    public Item ObterItemFlechaNaAljava()
-    {
-        return slotAljava.item;
     }
 
 }

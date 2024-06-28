@@ -5,18 +5,17 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using Opsive.UltimateCharacterController.Inventory;
+using Opsive.Shared.Inventory;
 
 public class ItemArmadura : MonoBehaviour
 {
 
-    [SerializeField] public ItemIdentifierAmount[] itemsIdentifierAmountPermitidosNoSlot;
+    [SerializeField] public ItemDefinitionBase[] itemsPermitidosNoSlot;
     [SerializeField][HideInInspector] public Item item;
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public Texture texturaInvisivel;
     [SerializeField] public GameObject bordaSelecionado;
-    [SerializeField] public GameObject objEquipLanterna;
-    [SerializeField] public GameObject objLuzLanterna;
     [SerializeField] public Armaduras armaduras;
     [SerializeField] public ArrastarItensInventario arrastarItensInventario;
 
@@ -66,9 +65,9 @@ public class ItemArmadura : MonoBehaviour
         bordaSelecionado.SetActive(false);
         armaduras.slotItemArmaduraSelecionada = null;
         armaduras.estaSelecionandoSlotArmadura = false;
-        foreach (ItemIdentifierAmount identifierAmount in itemsIdentifierAmountPermitidosNoSlot)
+        foreach (ItemDefinitionBase itemBase in itemsPermitidosNoSlot)
         {
-            if (identifierAmount.ItemDefinition.name.Equals(itemResponse.itemIdentifierAmount.ItemDefinition.name))
+            if (itemBase.name.Equals(itemResponse.itemIdentifierAmount.ItemDefinition.name))
             {
                 SetupItemNoSlot(itemResponse);
                 return true;
@@ -90,34 +89,16 @@ public class ItemArmadura : MonoBehaviour
             txNomeItem.text = "";
             txQuantidade.text = "";
             imagemItem.texture = texturaInvisivel;
-            if(objEquipLanterna!=null) objEquipLanterna.SetActive(false);
         }
         else
         {
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
             txQuantidade.text = itemResponse.quantidade + "";
             imagemItem.texture = itemResponse.imagemItem.texture;
-            if (itemResponse.itemIdentifierAmount.ItemDefinition.Equals(armaduras.inventario.itemLanterna))
-            {
-                objEquipLanterna.SetActive(true);
-                armaduras.slotLanterna = this;
-                if(armaduras.inventario.itemNaMao != null && armaduras.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(armaduras.inventario.itemLanterna) 
-                    && !armaduras.inventario.VerificarQtdItem(armaduras.inventario.itemNaMao.itemIdentifierAmount.ItemDefinition, 2, false))
-                {
-                    armaduras.inventario.itemNaMao.DeselecionarItem();
-                }
-            }
+            //TODO: EQUIPAR ARMADURA NO JOGADOR
         }
     }
-
-    public void TurnOffOnLanterna()
-    {
-        if(item != null)
-        {
-            objLuzLanterna.SetActive(!objLuzLanterna.activeSelf);
-            //TODO: Sound click lanterna
-        }
-    }
+  
 
     public void OnDropDelegate(PointerEventData data){
         arrastarItensInventario.DragEndItemInventario(this);

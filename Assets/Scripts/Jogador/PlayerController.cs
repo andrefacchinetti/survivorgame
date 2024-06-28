@@ -146,10 +146,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					inventario.itemNaMao.DroparItem(1);
 				}
 			}
-            if (Input.GetButtonDown("Use"))
-            {
-				armaduras.slotLanterna.TurnOffOnLanterna();
-			}
 
 			if (swimAbility.IsActive || climbWaterAbility.IsActive)
 			{

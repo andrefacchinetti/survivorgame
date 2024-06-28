@@ -220,12 +220,6 @@ public class Item : MonoBehaviourPunCallbacks
                 inventario.playerController.acendedorFogueiraTP = inventario.playerController.contentItemsTP.GetComponentInChildren<AcendedorFogueira>();
                 inventario.playerController.acendedorFogueiraFP = inventario.playerController.contentItemsFP.GetComponentInChildren<AcendedorFogueira>();
             }
-            else if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemLanterna) && !inventario.VerificarQtdItem(itemIdentifierAmount.ItemDefinition, 2, false) 
-                && armaduras.slotLanterna.item != null)
-            {
-                armaduras.slotLanterna.objEquipLanterna.SetActive(false);
-                armaduras.slotLanterna.item = null;
-            }
         }
 
         if (itemIdentifierAmount.ItemDefinition.Equals(inventario.itemCorda))
@@ -357,10 +351,6 @@ public class Item : MonoBehaviourPunCallbacks
             }
         }
         
-        if (armaduras.slotAljava.item != null && this.itemIdentifierAmount.ItemDefinition.name.Equals(armaduras.slotAljava.item.itemIdentifierAmount.ItemDefinition.name))
-        {
-            armaduras.slotAljava.SetupItemNoSlot(this);
-        }
         txQuantidade.text = quantidade + "";
 
         if (quantidade <= 0)
