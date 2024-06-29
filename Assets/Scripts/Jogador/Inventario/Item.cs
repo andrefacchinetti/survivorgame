@@ -296,7 +296,7 @@ public class Item : MonoBehaviourPunCallbacks
         inventario.statsJogador.setarSedeAtual(inventario.statsJogador.sedeAtual + curaSede);
         inventario.statsJogador.setarFomeAtual(inventario.statsJogador.fomeAtual + curaFome);
         aplicarEfeitosConsumivelPorEstado();
-        if (curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida), false);
+        if (curaVida < 0) inventario.statsJogador.TakeDamageHealth(Mathf.Abs(curaVida), false, false);
         else inventario.statsJogador.TakeHealHealth(curaVida);
     }
 

@@ -41,6 +41,7 @@ public class Armaduras : MonoBehaviour
             if (itemBase.name == armorStats.itemBase.name)
             {
                 armorStats.visualObj.SetActive(true);
+                inventario.statsJogador.AumentarArmorJogador(armorStats.armor);
                 Debug.Log("EquiparArmadura ACHOU");
                 break;
             }
@@ -56,6 +57,7 @@ public class Armaduras : MonoBehaviour
             if (tipoSlotArmadura == armorStats.TipoSlotArmadura && armorStats.visualObj.activeSelf)
             {
                 armorStats.visualObj.SetActive(false);
+                inventario.statsJogador.DiminuirArmorJogador(armorStats.armor);
                 Debug.Log("DesequiparArmaduraDoTipoSlot ACHOU");
                 break;
             }

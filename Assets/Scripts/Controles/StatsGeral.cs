@@ -58,7 +58,7 @@ public class StatsGeral : MonoBehaviour
     {
         if (transform.position.y < -40)
         {
-            TakeDamage(999, false);
+            TakeDamage(9999, false);
         }
     }
 
@@ -153,7 +153,7 @@ public class StatsGeral : MonoBehaviour
     {
         if (jogadorStats != null) //jogador
         {
-            jogadorStats.TakeDamageHealth(damageValue, isPodeCausarSangramento);
+            jogadorStats.TakeDamageHealth(damageValue, isPodeCausarSangramento, true);
         }
         else //outros
         {

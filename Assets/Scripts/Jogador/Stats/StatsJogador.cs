@@ -42,6 +42,7 @@ public class StatsJogador : MonoBehaviour
     private void Start()
     {
         AtualizarImgVida();
+        AtualizarImgArmor();
         setarFomeAtual(fomeMaxima);
         setarSedeAtual(sedeMaxima);
         setarEnergiaAtual(energiaMaxima);
@@ -72,12 +73,13 @@ public class StatsJogador : MonoBehaviour
         setarSedeAtual(sedeAtual - valorDaSedeReduzidaPorTempo);
         if(sedeAtual <= 0 || fomeAtual <= 0)
         {
-            TakeDamageHealth(10, false);
+            TakeDamageHealth(10, false, false);
         }
     }
 
-    public void TakeDamageHealth(float value, bool isPodeCausarSangramento)
+    public void TakeDamageHealth(float value, bool isPodeCausarSangramento, bool armorPodeTankar)
     {
+        float danoRecebido = armorPodeTankar ? value * (playerController.characterAttributeManager.GetAttribute("Armor").Value / 100) : value;
         if (isPodeCausarSangramento)
         {
             if (!isSangrando)
@@ -97,7 +99,7 @@ public class StatsJogador : MonoBehaviour
             }
         }
         
-        playerController.characterHealth.Damage(value);
+        playerController.characterHealth.Damage(danoRecebido);
         AtualizarImgVida();
     }
 
@@ -105,6 +107,23 @@ public class StatsJogador : MonoBehaviour
     {
         playerController.characterHealth.Heal(value);
         AtualizarImgVida();
+    }
+
+    public void AumentarArmorJogador(float value)
+    {
+        playerController.characterAttributeManager.GetAttribute("Armor").Value += value;
+        hudJogador.atualizarImgArmor(playerController.characterAttributeManager.GetAttribute("Armor").Value);
+    }
+
+    public void DiminuirArmorJogador(float value)
+    {
+        playerController.characterAttributeManager.GetAttribute("Armor").Value -= value;
+        hudJogador.atualizarImgArmor(playerController.characterAttributeManager.GetAttribute("Armor").Value);
+    }
+
+    private void AtualizarImgArmor()
+    {
+        hudJogador.atualizarImgArmor(playerController.characterAttributeManager.GetAttribute("Armor").Value);
     }
 
     public void AtualizarImgVida()
@@ -196,11 +215,11 @@ public class StatsJogador : MonoBehaviour
         verificarAbstinencia();
         if (isAbstinencia)
         {
-            TakeDamageHealth(10, false);
+            TakeDamageHealth(10, false, false);
         }
         if (isFraturado)
         {
-            TakeDamageHealth(10, false);
+            TakeDamageHealth(10, false, false);
         }
     }
 
@@ -212,7 +231,7 @@ public class StatsJogador : MonoBehaviour
         }
         if (isInfeccionado)
         {
-            TakeDamageHealth(20, false);
+            TakeDamageHealth(20, false, false);
         }
     }
 
@@ -220,7 +239,7 @@ public class StatsJogador : MonoBehaviour
     {
         if (isSangrando)
         {
-            TakeDamageHealth(2, false);
+            TakeDamageHealth(2, false, false);
         }
     }
 
@@ -243,7 +262,7 @@ public class StatsJogador : MonoBehaviour
     int countVomitos = 0;
     private void vomitar()
     {
-        TakeDamageHealth(10, false);
+        TakeDamageHealth(10, false, false);
         setarFomeAtual(fomeAtual - 40);
         setarSedeAtual(sedeAtual - 40);
         countVomitos++;
