@@ -79,7 +79,7 @@ public class StatsJogador : MonoBehaviour
 
     public void TakeDamageHealth(float value, bool isPodeCausarSangramento, bool armorPodeTankar)
     {
-        float danoRecebido = armorPodeTankar ? value * (playerController.characterAttributeManager.GetAttribute("Armor").Value / 100) : value;
+        float danoRecebido = armorPodeTankar ? value - ((value * playerController.characterAttributeManager.GetAttribute("Armor").Value) / 100) : value;
         if (isPodeCausarSangramento)
         {
             if (!isSangrando)
