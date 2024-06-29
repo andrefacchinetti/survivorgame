@@ -11,6 +11,7 @@ public class ItemArmadura : MonoBehaviour
 {
 
     [SerializeField] public ItemDefinitionBase[] itemsPermitidosNoSlot;
+    [SerializeField] public Armaduras.TipoSlotArmadura tipoSlotArmadura;
     [SerializeField][HideInInspector] public Item item;
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
@@ -83,6 +84,8 @@ public class ItemArmadura : MonoBehaviour
 
     public void SetupItemNoSlot(Item itemResponse)
     {
+        Debug.Log("SetupItemNoSlot slotArmadura");
+        armaduras.DesequiparArmaduraDoTipoSlot(tipoSlotArmadura);
         item = itemResponse;
         if(itemResponse == null)
         {
@@ -92,10 +95,10 @@ public class ItemArmadura : MonoBehaviour
         }
         else
         {
-            txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemResponse.nomePortugues : itemResponse.nomeIngles;
-            txQuantidade.text = itemResponse.quantidade + "";
-            imagemItem.texture = itemResponse.imagemItem.texture;
-            //TODO: EQUIPAR ARMADURA NO JOGADOR
+            txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? item.nomePortugues : item.nomeIngles;
+            txQuantidade.text = item.quantidade + "";
+            imagemItem.texture = item.imagemItem.texture;
+            armaduras.EquiparArmadura(item.itemIdentifierAmount.ItemDefinition);
         }
     }
   
