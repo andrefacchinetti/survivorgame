@@ -12,6 +12,7 @@ public class Armaduras : MonoBehaviour
     [SerializeField] public bool estaSelecionandoSlotArmadura;
 
     [SerializeField] public List<ArmaduraStats> armadurasStats;
+    public float moveSpeedBonus = 0;
 
     [System.Serializable]
     public struct ArmaduraStats
@@ -35,34 +36,32 @@ public class Armaduras : MonoBehaviour
 
     public void EquiparArmadura(ItemDefinitionBase itemBase)
     {
-        Debug.Log("EquiparArmadura");
         foreach (ArmaduraStats armorStats in armadurasStats)
         {
             if (itemBase.name == armorStats.itemBase.name)
             {
                 armorStats.visualObj.SetActive(true);
                 inventario.statsJogador.AumentarArmorJogador(armorStats.armor);
-                Debug.Log("EquiparArmadura ACHOU");
+                moveSpeedBonus += armorStats.moveSpeed;
+                inventario.statsJogador.AtualizarMoveSpeedJogador();
                 break;
             }
         }
-        Debug.Log("EquiparArmadura NAO ACHOU");
     }
 
     public void DesequiparArmaduraDoTipoSlot(TipoSlotArmadura tipoSlotArmadura)
     {
-        Debug.Log("DesequiparArmaduraDoTipoSlot");
         foreach (ArmaduraStats armorStats in armadurasStats)
         {
             if (tipoSlotArmadura == armorStats.TipoSlotArmadura && armorStats.visualObj.activeSelf)
             {
                 armorStats.visualObj.SetActive(false);
                 inventario.statsJogador.DiminuirArmorJogador(armorStats.armor);
-                Debug.Log("DesequiparArmaduraDoTipoSlot ACHOU");
+                moveSpeedBonus -= armorStats.moveSpeed;
+                inventario.statsJogador.AtualizarMoveSpeedJogador();
                 break;
             }
         }
-        Debug.Log("DesequiparArmaduraDoTipoSlot NAO ACHOU");
     }
 
     public void SelecionouItemParaSlotArmadura(Item item)

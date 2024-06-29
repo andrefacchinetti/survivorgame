@@ -63,7 +63,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	public PhotonView PV;
 
 	//PARAMETROS Configurados automaticamente pelas Abilitys
-	[HideInInspector] public float maxSpeedChangeValue, jumpForceValue; 
+	[HideInInspector] public float jumpForceInicial;
+	[HideInInspector] public Vector3 motorAccelerationInicial;
 
 	void Awake()
 	{
@@ -92,8 +93,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		reviveAbility = characterLocomotion.GetAbility<Revive>();
 		jumpAbility = characterLocomotion.GetAbility<Jump>();
 
-		maxSpeedChangeValue = speedChangeAbility.MaxSpeedChangeValue;
-		jumpForceValue = jumpAbility.Force;
+		motorAccelerationInicial = characterLocomotion.MotorAcceleration;
+		jumpForceInicial = jumpAbility.Force;
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
 	}
 

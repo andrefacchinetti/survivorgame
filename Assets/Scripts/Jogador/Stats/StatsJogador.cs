@@ -277,18 +277,27 @@ public class StatsJogador : MonoBehaviour
     //INICIO FERIDAS E DOENÇAS
     public void FraturarJogador()
     {
-        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue * 0.3f;
         playerController.jumpAbility.Force = 0.05f;
         isFraturado = true;
         AtualizarImgFraturado();
+        AtualizarMoveSpeedJogador();
     }
 
     public void CurarFraturaJogador()
     {
-        playerController.speedChangeAbility.MaxSpeedChangeValue = playerController.maxSpeedChangeValue;
-        playerController.jumpAbility.Force = playerController.jumpForceValue;
+        playerController.jumpAbility.Force = playerController.jumpForceInicial;
         isFraturado = false;
         AtualizarImgFraturado();
+        AtualizarMoveSpeedJogador();
+    }
+
+    public void AtualizarMoveSpeedJogador()
+    {
+        Vector3 motorAtt = playerController.motorAccelerationInicial;
+        if (isFraturado) motorAtt *= 0.5f;
+        float bonusSpeedPercentual = playerController.armaduras.moveSpeedBonus;
+        motorAtt *= 1 + bonusSpeedPercentual/100;
+        playerController.characterLocomotion.MotorAcceleration = motorAtt;
     }
 
     public void AplicarIndigestao()
