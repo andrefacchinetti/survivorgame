@@ -13,6 +13,7 @@ public class Armaduras : MonoBehaviour
 
     [SerializeField] public List<ArmaduraStats> armadurasStats;
     public float moveSpeedBonus = 0;
+    public int calorBonus = 0;
 
     [System.Serializable]
     public struct ArmaduraStats
@@ -42,6 +43,7 @@ public class Armaduras : MonoBehaviour
             {
                 armorStats.visualObj.SetActive(true);
                 inventario.statsJogador.AumentarArmorJogador(armorStats.armor);
+                calorBonus += armorStats.calor;
                 moveSpeedBonus += armorStats.moveSpeed;
                 inventario.statsJogador.AtualizarMoveSpeedJogador();
                 break;
@@ -57,6 +59,7 @@ public class Armaduras : MonoBehaviour
             {
                 armorStats.visualObj.SetActive(false);
                 inventario.statsJogador.DiminuirArmorJogador(armorStats.armor);
+                calorBonus -= armorStats.calor;
                 moveSpeedBonus -= armorStats.moveSpeed;
                 inventario.statsJogador.AtualizarMoveSpeedJogador();
                 break;

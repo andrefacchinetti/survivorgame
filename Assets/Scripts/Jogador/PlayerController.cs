@@ -190,6 +190,41 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		return canMove && characterHealth.IsAlive();
 	}
 
+	public bool temFogoPerto()
+    {
+		GameObject[] fireObjects = GameObject.FindGameObjectsWithTag("Fogo");
+		Vector3 playerPosition = transform.position;
+
+		foreach (GameObject fireObject in fireObjects)
+		{
+			// Verificar se a distância entre o jogador e o objeto é menor ou igual ao raio de detecção
+			if (Vector3.Distance(playerPosition, fireObject.transform.position) <= 5)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool temGeloPerto()
+	{
+		GameObject[] objects = GameObject.FindGameObjectsWithTag("Gelo");
+		Vector3 playerPosition = transform.position;
+
+		foreach (GameObject objeto in objects)
+		{
+			// Verificar se a distância entre o jogador e o objeto é menor ou igual ao raio de detecção
+			if (Vector3.Distance(playerPosition, objeto.transform.position) <= 5)
+			{
+                if (objeto.GetComponent<Fogo>().isFogoAceso)
+                {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public void AlertarJogadorComMensagem(string texto)
     {
 		CancelInvoke("SumirAlerta");

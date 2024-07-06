@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -10,8 +8,8 @@ public class HudJogador : MonoBehaviour
     public RawImage imgVida, imgFome, imgSede, imgEnergia; //Stats Principais
     public GameObject imgAbstinencia, imgFraturado, imgSangrando;
     public GameObject imgIndigestao, imgInfeccionado;
-    public GameObject objArmor;
-    public TMP_Text txtArmor;
+    public GameObject objArmor, objHipertermia, objHipotermia;
+    public TMP_Text txtArmor, txtTemperatura;
 
     public Texture[] listImgsVida, listImgsFome, listImgsSede, listImgsEnergia;
 
@@ -31,10 +29,16 @@ public class HudJogador : MonoBehaviour
         imgVida.texture = listImgsVida[index];
     }
 
-    public void atualizarImgArmor(float armorAtual)
+    public void atualizarImgArmor(float atual)
     {
-        objArmor.SetActive(armorAtual > 0);
-        txtArmor.text = armorAtual + "";
+        objArmor.SetActive(atual > 0);
+        txtArmor.text = atual + "";
+    }
+    public void atualizarImgTemperatura(bool isHipotermia, bool isHipertermia, float atual)
+    {
+        objHipotermia.SetActive(isHipotermia);
+        objHipertermia.SetActive(isHipertermia);
+        txtTemperatura.text = atual + "";
     }
 
     public void atualizarImgFome(float atual, float maxima)

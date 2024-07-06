@@ -7,4 +7,9 @@ public class Fogo : MonoBehaviour
 
     [SerializeField] public bool isFogoAceso;
 
+    private void Awake()
+    {
+        tag = "Fogo";
+    }
+
 }

@@ -17,11 +17,11 @@ public class StatsJogador : MonoBehaviour
     [SerializeField] public float fomeMaxima = 100, sedeMaxima = 100, energiaMaxima = 100;
 
     //STATS CURRENT
-    [SerializeField] public float fomeAtual, sedeAtual, energiaAtual;
+    [SerializeField] public float fomeAtual, sedeAtual, energiaAtual, temperaturaAtual;
 
     [SerializeField] public float tempoPraDiminuirStatsFomeSedeEmSegundos = 60*1;
     [SerializeField] public float tempoPraDiminuirStatsFeridasInternasEmSegundos = 60*2;
-    [SerializeField] public float tempoPraDiminuirStatsDoencasEmSegundos = 60*4;
+    [SerializeField] public float tempoPraDiminuirStatsDoencasEmSegundos = 60*4, tempoPraDiminuirStatsTemperaturaEmSegundos = 60*2;
     [SerializeField] public float tempoPraDiminuirStatsDanoRapidoPorSegundo = 1; //ex: sangramento perde dano a cada x segundos
     [SerializeField] public float valorDaFomeReduzidaPorTempo = 5, valorDaSedeReduzidaPorTempo = 10;
     public float consumoEnergiaPorSegundo = 5.0f;
@@ -30,6 +30,7 @@ public class StatsJogador : MonoBehaviour
     //Feridas internas
     public bool isFraturado = false, isAbstinencia = false, isSangrando = false;
     public bool isIndigestao = false, isInfeccionado = false;
+    public bool isHipotermia = false, isHipertermia = false;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class StatsJogador : MonoBehaviour
         InvokeRepeating("VerificarStatsFeridasInternas", 0, tempoPraDiminuirStatsFeridasInternasEmSegundos);
         InvokeRepeating("VerificarStatsDoencas", 0, tempoPraDiminuirStatsDoencasEmSegundos);
         InvokeRepeating("VerificarStatsDanoRapido", 0, tempoPraDiminuirStatsDanoRapidoPorSegundo);
+        InvokeRepeating("VerificarStatsTemperatura", 0, tempoPraDiminuirStatsTemperaturaEmSegundos);
     }
 
     public void ResetarStatsFeridasInternas()
@@ -60,11 +62,14 @@ public class StatsJogador : MonoBehaviour
         isAbstinencia = false;
         isIndigestao = false;
         isInfeccionado = false;
+        isHipotermia = false;
+        isHipertermia = false;
         AtualizarImgSangrando();
         AtualizarImgAbstinencia();
         AtualizarImgFraturado();
         AtualizarImgIndigestao();
         AtualizarImgInfeccionado();
+        AtualizarImgTemperatura();
     }
 
     void DiminuirStatsPorTempo()
@@ -121,9 +126,19 @@ public class StatsJogador : MonoBehaviour
         hudJogador.atualizarImgArmor(playerController.characterAttributeManager.GetAttribute("Armor").Value);
     }
 
+    public void AlterarTemperaturaJogador(float value)
+    {
+        temperaturaAtual += value;
+    }
+
     private void AtualizarImgArmor()
     {
         hudJogador.atualizarImgArmor(playerController.characterAttributeManager.GetAttribute("Armor").Value);
+    }
+
+    private void AtualizarImgTemperatura()
+    {
+        hudJogador.atualizarImgTemperatura(isHipotermia, isHipertermia, temperaturaAtual);
     }
 
     public void AtualizarImgVida()
@@ -243,6 +258,15 @@ public class StatsJogador : MonoBehaviour
         }
     }
 
+    void VerificarStatsTemperatura()
+    {
+        verificarTemperatura();
+        if (isHipertermia || isHipotermia)
+        {
+            TakeDamageHealth(10, false, false);
+        }
+    }
+
     int countAbstinencia = 0;
     private void verificarAbstinencia()
     {
@@ -257,6 +281,21 @@ public class StatsJogador : MonoBehaviour
             countAbstinencia = 0;
             AtualizarImgAbstinencia();
         }
+    }
+
+    private void verificarTemperatura()
+    {
+        int calorArmadura = playerController.armaduras.calorBonus;
+        int calorFogo = playerController.temFogoPerto() ? 20 : 0; //TODO: VERIFICAR SE TEM FOGO POR PERTO
+        int calorAmbiente = playerController.temGeloPerto() ? -60 : 0; //TODO: VERIFICAR EM QUAL AMBIENTE ESTÁ
+        int calorHoraDia = playerController.gameController.isNoite ? 0 : 20;
+
+        temperaturaAtual = calorArmadura + calorFogo + calorAmbiente + calorHoraDia;
+        Debug.Log("temperatura: " + temperaturaAtual);
+        isHipertermia = temperaturaAtual > 80;
+        isHipotermia = temperaturaAtual < 0;
+
+        AtualizarImgTemperatura();
     }
     
     int countVomitos = 0;
