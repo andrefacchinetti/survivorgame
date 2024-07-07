@@ -466,7 +466,7 @@ public class Item : MonoBehaviourPunCallbacks
         }
         else if (data.button == PointerEventData.InputButton.Right)
         {
-            if (Input.GetButtonDown("Change Speeds"))
+            if (Input.GetButton("Change Speeds"))
             {
                 DroparItem(quantidade);
             }
