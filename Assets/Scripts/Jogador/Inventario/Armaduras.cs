@@ -67,6 +67,20 @@ public class Armaduras : MonoBehaviour
         }
     }
 
+    public void DesequiparArmaduraSeEstiverUsando(Item itemResponse)
+    {
+        if (itemResponse == null) return;
+        foreach (ItemArmadura slotItem in slotsItemArmadura)
+        {
+            if (slotItem.item != null && itemResponse.itemIdentifierAmount.ItemDefinition == slotItem.item.itemIdentifierAmount.ItemDefinition)
+            {
+                Debug.Log("DesequiparArmaduraSeEstiverUsando: " + slotItem.item.nomePortugues);
+                slotItem.SetupItemNoSlot(null);
+                break;
+            }
+        }
+    }
+
     public void SelecionouItemParaSlotArmadura(Item item)
     {
         if (!slotItemArmaduraSelecionada.ColocarItemNoSlot(item))

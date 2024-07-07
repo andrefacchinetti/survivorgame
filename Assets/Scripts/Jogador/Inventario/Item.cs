@@ -153,7 +153,7 @@ public class Item : MonoBehaviourPunCallbacks
         entry4.eventID = EventTriggerType.PointerEnter;
         entry5.eventID = EventTriggerType.PointerExit;
         entry6.eventID = EventTriggerType.PointerDown;
-        entry7.eventID = EventTriggerType.PointerEnter;
+        entry7.eventID = EventTriggerType.PointerClick;
 
         entry.callback.AddListener((data) => { OnBeginDragDelegate((PointerEventData)data); });
         entry2.callback.AddListener((data) => { OnEndDragDelegate((PointerEventData)data); });
@@ -161,7 +161,7 @@ public class Item : MonoBehaviourPunCallbacks
         entry4.callback.AddListener((data) => { OnPointerEnterDelegate((PointerEventData)data);});
         entry5.callback.AddListener((data) => { OnPointerExitDelegate((PointerEventData)data);});
         entry6.callback.AddListener((data) => { OnPointerDownDelegate((PointerEventData)data);});
-        entry7.callback.AddListener((data) => { OnPointerEnterAndKeyPressDelegate((PointerEventData)data); });
+        entry7.callback.AddListener((data) => { OnPointerClickDelegate((PointerEventData)data); });
 
         trigger.triggers.Add(entry);
         trigger.triggers.Add(entry2);
@@ -278,7 +278,7 @@ public class Item : MonoBehaviourPunCallbacks
                 objDropado.GetComponent<Garrafa>().Setup(this.GetComponent<Garrafa>());
             }
         }
-        inventario.RemoverItemDoInventarioPorItemIdentifier(itemIdentifierAmount.ItemIdentifier, qtdResponse);
+        diminuirQuantidade(qtdResponse, false);
     }
 
     public void UsarItem() //Usa item qdo aperta o botoa do mouse com o item na mao
@@ -374,8 +374,15 @@ public class Item : MonoBehaviourPunCallbacks
 
     private void RemoverItemDaMochila()
     {
+        desequiparItemDaArmadura();
         inventario.itens.Remove(this);
         GameObject.Destroy(this.gameObject);
+    }
+
+    private void desequiparItemDaArmadura()
+    {
+        if (tipoItem != TiposItems.Armadura) return;
+        inventario.playerController.armaduras.DesequiparArmaduraSeEstiverUsando(this);
     }
 
     public bool aumentarQuantidade(int quantidadeResponse) ///INVENTORY PICKUP ITEM
@@ -442,6 +449,7 @@ public class Item : MonoBehaviourPunCallbacks
                 clicks++;
                 
                 if(clicks == 2){
+                    //TODO: SE FOR ARUMADURA, EQUIPAR ITEM
                     SelecionarItem();
                     clicks = 0;
                 }
@@ -451,23 +459,26 @@ public class Item : MonoBehaviourPunCallbacks
             }
             lastTimeClicked = Time.time;
         }
-    }
-
-    private void OnPointerEnterAndKeyPressDelegate(PointerEventData data)
-    {
-        StartCoroutine(CheckForKeyPress());
-    }
-
-    private IEnumerator CheckForKeyPress()
-    {
-        while (true)
+        else if (data.button == PointerEventData.InputButton.Right)
         {
-            if (Input.GetButtonDown("Dropar"))
-            {
-                DroparItem(1);
-                yield break;
-            }
-            yield return null;
+            Debug.Log("Apertou o botão direito sobre: " + nomePortugues);
+            DroparItem(1);
+        }
+    }
+
+    public void OnPointerClickDelegate(PointerEventData data)
+    {
+        if (data.button == PointerEventData.InputButton.Left)
+        {
+
+        }
+        else if (data.button == PointerEventData.InputButton.Right)
+        {
+            
+        }
+        else if (data.button == PointerEventData.InputButton.Middle)
+        {
+
         }
     }
 

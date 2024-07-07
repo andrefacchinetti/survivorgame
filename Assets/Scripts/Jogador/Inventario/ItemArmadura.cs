@@ -84,7 +84,8 @@ public class ItemArmadura : MonoBehaviour
 
     public void SetupItemNoSlot(Item itemResponse)
     {
-        Debug.Log("SetupItemNoSlot slotArmadura");
+        string nomeItem = itemResponse != null ? itemResponse.nomePortugues : "null";
+        Debug.Log("SetupItemNoSlot slotArmadura: "+ nomeItem);
         armaduras.DesequiparArmaduraDoTipoSlot(tipoSlotArmadura);
         item = itemResponse;
         if(itemResponse == null)
