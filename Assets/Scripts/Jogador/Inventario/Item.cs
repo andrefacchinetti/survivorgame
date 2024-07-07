@@ -186,7 +186,13 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void SelecionarItem()
     {
-        if (this.itemIdentifierAmount.ItemDefinition.GetItemCategory().name.Equals("NaoEquipavel")) return; //Esse tipo de item n�o pode ser equipado
+        Debug.Log("selecionou item");
+        if (tipoItem == TiposItems.Armadura)
+        {
+            armaduras.EquiparArmaduraSelecionada(this);
+            return;
+        }
+        if (this.itemIdentifierAmount.ItemDefinition.GetItemCategory().name.Equals("NaoEquipavel")) return; //Esse tipo de item n�o pode ser equipado na mão
         if (inventario.itemNaMao != null)
         {
             if (inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.Equals(this.itemIdentifierAmount.ItemDefinition))
@@ -449,7 +455,6 @@ public class Item : MonoBehaviourPunCallbacks
                 clicks++;
                 
                 if(clicks == 2){
-                    //TODO: SE FOR ARUMADURA, EQUIPAR ITEM
                     SelecionarItem();
                     clicks = 0;
                 }
@@ -461,8 +466,14 @@ public class Item : MonoBehaviourPunCallbacks
         }
         else if (data.button == PointerEventData.InputButton.Right)
         {
-            Debug.Log("Apertou o botão direito sobre: " + nomePortugues);
-            DroparItem(1);
+            if (Input.GetButtonDown("Change Speeds"))
+            {
+                DroparItem(quantidade);
+            }
+            else
+            {
+                DroparItem(1);
+            }
         }
     }
 

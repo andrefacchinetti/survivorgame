@@ -99,7 +99,7 @@ public class ItemArmadura : MonoBehaviour
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? item.nomePortugues : item.nomeIngles;
             txQuantidade.text = item.quantidade + "";
             imagemItem.texture = item.imagemItem.texture;
-            armaduras.EquiparArmadura(item.itemIdentifierAmount.ItemDefinition);
+            armaduras.equiparStatsArmadura(item.itemIdentifierAmount.ItemDefinition);
         }
     }
   

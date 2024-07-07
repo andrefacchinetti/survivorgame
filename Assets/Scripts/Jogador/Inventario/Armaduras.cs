@@ -35,7 +35,7 @@ public class Armaduras : MonoBehaviour
         maos
     }
 
-    public void EquiparArmadura(ItemDefinitionBase itemBase)
+    public void equiparStatsArmadura(ItemDefinitionBase itemBase)
     {
         foreach (ArmaduraStats armorStats in armadurasStats)
         {
@@ -76,6 +76,19 @@ public class Armaduras : MonoBehaviour
             {
                 Debug.Log("DesequiparArmaduraSeEstiverUsando: " + slotItem.item.nomePortugues);
                 slotItem.SetupItemNoSlot(null);
+                break;
+            }
+        }
+    }
+
+    public void EquiparArmaduraSelecionada(Item itemResponse)
+    {
+        if (itemResponse == null) return;
+        foreach (ItemArmadura slotItem in slotsItemArmadura)
+        {
+            if (slotItem.ColocarItemNoSlot(itemResponse))
+            {
+                Debug.Log("EquiparArmaduraSelecionada: " + itemResponse.nomePortugues);
                 break;
             }
         }
