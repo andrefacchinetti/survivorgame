@@ -369,4 +369,17 @@ public class StatsJogador : MonoBehaviour
         AtualizarImgSangrando();
     }
     //FIM FERIDAS E DOENÇAS
+
+    bool estaNaAgua = false;
+    public void ToggleHudFolego(bool estaNaAguaResponse)
+    {
+        hudJogador.hudFolego.SetActive(estaNaAguaResponse);
+        estaNaAgua = estaNaAguaResponse;
+        AtualizarBarraDeFolego();
+    }
+
+    public void AtualizarBarraDeFolego()
+    {
+        hudJogador.atualizarImgFolego(playerController.characterAttributeManager.GetAttribute("Breath").Value, playerController.characterAttributeManager.GetAttribute("Breath").MaxValue);
+    }
 }

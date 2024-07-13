@@ -153,9 +153,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				// Se o personagem está nadando, desequipe todos os itens
 				if (jaSaiuDaAgua)
 				{
-					Debug.Log("Entrou na água: desequipando items");
 					GetComponent<ItemSetManagerBase>().UnEquipAllItems(true, true);
 					jaSaiuDaAgua = false;
+					Debug.Log("Entrou na água: desequipando items");
+					statsJogador.ToggleHudFolego(true);
+				}
+                else
+                {
+					statsJogador.AtualizarBarraDeFolego();
 				}
 			}
 			else
@@ -167,6 +172,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					GetComponent<ItemSetManagerBase>().EquipItem(itemIdBody, -1, true, true);
 					Debug.Log("Saiu da água: equipando body");
 					jaSaiuDaAgua = true;
+					statsJogador.ToggleHudFolego(false);
 				}
 			}
 		}

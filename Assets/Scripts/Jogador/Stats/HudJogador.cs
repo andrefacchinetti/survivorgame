@@ -6,9 +6,12 @@ public class HudJogador : MonoBehaviour
 {
 
     public RawImage imgVida, imgFome, imgSede, imgEnergia; //Stats Principais
+    public Image barraFolego;
+    public GameObject hudFolego;
     public GameObject imgAbstinencia, imgFraturado, imgSangrando;
     public GameObject imgIndigestao, imgInfeccionado;
     public GameObject objArmor, objHipertermia, objHipotermia;
+    
     public TMP_Text txtArmor, txtTemperatura;
 
     public Texture[] listImgsVida, listImgsFome, listImgsSede, listImgsEnergia;
@@ -27,6 +30,11 @@ public class HudJogador : MonoBehaviour
         float porcentagemVida =  vidaAtual / vidaMaxima * 100;
         int index = obterIndexPorPorcentagem(porcentagemVida);
         imgVida.texture = listImgsVida[index];
+    }
+
+    public void atualizarImgFolego(float atual, float maximo)
+    {
+        barraFolego.fillAmount = atual / maximo;
     }
 
     public void atualizarImgArmor(float atual)
