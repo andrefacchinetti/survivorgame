@@ -14,6 +14,7 @@ public class Item : MonoBehaviourPunCallbacks
     //VARIAVEIS CRIADAS VIA ItemStruct
     [SerializeField] public TiposItems tipoItem;
     [SerializeField] public string nomePortugues, nomeIngles;
+    [SerializeField] public string descricao;
     [SerializeField] public ItemIdentifierAmount itemIdentifierAmount;
     [SerializeField] public ItemDefinitionBase tipoMunicao;
     [SerializeField] public int groupIndex;
@@ -77,7 +78,7 @@ public class Item : MonoBehaviourPunCallbacks
         public int peso;
         public ItemDefinitionBase tipoMunicao;
         public int groupIndex;
-        public string nomePortugues, nomeIngles;
+        public string nomePortugues, nomeIngles, descricao;
         public bool isConsumivel;
         public EstadoConsumivel estadoConsumivel;
         public int curaSede, curaFome, curaVida;
@@ -100,6 +101,7 @@ public class Item : MonoBehaviourPunCallbacks
         tipoItem = itemResponse.tipoItem;
         nomePortugues = itemResponse.nomePortugues;
         nomeIngles = itemResponse.nomeIngles;
+        descricao = itemResponse.descricao;
         itemIdentifierAmount = itemResponse.itemIdentifierAmount;
         tipoMunicao = itemResponse.tipoMunicao;
         groupIndex = itemResponse.groupIndex;
@@ -129,14 +131,14 @@ public class Item : MonoBehaviourPunCallbacks
         return PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles;
     }
 
-    public string obterDescricaoItemTraduzida()
+    public string obterDescricaoItem()
     {
-        return PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles; //TODO: IMPLEMENTAR NO ITEMSTRUCT
+        return descricao;
     }
 
     public string obterTipoItemTraduzido()
     {
-        return tipoItem.ToString(); //TODO: IMPLEMENTAR
+        return EnumMensagens.ObterNomeTipoItemFormatado(tipoItem);
     }
 
     private void Awake()
@@ -471,6 +473,7 @@ public class Item : MonoBehaviourPunCallbacks
             {
                 DroparItem(1);
             }
+            arrastarItensInventario.HoverNothing();
         }
     }
 

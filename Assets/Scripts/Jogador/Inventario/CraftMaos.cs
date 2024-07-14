@@ -143,7 +143,7 @@ public class CraftMaos : MonoBehaviour
             {
                 ingrediente.itemStruct = inventario.ObterItemStructPeloNome(ingrediente.item);
             }
-            GameObject novaReceita = Instantiate(prefabItemReceita, new Vector3(), new Quaternion(), contentReceitas.transform);
+            GameObject novaReceita = Instantiate(prefabItemReceita, Vector3.zero, new Quaternion(), contentReceitas.transform);
             Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaCraft.itemResultado);
             novaReceita.GetComponent<ItemReceitaView>().SetupReceitaView(itemStruct, receitaCraft.ingredientes);
         }

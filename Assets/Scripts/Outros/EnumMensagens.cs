@@ -34,4 +34,50 @@ public static class EnumMensagens
         return "The backpack is very heavy";
     }
 
+    public static string ObterNomeTipoItemFormatado(Item.TiposItems tipo)
+    {
+        if(tipo == Item.TiposItems.Arma)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Arma";
+            return "Weapon";
+        }
+        else if (tipo == Item.TiposItems.Armadura)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Armadura";
+            return "Armor";
+        }
+        else if (tipo == Item.TiposItems.Consumivel)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Consumível";
+            return "Consumable";
+        }
+        else if (tipo == Item.TiposItems.ConsumivelCozinha)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Cozinha";
+            return "Kitchen";
+        }
+        else if (tipo == Item.TiposItems.Ferramenta)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Ferramenta";
+            return "Tool";
+        }
+        else if (tipo == Item.TiposItems.Municao)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Munição";
+            return "Ammunition";
+        }
+        else if (tipo == Item.TiposItems.Objeto)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Objeto";
+            return "Object";
+        }
+        else if (tipo == Item.TiposItems.Recurso)
+        {
+            if (PlayerPrefs.GetInt("INDEXIDIOMA") == 1) return "Recurso";
+            return "Resource";
+        }
+        return "";
+
+    }
+
 }

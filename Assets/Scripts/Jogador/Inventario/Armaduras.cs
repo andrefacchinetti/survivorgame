@@ -12,6 +12,7 @@ public class Armaduras : MonoBehaviour
     [SerializeField] public bool estaSelecionandoSlotArmadura;
 
     [SerializeField] public List<ArmaduraStats> armadurasStats;
+    public Dictionary<string, ArmaduraStats> mapArmaduraStats;
     public float moveSpeedBonus = 0;
     public int calorBonus = 0;
 
@@ -33,6 +34,15 @@ public class Armaduras : MonoBehaviour
         pernas,
         pes,
         maos
+    }
+
+    private void Awake()
+    {
+        mapArmaduraStats = new Dictionary<string, ArmaduraStats>();
+        foreach(ArmaduraStats armadura in armadurasStats)
+        {
+            mapArmaduraStats.Add(armadura.itemBase.name, armadura);
+        }
     }
 
     public void equiparStatsArmadura(ItemDefinitionBase itemBase)

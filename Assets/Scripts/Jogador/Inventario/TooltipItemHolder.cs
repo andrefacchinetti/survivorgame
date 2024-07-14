@@ -5,22 +5,24 @@ using TMPro;
 public class TooltipItemHolder : MonoBehaviour
 {
     public TMP_Text txNome, txDescricao, txTipo;
-    public TMP_Text txArmor, txCalor, txMoveSpeed; 
+    public TMP_Text txArmor, txCalor, txMoveSpeed;
+    [SerializeField] Armaduras armaduras;
 
     public void setupItem(Item item)
     {
         txNome.text = "<color=#a335eeff>" + item.obterNomeItemTraduzido() + "</color>";
-        txDescricao.text = item.obterDescricaoItemTraduzida();
+        txDescricao.text = item.obterDescricaoItem();
         txTipo.text = item.obterTipoItemTraduzido();
         if(item.tipoItem == Item.TiposItems.Armadura)
         {
-            txArmor.text = pintarVermelhoOuVerde(10, "Armor");
-            txMoveSpeed.text = pintarVermelhoOuVerde(10, "Armor");
-            txCalor.text = pintarVermelhoOuVerde(10, "Armor");
+            Armaduras.ArmaduraStats armaduraStats = armaduras.mapArmaduraStats[item.itemIdentifierAmount.ItemDefinition.name];
+            txArmor.text = pintarVermelhoOuVerde(armaduraStats.armor, "Armor");
+            txMoveSpeed.text = pintarVermelhoOuVerde(armaduraStats.moveSpeed, "Move Speed");
+            txCalor.text = pintarVermelhoOuVerde(armaduraStats.calor, "Temperature");
         }
         txArmor.gameObject.SetActive(item.tipoItem == Item.TiposItems.Armadura);
         txMoveSpeed.gameObject.SetActive(item.tipoItem == Item.TiposItems.Armadura);
-        txMoveSpeed.gameObject.SetActive(item.tipoItem == Item.TiposItems.Armadura);
+        txCalor.gameObject.SetActive(item.tipoItem == Item.TiposItems.Armadura);
     }
 
     private string pintarVermelhoOuVerde(float valor, string txBonus)
@@ -33,7 +35,7 @@ public class TooltipItemHolder : MonoBehaviour
         }
         else
         {
-            texto += "<color=#90474D> -";
+            texto += "<color=#90474D> ";
         }
         texto += valor + " " + txBonus + "</color>";
         return texto;

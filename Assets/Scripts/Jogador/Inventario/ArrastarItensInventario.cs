@@ -57,7 +57,7 @@ public class ArrastarItensInventario : MonoBehaviour
 
     private Item criarNovoItemParaArmazenar(Item.ItemStruct itemStructResponse, int quantidadeResponse)
     {
-        GameObject novoItemObjeto = Instantiate(inventario.prefabItem, new Vector3(), new Quaternion(), inventario.armazenamentoInventario.transform);
+        GameObject novoItemObjeto = Instantiate(inventario.prefabItem, Vector3.zero, new Quaternion(), inventario.armazenamentoInventario.transform);
         novoItemObjeto.transform.SetParent(inventario.armazenamentoInventario.transform);
         if (item != null && item.Equals(inventario.itemGarrafa))
         {
@@ -190,6 +190,7 @@ public class ArrastarItensInventario : MonoBehaviour
     public void DragEndItemInventario(ItemArmadura slotArmadura)
     {
         Debug.Log("DragEndItemInventario slotArmadura");
+        if (slotStart.GetComponent<SlotHotbar>().isSlotArmazenamento) return;
         slotArmadura.ColocarItemNoSlot(item);
         item = null;
         placeHolder.SetActive(false);

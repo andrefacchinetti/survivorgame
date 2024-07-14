@@ -190,7 +190,7 @@ public class Inventario : MonoBehaviour
         {
             pesoAtual += itemStruct.peso;
             qtdItensAtual++;
-            GameObject novoObjeto = Instantiate(prefabItem, new Vector3(), new Quaternion(), contentItensMochila.transform);
+            GameObject novoObjeto = Instantiate(prefabItem, Vector3.zero, new Quaternion(), contentItensMochila.transform);
             novoObjeto.transform.SetParent(contentItensMochila.transform);
             if (itemDrop != null && itemDrop.item.Equals(itemGarrafa))
             {

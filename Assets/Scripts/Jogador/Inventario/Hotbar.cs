@@ -60,26 +60,6 @@ public class Hotbar : MonoBehaviour
             {
                 if (slots[4].item != null && slots[4].item.quantidade > 0) slots[4].item.SelecionarItem();
             }
-            else if (Input.GetButtonDown("HotbarButton_6"))
-            {
-                if (slots[5].item != null && slots[5].item.quantidade > 0) slots[5].item.SelecionarItem();
-            }
-            else if (Input.GetButtonDown("HotbarButton_7"))
-            {
-                if (slots[6].item != null && slots[6].item.quantidade > 0) slots[6].item.SelecionarItem();
-            }
-            else if (Input.GetButtonDown("HotbarButton_8"))
-            {
-                if (slots[7].item != null && slots[7].item.quantidade > 0) slots[7].item.SelecionarItem();
-            }
-            else if (Input.GetButtonDown("HotbarButton_9"))
-            {
-                if (slots[8].item != null && slots[8].item.quantidade > 0) slots[8].item.SelecionarItem();
-            }
-            else if (Input.GetButtonDown("HotbarButton_0"))
-            {
-                if (slots[9].item != null && slots[9].item.quantidade > 0) slots[9].item.SelecionarItem();
-            }
         }
     }
 
