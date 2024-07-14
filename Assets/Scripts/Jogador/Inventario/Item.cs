@@ -129,6 +129,16 @@ public class Item : MonoBehaviourPunCallbacks
         return PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles;
     }
 
+    public string obterDescricaoItemTraduzida()
+    {
+        return PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? nomePortugues : nomeIngles; //TODO: IMPLEMENTAR NO ITEMSTRUCT
+    }
+
+    public string obterTipoItemTraduzido()
+    {
+        return tipoItem.ToString(); //TODO: IMPLEMENTAR
+    }
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();

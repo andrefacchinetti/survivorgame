@@ -9,8 +9,9 @@ public class ArrastarItensInventario : MonoBehaviour
 {
     private Item item, itemHover;
     private int qtdItem;
-    public GameObject placeHolder, nameHolder;
-    public GameObject slotStart;
+    public GameObject placeHolder;
+    public TooltipItemHolder tooltipHolder;
+    [HideInInspector] public GameObject slotStart;
     private int slotEnd;
     [SerializeField]
     public SlotHotbar hotbar1,hotbar2,hotbar3,hotbar4,hotbar5;
@@ -204,13 +205,13 @@ public class ArrastarItensInventario : MonoBehaviour
     public void HoverNothing()
     {
         itemHover = null;
-        nameHolder.SetActive(false);
+        tooltipHolder.gameObject.SetActive(false);
     }
 
     public void HoverItem(Item responsiveItem){
         itemHover = responsiveItem;
-        nameHolder.GetComponent<TextMeshProUGUI>().text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? responsiveItem.nomePortugues : responsiveItem.nomeIngles;
-        nameHolder.SetActive(true);
+        tooltipHolder.setupItem(responsiveItem);
+        tooltipHolder.gameObject.SetActive(true);
     }
 
     public void SoltarItemNoPlayer(){

@@ -8,7 +8,7 @@ public class ItemReceitaView : MonoBehaviour
 {
 
     [SerializeField] public GameObject contentIngredientes, prefabItemIngrediente;
-    [SerializeField] public TMP_Text txNomeItem;
+    [SerializeField] public Text txNomeItem;
     [SerializeField] public RawImage imagemItem;
     List<ItemIngredienteView> ingredientesViews;
 

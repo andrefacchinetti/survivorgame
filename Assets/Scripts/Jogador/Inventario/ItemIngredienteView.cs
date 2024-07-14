@@ -7,7 +7,7 @@ using UnityEngine;
 public class ItemIngredienteView : MonoBehaviour
 {
 
-    [SerializeField] public TMP_Text txNomeItem, txQuantidadeItem;
+    [SerializeField] public Text txNomeItem, txQuantidadeItem;
     [SerializeField] public RawImage imagemItem;
 
     public void SetupIngredienteView(Item.ItemStruct itemStruct, int quantidade)
