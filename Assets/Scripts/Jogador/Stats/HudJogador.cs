@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DuloGames.UI;
 
 public class HudJogador : MonoBehaviour
 {
 
     public RawImage imgVida, imgFome, imgSede, imgEnergia; //Stats Principais
-    public Image barraFolego;
+    public UIProgressBar barraFolego;
     public GameObject hudFolego;
     public GameObject imgAbstinencia, imgFraturado, imgSangrando;
     public GameObject imgIndigestao, imgInfeccionado;

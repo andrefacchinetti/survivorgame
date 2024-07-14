@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Opsive.Shared.Inventory;
 using Opsive.UltimateCharacterController.Inventory;
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[SerializeField] public ControleConstruir controleConstruir;
 	[SerializeField] public EventsAnimJogador eventsAnimJogador;
 	[SerializeField] public Animator animatorVaraDePesca, animatorJogador;
-	[SerializeField] public GameObject contentItemsTP, contentItemsFP;
+	[SerializeField] public GameObject contentItemsTP, contentItemsFP, objAlerta;
 	[SerializeField] public TMP_Text txMsgAlerta;
 
 	[SerializeField] [HideInInspector] public StatsJogador statsJogador;
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		statsGeral = GetComponent<StatsGeral>();
 		characterHealth = GetComponent<CharacterHealth>();
 		characterAttributeManager = GetComponent<CharacterAttributeManager>();
+		objAlerta.SetActive(false);
 		txMsgAlerta.text = "";
 
 		inventory = GetComponent<Inventory>();
@@ -235,13 +237,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 		CancelInvoke("SumirAlerta");
 		txMsgAlerta.text = texto;
-		Invoke("SumirAlerta", 2);
+		objAlerta.SetActive(true);
+		Invoke("SumirAlerta", 3);
 	}
 
 	void SumirAlerta()
     {
 		txMsgAlerta.text = "";
-    }
+		objAlerta.SetActive(false);
+	}
 
 	public void PararAbilitys()
     {

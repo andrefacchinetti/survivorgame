@@ -34,6 +34,7 @@ public class Inventario : MonoBehaviour
     [SerializeField] [HideInInspector] public ArrastarItensInventario arrastarItensInventario;
     [SerializeField] [HideInInspector] public ArmazenamentoInventario armazenamentoInventario;
 
+    [SerializeField] private GameObject hudLogItens;
     [SerializeField] public TMP_Text txMsgLogItem, txMunicoesClipHud, txMunicoesInventarioHud;
     [SerializeField] RawImage imgLogItem;
     [SerializeField] Texture texturaTransparente;
@@ -49,6 +50,7 @@ public class Inventario : MonoBehaviour
         craftMaos = GetComponent<CraftMaos>();
         arrastarItensInventario = GetComponent<ArrastarItensInventario>();
         armazenamentoInventario = GetComponent<ArmazenamentoInventario>();
+        hudLogItens.SetActive(false);
     }
 
     void Start()
@@ -485,6 +487,7 @@ public class Inventario : MonoBehaviour
         texto += nomeItemTraduzido;
         txMsgLogItem.text = texto;
         imgLogItem.texture = imgItem;
+        hudLogItens.SetActive(true);
         Invoke("SumirLogItem", 1);
     }
 
@@ -492,6 +495,7 @@ public class Inventario : MonoBehaviour
     {
         txMsgLogItem.text = "";
         imgLogItem.texture = texturaTransparente;
+        hudLogItens.SetActive(false);
     }
 
 }
