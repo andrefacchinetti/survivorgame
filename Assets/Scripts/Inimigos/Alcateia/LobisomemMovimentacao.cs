@@ -232,7 +232,7 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private bool isAlvoEstaArmado()
     {
-        if(targetInimigo != null && targetInimigo.jogadorStats.playerController.inventario.itemNaMao != null &&
+        if(targetInimigo != null && targetInimigo.jogadorStats != null && targetInimigo.jogadorStats.playerController.inventario.itemNaMao != null &&
             targetInimigo.jogadorStats.playerController.inventario.itemNaMao.tipoItem == Item.TiposItems.Arma)
         {
             return true;

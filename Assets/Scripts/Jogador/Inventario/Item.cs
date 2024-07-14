@@ -350,7 +350,6 @@ public class Item : MonoBehaviourPunCallbacks
         {
             quantidade = 0;
             inventario.setarQtdItensAtual(inventario.qtdItensAtual - 1);
-            desativarOuAtivarUsoItemDaHotbar(true);
             if(inventario.itemNaMao != null && inventario.itemNaMao.itemIdentifierAmount.ItemDefinition.name.Equals(this.itemIdentifierAmount.ItemDefinition.name))
             {
                 SetarItemNaMaoNull();
@@ -404,7 +403,6 @@ public class Item : MonoBehaviourPunCallbacks
             inventario.inventory.AddItemIdentifierAmount(itemIdentifierAmount.ItemIdentifier, quantidadeResponse);
             if (quantidade <= 0)
             {
-                desativarOuAtivarUsoItemDaHotbar(false);
                 gameObject.transform.SetAsLastSibling();
             }
             inventario.setarQtdItensAtual(inventario.qtdItensAtual + quantidadeResponse);
@@ -414,17 +412,6 @@ public class Item : MonoBehaviourPunCallbacks
             inventario.AlertarJogadorComLogItem(this.obterNomeItemTraduzido(), imagemItem.texture, true, quantidadeResponse);
             inventario.AtualizarHudMunicoesComArmaAtual();
             return true;
-        }
-    }
-
-    private void desativarOuAtivarUsoItemDaHotbar(bool isDesativando)
-    {
-        foreach (SlotHotbar slot in hotbar.slots)
-        {
-            if (slot.item != null && slot.item.itemIdentifierAmount.ItemDefinition.name.Equals(this.itemIdentifierAmount.ItemDefinition.name))
-            {
-                slot.objEmbacarImg.SetActive(isDesativando);
-            }
         }
     }
 

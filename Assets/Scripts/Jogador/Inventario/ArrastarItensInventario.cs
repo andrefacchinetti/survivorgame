@@ -13,12 +13,10 @@ public class ArrastarItensInventario : MonoBehaviour
     public GameObject slotStart;
     private int slotEnd;
     [SerializeField]
-    public SlotHotbar hotbar1,hotbar2,hotbar3,hotbar4,hotbar5,hotbar6,hotbar7,hotbar8,hotbar9,hotbar0;
+    public SlotHotbar hotbar1,hotbar2,hotbar3,hotbar4,hotbar5;
 
     [SerializeField]
-    public ItemArmadura[] slotsArmaduras = new ItemArmadura[4];
-    [SerializeField]
-    public ItemArmadura slotMunicoes;
+    public ItemArmadura[] slotsArmaduras = new ItemArmadura[5];
 
     private Inventario inventario;
     // Start is called before the first frame update
@@ -36,11 +34,6 @@ public class ArrastarItensInventario : MonoBehaviour
             else if (Input.GetButtonDown("HotbarButton_3")) hotbar3.SetupSlotHotbar(itemHover, false);
             else if (Input.GetButtonDown("HotbarButton_4")) hotbar4.SetupSlotHotbar(itemHover, false);
             else if (Input.GetButtonDown("HotbarButton_5")) hotbar5.SetupSlotHotbar(itemHover, false);
-            else if (Input.GetButtonDown("HotbarButton_6")) hotbar6.SetupSlotHotbar(itemHover, false);
-            else if (Input.GetButtonDown("HotbarButton_7")) hotbar7.SetupSlotHotbar(itemHover, false);
-            else if (Input.GetButtonDown("HotbarButton_8")) hotbar8.SetupSlotHotbar(itemHover, false);
-            else if (Input.GetButtonDown("HotbarButton_9")) hotbar9.SetupSlotHotbar(itemHover, false);
-            else if (Input.GetButtonDown("HotbarButton_0")) hotbar0.SetupSlotHotbar(itemHover, false);
         }
     }
 
@@ -227,8 +220,6 @@ public class ArrastarItensInventario : MonoBehaviour
             foreach(ItemArmadura armadura in slotsArmaduras){
                 armadura.ColocarItemNoSlot(item);
             }
-        } else if(item.tipoItem.Equals(Item.TiposItems.Municao.ToString())){
-            slotMunicoes.ColocarItemNoSlot(item);
         } else{
             item.SelecionarItem();
         }

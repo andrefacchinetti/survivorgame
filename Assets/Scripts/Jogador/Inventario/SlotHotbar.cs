@@ -14,10 +14,9 @@ public class SlotHotbar : MonoBehaviour
     [SerializeField] public ArmazenamentoInventario armazenamentoinventario;
     [SerializeField] public bool isSlotCraft = false, isSlotArmazenamento = false;
 
-    [SerializeField] public TMP_Text txTeclaAtalho, txNomeItem ,txQuantidade;
+    [SerializeField] public TMP_Text txNomeItem ,txQuantidade;
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public Texture texturaInvisivel;
-    [SerializeField] public GameObject objEmbacarImg;
     public ArrastarItensInventario arrastarItensInventario;
 
     [HideInInspector] public int qtdItemNoSlot = 0;
@@ -90,7 +89,6 @@ public class SlotHotbar : MonoBehaviour
         txNomeItem.text = item.obterNomeItemTraduzido();
         txQuantidade.text = qtdItemNoSlot + "";
         imagemItem.texture = item.imagemItem.texture;
-        objEmbacarImg.SetActive(item.quantidade <= 0);
         craftMaos.AtualizarPreviewResultado();
     }
 
@@ -110,7 +108,6 @@ public class SlotHotbar : MonoBehaviour
         txNomeItem.text = "";
         txQuantidade.text = "";
         imagemItem.texture = texturaInvisivel;
-        objEmbacarImg.SetActive(false);
         if (isSlotCraft) craftMaos.AtualizarPreviewResultado();
     }
 
@@ -170,7 +167,6 @@ public class SlotHotbar : MonoBehaviour
         {
             txNomeItem.text = "";
             txQuantidade.text = "";
-            txTeclaAtalho.text = "";
             imagemItem.texture = texturaInvisivel;
         }
         else
@@ -178,7 +174,6 @@ public class SlotHotbar : MonoBehaviour
             Item.ItemStruct itemStruct = inventario.ObterItemStructPeloNome(receitaResultado.itemResultado);
             txNomeItem.text = PlayerPrefs.GetInt("INDEXIDIOMA") == 1 ? itemStruct.nomePortugues : itemStruct.nomeIngles;
             txQuantidade.text = "";
-            txTeclaAtalho.text = "";
             imagemItem.texture = itemStruct.textureImgItem;
         }
     }

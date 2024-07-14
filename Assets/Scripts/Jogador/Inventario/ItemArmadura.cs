@@ -16,7 +16,6 @@ public class ItemArmadura : MonoBehaviour
     [SerializeField] public TMP_Text txQuantidade, txNomeItem;
     [SerializeField] public RawImage imagemItem;
     [SerializeField] public Texture texturaInvisivel;
-    [SerializeField] public GameObject bordaSelecionado;
     [SerializeField] public Armaduras armaduras;
     [SerializeField] public ArrastarItensInventario arrastarItensInventario;
 
@@ -49,21 +48,9 @@ public class ItemArmadura : MonoBehaviour
         imagemItem.texture = texturaInvisivel;
     }
 
-    public void SelecionarSlotArmadura()
-    {
-        foreach (ItemArmadura slot in armaduras.slotsItemArmadura)
-        {
-            slot.bordaSelecionado.SetActive(false);
-        }
-        armaduras.slotItemArmaduraSelecionada = this;
-        armaduras.estaSelecionandoSlotArmadura = true;
-        bordaSelecionado.SetActive(true);
-    }
-
     public bool ColocarItemNoSlot(Item itemResponse)
     {
         if (itemResponse == null) return false;
-        bordaSelecionado.SetActive(false);
         armaduras.slotItemArmaduraSelecionada = null;
         armaduras.estaSelecionandoSlotArmadura = false;
         foreach (ItemDefinitionBase itemBase in itemsPermitidosNoSlot)
