@@ -29,7 +29,7 @@ public class StatsGeral : MonoBehaviour
     [HideInInspector] public CollisorSofreDano collisorSofreDano;
 
     public EstilhacoFxController.TipoEstilhaco tipoEstilhaco;
-    BFX_DemoTest bloodController;
+    [HideInInspector] public BFX_DemoTest bloodController;
     EstilhacoFxController estilhacoFxController;
 
     PhotonView PV;
@@ -110,7 +110,7 @@ public class StatsGeral : MonoBehaviour
     private void OnDamage(float amount, Vector3 position, Vector3 force, GameObject attacker, Collider hitCollider)
     {
         //Evento que acontece depois de aplicar o damage no Health
-        if (hitCollider != null && EstilhacoFxController.TipoEstilhaco.Sangue.Equals(tipoEstilhaco)) bloodController.SangrarAlvo(hitCollider, attacker.transform.position);
+        if (hitCollider != null && EstilhacoFxController.TipoEstilhaco.Sangue.Equals(tipoEstilhaco)) bloodController.SangrarAlvo(hitCollider, attacker.transform.position, -1);
         else if (hitCollider != null && !EstilhacoFxController.TipoEstilhaco.Nenhum.Equals(tipoEstilhaco)) estilhacoFxController.GerarEstilhaco(tipoEstilhaco, position, attacker.transform.position);
         if (attacker != null)
         {

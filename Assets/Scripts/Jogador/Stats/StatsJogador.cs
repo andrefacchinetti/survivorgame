@@ -32,6 +32,8 @@ public class StatsJogador : MonoBehaviour
     public bool isIndigestao = false, isInfeccionado = false;
     public bool isHipotermia = false, isHipertermia = false;
 
+    [SerializeField] Collider colliderSangramento;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -158,7 +160,7 @@ public class StatsJogador : MonoBehaviour
     public void AtualizarImgSangrando()
     {
         hudJogador.atualizarImgSangrando(isSangrando); //Se pa que nem precisa desse indicador na hud, pois ja vai ter na overlay
-        overlayController.AtualizarBloodOverlay(isSangrando);
+        //overlayController.AtualizarBloodOverlay(isSangrando);
     }
 
     public void AtualizarImgFraturado()
@@ -254,6 +256,7 @@ public class StatsJogador : MonoBehaviour
     {
         if (isSangrando)
         {
+            statsGeral.bloodController.SangrarAlvo(colliderSangramento, transform.forward, 0);
             TakeDamageHealth(2, false, false);
         }
     }
