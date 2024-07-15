@@ -1,0 +1,40 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:ScrollView>
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(45, 45, 45); min-height: 700px;">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(56, 56, 56); margin-left: 5px; margin-right: 5px;">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+                    <ui:Label tabindex="-1" text="Rain editor" display-tooltip-when-elided="true" style="font-size: 15px; -unity-text-align: middle-left; -unity-font-style: bold; padding-top: 10px; padding-bottom: 15px;" />
+                    <ui:Label tabindex="-1" text="Particles" display-tooltip-when-elided="true" name="Particles" enable-rich-text="false" style="border-bottom-color: rgb(126, 126, 126); margin-top: 5px; margin-bottom: 5px; padding-bottom: 6px; border-bottom-width: 1px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Active" name="EnabledParticle" binding-path="Enabled" />
+                    <ui:Slider picking-mode="Ignore" label="Intensity" value="5" high-value="10" name="ParticleIntensity" show-input-field="true" />
+                    <ui:Vector3Field label="Area center" name="ParticleCenter" y="5" focusable="true" />
+                    <ui:Vector3Field label="Area size" name="ParticleSize" x="20" y="10" z="20" />
+                    <ui:FloatField label="Lifetime" value="2" name="Lifetime" />
+                    <ui:Slider picking-mode="Ignore" label="Min particle size" value="0.02" high-value="1" name="MinParticleSize" show-input-field="true" style="height: auto;" />
+                    <ui:Slider picking-mode="Ignore" label="Max particle size" value="0.3" high-value="1" name="MaxParticleSize" show-input-field="true" />
+                    <uie:ObjectField picking-mode="Ignore" label="Particle texture" value="filler text" name="ParticleTexture" type="UnityEngine.Texture2D, UnityEngine.CoreModule" />
+                    <uie:ColorField picking-mode="Ignore" label="Particle color" value="filler text" name="ParticleColor" />
+                    <ui:Slider picking-mode="Ignore" label="Color blend" value="0.5" high-value="1" name="ColorBlend" show-input-field="true" />
+                    <ui:Slider picking-mode="Ignore" label="Gravity" value="1" high-value="1" name="Gravity" show-input-field="true" low-value="0.1" />
+                    <ui:Label tabindex="-1" text="Ripples" display-tooltip-when-elided="true" style="margin-top: 10px; margin-bottom: 5px; padding-bottom: 6px; border-bottom-width: 1px; border-bottom-color: rgb(113, 113, 113); -unity-font-style: bold;" />
+                    <ui:Toggle label="Ripples" name="RainRipples" />
+                    <ui:Slider picking-mode="Ignore" label="Coverage" value="0.5" high-value="1" show-input-field="true" name="RipplesCoverage" />
+                    <ui:FloatField label="Tiling" value="42.2" name="RipplesTiling" />
+                    <ui:Slider picking-mode="Ignore" label="Speed" value="0.5" high-value="1" name="RipplesSpeed" show-input-field="true" />
+                    <ui:Slider picking-mode="Ignore" label="Ripple scale" value="0.5" high-value="1" name="RippleScale" show-input-field="true" />
+                    <ui:Slider picking-mode="Ignore" label="Normal intensity" value="0.5" high-value="1" name="RipplesNormalIntensity" show-input-field="true" />
+                    <uie:LayerMaskField label="Layer mask" name="Layer" />
+                    <ui:Label tabindex="-1" text="Fulscreen effect" display-tooltip-when-elided="true" style="border-bottom-width: 1px; border-bottom-color: rgb(126, 126, 126); padding-bottom: 6px; margin-bottom: 5px; margin-top: 10px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Active" name="FullscreenEffect" />
+                    <ui:Slider picking-mode="Ignore" label="Intensity" value="0.5" high-value="1" name="EffectIntensity" show-input-field="true" />
+                    <ui:FloatField label="Drops tiling" value="42.2" name="EffectDropsTiling" />
+                    <ui:FloatField label="Size" value="42.2" name="EffectDropsSize" />
+                    <ui:Slider picking-mode="Ignore" label="Speed" value="0.5" high-value="1" name="EffectSpeed" show-input-field="true" />
+                    <ui:Label tabindex="-1" text="Lightnings" display-tooltip-when-elided="true" name="Label" style="border-bottom-width: 1px; border-bottom-color: rgb(126, 126, 126); padding-bottom: 6px; margin-bottom: 5px; margin-top: 10px; -unity-font-style: bold;" />
+                    <ui:Toggle label="Enabled" name="LightnEnabled" style="height: 29px;" />
+                    <ui:Slider picking-mode="Ignore" label="Occurrence" value="0.5" high-value="0.9" name="LightnFreq" show-input-field="true" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

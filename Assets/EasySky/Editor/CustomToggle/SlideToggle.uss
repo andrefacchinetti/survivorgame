@@ -1,0 +1,49 @@
+.slide-toggle__input {
+    background-color: var(--unity-colors-slider_groove-background);
+    max-width: 18px;
+    overflow: visible;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-right-color: var(--unity-colors-slider_thumb-border);
+    border-top-color: var(--unity-colors-slider_thumb-border);
+    border-bottom-color: var(--unity-colors-slider_thumb-border);
+    max-height: 16px;
+    border-left-color: var(--unity-colors-slider_thumb-border);
+    transition-property: background-color;
+    transition-duration: 0.5s;
+}
+
+.slide-toggle__input-knob {
+    height: 18px;
+    width: 18px;
+    background-color: var(--unity-colors-slider_thumb-background);
+    position: absolute;
+    transition-property: translate, background-color;
+    transition-duration: 0.5s, 0.5s;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-color: var(--unity-colors-slider_thumb-border);
+    border-right-color: var(--unity-colors-slider_thumb-border);
+    border-top-color: var(--unity-colors-slider_thumb-border);
+    border-bottom-color: var(--unity-colors-slider_thumb-border);
+    background-image: url('project://database/Assets/EasySky/CustomToggle/Resources/EmptyToggle.png?fileID=2800000&guid=ab7b76decf70e3047abda492b5dfbd06&type=3#EmptyCheck');
+}
+
+.slide-toggle__input--checked {
+    background-color: rgb(0, 156, 10);
+}
+
+.slide-toggle__input--checked > .slide-toggle__input-knob {
+    background-image: url('project://database/Assets/EasySky/CustomToggle/Resources/FullToggle.png?fileID=2800000&guid=ef36c99079f95c54ca98ce3705a9deef&type=3#Check');
+}
+
+.slide-toggle:focus .slide-toggle__input-knob {
+    border-left-color: var(--unity-colors-input_field-border-focus);
+    border-right-color: var(--unity-colors-input_field-border-focus);
+    border-top-color: var(--unity-colors-input_field-border-focus);
+    border-bottom-color: var(--unity-colors-input_field-border-focus);
+}

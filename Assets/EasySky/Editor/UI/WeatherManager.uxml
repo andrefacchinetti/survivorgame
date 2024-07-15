@@ -1,0 +1,232 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/EasySky/Editor/UI/SkyboxLabel.uss?fileID=7433441132597879392&amp;guid=e3d3092cb38568549a44f59103c38ed5&amp;type=3#SkyboxLabel" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(45, 45, 45); min-width: 250px; visibility: visible; display: flex;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/EasySky/Art/LogoEasySky.png?fileID=2800000&amp;guid=7c3dfa78f3912e446bc7e1ce7729e38e&amp;type=3#LogoEasySky&apos;); height: 140px; width: 376px;" />
+        <ui:VisualElement style="background-color: rgb(56, 56, 56); -unity-text-outline-color: rgba(45, 45, 45, 0); -unity-background-image-tint-color: rgb(45, 45, 45); align-items: stretch; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); width: 95%; align-self: center;">
+            <ui:VisualElement name="GlobalControlls" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-items: center; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-bottom: 0; display: flex;">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-items: stretch; width: 90%; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;">
+                    <ui:Foldout text="Global Controls" value="true" style="-unity-font-style: bold; color: rgb(255, 255, 255); padding-top: 4px; padding-bottom: 0; margin-bottom: 4px;">
+                        <ui:Label tabindex="-1" text="Progression" display-tooltip-when-elided="true" style="color: rgb(157, 157, 157); -unity-font-style: bold; font-size: 14px; margin-left: -25px; margin-top: 10px;" />
+                        <ui:Toggle label="Simulate" name="TimeSimulate" value="false" style="margin-left: -25px; -unity-font-style: normal; margin-top: 5px;" />
+                        <uie:FloatField label="Cycle Length (min)" include-obsolete-values="false" name="CycleLength" style="margin-top: 8px; margin-bottom: 8px; margin-left: -25px; -unity-font-style: normal;" />
+                        <ui:Label tabindex="-1" text="Time" display-tooltip-when-elided="true" style="color: rgb(157, 157, 157); -unity-font-style: bold; font-size: 14px; margin-left: -25px; margin-top: 10px;" />
+                        <ui:SliderInt picking-mode="Ignore" label="Seconds" value="42" high-value="59" show-input-field="true" name="TimeSeconds" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:SliderInt picking-mode="Ignore" label="Minute" value="20" high-value="59" show-input-field="true" name="TimeMinutes" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:SliderInt picking-mode="Ignore" label="Hours" value="10" high-value="23" show-input-field="true" name="TimeHours" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:Label tabindex="-1" text="Date" display-tooltip-when-elided="true" style="color: rgb(157, 157, 157); -unity-font-style: bold; font-size: 14px; margin-left: -25px; margin-top: 10px;" />
+                        <ui:SliderInt picking-mode="Ignore" label="Day" value="3" high-value="30" show-input-field="true" name="DateDay" low-value="1" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:SliderInt picking-mode="Ignore" label="Month" value="5" high-value="12" show-input-field="true" name="DateMonth" low-value="1" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:SliderInt picking-mode="Ignore" label="Year" value="2023" high-value="3000" show-input-field="true" name="DateYear" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:Label tabindex="-1" text="Location" display-tooltip-when-elided="true" style="color: rgb(157, 157, 157); -unity-font-style: bold; font-size: 14px; margin-left: -25px; margin-top: 10px;" />
+                        <ui:Slider picking-mode="Ignore" label="Latitude" value="42" high-value="90" show-input-field="true" name="Latitude" low-value="-90" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:Slider picking-mode="Ignore" label="Longitude" value="42" high-value="180" show-input-field="true" name="Longitude" low-value="-180" style="margin-left: -25px; color: rgb(143, 143, 143); -unity-font-style: normal;" />
+                        <ui:Label tabindex="-1" text="Wind" display-tooltip-when-elided="true" style="color: rgb(157, 157, 157); -unity-font-style: bold; font-size: 14px; margin-left: -25px; margin-top: 10px;" />
+                        <ui:FloatField label="Wind Direction" value="0" readonly="false" name="WindDirection" style="margin-left: -25px; -unity-font-style: normal; -unity-text-align: middle-left;" />
+                        <ui:FloatField label="Wind Speed" value="0" name="WindSpeed" focusable="true" style="margin-left: -25px; -unity-font-style: normal; -unity-text-align: middle-left;" />
+                    </ui:Foldout>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="GloabalSky" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-items: center; width: 100%; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;">
+                    <ui:Foldout text="Global Sky System" value="true" style="-unity-font-style: bold; color: rgb(255, 255, 255); padding-top: 4px; padding-bottom: 0; margin-bottom: 4px; align-items: stretch; width: 90%;">
+                        <ui:DropdownField index="0" choices="Skybox, Sun, Planets and Satelites" name="GlobalSkyDropdown" style="margin-left: -25px; height: 35px; margin-bottom: 20px;" />
+                        <ui:VisualElement name="SkyboxParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); visibility: visible; display: none;">
+                            <ui:Label tabindex="-1" text="The list of galaxies and stars is pre-filled using the resources from the folder.If you want to add another one, you can do it manually." display-tooltip-when-elided="true" style="flex-wrap: wrap; overflow: hidden; flex-grow: 0; flex-shrink: 0; height: 72px; white-space: normal; -unity-font-style: normal; margin-left: -25px;" />
+                            <ui:RadioButtonGroup value="0" name="SkyboxParent" focusable="false" style="flex-direction: column; margin-left: -25px;" />
+                            <ui:VisualElement name="CurveField" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: -25px;">
+                                <uie:CurveField label="Intensity curve" name="IntensityCurve" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="StarsParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none; height: 415px; visibility: visible;">
+                            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: -25px; flex-direction: row; align-items: stretch; justify-content: space-between; margin-bottom: 10px; height: 30px; max-height: 30px; min-height: 30px;">
+                                <ui:Label tabindex="-1" display-tooltip-when-elided="true" enable-rich-text="false" text="Stars presets" style="-unity-text-align: middle-center; font-size: 15px;" />
+                                <ui:Button text="Create New" display-tooltip-when-elided="true" name="NewStarButton" enable-rich-text="false" style="width: 150px; white-space: nowrap; background-color: rgb(38, 221, 166); color: rgb(0, 0, 0); height: 25px; max-height: 25px; min-height: 25px;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: -25px; height: 280px; max-height: 280px; min-height: 280px; display: flex; flex-direction: row;">
+                                <ui:ScrollView horizontal-scroller-visibility="Hidden" name="StarsHolder" style="height: 350px; max-height: 350px; min-height: 350px; width: 180px; max-width: 180px; min-width: 180px; align-items: center; justify-content: space-around; align-self: stretch; display: flex;">
+                                    <ui:VisualElement name="StarsPresetsParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                </ui:ScrollView>
+                                <ui:VisualElement name="StarsInputFields" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); border-left-width: 1px; border-left-color: rgb(0, 0, 0); height: auto; align-self: flex-start;">
+                                    <ui:TextField picking-mode="Ignore" label="Preset Name" value="filler text" name="SunPresetName" style="height: 30px; max-height: 30px; justify-content: flex-start; align-items: stretch; min-height: 30px; align-self: auto; -unity-text-align: middle-left; margin-bottom: 5px; margin-top: 1px;" />
+                                    <ui:ScrollView name="SunPresetsImageScrollview" style="height: 85px; max-height: 85px; min-height: 85px; padding-left: 9px; margin-bottom: 5px;">
+                                        <ui:VisualElement name="SunPresetsImageParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                    </ui:ScrollView>
+                                    <uie:ColorField picking-mode="Ignore" label="Choose color" value="filler text" show-alpha="false" name="SunPresetColor" style="margin-bottom: 5px; -unity-text-align: middle-left;" />
+                                    <uie:ObjectField picking-mode="Ignore" label="Texture" value="filler text" focusable="false" name="SunPresetTexture" style="height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Intensity" value="42" name="LigthIntensity" style="height: 30px; max-height: 30px; min-height: 30px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px; margin-top: 5px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Scale" value="42" name="SunPresetScale" is-delayed="true" style="margin-bottom: 5px; height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Cast Shadows" name="SunCastShadows" view-data-key="SunCastShadows" style="height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:Vector2Field label="Offset" name="SunPresetOffset" style="margin-bottom: 5px; height: auto; max-height: initial; min-height: initial; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Is Active" name="SunEnabled" view-data-key="SunEnabled" style="height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:VisualElement name="StarsButtons" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row-reverse; justify-content: flex-end; align-items: center; align-self: flex-end; height: 30px; max-height: 30px; min-height: 30px; margin-top: 0; margin-bottom: 1px; margin-right: 1px;">
+                                        <ui:Button text="Delete" display-tooltip-when-elided="true" enable-rich-text="false" name="StarDeleteButton" style="height: 25px; max-height: 25px; min-height: 25px;" />
+                                        <ui:Button text="Advance settings" display-tooltip-when-elided="true" name="AdvanceStarButton" style="height: 25px; max-height: 25px;" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="PlanetsParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none; height: 455px; visibility: visible; max-height: 455px; min-height: 455px; flex-direction: column;">
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: -25px; flex-direction: row; align-items: stretch; justify-content: space-between; margin-bottom: 10px; height: 30px; max-height: 30px; min-height: 30px;">
+                                <ui:Label tabindex="-1" display-tooltip-when-elided="true" enable-rich-text="false" text="Planets and moons presets" style="font-size: 15px; -unity-text-align: middle-left;" />
+                                <ui:Button text="Create New" display-tooltip-when-elided="true" name="NewPlanetButton" enable-rich-text="false" style="width: 150px; white-space: nowrap; background-color: rgb(38, 221, 166); color: rgb(0, 0, 0); height: 25px; max-height: 25px; min-height: 25px;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: -25px; height: 250px; max-height: 250px; min-height: 250px; display: flex; flex-direction: row; visibility: visible;">
+                                <ui:ScrollView horizontal-scroller-visibility="Hidden" name="PlanetsHolder" style="height: 366px; max-height: 366px; min-height: 366px; width: 180px; max-width: 180px; min-width: 180px; align-items: center; justify-content: space-around; align-self: stretch;">
+                                    <ui:VisualElement name="PlanetsPresetsParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                </ui:ScrollView>
+                                <ui:VisualElement name="PlanetsInputFields" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); border-left-width: 1px; border-left-color: rgb(0, 0, 0); height: 420px;">
+                                    <ui:TextField picking-mode="Ignore" label="Preset Name" value="filler text" name="PlanetPresetName" style="height: 30px; max-height: 30px; justify-content: flex-start; align-items: stretch; min-height: 30px; align-self: auto; -unity-text-align: middle-left; margin-bottom: 5px; margin-top: 1px;" />
+                                    <ui:ScrollView name="PlanetsPresetsImageScrollview" style="height: 85px; max-height: 85px; min-height: 85px; padding-left: 9px; margin-bottom: 5px;">
+                                        <ui:VisualElement name="PlanetsPresetsImageParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                    </ui:ScrollView>
+                                    <uie:ColorField picking-mode="Ignore" label="Choose color" value="filler text" show-alpha="false" name="PlanetPresetColor" style="margin-bottom: 5px; -unity-text-align: middle-left;" />
+                                    <uie:ObjectField picking-mode="Ignore" label="Texture" value="filler text" focusable="false" name="PlanetPresetTexture" style="height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Day Intensity" value="42" name="PlanetLigthIntensity" style="height: 30px; max-height: 30px; min-height: 30px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px; margin-top: 5px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Night Intensity" value="42" name="PlanetNightLigthIntensity" readonly="false" style="height: 30px; max-height: 30px; min-height: 30px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px; margin-top: 5px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Scale" value="42" name="PlanetPresetScale" is-delayed="true" style="margin-bottom: 5px; height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Cast Shadows" name="PlanetsCastShadows" view-data-key="PlanetsCastShadows" style="height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:Vector2Field label="Offset" name="PlanetPresetOffset" style="margin-bottom: 5px; height: auto; max-height: initial; min-height: initial; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Is Active" name="PlanetsEnabled" view-data-key="PlanetsEnabled" style="height: 30px; max-height: 30px; min-height: 30px; -unity-text-align: middle-left;" />
+                                    <ui:VisualElement name="PlanetsButtons" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row-reverse; justify-content: flex-end; align-items: center; align-self: flex-end; height: 30px; max-height: 30px; min-height: 30px; margin-top: 0; margin-bottom: 1px;">
+                                        <ui:Button text="Delete" display-tooltip-when-elided="true" enable-rich-text="false" name="PlanetDeleteButton" style="height: 25px; max-height: 25px; min-height: 25px;" />
+                                        <ui:Button text="Advance settings" display-tooltip-when-elided="true" name="AdvancePlanetButton" style="height: 25px; max-height: 25px;" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:Foldout>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Weather" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-items: center; width: 100%; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;">
+                    <ui:Foldout text="Weather Area" value="true" style="-unity-font-style: bold; color: rgb(255, 255, 255); padding-top: 4px; padding-bottom: 0; margin-bottom: 4px; align-items: stretch; width: 90%;">
+                        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: -25px;">
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between;">
+                                <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 187px; max-width: 187px; min-width: 187px;">
+                                    <ui:Button text="Create new area" display-tooltip-when-elided="true" enable-rich-text="true" name="CreateNewWeatherAreaButton" style="height: 30px; max-height: 30px; min-height: 30px; padding-left: 20px; padding-right: 20px; width: 152px;" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; padding-left: 0; height: 200px; max-height: 200px; min-height: 200px;">
+                                <ui:ScrollView vertical-scroller-visibility="Auto" mode="Vertical" focusable="false" horizontal-scroller-visibility="Hidden" horizontal-page-size="1" name="AreasScrollview" style="flex-direction: column-reverse; height: 100%; max-height: 100%; min-height: 100%; width: 187px; flex-wrap: wrap;">
+                                    <ui:VisualElement name="AreasParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                </ui:ScrollView>
+                                <ui:VisualElement name="AreaInputParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); border-left-width: 1px; border-left-color: rgb(0, 0, 0); padding-left: 10px;">
+                                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); height: 80px;">
+                                        <ui:ScrollView name="ImageSelectorScrollview">
+                                            <ui:VisualElement name="ImageSelectorParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                        </ui:ScrollView>
+                                    </ui:VisualElement>
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="filler text" name="AreaColor" style="height: 25px; max-height: 25px; min-height: 25px; margin-top: 5px; margin-bottom: 5px;" />
+                                    <ui:TextField picking-mode="Ignore" label="Name" value="filler text" name="AreaName" style="height: 25px; max-height: 25px; min-height: 25px; margin-top: 5px;" />
+                                    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; width: auto; max-width: none; min-width: auto; justify-content: space-between; align-items: auto; padding-bottom: 5px;">
+                                        <ui:Button text="Edit" display-tooltip-when-elided="true" name="EditWeatherAreaButton" style="height: 30px; max-height: 30px; min-height: 30px; padding-left: 20px; padding-right: 20px;" />
+                                        <ui:Button text="Delete" display-tooltip-when-elided="true" name="DeleteWeatherAreaButton" style="height: 30px; max-height: 30px; min-height: 30px; padding-left: 20px; padding-right: 20px;" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgb(108, 108, 108); height: 1px;" />
+                            <ui:Label tabindex="-1" text="Weather presets" display-tooltip-when-elided="true" style="-unity-text-align: middle-left; font-size: 15px; margin-top: 10px;" />
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column; min-height: auto; width: 187px; max-width: 187px; min-width: 187px;">
+                                <ui:Button text="Create new preset" display-tooltip-when-elided="true" name="CreateNewWeatherPreset" style="height: 30px; max-height: 30px; min-height: 30px; padding-left: 20px; padding-right: 20px; width: 152px;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; height: 200px; max-height: 200px; min-height: 200px;">
+                                <ui:ScrollView mode="Vertical" focusable="false" name="WeatherPresetsScrollview" horizontal-scroller-visibility="Hidden" horizontal-page-size="-1" vertical-page-size="-1" vertical-scroller-visibility="Auto" style="flex-direction: column-reverse; height: 100%; max-height: 100%; min-height: 100%; width: 260px; max-width: 260px; min-width: 260px;">
+                                    <ui:VisualElement name="WeatherPresetsParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                </ui:ScrollView>
+                                <ui:VisualElement name="PresetInputParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); border-left-width: 1px; border-left-color: rgb(0, 0, 0); padding-left: 10px;">
+                                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); min-height: auto; height: 80px;">
+                                        <ui:ScrollView name="PresetsImageScrollview" style="display: flex;">
+                                            <ui:VisualElement name="PresetsImageParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-wrap: wrap;" />
+                                        </ui:ScrollView>
+                                    </ui:VisualElement>
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="filler text" name="PresetColor" style="height: 25px; max-height: 25px; min-height: 25px; margin-top: 5px; margin-bottom: 5px; -unity-text-align: middle-center; text-overflow: ellipsis; margin-left: -43px;" />
+                                    <ui:TextField picking-mode="Ignore" label="Name" value="filler text" name="PresetName" style="height: 25px; max-height: 25px; min-height: 25px; margin-top: 5px; -unity-text-align: upper-center; margin-left: -43px;" />
+                                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row-reverse; margin-top: 10px; align-items: auto; justify-content: space-between;">
+                                        <ui:Button text="Delete" display-tooltip-when-elided="true" name="DeleteWeatherPreset" style="height: 30px; max-height: 30px; min-height: 30px; padding-left: 20px; padding-right: 20px;" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; align-items: center; align-self: center; width: 100%; padding-top: 15px; border-top-width: 1px; border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); padding-bottom: 10px;">
+                                <ui:Button text="2D Clouds" display-tooltip-when-elided="false" name="LayerCloudsButton" style="height: 25px; max-height: 25px; min-height: 25px; width: 50%; margin-left: 0; margin-right: 0; background-color: rgb(112, 112, 112);" />
+                                <ui:Button text="3D Clouds" display-tooltip-when-elided="true" enable-rich-text="true" name="VolumetricCloudButton" focusable="false" style="height: 25px; max-height: 25px; min-height: 25px; width: 50%; margin-left: 0; background-color: rgb(67, 67, 67); transition-property: all; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                                <ui:VisualElement name="VolumetricParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: flex-end; height: 30px; max-height: 30px; min-height: 30px;">
+                                        <ui:Button text="Create new" display-tooltip-when-elided="true" name="CreateNewVolumetricPreset" style="white-space: nowrap; padding-left: 20px; padding-right: 20px;" />
+                                        <ui:Button text="Advance edit" display-tooltip-when-elided="true" name="AdvancedEditVolumetricPreset" enable-rich-text="true" style="white-space: nowrap; padding-left: 20px; padding-right: 20px;" />
+                                    </ui:VisualElement>
+                                    <uie:ObjectField picking-mode="Ignore" label="Cloud preset" value="filler text" is-delayed="true" name="CloudPresetCeva" view-data-key="CloudPreset" type="EasySky.Clouds.VolumetricCloudPresetData, Assembly-CSharp" allow-scene-objects="true" />
+                                    <ui:TextField picking-mode="Ignore" label="Preset Name" name="VolumetricCloudPresetName" />
+                                    <ui:Slider picking-mode="Ignore" label="Coverage" value="42" high-value="1" show-input-field="true" name="Coverage3D" style="height: 20px; margin-top: 8px; margin-bottom: 8px;" />
+                                    <ui:Slider picking-mode="Ignore" label="Altitude" value="42" high-value="10000" show-input-field="true" name="Altitude3D" low-value="50" style="margin-top: 8px; margin-bottom: 8px;" />
+                                    <ui:Slider picking-mode="Ignore" label="Thickness" value="10000" high-value="20000" show-input-field="true" name="Thickness" low-value="100" style="margin-top: 8px; margin-bottom: 5px;" />
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="filler text" name="CloudColor3D" />
+                                    <ui:Toggle label="Cast shadows" name="VolumetricCloudsShadows" />
+                                    <ui:Toggle label="Wind interaction" value="false" name="VolumetricCloudWind" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="LayerParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;">
+                                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: flex-end; height: 30px; max-height: 30px; min-height: 30px;">
+                                        <ui:Button text="Create new" display-tooltip-when-elided="true" name="CreateNewLayerPreset" style="white-space: nowrap; padding-left: 20px; padding-right: 20px;" />
+                                        <ui:Button text="Advance edit" display-tooltip-when-elided="true" name="AdvancedEditLayerPreset" enable-rich-text="true" style="white-space: nowrap; padding-left: 20px; padding-right: 20px;" />
+                                    </ui:VisualElement>
+                                    <uie:ObjectField picking-mode="Ignore" label="Cloud preset" value="filler text" is-delayed="true" name="LayerCloudPreset" view-data-key="CloudPreset" type="EasySky.Clouds.LayerCloudPresetData, Assembly-CSharp" allow-scene-objects="true" />
+                                    <ui:TextField picking-mode="Ignore" label="Preset name" name="LayerPresetName" />
+                                    <ui:Slider picking-mode="Ignore" label="Coverage" value="42" high-value="1" show-input-field="true" name="CoverageLayer" style="height: 20px; margin-top: 8px; margin-bottom: 8px;" />
+                                    <ui:Slider picking-mode="Ignore" label="Altitude" value="42" high-value="10000" show-input-field="true" name="AltitudeLayer" low-value="50" style="margin-top: 8px; margin-bottom: 8px;" />
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="filler text" name="CloudColorLayer" />
+                                    <ui:Toggle label="Cast shadows" name="LayerCloudsShadows" />
+                                    <ui:Toggle label="Wind interaction" value="false" name="LayerCloudWind" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: -25px;">
+                            <ui:Label tabindex="-1" text="Particles" display-tooltip-when-elided="true" style="margin-top: 15px; border-top-width: 1px; border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); padding-top: 10px; font-size: 15px;" />
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; margin-top: 10px;">
+                                <ui:Button text="Standard" display-tooltip-when-elided="true" name="StandarParticleButton" style="height: 25px; max-height: 25px; min-height: 25px; width: 50%; margin-left: 0; margin-right: 0; background-color: rgb(112, 112, 112);" />
+                                <ui:Button text="High Quality" display-tooltip-when-elided="true" enable-rich-text="false" name="VfxParticleButton" style="height: 25px; max-height: 25px; min-height: 25px; width: 50%; margin-left: 0; margin-right: 0; background-color: rgb(67, 67, 67);" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="VfxParticleParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                                <ui:DropdownField label="Particle" index="0" choices="Rain,Snow,Hail,Fog,DustStorm" focusable="false" name="ParticleDropdown" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                <ui:VisualElement name="ParticleParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: flex;">
+                                    <ui:Toggle label="Enabled" name="ParticleEnabled" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Slider picking-mode="Ignore" label="Intensity" value="5" high-value="10" name="ParticleIntensity" show-input-field="true" style="height: 25px; max-height: 25px; -unity-text-align: middle-left;" />
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="#FFFFFF00" name="ParticleColor" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Camera effects" name="ParticleCameraEffects" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Wind Interaction" name="ParticleWindInteraction" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="FogParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;">
+                                    <ui:Toggle label="Enabled" name="FogEnabled" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="#FFFFFF00" name="FogColor" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Max Distance" value="42.2" name="MaxFogDistance" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Attenuance" value="42.2" name="FogAttenuationDistance" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Base height" value="42.2" name="FogBaseHeight" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:FloatField label="Max height" value="42.2" name="FogMaxHeight" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="DuststormParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;">
+                                    <ui:Toggle label="Enabled" name="DuststormEnabled" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Slider picking-mode="Ignore" label="Spawn rate" value="5" high-value="200" name="DuststormSpawnrate" show-input-field="true" style="height: 25px; max-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Slider picking-mode="Ignore" label="Particle size" value="5" high-value="20" name="DuststormParticleSize" show-input-field="true" style="height: 25px; max-height: 25px; -unity-text-align: middle-left;" />
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="#FFFFFF00" name="DuststormColor" hdr="true" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Wind Interaction" name="DuststormWindInteraction" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                </ui:VisualElement>
+                                <ui:Button text="Advanced settings" display-tooltip-when-elided="true" name="ParticlesAdvancedSettingsButton" style="height: 25px; max-height: 25px; min-height: 25px; width: 50%;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="StandardParticleParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;">
+                                <ui:DropdownField label="Particle" index="0" choices="Rain,Snow,Hail,DustStorm" focusable="false" name="StandardParticleDropdown" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                <ui:VisualElement name="StandardParticleParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: flex;">
+                                    <ui:Toggle label="Enabled" name="StandardParticleEnabled" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Slider picking-mode="Ignore" label="Intensity" value="5" high-value="1000" name="StandardParticleIntensity" show-input-field="true" style="height: 25px; max-height: 25px; -unity-text-align: middle-left;" />
+                                    <uie:ColorField picking-mode="Ignore" label="Color" value="#FFFFFF00" name="StandardParticleColor" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                    <ui:Toggle label="Wind Interaction" name="StandardParticleWindInteraction" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                                </ui:VisualElement>
+                                <ui:Button text="Advanced settings" display-tooltip-when-elided="true" name="StandardParticlesAdvancedSettingsButton" style="height: 25px; max-height: 25px; min-height: 25px; width: 50%;" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; margin-left: -25px;" />
+                    </ui:Foldout>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

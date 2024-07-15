@@ -1,0 +1,21 @@
+#define blockWidth 32
+#define blockHeight 32
+ 
+Texture2D<float4> startTexture;
+Texture2D<float4> endTexture;
+SamplerState samplerinput;
+RWTexture2D<float4> output;
+float ammount;
+ 
+int textureWidth;
+int textureHeight;
+ 
+#pragma kernel SampleCode
+[numthreads(blockWidth, blockHeight, 1)]
+void SampleCode(uint3 id : SV_DispatchThreadID)
+{
+    float4 start = startTexture.Load(id);
+    float4 end = endTexture.Load(id);
+    float4 lerpColor = lerp(start,end,ammount);
+    output[id.xy] = lerpColor;
+}

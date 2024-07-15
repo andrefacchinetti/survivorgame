@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:ScrollView>
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(45, 45, 45);">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(56, 56, 56); margin-left: 5px; margin-right: 5px;">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+                    <ui:Label tabindex="-1" text="Volumetric clouds editor" display-tooltip-when-elided="true" style="font-size: 15px; -unity-font-style: bold; -unity-text-align: middle-left; padding-bottom: 15px; padding-top: 10px;" />
+                    <ui:VisualElement name="VolCloudsParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: flex;">
+                        <uie:ObjectField picking-mode="Ignore" label="Cloud preset" value="filler text" type="EasySky.Clouds.VolumetricCloudPresetData, Assembly-CSharp" name="VolCloudPreset" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Slider picking-mode="Ignore" label="Density" value="1" high-value="1" name="VolDensity" show-input-field="true" />
+                        <uie:CurveField label="Density Curve" name="DensityCurve" />
+                        <ui:Slider picking-mode="Ignore" label="Altitude" value="8000" high-value="10000" name="VolAltitude" show-input-field="true" focusable="true" />
+                        <ui:Slider picking-mode="Ignore" label="Thickness" value="4000" high-value="20000" name="VolThickness" show-input-field="true" low-value="0" />
+                        <uie:ColorField picking-mode="Ignore" label="Color" value="filler text" name="VolColor" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Toggle label="Cast shadows" name="VolCastShadows" />
+                        <ui:Toggle label="Wind interaction" name="VolWindInteraction" />
+                        <ui:Slider picking-mode="Ignore" label="Shape Factor" value="0.52" high-value="1" name="VolShapeFactor" show-input-field="true" />
+                        <ui:Slider picking-mode="Ignore" label="Erosion factor" value="1" high-value="1" name="VolErosionFactor" show-input-field="true" />
+                        <ui:Slider picking-mode="Ignore" label="Earth curvature" value="0" high-value="1" name="VolEarthCurvature" show-input-field="true" />
+                        <ui:FloatField label="Erosion scale" value="42.2" name="VolErosionScale" />
+                        <uie:CurveField label="Erosion Curve" focusable="true" name="ErosionCurve" />
+                        <uie:CurveField label="Ambien Occlusion" name="AmbientOclusionCurve" />
+                        <ui:FloatField label="Shape scale" value="42.2" name="VolShapeScale" />
+                        <ui:Slider picking-mode="Ignore" label="Light dimmer" value="0.5" high-value="1" name="ProbeLightDimmer" show-input-field="true" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

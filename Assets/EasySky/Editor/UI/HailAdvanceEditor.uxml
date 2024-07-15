@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:ScrollView>
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(45, 45, 45);">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(56, 56, 56); margin-left: 5px; margin-right: 5px;">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+                    <ui:Label tabindex="-1" text="Hail editor" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 15px; -unity-font-style: bold; -unity-text-align: middle-left; padding-top: 10px; padding-bottom: 15px;" />
+                    <ui:Toggle label="Toggle" name="EnabledParticle" binding-path="Enabled" />
+                    <ui:Slider picking-mode="Ignore" label="Intensity" value="5" high-value="10" name="ParticleIntensity" show-input-field="true" />
+                    <ui:Vector3Field label="Area center" name="ParticleCenter" y="5" focusable="true" />
+                    <ui:Vector3Field label="Area size" name="ParticleSize" x="20" y="10" z="20" />
+                    <ui:Slider picking-mode="Ignore" label="Min particle size" value="0.02" high-value="0.1" name="MinParticleSize" show-input-field="true" low-value="0.01" style="height: 39px;" />
+                    <ui:Slider picking-mode="Ignore" label="Max particle size" value="0.02" high-value="0.2" name="MaxParticleSize" show-input-field="true" low-value="0.01" />
+                    <uie:ObjectField picking-mode="Ignore" label="Particle texture" value="filler text" name="ParticleTexture" type="UnityEngine.Texture2D, UnityEngine.CoreModule" />
+                    <uie:ColorField picking-mode="Ignore" label="Particle color" value="filler text" name="ParticleColor" />
+                    <ui:Slider picking-mode="Ignore" label="Color blend" value="0.5" high-value="1" name="ColorBlend" show-input-field="true" />
+                    <ui:VisualElement name="HailParticle" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: flex;">
+                        <ui:Vector2Field label="Flipbook size" name="HailFlipBookSize" x="2" y="2" />
+                        <ui:Toggle label="Secondary particle" name="SecondaryHailParticle" />
+                        <ui:Slider picking-mode="Ignore" label="Secondary quantity" value="3" high-value="10" name="SecondaryHailQantity" show-input-field="true" />
+                        <ui:Slider picking-mode="Ignore" label="Secondary size" value="0.5" high-value="1" name="SecondaryHailParticleSize" focusable="true" show-input-field="true" />
+                        <uie:ObjectField picking-mode="Ignore" label="Secondary texture" value="filler text" name="SecondaryHailTexture" type="UnityEngine.Texture2D, UnityEngine.CoreModule" />
+                        <ui:Slider picking-mode="Ignore" label="Hail speed" value="0.8" high-value="1" name="HailSpeed" show-input-field="true" low-value="0.1" />
+                        <ui:Vector2Field label="Secondary Flipbook size" name="SecondaryHailFlipBookSize" x="2" y="2" />
+                        <ui:FloatField label="Lifetime" value="2" name="Lifetime" is-delayed="false" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>
