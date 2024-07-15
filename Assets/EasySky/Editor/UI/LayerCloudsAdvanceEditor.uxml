@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(45, 45, 45); height: 590px;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(56, 56, 56); margin-left: 5px; margin-right: 5px; margin-top: 0;">
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+                <ui:Label tabindex="-1" text="2D clouds editor" display-tooltip-when-elided="true" style="font-size: 15px; -unity-text-align: middle-left; padding-top: 10px; padding-bottom: 15px;" />
+                <ui:VisualElement name="2DCloudParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: flex; margin-left: 0; margin-right: 0;">
+                    <uie:ObjectField picking-mode="Ignore" label="CloudPreset" value="filler text" type="EasySky.Clouds.LayerCloudPresetData, Assembly-CSharp" name="2DCloudPreset" style="height: 25px; max-height: 25px; min-height: 25px;" />
+                    <ui:Slider picking-mode="Ignore" label="Coverage" value="42" high-value="1" name="2DCoverage" show-input-field="true" />
+                    <ui:Slider picking-mode="Ignore" label="Opacity layer 1 " value="0" high-value="1" name="2DOpacity1" show-input-field="true" />
+                    <ui:Slider picking-mode="Ignore" label="Opacity layer 2" value="0" high-value="1" name="2DOpacity2" show-input-field="true" />
+                    <ui:Slider picking-mode="Ignore" label="Opacity layer 3" value="0" high-value="1" name="2DOpacity3" show-input-field="true" />
+                    <ui:Slider picking-mode="Ignore" label="Opacity layer 4" value="0" high-value="1" name="2DOpacity4" show-input-field="true" />
+                    <uie:ColorField picking-mode="Ignore" label="Color" value="filler text" name="2DColor" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                    <ui:Toggle label="Cast shadows" name="2DCastShadows" />
+                    <ui:Toggle label="Wind interaction" name="2DWindInteraction" />
+                    <ui:Slider picking-mode="Ignore" label="Altitude" value="8000" high-value="10000" name="2DAltitude" show-input-field="true" focusable="true" />
+                    <ui:FloatField label="Exposure" value="42.2" name="2DExposureComp" />
+                    <ui:Slider picking-mode="Ignore" label="Rotation" value="42" high-value="360" name="2DRotation" style="display: flex;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

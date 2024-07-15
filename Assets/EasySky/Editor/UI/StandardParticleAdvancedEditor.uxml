@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:ScrollView>
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(45, 45, 45);">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(56, 56, 56); margin-left: 5px; margin-right: 5px;">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+                    <ui:Label tabindex="-1" text="Standard particle editor" display-tooltip-when-elided="true" style="padding-top: 10px; padding-bottom: 15px; font-size: 15px; -unity-text-align: middle-left; -unity-font-style: bold;" />
+                    <ui:VisualElement name="StandardParticleParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: flex;">
+                        <ui:Toggle label="Enabled" name="StandardParticleEnabled" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Slider picking-mode="Ignore" label="Intensity" value="5" high-value="1000" name="StandardParticleIntensity" show-input-field="true" style="height: 25px; max-height: 25px; -unity-text-align: middle-left;" />
+                        <uie:ColorField picking-mode="Ignore" label="Color" value="#FFFFFF00" name="StandardParticleColor" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Toggle label="Wind Interaction" name="StandardParticleWindInteraction" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:FloatField label="Size" value="42.2" name="StandarParticleSize" />
+                        <ui:Vector3Field label="Spawn center" name="StandarSpawnCenter" />
+                        <ui:Vector3Field label="Spawn size" name="StandarSpawnSize" />
+                        <uie:ObjectField picking-mode="Ignore" label="Particle material" value="filler text" type="UnityEngine.Material, UnityEngine.CoreModule" name="StandarParticleMaterial" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

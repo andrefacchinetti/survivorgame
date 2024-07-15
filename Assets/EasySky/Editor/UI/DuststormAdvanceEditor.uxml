@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:ScrollView>
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(45, 45, 45);">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(56, 56, 56); margin-left: 5px; margin-right: 5px;">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+                    <ui:Label tabindex="-1" text="Duststorm editor" display-tooltip-when-elided="true" style="font-size: 15px; -unity-font-style: bold; -unity-text-align: middle-left; padding-top: 10px; padding-bottom: 15px;" />
+                    <ui:VisualElement name="DuststormParent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: flex;">
+                        <ui:Toggle label="Enabled" name="DuststormEnabled" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Vector3Field label="Spawn Position" name="SpawnPosition" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Vector3Field label="Spawn size" name="SpawnSize" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <uie:ObjectField label="Texture" type="UnityEngine.Texture2D, UnityEngine.CoreModule" name="Texture" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Vector2Field label="Flipbook size" name="FlipbookSize" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Slider picking-mode="Ignore" label="Spawn rate" value="5" high-value="200" name="DuststormSpawnrate" show-input-field="true" style="height: 25px; max-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Slider picking-mode="Ignore" label="Particle size" value="5" high-value="20" name="DuststormParticleSize" show-input-field="true" style="height: 25px; max-height: 25px; -unity-text-align: middle-left;" />
+                        <uie:ColorField picking-mode="Ignore" label="Color" value="#FFFFFFFF" name="DuststormColor" hdr="true" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Toggle label="Wind Interaction" name="DuststormWindInteraction" style="height: 25px; max-height: 25px; min-height: 25px; -unity-text-align: middle-left;" />
+                        <ui:Slider picking-mode="Ignore" label="Color blend" value="0.5" high-value="1" name="DuststormColorBlend" show-input-field="true" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>
