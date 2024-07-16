@@ -1,23 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using EasySky;
 using Photon.Pun;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] Light luzDoSol;
-    [SerializeField] GameObject objMoon, pivotDoSol;
+    [SerializeField] GameObject objMoon;
     [SerializeField] float moonRotationSpeed = 10f;
-    public float multiplicadorVelocidade = 10f;
-
-    public int gameHour = 12;  // Define a hora atual do jogo
-    public int gameMinute = 0;  // Define o minuto atual do jogo
-    public int gameSecond = 0;  // Define o minuto atual do jogo
-    public int gameDay = 1;  // Define o dia atual do jogo
-    public float gameSpeed = 1f;  // Define a velocidade do tempo do jogo (Valor padrão = 1. Diminua para ficar mais rapido)
-    private float elapsedTime = 0f;  // Tempo que passou desde o in�cio do jogo
-
-    public bool isNoite = false;
 
     // Define as cores de sol para diferentes horas do dia
     public Color amanhecer;
@@ -38,6 +29,7 @@ public class GameController : MonoBehaviour
     public float noiteHorario = 0f;
 
     [SerializeField] [HideInInspector] SpawnController spawnController;
+    [SerializeField] public TimeController timeController;
     float deltaTime = 0.0f;
     private float lastGameDayLobos = -1, lastGameDayAnimais = -1;
 
@@ -45,7 +37,7 @@ public class GameController : MonoBehaviour
     [SerializeField] public SpawnDropaRecursosManager spawnDropaRecursosManager;
     [HideInInspector] public List<SpawnLoots> listaSpawnLoots;
 
-    [SerializeField] public bool isRespawnarInimigos = true; //DEIXAR TRUE ]
+    [SerializeField] public bool isRespawnarInimigos = true, isRespawnarAnimais = true; //DEIXAR TRUE
     [HideInInspector] public PhotonView PV;
     [HideInInspector] public GameObject[] playersOnline;
 
@@ -60,60 +52,42 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         playersOnline = GameObject.FindGameObjectsWithTag("Player");
+    }
 
-        // Mapeia o horário inicial do jogo para o ângulo de rotação do sol
-        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 0f, 24f, -180f, 180f);
-        targetRotation = mappedHour;
+    private float getGameHour()
+    {
+        return timeController._globalData.globalTime.Hour;
+    }
+    private int getGameDay()
+    {
+        return timeController._globalData.globalTime.Day;
+    }
 
-        // Define a rotação inicial do pivô do sol
-        pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
-        spawnarPorDia();
+    public bool isNoite()
+    {
+        return (timeController._globalData.globalTime.Hour >= 0 && timeController._globalData.globalTime.Hour <= 4)
+            || (timeController._globalData.globalTime.Hour >= 18 && timeController._globalData.globalTime.Hour < 24);
     }
 
     // Update is called once per frame
     void Update()
     {
-        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-
-        elapsedTime += Time.deltaTime;
-
-        if (elapsedTime >= gameSpeed)
-        {
-            gameMinute++;
-            if (gameMinute >= 60)
-            {
-                gameMinute -= 60;
-                gameHour++;
-
-                if (gameHour >= 24)
-                {
-                    gameHour -= 24;
-                    gameDay++;
-                    spawnarLootsPorDia();
-                    spawnDropaRecursosManager.respawnarDropaRecursos(PV.ViewID);
-                }
-            }
-            isNoite = gameHour >= noiteHorario && gameHour <= amanhecerHorario;
-            spawnarPorDia();
-            elapsedTime = 0;
-        }
-
         Color currentColor;
 
-        if (gameHour >= amanhecerHorario && gameHour < meioDiaHorario)
+        if (getGameHour() >= amanhecerHorario && getGameHour() < meioDiaHorario)
         {
-            currentColor = Color.Lerp(amanhecer, meioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
-            luzDoSol.intensity = Mathf.Lerp(intensidadeAmanhecer, intensidadeMeioDia, Mathf.SmoothStep(0f, 1f, (gameHour - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
+            currentColor = Color.Lerp(amanhecer, meioDia, Mathf.SmoothStep(0f, 1f, (getGameHour() - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
+            luzDoSol.intensity = Mathf.Lerp(intensidadeAmanhecer, intensidadeMeioDia, Mathf.SmoothStep(0f, 1f, (getGameHour() - amanhecerHorario) / (meioDiaHorario - amanhecerHorario)));
         }
-        else if (gameHour >= meioDiaHorario && gameHour < entardecerHorario)
+        else if (getGameHour() >= meioDiaHorario && getGameHour() < entardecerHorario)
         {
-            currentColor = Color.Lerp(meioDia, entardecer, Mathf.SmoothStep(0f, 1f, (gameHour - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
-            luzDoSol.intensity = Mathf.Lerp(intensidadeMeioDia, intensidadeEntardecer, Mathf.SmoothStep(0f, 1f, (gameHour - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
+            currentColor = Color.Lerp(meioDia, entardecer, Mathf.SmoothStep(0f, 1f, (getGameHour() - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
+            luzDoSol.intensity = Mathf.Lerp(intensidadeMeioDia, intensidadeEntardecer, Mathf.SmoothStep(0f, 1f, (getGameHour() - meioDiaHorario) / (entardecerHorario - meioDiaHorario)));
         }
-        else if (gameHour >= entardecerHorario && gameHour < noiteHorario)
+        else if (getGameHour() >= entardecerHorario && getGameHour() < noiteHorario)
         {
-            currentColor = Color.Lerp(entardecer, noite, Mathf.SmoothStep(0f, 1f, (gameHour - entardecerHorario) / (noiteHorario - entardecerHorario)));
-            luzDoSol.intensity = Mathf.Lerp(intensidadeEntardecer, intensidadeNoite, Mathf.SmoothStep(0f, 1f, (gameHour - entardecerHorario) / (noiteHorario - entardecerHorario)));
+            currentColor = Color.Lerp(entardecer, noite, Mathf.SmoothStep(0f, 1f, (getGameHour() - entardecerHorario) / (noiteHorario - entardecerHorario)));
+            luzDoSol.intensity = Mathf.Lerp(intensidadeEntardecer, intensidadeNoite, Mathf.SmoothStep(0f, 1f, (getGameHour() - entardecerHorario) / (noiteHorario - entardecerHorario)));
         }
         else
         {
@@ -123,8 +97,6 @@ public class GameController : MonoBehaviour
 
         luzDoSol.color = currentColor;
 
-        gameSecond = Mathf.FloorToInt(elapsedTime % 60);
-        AtualizarRotacaoDoSol();
         objMoon.transform.Rotate(Vector3.forward, moonRotationSpeed * Time.deltaTime);
     }
 
@@ -139,28 +111,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float targetRotation = 0f;
-    private float rotationVelocity = 0f;
-
-    void AtualizarRotacaoDoSol()
+    public void SpawnarLootsPorDia()
     {
-        // Mapeia gameHour, gameMinute e gameSecond para o intervalo desejado (-180, 180)
-        float mappedHour = Map(gameHour + gameMinute / 60f + gameSecond / 3600f, 0f, 24f, -180f, 180f);
-
-        // Define o novo ângulo de rotação
-        float targetAngle = mappedHour;
-
-        // Suaviza a transição entre as posições
-        float smoothTime = 1.0f; // Ajuste conforme necessário
-        targetRotation = Mathf.SmoothDampAngle(targetRotation, targetAngle, ref rotationVelocity, smoothTime);
-
-        pivotDoSol.transform.rotation = Quaternion.Euler(targetRotation, 0, 0f);
-    }
-
-    // Função para mapear valores de um intervalo para outro
-    float Map(float value, float fromSource, float toSource, float fromTarget, float toTarget)
-    {
-        return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
+        spawnarLootsPorDia();
+        spawnDropaRecursosManager.respawnarDropaRecursos(PV.ViewID);
     }
 
     private void spawnarLootsPorDia()
@@ -171,20 +125,17 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void spawnarPorDia()
+    public void SpawnarLobisomensPorDia()
     {
         if (!isRespawnarInimigos) return;
-        if (lastGameDayLobos != gameDay && gameHour >= entardecerHorario)
-        {
-            spawnController.SpawnarLobisomens(gameDay);
-            lastGameDayLobos = gameDay;
-        }
-        if (lastGameDayAnimais != gameDay && gameHour >= amanhecerHorario)
-        {
-            spawnController.SpawnarAnimaisPassivos();
-            spawnController.SpawnarAnimaisAgressivos();
-            lastGameDayAnimais = gameDay;
-        }
+        spawnController.SpawnarLobisomens(getGameDay());
+    }
+
+    public void SpawnarAnimaisPorDia()
+    {
+        if (!isRespawnarAnimais) return;
+        spawnController.SpawnarAnimaisPassivos();
+        spawnController.SpawnarAnimaisAgressivos();
     }
 
     void OnGUI()

@@ -11229,6 +11229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f992ad87064c76b438e9249a410cadb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _globalData: {fileID: 11400000, guid: 0d521dda183d3d1479afb61faa2d66c7, type: 2}
+  gameController: {fileID: 6652729579810953491}
 --- !u!1 &2735615685338556759
 GameObject:
   m_ObjectHideFlags: 0
@@ -26601,7 +26603,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4714042935394324880}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.27532646, y: 0.5852585, z: -0.22072585, w: -0.7300329}
+  m_LocalRotation: {x: 0.14198597, y: 0.77475315, z: 0.18742786, w: -0.58691424}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -26619,7 +26621,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 6500
+  m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -27948,15 +27950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   luzDoSol: {fileID: 2700432822684438632}
   objMoon: {fileID: 330046235}
-  pivotDoSol: {fileID: 1674958626712441771}
   moonRotationSpeed: 1
-  multiplicadorVelocidade: 10
-  gameHour: 12
-  gameMinute: 0
-  gameSecond: 0
-  gameDay: 1
-  gameSpeed: 1
-  isNoite: 0
   amanhecer: {r: 0.9622642, g: 0.75669223, b: 0.43120328, a: 1}
   meioDia: {r: 0.9490196, g: 1, b: 0.9549552, a: 1}
   entardecer: {r: 0.9607843, g: 0.75686276, b: 0.43137255, a: 1}
@@ -27970,10 +27964,12 @@ MonoBehaviour:
   entardecerHorario: 18
   noiteHorario: 20
   spawnController: {fileID: 5702800135901752610}
+  timeController: {fileID: 3897688778499110373}
   respawnPointJogador: {fileID: 921266427467653905}
   spawnDropaRecursosManager: {fileID: 7253064178780692856}
   listaSpawnLoots: []
   isRespawnarInimigos: 1
+  isRespawnarAnimais: 1
   PV: {fileID: 0}
   playersOnline: []
 --- !u!114 &3791792841026223067
@@ -34182,6 +34178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b64ab9a1d2ed24b967f29d161f5680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 6652729579810953491}
   _cloudsController: {fileID: 7722779427645504232}
   _weatherEffectsController: {fileID: 2770205961869308991}
   _starsDataContainer: {fileID: 11400000, guid: 29e3fcc979475f743b5311c59d041ef3, type: 2}

@@ -291,7 +291,7 @@ public class StatsJogador : MonoBehaviour
         int calorArmadura = playerController.armaduras.calorBonus;
         int calorFogo = playerController.temFogoPerto() ? 20 : 0; //TODO: VERIFICAR SE TEM FOGO POR PERTO
         int calorAmbiente = playerController.temGeloPerto() ? -60 : 0; //TODO: VERIFICAR EM QUAL AMBIENTE ESTÁ
-        int calorHoraDia = playerController.gameController.isNoite ? 0 : 20;
+        int calorHoraDia = playerController.gameController.isNoite() ? 0 : 20;
 
         temperaturaAtual = calorArmadura + calorFogo + calorAmbiente + calorHoraDia;
         Debug.Log("temperatura: " + temperaturaAtual);

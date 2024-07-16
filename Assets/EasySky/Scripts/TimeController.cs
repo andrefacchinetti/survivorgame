@@ -14,13 +14,16 @@ namespace EasySky
 {
     public class TimeController : MonoBehaviour
     {
-        private GlobalData _globalData;
+        [HideInInspector] public GlobalData _globalData;
+        [SerializeField] public GameController gameController; 
 
         private void Start()
         {
            UpdateTime();
         }
 
+        int dayOld = 0;
+        bool spawnouLobisomens = false, spawnouAnimais = false;
         private void Update()
         {
             if (_globalData != null && _globalData.shouldUpdateTime)
@@ -32,6 +35,26 @@ namespace EasySky
                 _globalData.days = _globalData.globalTime.Day;
                 _globalData.months = _globalData.globalTime.Month;
                 _globalData.years = _globalData.globalTime.Year;
+
+                if (dayOld != _globalData.days)
+                {
+                    gameController.SpawnarLootsPorDia();
+                    dayOld = _globalData.days;
+                    spawnouLobisomens = false;
+                    spawnouAnimais = false;
+                }
+                if (!spawnouLobisomens && (_globalData.hours >= 19 && _globalData.hours < 24))
+                {
+                    gameController.SpawnarLobisomensPorDia();
+                    spawnouLobisomens = true;
+                    Debug.Log("spawnou lobisomens");
+                }
+                if (!spawnouAnimais && (_globalData.hours >= 5 && _globalData.hours < 17))
+                {
+                    gameController.SpawnarAnimaisPorDia();
+                    spawnouAnimais = true;
+                    Debug.Log("spawnou animais");
+                }
             }
         }
 

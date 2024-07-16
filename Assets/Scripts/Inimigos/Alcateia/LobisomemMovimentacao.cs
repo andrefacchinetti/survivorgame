@@ -21,10 +21,10 @@ public class LobisomemMovimentacao : MonoBehaviour
     [HideInInspector] public Animator animator;
 
     // Referências a outros componentes
-     public StatsGeral targetInimigo;
-    [HideInInspector] public GameObject targetComida;
-    [HideInInspector] public Transform targetObstaculo;
-    [HideInInspector] public Vector3 positionProtecao; //Posicao que os lobisomens Protetores irão proteger
+    [SerializeField] public StatsGeral targetInimigo;
+    [SerializeField] public GameObject targetComida;
+    [SerializeField] public Transform targetObstaculo;
+    [SerializeField] public Vector3 positionProtecao; //Posicao que os lobisomens Protetores irão proteger
 
     // Variáveis privadas para controle de tempo
     private float timer;
@@ -105,7 +105,6 @@ public class LobisomemMovimentacao : MonoBehaviour
             if (arbustoDestino == null) movimentarAleatoriamentePeloMapa();
             else
             {
-                Debug.Log("indo ate arbusto");
                 MoveToPosition(arbustoDestino.transform.position);
             }
         }
@@ -267,7 +266,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void pararDeFingirDeMorto()
     {
         if (!possoPararDeFingirDeMorto) return;
-        Debug.Log("Parou de fingir de morto ");
         estouFingindoDeMorto = false;
         jaFingiuDeMorto = true;
         animator.SetBool("fingindoMorto", false);
@@ -277,7 +275,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     void TempoFingindoDeMorto()
     {
         possoPararDeFingirDeMorto = true;
-        Debug.Log("POSSO PARAR DE FINGIR DE MORTO");
     }
 
     private bool estouLongeDoLocalProtecao() //Se o lobisomem está a 10m do jogador, é pq ele ta perto
@@ -297,7 +294,6 @@ public class LobisomemMovimentacao : MonoBehaviour
 
     private void perseguirAndAtacar() 
     {
-        Debug.Log("perseguindo e atacando");
         if (targetInimigo != null)
         {
             if (isPodeAtacarAlvo())
@@ -364,7 +360,6 @@ public class LobisomemMovimentacao : MonoBehaviour
             }
             else
             {
-                Debug.Log("atacarObstaculoSeTiver");
                 if (isPodeAtacarObstaculo())
                 {
                     atacarAlvo(targetObstaculo.position);
@@ -431,7 +426,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("uivar") || targetComida != null || animator.GetCurrentAnimatorStateInfo(0).IsName("comendo")) return;
 
-        Debug.Log("movimentando aleatoriamente pelo mapa");
         if (timer >= timerParaAndarAleatoriamente)
         {
             if (targetInimigo == null)
@@ -535,7 +529,6 @@ public class LobisomemMovimentacao : MonoBehaviour
     private void MoverPertoDasCostasDoJogador()
     {
         if (targetInimigo == null) return;
-        Debug.Log("movendo para as costas do jogador");
 
         Vector3 alvoPosition = targetInimigo.transform.position;
         Vector3 alvoDirection = targetInimigo.transform.forward;
@@ -603,7 +596,7 @@ public class LobisomemMovimentacao : MonoBehaviour
         foreach (var hitCollider in hitColliders)
         {
             StatsGeral statsGeralEnemy = hitCollider.transform.GetComponentInParent<StatsGeral>();
-            if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive())
+            if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive() && statsGeralEnemy.lobisomemStats == null)
             {
                 targetInimigo = statsGeralEnemy;
                 targetComida = null;

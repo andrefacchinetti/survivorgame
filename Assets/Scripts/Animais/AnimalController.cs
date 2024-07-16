@@ -238,7 +238,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
         targetComida = null;
         if (!isAnimalAgressivo)
         {
-            Debug.Log("tomou dano e setou corrida");
             Fugir();
         }
     }
@@ -312,7 +311,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
     private void Fugir()
     {
         if (animalStats.estaFugindo) return;
-        Debug.Log("animal fugindo");
         animalStats.estaFugindo = true;
         targetInimigo = null;
         targetComida = null;
@@ -338,7 +336,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
         {
             if (PodeAtacarAlvo(transform, targetInimigo.transform.position))
             {
-                Debug.Log("Atacando inimigo");
                 AtacarAlvo(targetInimigo.transform.position);
             }
             else
@@ -381,7 +378,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
             transform.LookAt(positionAlvo);
             animalStats.lastAttackTime = Time.time;
             animator.SetTrigger("isAttacking");
-            Debug.Log("Atacando obstaculo");
         }
         else
         {
@@ -404,7 +400,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
             if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > pathUpdateDistanceThreshold))
             {
-                Debug.Log("Perseguindo inimigo 1");
                 MoveToPosition(destination);
             }
 
@@ -414,7 +409,6 @@ public class AnimalController : MonoBehaviourPunCallbacks
         {
             if (agent.velocity == Vector3.zero)
             {
-                Debug.Log("Perseguindo inimigo 2");
                 MoveToPosition(targetInimigo.transform.position);
             }
         }

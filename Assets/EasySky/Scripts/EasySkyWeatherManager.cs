@@ -28,6 +28,8 @@ namespace EasySky
         private const string kMenuItemPath = "Easy Sky/Weather Manager";
         #endregion
 
+        [SerializeField] private GameController gameController;
+
         #region Private Variables
         [SerializeField] private CloudsController _cloudsController;
         [SerializeField] private WeatherEffectsController _weatherEffectsController;
