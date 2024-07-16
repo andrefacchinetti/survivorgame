@@ -125,7 +125,7 @@ public class GameController : MonoBehaviour
 
         gameSecond = Mathf.FloorToInt(elapsedTime % 60);
         AtualizarRotacaoDoSol();
-        objMoon.transform.Rotate(Vector3.up, moonRotationSpeed * Time.deltaTime);
+        objMoon.transform.Rotate(Vector3.forward, moonRotationSpeed * Time.deltaTime);
     }
 
     private void LateUpdate()
