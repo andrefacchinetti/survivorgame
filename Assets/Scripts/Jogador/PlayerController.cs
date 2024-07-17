@@ -203,12 +203,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		GameObject[] fireObjects = GameObject.FindGameObjectsWithTag("Fogo");
 		Vector3 playerPosition = transform.position;
 
-		foreach (GameObject fireObject in fireObjects)
+		foreach (GameObject objeto in fireObjects)
 		{
 			// Verificar se a distância entre o jogador e o objeto é menor ou igual ao raio de detecção
-			if (Vector3.Distance(playerPosition, fireObject.transform.position) <= 5)
+			if (Vector3.Distance(playerPosition, objeto.transform.position) <= 5)
 			{
-				return true;
+				if (objeto.GetComponent<Fogo>().isFogoAceso)
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -224,10 +227,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 			// Verificar se a distância entre o jogador e o objeto é menor ou igual ao raio de detecção
 			if (Vector3.Distance(playerPosition, objeto.transform.position) <= 5)
 			{
-                if (objeto.GetComponent<Fogo>().isFogoAceso)
-                {
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
