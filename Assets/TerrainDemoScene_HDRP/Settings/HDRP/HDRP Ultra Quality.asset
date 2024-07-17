@@ -34,11 +34,9 @@ MonoBehaviour:
     supportWater: 1
     waterSimulationResolution: 128
     supportWaterExclusion: 0
-    supportWaterDeformation: 0
-    deformationAtlasSize: 512
-    maximumDeformerCount: 64
-    supportWaterFoam: 0
-    foamAtlasSize: 512
+    supportWaterDecals: 1
+    waterDecalAtlasSize: 1024
+    maximumWaterDecalCount: 48
     waterScriptInteractionsMode: 0
     waterFullCPUSimulation: 0
     supportComputeThickness: 0
@@ -168,7 +166,7 @@ MonoBehaviour:
       enabled: 1
       useMipBias: 1
       advancedUpscalersByPriority: 00
-      DLSSPerfQualitySetting: 2
+      DLSSPerfQualitySetting: 1
       DLSSInjectionPoint: 0
       DLSSUseOptimalSettings: 0
       DLSSSharpness: 0.3
@@ -183,10 +181,12 @@ MonoBehaviour:
       minPercentage: 95
       dynResType: 1
       upsampleFilter: 5
-      forceResolution: 0
+      forceResolution: 1
       forcedPercentage: 100
       lowResTransparencyMinimumThreshold: 0
       rayTracingHalfResThreshold: 50
+      lowResSSGIMinimumThreshold: 0
+      lowResVolumetricCloudsMinimumThreshold: 50
       enableDLSS: 0
     lowresTransparentSettings:
       enabled: 0
@@ -264,10 +264,6 @@ MonoBehaviour:
       - 50
       - 50
       RTGIFullResolution: 000001
-      RTGIClampValue:
-      - 0.5
-      - 0.8
-      - 1.5
       RTGIRaySteps: 200000003000000040000000
       RTGIDenoise: 010101
       RTGIHalfResDenoise: 010000
@@ -288,10 +284,6 @@ MonoBehaviour:
       - 50
       - 50
       - 50
-      RTRClampValue:
-      - 0.8
-      - 1
-      - 1.2
       RTRFullResolution: 000001
       RTRRayMaxIterations: 200000003000000040000000
       RTRDenoise: 010101
@@ -313,10 +305,9 @@ MonoBehaviour:
       - 0.666
       - 0.5
     gpuResidentDrawerSettings:
-      mode: 0
-      useLegacyLightmaps: 0
+      mode: 1
       smallMeshScreenPercentage: 0
-      enableOcclusionCullingInCameras: 0
+      enableOcclusionCullingInCameras: 1
       useDepthPrepassForOccluders: 1
     m_ObsoleteLightLayerName0: Light LayerDefault
     m_ObsoleteLightLayerName1: InteriorOnly

@@ -72,6 +72,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         Color currentColor;
 
         if (getGameHour() >= amanhecerHorario && getGameHour() < meioDiaHorario)
