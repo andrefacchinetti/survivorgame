@@ -66,7 +66,7 @@ namespace WorldStreamer2
                 BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
                 NamedBuildTarget namedBuildTarget = UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(targetGroup);
 
-                string srpType = GraphicsSettings.renderPipelineAsset.GetType().ToString();
+                string srpType = GraphicsSettings.defaultRenderPipeline.GetType().ToString();
                 if (srpType.Contains("HDRenderPipelineAsset"))
                 {
                     string defineHdrp = "NM_HDRP";
@@ -1667,7 +1667,7 @@ namespace WorldStreamer2
                 }
                 else
                 {
-                    var srpType = GraphicsSettings.renderPipelineAsset.GetType().ToString();
+                    var srpType = GraphicsSettings.defaultRenderPipeline.GetType().ToString();
 
                     if (srpType.Contains("HDRenderPipelineAsset"))
                     {
@@ -2018,7 +2018,7 @@ namespace WorldStreamer2
                 }
                 else
                 {
-                    var srpType = GraphicsSettings.renderPipelineAsset.GetType().ToString();
+                    var srpType = GraphicsSettings.defaultRenderPipeline.GetType().ToString();
 
                     if (srpType.Contains("HDRenderPipelineAsset"))
                     {
@@ -2319,7 +2319,7 @@ namespace WorldStreamer2
             }
             else
             {
-                var srpType = GraphicsSettings.renderPipelineAsset.GetType().ToString();
+                var srpType = GraphicsSettings.defaultRenderPipeline.GetType().ToString();
 
                 if (srpType.Contains("HDRenderPipelineAsset"))
                 {
@@ -2556,7 +2556,7 @@ namespace WorldStreamer2
                         }
                         else
                         {
-                            var srpType = GraphicsSettings.renderPipelineAsset.GetType().ToString();
+                            var srpType = GraphicsSettings.defaultRenderPipeline.GetType().ToString();
                             if (srpType.Contains("HDRenderPipelineAsset"))
                             {
                                 if (shaderName.Contains("Snow"))
