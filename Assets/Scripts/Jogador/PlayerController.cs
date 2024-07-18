@@ -217,9 +217,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		return false;
 	}
 
-	public bool temGeloPerto()
+	public bool estaEmTerrenoGelado()
 	{
-		GameObject[] objects = GameObject.FindGameObjectsWithTag("Gelo");
+		GameObject[] objects = GameObject.FindGameObjectsWithTag("TerrenoGelo");
 		Vector3 playerPosition = transform.position;
 
 		foreach (GameObject objeto in objects)

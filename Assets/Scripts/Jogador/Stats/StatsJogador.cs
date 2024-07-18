@@ -17,7 +17,7 @@ public class StatsJogador : MonoBehaviour
     [SerializeField] public float fomeMaxima = 100, sedeMaxima = 100, energiaMaxima = 100;
 
     //STATS CURRENT
-    [SerializeField] public float fomeAtual, sedeAtual, energiaAtual, temperaturaAtual;
+    [SerializeField] public float fomeAtual, sedeAtual, energiaAtual, temperaturaCorporal = 0;
 
     [SerializeField] public float tempoPraDiminuirStatsFomeSedeEmSegundos = 60*1;
     [SerializeField] public float tempoPraDiminuirStatsFeridasInternasEmSegundos = 60*2;
@@ -130,7 +130,7 @@ public class StatsJogador : MonoBehaviour
 
     public void AlterarTemperaturaJogador(float value)
     {
-        temperaturaAtual += value;
+        temperaturaCorporal += value;
     }
 
     private void AtualizarImgArmor()
@@ -140,7 +140,7 @@ public class StatsJogador : MonoBehaviour
 
     private void AtualizarImgTemperatura()
     {
-        hudJogador.atualizarImgTemperatura(isHipotermia, isHipertermia, temperaturaAtual);
+        hudJogador.atualizarImgTemperatura(isHipotermia, isHipertermia, temperaturaCorporal);
     }
 
     public void AtualizarImgVida()
@@ -288,15 +288,15 @@ public class StatsJogador : MonoBehaviour
 
     private void verificarTemperatura()
     {
-        int calorArmadura = playerController.armaduras.calorBonus;
-        int calorFogo = playerController.temFogoPerto() ? 20 : 0; //TODO: VERIFICAR SE TEM FOGO POR PERTO
-        int calorAmbiente = playerController.temGeloPerto() ? -60 : 0; //TODO: VERIFICAR EM QUAL AMBIENTE ESTÁ
-        int calorHoraDia = playerController.gameController.isNoite() ? 0 : 20;
+        float temperaturaAmbiente = playerController.gameController.temperaturaAmbiente;
+        float bonusTemperaturaArmadura = playerController.armaduras.calorBonus;
+        float bonusTemperaturaFogo = playerController.temFogoPerto() ? 20 : 0; 
+        float onustemperaturaTerreno = playerController.estaEmTerrenoGelado() ? -60 : 0;
 
-        temperaturaAtual = calorArmadura + calorFogo + calorAmbiente + calorHoraDia;
-        Debug.Log("temperatura: " + temperaturaAtual);
-        isHipertermia = temperaturaAtual > 80;
-        isHipotermia = temperaturaAtual < 0;
+        temperaturaCorporal = (temperaturaAmbiente + bonusTemperaturaArmadura + bonusTemperaturaFogo + onustemperaturaTerreno);
+        Debug.Log("temperaturaCorporal: " + temperaturaCorporal);
+        isHipertermia = temperaturaCorporal > 40;
+        isHipotermia = temperaturaCorporal < 0;
 
         AtualizarImgTemperatura();
     }

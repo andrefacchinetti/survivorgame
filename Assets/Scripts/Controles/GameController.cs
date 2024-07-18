@@ -41,6 +41,10 @@ public class GameController : MonoBehaviour
     [HideInInspector] public PhotonView PV;
     [HideInInspector] public GameObject[] playersOnline;
 
+    //clima
+    public float temperaturaAmbiente = 0;
+    //end clima
+
     private void Awake()
     {
         listaSpawnLoots = new List<SpawnLoots>();
@@ -145,7 +149,7 @@ public class GameController : MonoBehaviour
 
         GUIStyle style = new GUIStyle();
 
-        Rect rect = new Rect(0, 0, w, h * 2 / 100);
+        Rect rect = new Rect(0, 0, w * 2 / 100, h * 2 / 100);
         style.alignment = TextAnchor.UpperLeft;
         style.fontSize = h * 2 / 50;
         style.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);

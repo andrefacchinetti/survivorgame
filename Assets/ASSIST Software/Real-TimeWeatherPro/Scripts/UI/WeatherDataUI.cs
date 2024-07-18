@@ -32,6 +32,8 @@ namespace RealTimeWeather.UI
         public static Action ChangeToPauseButtonText;
         #endregion
 
+        [SerializeField] GameController gameController;
+
         #region Private Variables
         [Header("Pause/Resume Button")]
         [SerializeField] private Button pauseResumeButton;
@@ -127,6 +129,7 @@ namespace RealTimeWeather.UI
             }
 
             SetPanelWeatherIcon(weatherData);
+            gameController.temperaturaAmbiente = weatherData.Temperature;
             weatherStateText.text = UIUtilities.ReturnWeatherStateInfo(weatherData.WeatherState, weatherData.Temperature, weatherData.DateTime);
             currentDateText.text = UIUtilities.ReturnDateTimeInfo(weatherData.DateTime);
             localizationText.text = UIUtilities.ReturnLocalizationInfo(weatherData.Localization.City, weatherData.Localization.Country);
