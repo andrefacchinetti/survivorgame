@@ -149,8 +149,9 @@ public class GameController : MonoBehaviour
 
         GUIStyle style = new GUIStyle();
 
-        Rect rect = new Rect(0, 0, w * 2 / 100, h * 2 / 100);
-        style.alignment = TextAnchor.UpperLeft;
+        // Ajusta as coordenadas para o lado direito superior
+        Rect rect = new Rect(w - (w * 2 / 100), 0, w * 2 / 100, h * 2 / 100);
+        style.alignment = TextAnchor.UpperRight; // Alinha o texto à direita
         style.fontSize = h * 2 / 50;
         style.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
