@@ -2,19 +2,23 @@ using System.Collections;
 using Opsive.Shared.Inventory;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Armaduras : MonoBehaviour
 {
 
     [SerializeField] public Inventario inventario;
     [SerializeField] public List<ItemArmadura> slotsItemArmadura;
-    [SerializeField] [HideInInspector] public ItemArmadura slotItemArmaduraSelecionada;
-    [SerializeField] public bool estaSelecionandoSlotArmadura;
+    [HideInInspector] public ItemArmadura slotItemArmaduraSelecionada;
+    [HideInInspector] public bool estaSelecionandoSlotArmadura;
+
+    [SerializeField] TMP_Text txSpeedBonus, txArmorBonus, txCalorBonus;
 
     [SerializeField] public List<ArmaduraStats> armadurasStats;
     public Dictionary<string, ArmaduraStats> mapArmaduraStats;
-    public float moveSpeedBonus = 0;
-    public int calorBonus = 0;
+
+    [HideInInspector] public float moveSpeedBonus = 0;
+    [HideInInspector] public int calorBonus = 0;
 
     [System.Serializable]
     public struct ArmaduraStats
@@ -45,6 +49,18 @@ public class Armaduras : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        atualizarTextoArmaduraStats();
+    }
+
+    private void atualizarTextoArmaduraStats()
+    {
+        txSpeedBonus.text = "Move Speed: " + (moveSpeedBonus >= 0 ? "+" : "-") + moveSpeedBonus;
+        txArmorBonus.text = "Armor: " + (inventario.playerController.characterAttributeManager.GetAttribute("Armor").Value >= 0 ? "+" : "-") + inventario.playerController.characterAttributeManager.GetAttribute("Armor").Value;
+        txCalorBonus.text = "Heat: " + (calorBonus >= 0 ? "+" : "-") + calorBonus;
+    }
+
     public void equiparStatsArmadura(ItemDefinitionBase itemBase)
     {
         foreach (ArmaduraStats armorStats in armadurasStats)
@@ -56,6 +72,7 @@ public class Armaduras : MonoBehaviour
                 calorBonus += armorStats.calor;
                 moveSpeedBonus += armorStats.moveSpeed;
                 inventario.statsJogador.AtualizarMoveSpeedJogador();
+                atualizarTextoArmaduraStats();
                 break;
             }
         }
@@ -72,6 +89,7 @@ public class Armaduras : MonoBehaviour
                 calorBonus -= armorStats.calor;
                 moveSpeedBonus -= armorStats.moveSpeed;
                 inventario.statsJogador.AtualizarMoveSpeedJogador();
+                atualizarTextoArmaduraStats();
                 break;
             }
         }
