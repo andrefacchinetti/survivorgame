@@ -217,15 +217,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		return false;
 	}
 
+	private Collider[] collidersNoRaio = new Collider[10];
 	public bool estaEmTerrenoGelado()
 	{
-		GameObject[] objects = GameObject.FindGameObjectsWithTag("TerrenoGelo");
 		Vector3 playerPosition = transform.position;
-
-		foreach (GameObject objeto in objects)
+		// Obter todos os colliders no raio de detecção
+		int numColliders = Physics.OverlapSphereNonAlloc(playerPosition, 5f, collidersNoRaio, LayerMask.GetMask("Terreno"));
+		for (int i = 0; i < numColliders; i++)
 		{
-			// Verificar se a distância entre o jogador e o objeto é menor ou igual ao raio de detecção
-			if (Vector3.Distance(playerPosition, objeto.transform.position) <= 5)
+			// Verificar se o collider é de um objeto com a tag correta
+			if (collidersNoRaio[i].CompareTag("TerrenoNeve"))
 			{
 				return true;
 			}

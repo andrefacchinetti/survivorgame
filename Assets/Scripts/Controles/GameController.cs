@@ -42,8 +42,9 @@ public class GameController : MonoBehaviour
     [HideInInspector] public GameObject[] playersOnline;
 
     //clima
-    public float temperaturaAmbiente = 0;
+    public float temperaturaClima = 0, temperaturaCalculada = 0;
     //end clima
+
 
     private void Awake()
     {

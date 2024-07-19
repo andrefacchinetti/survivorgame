@@ -288,12 +288,14 @@ public class StatsJogador : MonoBehaviour
 
     private void verificarTemperatura()
     {
-        float temperaturaAmbiente = playerController.gameController.temperaturaAmbiente;
+        float temperaturaAmbiente = playerController.gameController.temperaturaClima;
         float bonusTemperaturaArmadura = playerController.armaduras.calorBonus;
         float bonusTemperaturaFogo = playerController.temFogoPerto() ? 20 : 0; 
         float onustemperaturaTerreno = playerController.estaEmTerrenoGelado() ? -60 : 0;
 
-        temperaturaCorporal = (temperaturaAmbiente + bonusTemperaturaArmadura + bonusTemperaturaFogo + onustemperaturaTerreno);
+        playerController.gameController.temperaturaCalculada = (temperaturaAmbiente + bonusTemperaturaFogo + onustemperaturaTerreno);
+
+        temperaturaCorporal = playerController.gameController.temperaturaCalculada + bonusTemperaturaArmadura;
         Debug.Log("temperaturaCorporal: " + temperaturaCorporal);
         isHipertermia = temperaturaCorporal > 40;
         isHipotermia = temperaturaCorporal < 0;

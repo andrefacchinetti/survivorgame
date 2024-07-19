@@ -129,8 +129,8 @@ namespace RealTimeWeather.UI
             }
 
             SetPanelWeatherIcon(weatherData);
-            gameController.temperaturaAmbiente = weatherData.Temperature;
-            weatherStateText.text = UIUtilities.ReturnWeatherStateInfo(weatherData.WeatherState, weatherData.Temperature, weatherData.DateTime);
+            gameController.temperaturaClima = weatherData.Temperature;
+            weatherStateText.text = UIUtilities.ReturnWeatherStateInfo(weatherData.WeatherState, gameController.temperaturaCalculada, weatherData.DateTime);
             currentDateText.text = UIUtilities.ReturnDateTimeInfo(weatherData.DateTime);
             localizationText.text = UIUtilities.ReturnLocalizationInfo(weatherData.Localization.City, weatherData.Localization.Country);
             geoCoordinatesText.text = UIUtilities.ReturnGeoCoordinatesInfo(weatherData.Localization);
