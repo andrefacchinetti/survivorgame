@@ -15,7 +15,7 @@ namespace EasySky
     public class TimeController : MonoBehaviour
     {
         [HideInInspector] public GlobalData _globalData;
-        [SerializeField] public GameController gameController; 
+        [HideInInspector] public GameController gameController;
 
         private void Start()
         {
