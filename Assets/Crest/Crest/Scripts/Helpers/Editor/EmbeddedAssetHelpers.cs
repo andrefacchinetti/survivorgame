@@ -1,5 +1,7 @@
 // Crest Ocean System
 
+// Copyright 2021 Wave Harmonic Ltd
+
 // This file is subject to the Unity Companion License:
 // https://github.com/Unity-Technologies/com.unity.cinemachine/blob/593fa283bee378322337e5d9f5a7b91331a45799/LICENSE.md
 

@@ -1,6 +1,6 @@
 // Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2021 Wave Harmonic Ltd
 
 using Crest.Internal;
 
@@ -261,6 +261,18 @@ namespace Crest
 
         internal static void UpdateGlobals(Material oceanMaterial)
         {
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                Shader.SetGlobalColor(ShaderIDs.s_CrestDiffuse, oceanMaterial.GetColor(OceanRenderer.ShaderIDs.s_ScatterColourBase).linear);
+                Shader.SetGlobalColor(ShaderIDs.s_CrestDiffuseShadow, oceanMaterial.GetColor(OceanRenderer.ShaderIDs.s_ScatterColourShadow).linear);
+                Shader.SetGlobalFloat(ShaderIDs.s_CrestSubSurfaceBase, oceanMaterial.GetFloat(OceanRenderer.ShaderIDs.s_SSSIntensityBase));
+                Shader.SetGlobalFloat(ShaderIDs.s_CrestSubSurfaceSun, oceanMaterial.GetFloat(OceanRenderer.ShaderIDs.s_SSSIntensitySun));
+                Shader.SetGlobalColor(ShaderIDs.s_CrestSubSurfaceColour, oceanMaterial.GetColor(OceanRenderer.ShaderIDs.s_SSSTint).linear);
+                Shader.SetGlobalFloat(ShaderIDs.s_CrestSubSurfaceSunFallOff, oceanMaterial.GetFloat(OceanRenderer.ShaderIDs.s_SSSSunFalloff));
+                return;
+            }
+#endif
             // We will have the wrong color values if we do not use linear:
             // https://forum.unity.com/threads/fragment-shader-output-colour-has-incorrect-values-when-hardcoded.377657/
             Shader.SetGlobalColor(ShaderIDs.s_CrestDiffuse, oceanMaterial.GetColor(OceanRenderer.ShaderIDs.s_Diffuse).MaybeLinear());

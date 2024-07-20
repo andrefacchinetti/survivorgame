@@ -1,6 +1,6 @@
 // Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2022 Wave Harmonic Ltd
 
 // TODO: This has some lag for deferred because the chosen event happens after opaque.
 
@@ -8,6 +8,7 @@ namespace Crest.Examples
 {
     using System.Collections.Generic;
     using UnityEngine;
+    using UnityEngine.Experimental.Rendering;
     using UnityEngine.Rendering;
 
     [ExecuteDuringEditMode]
@@ -26,6 +27,11 @@ namespace Crest.Examples
         RenderTexture _texture;
         RenderTargetIdentifier _target;
 
+#if CREST_HDRP
+        RTHandle _rtHandle;
+        RTHandle _rtHandleDepth;
+#endif
+
         void OnEnable()
         {
             if (_material == null)
@@ -39,9 +45,21 @@ namespace Crest.Examples
 
         void OnDisable()
         {
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                _rtHandle?.Release();
+                _rtHandle = null;
+                _rtHandleDepth?.Release();
+                _rtHandleDepth = null;
+                return;
+            }
+#endif
+
             if (_texture != null)
             {
                 _texture.Release();
+                _texture = null;
             }
         }
 
@@ -52,7 +70,42 @@ namespace Crest.Examples
                 return;
             }
 
-            if (Helpers.RenderTargetTextureNeedsUpdating(_texture, descriptor))
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                // Do not try and initialize these in OnEnable or exceptions.
+                if (_rtHandle == null)
+                {
+                    _rtHandle = RTHandles.Alloc
+                    (
+                        scaleFactor: Vector2.one,
+                        slices: TextureXR.slices,
+                        dimension: TextureXR.dimension,
+                        colorFormat: GraphicsFormat.R16_SFloat,
+                        enableRandomWrite: false,
+                        useDynamicScale: true,
+                        name: "_FillColorTexture"
+                    );
+                }
+
+                if (_rtHandleDepth == null)
+                {
+                    _rtHandleDepth = RTHandles.Alloc
+                    (
+                        scaleFactor: Vector2.one,
+                        slices: TextureXR.slices,
+                        dimension: TextureXR.dimension,
+                        colorFormat: GraphicsFormat.R8_UNorm,
+                        depthBufferBits: DepthBits.Depth24,
+                        enableRandomWrite: false,
+                        useDynamicScale: true,
+                        name: "_FillDepthTexture"
+                    );
+                }
+            }
+#endif // CREST_HDRP
+
+            if (!RenderPipelineHelper.IsHighDefinition && Helpers.RenderTargetTextureNeedsUpdating(_texture, descriptor))
             {
                 // RFloat is supported much better than RHalf.
                 descriptor.colorFormat = RenderTextureFormat.RFloat;
@@ -61,9 +114,19 @@ namespace Crest.Examples
                 _texture.descriptor = descriptor;
             }
 
-            Helpers.SetRenderTarget(buffer, _target);
-            buffer.ClearRenderTarget(true, true, Color.black);
-            buffer.SetGlobalTexture(ShaderIDs.s_FillTexture, _target);
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                CoreUtils.SetRenderTarget(buffer, _rtHandle, _rtHandleDepth, ClearFlag.All);
+                buffer.SetGlobalTexture(ShaderIDs.s_FillTexture, _rtHandle);
+            }
+            else
+#endif
+            {
+                Helpers.SetRenderTarget(buffer, _target);
+                buffer.ClearRenderTarget(true, true, Color.black);
+                buffer.SetGlobalTexture(ShaderIDs.s_FillTexture, _target);
+            }
 
             foreach (var meshFilter in _meshes)
             {

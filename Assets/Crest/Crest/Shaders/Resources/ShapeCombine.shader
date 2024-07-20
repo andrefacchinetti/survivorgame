@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 // Shaders to perform combine as a ping pong process - combine happens into an auxiliary buffer, which is then copied
 // back into the texture array.
@@ -17,7 +17,7 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 
 		Pass
 		{
-			CGPROGRAM
+			HLSLPROGRAM
 			#pragma vertex Vert
 			#pragma fragment Frag
 			#pragma target 3.5
@@ -25,12 +25,11 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 			#pragma multi_compile __ CREST_DYNAMIC_WAVE_SIM_ON_INTERNAL
 			#pragma multi_compile __ CREST_FLOW_ON_INTERNAL
 
-			#include "UnityCG.cginc"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 
 			#include "../OceanGlobals.hlsl"
 			#include "../OceanInputsDriven.hlsl"
 			#include "../OceanHelpersNew.hlsl"
-			#include "../FullScreenTriangle.hlsl"
 
 			float _HorizDisplace;
 			float _DisplaceClamp;
@@ -140,7 +139,7 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 
 				return half4(result, variance);
 			}
-			ENDCG
+			ENDHLSL
 		}
 
 
@@ -148,15 +147,14 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 		// Copy back to lod texture array
 		Pass
 		{
-			CGPROGRAM
+			HLSLPROGRAM
 			#pragma vertex Vert
 			#pragma fragment Frag
 			#pragma target 3.5
 
-			#include "UnityCG.cginc"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 
 			#include "../OceanGlobals.hlsl"
-			#include "../FullScreenTriangle.hlsl"
 
 			Texture2D _CombineBuffer;
 
@@ -183,7 +181,7 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 			{
 				return _CombineBuffer.SampleLevel(LODData_point_clamp_sampler, input.uv, 0.0);
 			}
-			ENDCG
+			ENDHLSL
 		}
 	}
 }

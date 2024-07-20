@@ -1,4 +1,8 @@
-﻿// FloatingOrigin.cs
+﻿// Crest Ocean System
+
+// Copyright 2020 Wave Harmonic Ltd
+
+// FloatingOrigin.cs
 // Written by Peter Stirling
 // 11 November 2010
 // Uploaded to Unify Community Wiki on 11 November 2010

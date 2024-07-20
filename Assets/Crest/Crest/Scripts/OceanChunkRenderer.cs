@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -164,35 +164,6 @@ namespace Crest
             {
                 Rend.sharedMaterial = OceanRenderer.Instance.OceanMaterial;
             }
-
-            if (camera == null)
-            {
-                return;
-            }
-
-            // per instance data
-
-            if (_mpb == null)
-            {
-                _mpb = new PropertyWrapperMPB();
-            }
-            Rend.GetPropertyBlock(_mpb.materialPropertyBlock);
-
-            {
-                // Only done here because current camera is defined. This could be done just once, probably on the OnRender function
-                // or similar on the OceanPlanarReflection script?
-                var reflTex = PreparedReflections.GetRenderTexture(camera.GetHashCode());
-                if (reflTex)
-                {
-                    _mpb.SetTexture(sp_ReflectionTex, reflTex);
-                }
-                else
-                {
-                    _mpb.SetTexture(sp_ReflectionTex, Texture2D.blackTexture);
-                }
-            }
-
-            Rend.SetPropertyBlock(_mpb.materialPropertyBlock);
         }
 
         void OnDestroy()
@@ -204,7 +175,7 @@ namespace Crest
         void OnWillRenderObject()
         {
             // Camera.current is only supported in built-in pipeline.
-            if (Camera.current != null)
+            if (RenderPipelineHelper.IsLegacy && Camera.current != null)
             {
                 _currentCamera = Camera.current;
             }

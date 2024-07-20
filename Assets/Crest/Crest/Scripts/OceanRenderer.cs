@@ -1,17 +1,20 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
 using Crest.Internal;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEditor;
 
 #if !UNITY_2020_3_OR_NEWER
 #error This version of Crest requires Unity 2020.3 or later.
+#elif !UNITY_2021_3_OR_NEWER
+#error This version of Crest requires Unity 2021.3 or later. Redownload and then reimport Crest HDRP from the package manager.
 #endif
 
 namespace Crest
@@ -173,7 +176,11 @@ namespace Crest
         public float DeltaTime => TimeProvider.DeltaTime;
         public float DeltaTimeDynamics => TimeProvider.DeltaTimeDynamics;
 
+#if CREST_URP
         [Tooltip("The primary directional light. Required if shadowing is enabled.")]
+#else
+        [Tooltip("The primary directional light.")]
+#endif
         public Light _primaryLight;
         [Tooltip("If Primary Light is not set, search the scene for all directional lights and pick the brightest to use as the sun light.")]
         [SerializeField, Predicated("_primaryLight", true), DecoratedField]
@@ -231,6 +238,29 @@ namespace Crest
         [Tooltip("Applied to the extents' far vertices to make the larger. Increase if the extents do not reach the horizon or you see the underwater effect at the horizon.")]
         [SerializeField, Delayed]
         internal float _extentsSizeMultiplier = 100f;
+
+
+#if CREST_HDRP
+        [Header("Rendering Params")]
+
+        [RenderPipeline(RenderPipeline.HighDefinition), DecoratedField]
+        [Tooltip("Layer mask for lights and shadows. Please read the HDRP documentation on light layers for more information."), SerializeField]
+#if UNITY_2023_1_OR_NEWER
+        UnityEngine.Rendering.HighDefinition.RenderingLayerMask _renderingLayerMask = UnityEngine.Rendering.HighDefinition.RenderingLayerMask.Everything;
+#else
+        UnityEngine.Rendering.HighDefinition.LightLayerEnum _renderingLayerMask = UnityEngine.Rendering.HighDefinition.LightLayerEnum.Everything;
+#endif
+#else
+        // A 'creative' way to save the value of the _renderingLayerMask enum when SRP is compiled out. Perhaps
+        // a little too creative, but seems to work! Defaults to 0xFF which is 'LightLayerEnum.Everything' - at time
+        // of writing!
+        // LightLayerEnum is in both HDRP and URP package. But LightLayerEnumPropertyDrawer is in HDRP only. It looks
+        // like Unity still needs to reconcile this. EDIT: Only true for 2021.
+        [SerializeField, HideInInspector]
+        uint _renderingLayerMask = 0xFF;
+#endif
+
+        public uint RenderingLayerMask => (uint)_renderingLayerMask;
 
 
         [Header("Simulation Params")]
@@ -309,6 +339,11 @@ namespace Crest
         public float _underwaterCullLimit = 0.001f;
         internal const float UNDERWATER_CULL_LIMIT_MINIMUM = 0.000001f;
         internal const float UNDERWATER_CULL_LIMIT_MAXIMUM = 0.01f;
+
+        [SerializeField, RenderPipeline(RenderPipeline.Universal), DecoratedField]
+#pragma warning disable 414
+        bool _verifyOpaqueAndDepthTexturesEnabled = true;
+#pragma warning restore 414
 
 
         [Header("Edit Mode Params")]
@@ -482,10 +517,18 @@ namespace Crest
         readonly static int sp_CrestDepthTextureOffset = Shader.PropertyToID("_CrestDepthTextureOffset");
         public static readonly int sp_CrestForceUnderwater = Shader.PropertyToID("_CrestForceUnderwater");
 
+        readonly static int sp_OceanCenterPosWorldDelta = Shader.PropertyToID("_OceanCenterPosWorldDelta");
+        readonly static int sp_CrestScaleChange = Shader.PropertyToID("_CrestScaleChange");
+
+        readonly static int sp_primaryLightDirection = Shader.PropertyToID("_PrimaryLightDirection");
+        readonly static int sp_primaryLightIntensity = Shader.PropertyToID("_PrimaryLightIntensity");
+
         public static class ShaderIDs
         {
             // Shader properties.
             public static readonly int s_DepthFogDensity = Shader.PropertyToID("_DepthFogDensity");
+
+            // Shader Lab.
             public static readonly int s_Diffuse = Shader.PropertyToID("_Diffuse");
             public static readonly int s_DiffuseGrazing = Shader.PropertyToID("_DiffuseGrazing");
             public static readonly int s_DiffuseShadow = Shader.PropertyToID("_DiffuseShadow");
@@ -493,6 +536,16 @@ namespace Crest
             public static readonly int s_SubSurfaceSun = Shader.PropertyToID("_SubSurfaceSun");
             public static readonly int s_SubSurfaceBase = Shader.PropertyToID("_SubSurfaceBase");
             public static readonly int s_SubSurfaceSunFallOff = Shader.PropertyToID("_SubSurfaceSunFallOff");
+
+            // Shader Graph.
+            public static readonly int s_ScatterColourBase = Shader.PropertyToID("_ScatterColourBase");
+            public static readonly int s_ScatterColourShadow = Shader.PropertyToID("_ScatterColourShadow");
+            public static readonly int s_SSSIntensityBase = Shader.PropertyToID("_SSSIntensityBase");
+            public static readonly int s_SSSIntensitySun = Shader.PropertyToID("_SSSIntensitySun");
+            public static readonly int s_SSSTint = Shader.PropertyToID("_SSSTint");
+            public static readonly int s_SSSSunFalloff = Shader.PropertyToID("_SSSSunFalloff");
+
+            public static readonly int s_CrestUnityTime = Shader.PropertyToID("_CrestUnityTime");
         }
 
 #if UNITY_EDITOR
@@ -670,6 +723,19 @@ namespace Crest
 
             _generatedSettingsHash = CalculateSettingsHash();
 
+            // 2021.2 selects the the wrong default. UR might not be present so OR needs to handle it too.
+            if (UnderwaterRenderer.Instance == null)
+            {
+                Shader.EnableKeyword("CREST_WATER_VOLUME_NONE");
+            }
+
+            if (!_debug._disableFollowViewpoint && ViewCamera != null)
+            {
+                // Prevent MVs from popping on first frame.
+                LateUpdatePosition();
+                LateUpdateScale();
+            }
+
             Enable();
             _isInitialized = true;
         }
@@ -683,12 +749,20 @@ namespace Crest
                 lodData?.Enable();
             }
 
-            Camera.onPreRender -= OnPreRenderCamera;
-            Camera.onPreRender += OnPreRenderCamera;
-            Camera.onPostRender -= OnPostRenderCamera;
-            Camera.onPostRender += OnPostRenderCamera;
+            if (RenderPipelineHelper.IsLegacy)
+            {
+                Camera.onPreRender -= OnPreRenderCamera;
+                Camera.onPreRender += OnPreRenderCamera;
+                Camera.onPostRender -= OnPostRenderCamera;
+                Camera.onPostRender += OnPostRenderCamera;
+            }
+
             RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
             RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
+
+#if CREST_URP
+            UniversalRegisterRendererRequirements.Enable();
+#endif
 
             Container.SetActive(true);
         }
@@ -714,6 +788,13 @@ namespace Crest
 
         void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
         {
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                return;
+            }
+#endif
+
             // Clean up for subsequent cameras or water could disappear.
             UnderwaterRenderer.DisableOceanMaskKeywords();
         }
@@ -762,6 +843,9 @@ namespace Crest
 
             if (!EditorApplication.isPlaying)
             {
+                // For detecting motion vector pass.
+                Shader.SetGlobalFloat(ShaderIDs.s_CrestUnityTime, EditorHelpers.EditorHelpers.GetShaderTime());
+
                 if (EditorApplication.timeSinceStartup - _lastUpdateEditorTime > 1f / Mathf.Clamp(Instance._editModeFPS, 0.01f, 60f))
                 {
                     _editorFrames++;
@@ -998,6 +1082,12 @@ namespace Crest
                 }
             }
 
+            if (RenderPipelineHelper.IsHighDefinition && _primaryLight == null)
+            {
+                Debug.LogError("Crest needs to know which light to use as the sun light. Please assign the primary light in the scene to the Primary Light field on the OceanRenderer component. Click this message to select the GameObject with this component.", this);
+                return false;
+            }
+
             return true;
         }
 
@@ -1021,6 +1111,9 @@ namespace Crest
             }
 #endif
 
+            // For detecting motion vector pass.
+            Shader.SetGlobalFloat(ShaderIDs.s_CrestUnityTime, Time.time);
+
             RunUpdate();
         }
 
@@ -1030,6 +1123,7 @@ namespace Crest
 
             // Add all the settings that require rebuilding..
             Hashy.AddInt(_layer, ref settingsHash);
+            Hashy.AddInt((int)_renderingLayerMask, ref settingsHash);
             Hashy.AddInt(_lodDataResolution, ref settingsHash);
             Hashy.AddInt(_geometryDownSampleFactor, ref settingsHash);
             Hashy.AddInt(_lodCount, ref settingsHash);
@@ -1086,6 +1180,13 @@ namespace Crest
             var needToBlendOutShape = ScaleCouldIncrease;
             var meshScaleLerp = needToBlendOutShape ? ViewerAltitudeLevelAlpha : 0f;
             Shader.SetGlobalFloat(sp_meshScaleLerp, meshScaleLerp);
+
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                LateUpdatePrimaryLight();
+            }
+#endif
 
             if (!_debug._disableFollowViewpoint && ViewCamera != null)
             {
@@ -1244,8 +1345,25 @@ namespace Crest
                 pos.z += 0.002f;
             }
 
+            Shader.SetGlobalVector(sp_OceanCenterPosWorldDelta, pos - Root.position);
+
             Root.position = pos;
             Shader.SetGlobalVector(sp_oceanCenterPosWorld, Root.position);
+        }
+
+        void LateUpdatePrimaryLight()
+        {
+            if (_primaryLight == null)
+            {
+                return;
+            }
+
+            var lightDirection = -_primaryLight.transform.forward;
+            var lightIntensity = _primaryLight.color * _primaryLight.intensity;
+            // This matches Unity when the sun is below the horizon. It dims near the horizon and becomes zero.
+            lightIntensity *= Mathf.Clamp01(Vector3.Dot(lightDirection, Vector3.up) * 8f);
+            Shader.SetGlobalVector(sp_primaryLightDirection, lightDirection);
+            Shader.SetGlobalVector(sp_primaryLightIntensity, lightIntensity);
         }
 
         void LateUpdateScale()
@@ -1280,6 +1398,7 @@ namespace Crest
                 float ratio = newScale / Scale;
                 float ratio_l2 = Mathf.Log(ratio) / Mathf.Log(2f);
                 Shader.SetGlobalFloat(sp_CrestLodChange, Mathf.RoundToInt(ratio_l2));
+                Shader.SetGlobalFloat(sp_CrestScaleChange, ratio);
             }
 
             Scale = newScale;
@@ -1352,6 +1471,13 @@ namespace Crest
         void LateUpdateTiles()
         {
             var isUnderwaterActive = UnderwaterRenderer.Instance != null && UnderwaterRenderer.Instance.IsActive;
+
+#if CREST_HDRP
+            if (!isUnderwaterActive && RenderPipelineHelper.IsHighDefinition)
+            {
+                isUnderwaterActive = UnderwaterPostProcessHDRP.Instance != null && UnderwaterPostProcessHDRP.Instance.IsActive();
+            }
+#endif
 
             var definitelyUnderwater = false;
             var volumeExtinctionLength = 0f;
@@ -1572,6 +1698,10 @@ namespace Crest
             Camera.onPreRender -= OnPreRenderCamera;
             Camera.onPostRender -= OnPostRenderCamera;
             RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
+
+#if CREST_URP
+            UniversalRegisterRendererRequirements.Disable();
+#endif
 
             if (Container != null)
             {
@@ -1886,6 +2016,49 @@ namespace Crest
                         ValidatedHelper.MessageType.Info, ocean);
                 }
             }
+
+#if CREST_HDRP
+            // Validate rendering layer mask property.
+#if UNITY_2023_1_OR_NEWER
+            if (RenderPipelineHelper.IsHighDefinition && _renderingLayerMask != UnityEngine.Rendering.HighDefinition.RenderingLayerMask.Everything)
+#else
+            if (RenderPipelineHelper.IsHighDefinition && _renderingLayerMask != UnityEngine.Rendering.HighDefinition.LightLayerEnum.Everything)
+#endif
+            {
+                var asset = (HDRenderPipelineAsset)GraphicsSettings.currentRenderPipeline;
+                // Check that light layers are enabled on pipeline asset.
+                if (!asset.currentPlatformRenderPipelineSettings.supportLightLayers)
+                {
+                    showMessage
+                    (
+                        "The rendering layer mask has been set, but light layers have not been enabled on the pipeline asset.",
+                        "Enable light layers on the render pipeline asset.",
+                        ValidatedHelper.MessageType.Warning, ocean
+                    );
+                }
+
+                // Doesn't work in edit mode. The frame settings are not populated.
+                if (Application.isPlaying)
+                {
+                    // Check that light layers are enabled on the camera. Viewpoint might not have a camera so this might be
+                    // skipped. It is also possible another viewpoint has the setting enabled and this will false positive.
+                    var camera = Camera.main;
+                    if (camera != null)
+                    {
+                        var hdCamera = HDCamera.GetOrCreate(camera);
+                        if (!hdCamera.frameSettings.IsEnabled(FrameSettingsField.LightLayers))
+                        {
+                            showMessage
+                            (
+                                "The rendering layer mask has been set, but light layers have not been enabled on the camera.",
+                                "Enable light layers on the camera.",
+                                ValidatedHelper.MessageType.Warning, ocean
+                            );
+                        }
+                    }
+                }
+            }
+#endif
 
             return isValid;
         }

@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2021 Wave Harmonic Ltd
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Crest.Examples")]
 
@@ -34,7 +34,13 @@ namespace Crest.Internal
         public const string HELP_URL_BASE_USER = HELP_URL_BASE + "user/";
         public const string HELP_URL_GENERAL = HELP_URL_BASE + HELP_URL_RP;
 
+#if CREST_HDRP
+        public const string HELP_URL_RP = "?rp=hdrp";
+#elif CREST_URP
+        public const string HELP_URL_RP = "?rp=urp";
+#else
         public const string HELP_URL_RP = "?rp=birp";
+#endif
 
         public const string k_NoPrefabModeSupportWarning = "Crest does not support prefab mode. Changes made in prefab mode will not be reflected in the scene view. Save this prefab to see changes.";
     }

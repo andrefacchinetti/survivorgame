@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2021 Wave Harmonic Ltd
 
 // Adaptor layer for XR module. Could be replaced with the following one day:
 // com.unity.render-pipelines.core/Runtime/Common/XRGraphics.cs

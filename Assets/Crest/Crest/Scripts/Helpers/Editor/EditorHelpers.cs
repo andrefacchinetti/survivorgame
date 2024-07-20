@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2021 Wave Harmonic Ltd
 
 #if UNITY_EDITOR
 
@@ -67,6 +67,15 @@ namespace Crest.EditorHelpers
             }
 
             return null;
+        }
+
+        /// <summary>Get time passed to animated materials.</summary>
+        public static float GetShaderTime()
+        {
+            // When "Always Refresh" is disabled, Unity passes zero. Also uses realtimeSinceStartup:
+            // https://github.com/Unity-Technologies/Graphics/blob/5743e39cdf0795cf7cbeb7ba8ffbbcc7ca200709/Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariablesGlobal.cs#L116
+            return !Application.isPlaying && SceneView.lastActiveSceneView != null &&
+                !SceneView.lastActiveSceneView.sceneViewState.alwaysRefresh ? 0f : Time.realtimeSinceStartup;
         }
 
         public static GameObject GetGameObject(SerializedObject serializedObject)

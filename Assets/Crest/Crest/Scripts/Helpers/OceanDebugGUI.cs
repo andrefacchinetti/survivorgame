@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 #if CREST_UNITY_INPUT && ENABLE_INPUT_SYSTEM
 #define INPUT_SYSTEM_ENABLED
@@ -178,8 +178,6 @@ namespace Crest
                 GUI.color = _guiColor;
                 GUI.DrawTexture(new Rect(0, 0, w + 2f * x, Screen.height), Texture2D.whiteTexture);
                 GUI.color = Color.white;
-
-                RenderWireFrame._wireFrame = GUI.Toggle(new Rect(x, y, w, h), RenderWireFrame._wireFrame, "Wireframe"); y += h;
 
                 GUI.changed = false;
                 bool freeze = GUI.Toggle(new Rect(x, y, w, h), Time.timeScale == 0f, "Freeze time (F)"); y += h;

@@ -1,6 +1,6 @@
-﻿// Crest Ocean System
+// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 // Copies the depth buffer into the cache as object-space height. Object-space is used instead of world-space to allow
 // relative movement of baked depth caches afterwards. It is converted to world-space in another shader before writing
@@ -10,21 +10,20 @@ Shader "Crest/Copy Depth Buffer Into Cache"
 {
 	SubShader
 	{
-		Tags { "RenderType" = "Opaque" }
-
 		Pass
 		{
 			Name "CopyDepthBufferIntoCache"
 			ZTest Always ZWrite Off Blend Off
 
-			CGPROGRAM
+			HLSLPROGRAM
 			// Required to compile gles 2.0 with standard srp library
 			#pragma prefer_hlslcc gles
 			#pragma exclude_renderers d3d11_9x
 			#pragma vertex vert
 			#pragma fragment frag
 
-			#include "UnityCG.cginc"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 
 			#include "../../OceanGlobals.hlsl"
 
@@ -51,10 +50,15 @@ Shader "Crest/Copy Depth Buffer Into Cache"
 
 			Varyings vert(Attributes input)
 			{
-				Varyings output;
-				output.uv = input.uv;
-				output.positionCS = UnityObjectToClipPos(input.positionOS);
-				return output;
+				Varyings o;
+				o.positionCS = float4(input.positionOS.xy-0.5, 0.0, 0.5);
+
+#if UNITY_UV_STARTS_AT_TOP // https://docs.unity3d.com/Manual/SL-PlatformDifferences.html
+				o.positionCS.y = -o.positionCS.y;
+#endif
+				o.uv = input.uv;
+				//output.positionCS = input.positionOS.xyz;
+				return o;
 			}
 
 			float CustomLinear01Depth(float z)
@@ -78,7 +82,7 @@ Shader "Crest/Copy Depth Buffer Into Cache"
 				return float4(altitude - _HeightOffset, 0.0, 0.0, 1.0);
 			}
 
-			ENDCG
+			ENDHLSL
 		}
 	}
 }

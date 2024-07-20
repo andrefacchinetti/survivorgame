@@ -1,6 +1,6 @@
 // Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2022 Wave Harmonic Ltd
 
 Shader "Hidden/Crest/SphereGradientBackground"
 {
@@ -12,7 +12,8 @@ Shader "Hidden/Crest/SphereGradientBackground"
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" "LightMode"="ForwardBase" }
+		// Did not like being Opaque in HDRP.
+		Tags { "Queue"="Transparent-10" }
 		LOD 100
 
 		Pass
@@ -20,18 +21,19 @@ Shader "Hidden/Crest/SphereGradientBackground"
 			Cull Front
 			Blend Off
 
-			CGPROGRAM
+			HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
-			#include "UnityCG.cginc"
-			#include "Lighting.cginc"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 
-			#include "../../../Crest/Shaders/Helpers/BIRP/Core.hlsl"
+			float3 _PrimaryLightDirection;
+			float3 _PrimaryLightIntensity;
 
 			struct Attributes
 			{
-				float4 vertex : POSITION;
+				float3 vertex : POSITION;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -49,8 +51,8 @@ Shader "Hidden/Crest/SphereGradientBackground"
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.positionWS = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1.0));
+				o.vertex = TransformObjectToHClip(v.vertex);
+				o.positionWS = TransformObjectToWorld(v.vertex);
 				return o;
 			}
 
@@ -63,13 +65,16 @@ Shader "Hidden/Crest/SphereGradientBackground"
 				float3 worldPosition = i.positionWS;
 				float3 viewDirection = normalize(i.positionWS - _WorldSpaceCameraPos);
 
-				float alpha = saturate(0.5 * dot(viewDirection, _WorldSpaceLightPos0.xyz) + 0.5);
+				const real3 lightDir = _PrimaryLightDirection;
+				const real3 lightCol = _PrimaryLightIntensity * GetCurrentExposureMultiplier();
+
+				float alpha = saturate(0.5 * dot(viewDirection, lightDir) + 0.5);
 				alpha = pow(alpha, _Exponent);
 
 				float3 col = lerp(_ColorAwayFromSun, _ColorTowardsSun, alpha);
-				return float4(col * saturate(max(_LightColor0.r, max(_LightColor0.g, _LightColor0.b))), 1.0);
+				return float4(col * saturate(max(lightCol.r, max(lightCol.g, lightCol.b))), 1.0);
 			}
-			ENDCG
+			ENDHLSL
 		}
 	}
 }

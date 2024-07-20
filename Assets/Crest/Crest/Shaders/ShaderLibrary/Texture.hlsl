@@ -1,6 +1,6 @@
 // Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2022 Wave Harmonic Ltd
 
 // The const keyword for PSSL solves the following:
 // > Shader error in '<Shader>': Program '<Program>', member function '<FunctionName>' not viable: 'this' argument has
@@ -78,6 +78,12 @@ namespace WaveHarmonic
 			{
 				// Safely assumes a square texture.
 				return _CrestFloatingOriginOffset.xz % (_scale * _size * i_cascadeData._texelWidth);
+			}
+
+			float2 FloatingOriginOffset(const float4 i_oceanParams)
+			{
+				// Safely assumes a square texture.
+				return _CrestFloatingOriginOffset.xz % (_scale * _size * i_oceanParams.x);
 			}
 #endif // CREST_FLOATING_ORIGIN
 		};

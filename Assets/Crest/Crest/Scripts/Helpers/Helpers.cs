@@ -1,13 +1,20 @@
 // Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2021 Wave Harmonic Ltd
 
 namespace Crest
 {
+    using System.Collections.Generic;
     using System.Reflection;
     using UnityEngine;
     using UnityEngine.Experimental.Rendering;
     using UnityEngine.Rendering;
+#if CREST_URP
+    using UnityEngine.Rendering.Universal;
+#endif
+#if CREST_HDRP
+    using UnityEngine.Rendering.HighDefinition;
+#endif
 
 #if !UNITY_2023_2_OR_NEWER
     using GraphicsFormatUsage = UnityEngine.Experimental.Rendering.FormatUsage;
@@ -105,18 +112,60 @@ namespace Crest
 
         public static bool IsMSAAEnabled(Camera camera)
         {
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                var hdCamera = HDCamera.GetOrCreate(camera);
+                // Scene view camera does appear to support MSAA unlike other RPs.
+                // Querying frame settings on the camera will give the correct results - overriden or not.
+#if UNITY_2021_2_OR_NEWER
+                return hdCamera.msaaSamples != MSAASamples.None;
+#else
+                return hdCamera.msaaSamples != MSAASamples.None && hdCamera.frameSettings.IsEnabled(FrameSettingsField.MSAA);
+#endif
+            }
+#endif
+
             var isMSAA = camera.allowMSAA;
+#if CREST_URP
+            if (RenderPipelineHelper.IsUniversal)
+            {
+                // MSAA will be the same for every camera if XR rendering.
+                isMSAA = isMSAA || XRHelpers.IsRunning;
+            }
+#endif
+
 #if UNITY_EDITOR
             // Game View Preview ignores allowMSAA.
             isMSAA = isMSAA || IsPreviewOfGameCamera(camera);
             // Scene view doesn't support MSAA.
             isMSAA = isMSAA && camera.cameraType != CameraType.SceneView;
 #endif
-            return isMSAA && QualitySettings.antiAliasing > 1;
+
+#if CREST_URP
+            if (RenderPipelineHelper.IsUniversal)
+            {
+                // Keep this check last so it overrides everything else.
+                isMSAA = isMSAA && camera.GetUniversalAdditionalCameraData().scriptableRenderer.supportedRenderingFeatures.msaa;
+            }
+#endif
+
+            // QualitySettings.antiAliasing can be zero.
+            return (isMSAA ? QualitySettings.antiAliasing : 1) > 1;
         }
 
         public static bool IsMotionVectorsEnabled()
         {
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                // Only check the RP asset for now. This can happen at run-time, but a developer should not change the
+                // quality setting when performance matters like gameplay.
+                return (GraphicsSettings.currentRenderPipeline as HDRenderPipelineAsset)
+                    .currentPlatformRenderPipelineSettings.supportMotionVectors;
+            }
+#endif // CREST_HDRP
+
             // Default to false until we support MVs.
             return false;
         }
@@ -334,12 +383,12 @@ namespace Crest
 
         public static void SetRenderTarget(CommandBuffer buffer, RenderTargetIdentifier target)
         {
-            buffer.SetRenderTarget(target);
+            CoreUtils.SetRenderTarget(buffer, target);
         }
 
         public static void SetRenderTarget(CommandBuffer buffer, RenderTargetIdentifier color, RenderTargetIdentifier depth)
         {
-            buffer.SetRenderTarget(color, depth);
+            CoreUtils.SetRenderTarget(buffer, color, depth);
         }
 
         /// <summary>
@@ -403,6 +452,71 @@ namespace Crest
                 material.SetInt(nameID, value);
             }
         }
+
+#if CREST_URP
+        readonly static List<bool> s_RenderFeatureActiveStates = new List<bool>();
+        readonly static FieldInfo s_RenderDataListField = typeof(UniversalRenderPipelineAsset)
+                        .GetField("m_RendererDataList", BindingFlags.NonPublic | BindingFlags.Instance);
+        readonly static FieldInfo s_DefaultRendererIndex = typeof(UniversalRenderPipelineAsset)
+                        .GetField("m_DefaultRendererIndex", BindingFlags.NonPublic | BindingFlags.Instance);
+        readonly static FieldInfo s_RendererIndex = typeof(UniversalAdditionalCameraData)
+                        .GetField("m_RendererIndex", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        internal static ScriptableRendererData[] UniversalRendererData(UniversalRenderPipelineAsset asset) =>
+            (ScriptableRendererData[])s_RenderDataListField.GetValue(asset);
+
+        internal static int GetRendererIndex(Camera camera)
+        {
+            var rendererIndex = (int)s_RendererIndex.GetValue(camera.GetUniversalAdditionalCameraData());
+
+            if (rendererIndex < 0)
+            {
+                rendererIndex = (int)s_DefaultRendererIndex.GetValue(UniversalRenderPipeline.asset);
+            }
+
+            return rendererIndex;
+        }
+
+        internal static bool IsSSAOEnabled(Camera camera)
+        {
+            // Get this every time as it could change.
+            var renderers = (ScriptableRendererData[])s_RenderDataListField.GetValue(UniversalRenderPipeline.asset);
+            var rendererIndex = GetRendererIndex(camera);
+
+            foreach (var feature in renderers[rendererIndex].rendererFeatures)
+            {
+                if (feature.GetType().Name == "ScreenSpaceAmbientOcclusion")
+                {
+                    return feature.isActive;
+                }
+            }
+
+            return false;
+        }
+
+        internal static void RenderCameraWithoutCustomPasses(Camera camera)
+        {
+            // Get this every time as it could change.
+            var renderers = (ScriptableRendererData[])s_RenderDataListField.GetValue(UniversalRenderPipeline.asset);
+            var rendererIndex = GetRendererIndex(camera);
+
+            foreach (var feature in renderers[rendererIndex].rendererFeatures)
+            {
+                s_RenderFeatureActiveStates.Add(feature.isActive);
+                feature.SetActive(false);
+            }
+
+            camera.Render();
+
+            var index = 0;
+            foreach (var feature in renderers[rendererIndex].rendererFeatures)
+            {
+                feature.SetActive(s_RenderFeatureActiveStates[index++]);
+            }
+
+            s_RenderFeatureActiveStates.Clear();
+        }
+#endif
     }
 
     namespace Internal

@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 //#define PROFILE_CONSTRUCTION
 
@@ -334,7 +334,20 @@ namespace Crest
 
                 mesh.SetIndices(null, MeshTopology.Triangles, 0);
                 mesh.vertices = arrV;
+
+                // HDRP needs full data. Do this on a define to keep door open to runtime changing of RP.
+#if CREST_HDRP
+                var norms = new Vector3[verts.Count];
+                for (int i = 0; i < norms.Length; i++) norms[i] = Vector3.up;
+                var tans = new Vector4[verts.Count];
+                for (int i = 0; i < tans.Length; i++) tans[i] = new Vector4(1, 0, 0, 1);
+
+                mesh.normals = norms;
+                mesh.tangents = tans;
+#else
                 mesh.normals = null;
+#endif
+
                 mesh.SetIndices(arrI, MeshTopology.Triangles, 0);
 
                 // recalculate bounds. add a little allowance for snapping. in the chunk renderer script, the bounds will be expanded further
@@ -476,17 +489,38 @@ namespace Crest
                     mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
 
-                // Sorting order to stop unity drawing it back to front. make the innermost 4 tiles draw first, followed by
-                // the rest of the tiles by LOD index. all this happens before layer 0 - the sorting layer takes priority over the
-                // render queue it seems! ( https://cdry.wordpress.com/2017/04/28/unity-render-queues-vs-sorting-layers/ ). This pushes
-                // ocean rendering way early, so transparent objects will by default render afterwards, which is typical for water rendering.
-                mr.sortingOrder = -lodCount + (patchTypes[i] == PatchType.Interior ? -1 : lodIndex);
+                // Sorting order to stop unity drawing it back to front. Make the innermost four tiles draw first,
+                // followed by the rest of the tiles by LOD index.
+                if (RenderPipelineHelper.IsHighDefinition)
+                {
+                    // HDRP has a different rendering priority system:
+                    // https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.10/manual/Renderer-And-Material-Priority.html#sorting-by-renderer
+                    mr.rendererPriority = -lodCount + (patchTypes[i] == PatchType.Interior ? -1 : lodIndex);
+                }
+                else
+                {
+                    // Sorting order to stop unity drawing it back to front. make the innermost 4 tiles draw first, followed by
+                    // the rest of the tiles by LOD index. all this happens before layer 0 - the sorting layer takes priority over the
+                    // render queue it seems! ( https://cdry.wordpress.com/2017/04/28/unity-render-queues-vs-sorting-layers/ ). This pushes
+                    // ocean rendering way early, so transparent objects will by default render afterwards, which is typical for water rendering.
+                    mr.sortingOrder = -lodCount + (patchTypes[i] == PatchType.Interior ? -1 : lodIndex);
+                }
 
                 // This setting is ignored by Unity for the transparent ocean shader.
                 mr.receiveShadows = false;
-                // Currently not supported in built-in renderer ocean shader.
-                mr.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+                // I'm not really convinced that only HDRP should get MVs, but its the one thats had the most testing,
+                // so keeping it this way for now. I'm guessing we'll enable on URP and maybe BIRP in the future.
+                if (RenderPipelineHelper.IsHighDefinition)
+                {
+                    mr.motionVectorGenerationMode = MotionVectorGenerationMode.Object;
+                }
+                else
+                {
+                    // Currently not supported in built-in renderer ocean shader.
+                    mr.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+                }
                 mr.material = ocean.OceanMaterial;
+                mr.renderingLayerMask = OceanRenderer.Instance.RenderingLayerMask;
 
                 // rotate side patches to point the +x side outwards
                 bool rotateXOutwards = patchTypes[i] == PatchType.FatX || patchTypes[i] == PatchType.FatXOuter || patchTypes[i] == PatchType.SlimX || patchTypes[i] == PatchType.SlimXFatZ;

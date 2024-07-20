@@ -1,10 +1,14 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Rendering.Universal;
 using UnityEditor;
+using UnityEngine.Rendering;
 
 namespace Crest
 {
@@ -102,6 +106,17 @@ namespace Crest
             public static readonly int s_CustomZBufferParams = Shader.PropertyToID("_CustomZBufferParams");
             public static readonly int s_HeightNearHeightFar = Shader.PropertyToID("_HeightNearHeightFar");
         }
+
+#if CREST_HDRP
+        static readonly List<FrameSettingsField> s_FrameSettingsFields = new List<FrameSettingsField>()
+        {
+            FrameSettingsField.OpaqueObjects,
+            FrameSettingsField.TransparentObjects,
+            FrameSettingsField.TransparentPrepass,
+            FrameSettingsField.TransparentPostpass,
+            FrameSettingsField.AsyncCompute,
+        };
+#endif
 
         void Reset()
         {
@@ -218,6 +233,45 @@ namespace Crest
                 _camDepthCache.cameraType = CameraType.Reflection;
                 // I'd prefer to destroy the camera object, but I found sometimes (on first start of editor) it will fail to render.
                 _camDepthCache.gameObject.SetActive(false);
+
+                if (RenderPipelineHelper.IsUniversal)
+                {
+#if CREST_URP
+                    var additionalCameraData = _camDepthCache.GetUniversalAdditionalCameraData();
+                    additionalCameraData.renderShadows = false;
+                    additionalCameraData.requiresColorTexture = false;
+                    additionalCameraData.requiresDepthTexture = false;
+                    additionalCameraData.renderPostProcessing = false;
+                    additionalCameraData.allowXRRendering = false;
+#endif
+                }
+                else if (RenderPipelineHelper.IsHighDefinition)
+                {
+#if CREST_HDRP
+                    var additionalCameraData = _camDepthCache.gameObject.AddComponent<HDAdditionalCameraData>();
+
+                    additionalCameraData.clearColorMode = HDAdditionalCameraData.ClearColorMode.Color;
+                    additionalCameraData.volumeLayerMask = 0;
+                    additionalCameraData.probeLayerMask = 0;
+                    additionalCameraData.xrRendering = false;
+
+                    // Override camera frame settings to disable most of the expensive rendering for this camera.
+                    // Most importantly, disable custom passes and post-processing as third-party stuff might throw
+                    // errors because of this camera. Even with excluding a lot of HDRP features, it still does a
+                    // lit pass which is not cheap.
+                    additionalCameraData.customRenderingSettings = true;
+
+                    foreach (FrameSettingsField frameSetting in Enum.GetValues(typeof(FrameSettingsField)))
+                    {
+                        if (!s_FrameSettingsFields.Contains(frameSetting))
+                        {
+                            // Enable override and then disable the feature.
+                            additionalCameraData.renderingPathCustomFrameSettingsOverrideMask.mask[(uint)frameSetting] = true;
+                            additionalCameraData.renderingPathCustomFrameSettings.SetEnabled(frameSetting, false);
+                        }
+                    }
+#endif
+                }
             }
 
             if (updateComponents || isDepthCacheCameraCreation)
@@ -317,7 +371,7 @@ namespace Crest
 
             var oldShadowDistance = 0f;
 
-            // Built-in only.
+            if (RenderPipelineHelper.IsLegacy)
             {
                 // Stop shadow passes from executing.
                 oldShadowDistance = QualitySettings.shadowDistance;
@@ -332,14 +386,23 @@ namespace Crest
 #endif
 
             // Render scene, saving depths in depth buffer.
-            _camDepthCache.Render();
+#if CREST_URP
+            if (RenderPipelineHelper.IsUniversal)
+            {
+                Helpers.RenderCameraWithoutCustomPasses(_camDepthCache);
+            }
+            else
+#endif
+            {
+                _camDepthCache.Render();
+            }
 
 #if UNITY_2022_2_OR_NEWER
             QualitySettings.terrainQualityOverrides = oldTerrainOverrides;
             QualitySettings.terrainPixelError = oldPixelError;
 #endif
 
-            // Built-in only.
+            if (RenderPipelineHelper.IsLegacy)
             {
                 QualitySettings.shadowDistance = oldShadowDistance;
             }
@@ -756,6 +819,62 @@ namespace Crest
 
                 isValid = false;
             }
+
+#if CREST_URP
+#if !UNITY_2023_3_OR_NEWER
+#if UNITY_2021_3_OR_NEWER
+            var isBroken = RenderPipelineHelper.IsUniversal;
+
+#if UNITY_2022_3_OR_NEWER
+            isBroken = int.Parse(Application.unityVersion.Substring(7, 2)) < 23;
+#endif
+            if (isBroken)
+            {
+
+                // Asset based validation.
+                foreach (var asset in GraphicsSettings.allConfiguredRenderPipelines)
+                {
+                    if (asset is UniversalRenderPipelineAsset urpAsset)
+                    {
+                        var urpRenderers = Helpers.UniversalRendererData(urpAsset);
+
+                        foreach (var renderer in urpRenderers)
+                        {
+                            var urpRenderer = (UniversalRendererData)renderer;
+
+                            if (urpRenderer.depthPrimingMode != DepthPrimingMode.Disabled)
+                            {
+                                showMessage
+                                (
+                                    $"<i>{nameof(DepthPrimingMode)}</i> is not set to <i>{nameof(DepthPrimingMode.Disabled)}</i>. " +
+                                    $"This can cause the <i>{nameof(OceanDepthCache)}</i> not to work. " +
+                                    $"Unity fixed this in 2022.3.23f1.",
+                                    $"If you are experiencing problems, disable depth priming or upgrade Unity.",
+                                    ValidatedHelper.MessageType.Info, urpRenderer
+                                );
+                            }
+
+                            foreach (var feature in renderer.rendererFeatures)
+                            {
+                                if (feature.GetType().Name == "ScreenSpaceAmbientOcclusion" && feature.isActive)
+                                {
+                                    showMessage
+                                    (
+                                        $"<i>ScreenSpaceAmbientOcclusion</i> is is active. " +
+                                        $"This can cause the <i>{nameof(OceanDepthCache)}</i> not to work. " +
+                                        $"Unity fixed this in 2022.3.23f1.",
+                                        $"If you are experiencing problems, disable SSAO or upgrade Unity.",
+                                        ValidatedHelper.MessageType.Info, urpRenderer
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+#endif
+#endif
+#endif
 
             return isValid;
         }

@@ -1,8 +1,9 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEditor;
 
 namespace Crest
@@ -26,6 +27,14 @@ namespace Crest
 
         [Tooltip("How much this effect applies. Values less than 1 attenuate light less underwater. Value of 1 is physically based."), SerializeField, Range(0f, 3f)]
         float _weight = 1f;
+
+#if CREST_SRP
+        [RenderPipeline(RenderPipeline.HighDefinition), DecoratedField]
+        [Tooltip("This profile will be weighed in the deeper underwater the camera goes."), SerializeField]
+        VolumeProfile _volumeProfile = null;
+
+        static Volume _volume;
+#endif
 
         Light _primaryLight;
         float _lightIntensity;
@@ -64,6 +73,21 @@ namespace Crest
             _ambientIntensity = RenderSettings.ambientIntensity;
             _reflectionIntensity = RenderSettings.reflectionIntensity;
             _fogDensity = RenderSettings.fogDensity;
+#if CREST_SRP
+            // Only on HDRP so far...
+            if (_volume == null && RenderPipelineHelper.IsHighDefinition)
+            {
+                // Create volume to weigh in underwater profile
+                var go = new GameObject();
+                go.transform.parent = OceanRenderer.Instance.Container.transform;
+                go.hideFlags = HideFlags.HideAndDontSave;
+                go.name = "Underwater Lighting Volume";
+                _volume = go.AddComponent<Volume>();
+                _volume.weight = 0;
+                _volume.priority = 1000;
+                _volume.profile = _volumeProfile;
+            }
+#endif
 
             var density = OceanRenderer.Instance.UnderwaterDepthFogDensity;
             _averageDensity = (density.x + density.y + density.z) / 3f;
@@ -86,6 +110,13 @@ namespace Crest
             RenderSettings.ambientIntensity = _ambientIntensity;
             RenderSettings.reflectionIntensity = _reflectionIntensity;
             RenderSettings.fogDensity = _fogDensity;
+
+#if CREST_SRP
+            if (_volume != null)
+            {
+                _volume.weight = 0;
+            }
+#endif
 
             _isInitialised = false;
         }
@@ -112,6 +143,13 @@ namespace Crest
             RenderSettings.ambientIntensity = Mathf.Lerp(0, _ambientIntensity, depthMultiplier);
             RenderSettings.reflectionIntensity = Mathf.Lerp(0, _reflectionIntensity, depthMultiplier);
             RenderSettings.fogDensity = Mathf.Lerp(0, _fogDensity, depthMultiplier);
+
+#if CREST_SRP
+            if (_volume != null)
+            {
+                _volume.weight = 1f - depthMultiplier;
+            }
+#endif
         }
     }
 

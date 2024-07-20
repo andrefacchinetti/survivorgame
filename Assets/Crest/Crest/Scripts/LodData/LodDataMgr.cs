@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 using System;
 using UnityEngine;
@@ -81,7 +81,7 @@ namespace Crest
         public const int THREAD_GROUP_SIZE_Y = 8;
 
         // NOTE: This is a temporary solution to keywords having prefixes downstream.
-        internal static readonly string MATERIAL_KEYWORD_PREFIX = "";
+        internal static readonly string MATERIAL_KEYWORD_PREFIX = RenderPipelineHelper.IsHighDefinition ? "CREST" : "";
 
         static readonly GraphicsFormatUsage s_GraphicsFormatUsage =
             // Ensures a non compressed format is returned.

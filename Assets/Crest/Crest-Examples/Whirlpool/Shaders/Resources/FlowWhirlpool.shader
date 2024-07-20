@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 Shader "Crest/Inputs/Flow/Whirlpool"
 {
@@ -17,6 +17,11 @@ Shader "Crest/Inputs/Flow/Whirlpool"
 
 			#include "UnityCG.cginc"
 
+			CBUFFER_START(UnityPerObject)
+			float _EyeRadiusProportion;
+			float _MaxSpeed;
+			CBUFFER_END
+
 			struct Attributes
 			{
 				float3 positionOS : POSITION;
@@ -28,9 +33,6 @@ Shader "Crest/Inputs/Flow/Whirlpool"
 				float4 positionCS : SV_POSITION;
 				float2 uv : TEXCOORD1;
 			};
-
-			float _EyeRadiusProportion;
-			float _MaxSpeed;
 
 			Varyings Vert(Attributes input)
 			{

@@ -1,10 +1,15 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
+
+// BIRP fallback not really tested yet - shaders need fixing up.
 
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
+#if CREST_URP
+using UnityEngine.Rendering.Universal;
+#endif
 
 namespace Crest
 {
@@ -73,7 +78,16 @@ namespace Crest
 
             {
                 _renderMaterial = new PropertyWrapperMaterial[OceanRenderer.Instance.CurrentLodCount];
+
                 var shaderPath = "Hidden/Crest/Simulation/Update Shadow";
+                if (RenderPipelineHelper.IsHighDefinition)
+                {
+                    shaderPath += " HDRP";
+                }
+                else if (RenderPipelineHelper.IsUniversal)
+                {
+                    shaderPath += " URP";
+                }
 
                 var shader = Shader.Find(shaderPath);
                 for (int i = 0; i < _renderMaterial.Length; i++)
@@ -95,17 +109,56 @@ namespace Crest
             // Define here so we can override check per pipeline downstream.
             var isShadowsDisabled = false;
 
+            if (RenderPipelineHelper.IsLegacy)
             {
-                if (QualitySettings.shadows == ShadowQuality.Disable)
+                if (QualitySettings.shadows == UnityEngine.ShadowQuality.Disable)
                 {
                     isShadowsDisabled = true;
                 }
+            }
+            else if (RenderPipelineHelper.IsUniversal)
+            {
+#if CREST_URP
+                var asset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+
+                // TODO: Support single casacades as it is possible.
+                if (asset && asset.shadowCascadeCount < 2)
+                {
+                    Debug.LogError("Crest shadowing requires shadow cascades to be enabled on the pipeline asset. "
+                        + $"See documentation here: {Internal.Constants.HELP_URL_BASE_USER}ocean-simulation.html#shadows", asset);
+                    enabled = false;
+                    return;
+                }
+
+                if (asset.mainLightRenderingMode == LightRenderingMode.Disabled)
+                {
+                    Debug.LogError("Crest: Main Light must be enabled to enable ocean shadowing.", OceanRenderer.Instance);
+                    enabled = false;
+                    return;
+                }
+
+                isShadowsDisabled = !asset.supportsMainLightShadows;
+#endif
             }
 
             if (isShadowsDisabled)
             {
                 Debug.LogError("Crest: Shadows must be enabled in the quality settings to enable ocean shadowing.", OceanRenderer.Instance);
                 return;
+            }
+
+            // Enable sample shadows custom pass.
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+#if CREST_HDRP
+                SampleShadowsHDRP.Enable();
+#endif
+            }
+            else if (RenderPipelineHelper.IsUniversal)
+            {
+#if CREST_URP
+                SampleShadowsURP.Enable();
+#endif
             }
         }
 
@@ -120,6 +173,7 @@ namespace Crest
         {
             base.Enable();
 
+            if (RenderPipelineHelper.IsLegacy)
             {
                 Camera.onPreCull -= OnPreCullCamera;
                 Camera.onPreCull += OnPreCullCamera;
@@ -128,6 +182,19 @@ namespace Crest
             }
 
             CleanUpShadowCommandBuffers();
+
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+#if CREST_HDRP
+                SampleShadowsHDRP.Enable();
+#endif
+            }
+            else if (RenderPipelineHelper.IsUniversal)
+            {
+#if CREST_URP
+                SampleShadowsURP.Enable();
+#endif
+            }
         }
 
         internal override void Disable()
@@ -136,6 +203,7 @@ namespace Crest
 
             CleanUpShadowCommandBuffers();
 
+            if (RenderPipelineHelper.IsLegacy)
             {
                 Camera.onPreCull -= OnPreCullCamera;
                 Camera.onPostRender -= OnPostRenderCamera;
@@ -147,6 +215,19 @@ namespace Crest
             base.OnDisable();
 
             Disable();
+
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+#if CREST_HDRP
+                SampleShadowsHDRP.Disable();
+#endif
+            }
+            else if (RenderPipelineHelper.IsUniversal)
+            {
+#if CREST_URP
+                SampleShadowsURP.Disable();
+#endif
+            }
 
             for (var index = 0; index < _renderMaterial.Length; index++)
             {
@@ -360,6 +441,7 @@ namespace Crest
             BufCopyShadowMap = new CommandBuffer();
             BufCopyShadowMap.name = "Crest Shadow Data";
 
+            if (RenderPipelineHelper.IsLegacy)
             {
                 // Call this regardless of rendering path as it has no negative consequences for forward.
                 SetUpDeferredShadows();
@@ -369,10 +451,14 @@ namespace Crest
 
         void CleanUpShadowCommandBuffers()
         {
+            if (!RenderPipelineHelper.IsLegacy)
+            {
+                return;
+            }
+
             if (BufCopyShadowMap != null)
             {
                 BufCopyShadowMap.Release();
-                BufCopyShadowMap = null;
             }
 
             CleanUpDeferredShadows();

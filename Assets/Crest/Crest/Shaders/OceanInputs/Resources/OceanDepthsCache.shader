@@ -1,6 +1,17 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
+
+// Draw cached depths into current frame ocean depth data.
+
+// This is CG because its a PITA to render from my own camera transform in HDRP because:
+// - Theres a whole bunch of per-view uniforms which have to be manually managed. buf.SetViewProjectionMatrices does NOT set them.
+// - The shader param IDs are now internal to HDRP so they have to be redefined
+// - I tried setting the values myself by copying some of the code out of UpdateViewConstants(). It almost worked, but fails due
+//   to RWS in some way
+// - I think the next step would be to look at how model matrices are set for each renderer which is probably in the HDRP layer? (for now?)
+
+// Or simply retreat back to CG where SetViewProjectionMatrices() handles everything automatically.
 
 // Draw cached world-space heights into current frame data. If heights are coming from an ODC, then they are in
 // object-space and are converted to world-space as the LOD data stores world-space height.

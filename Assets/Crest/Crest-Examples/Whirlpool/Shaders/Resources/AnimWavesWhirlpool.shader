@@ -1,6 +1,6 @@
 // Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 Shader "Crest/Inputs/Animated Waves/Whirlpool"
 {
@@ -17,9 +17,11 @@ Shader "Crest/Inputs/Animated Waves/Whirlpool"
 
 			#include "UnityCG.cginc"
 
+			CBUFFER_START(UnityPerObject)
 			float _Radius;
 			float _Amplitude;
 			float _Weight;
+			CBUFFER_END
 
 			struct Attributes
 			{

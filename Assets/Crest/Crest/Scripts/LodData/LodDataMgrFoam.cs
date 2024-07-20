@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -21,7 +21,7 @@ namespace Crest
         static Texture2DArray s_nullTexture => TextureArrayHelpers.BlackTextureArray;
         protected override Texture2DArray NullTexture => s_nullTexture;
 
-        internal static readonly string MATERIAL_KEYWORD_PROPERTY = "_Foam";
+        internal static readonly string MATERIAL_KEYWORD_PROPERTY = RenderPipelineHelper.IsHighDefinition ? "CREST_FOAM" : "_Foam";
         internal static readonly string MATERIAL_KEYWORD = MATERIAL_KEYWORD_PREFIX + "_FOAM_ON";
         internal const string ERROR_MATERIAL_KEYWORD_MISSING = "Foam is not enabled on the ocean material and will not be visible.";
         internal const string ERROR_MATERIAL_KEYWORD_MISSING_FIX = "Tick the <i>Enable</i> option in the <i>Foam</i> parameter section on the material currently assigned to the <i>OceanRenderer</i> component.";

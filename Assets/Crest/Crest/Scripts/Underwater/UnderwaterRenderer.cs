@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2021 Wave Harmonic Ltd
 
 namespace Crest
 {
@@ -81,10 +81,16 @@ namespace Crest
                     return Instance._depthFogDensityFactor;
                 }
 
+#if CREST_HDRP
+                if (RenderPipelineHelper.IsHighDefinition && UnderwaterPostProcessHDRP.Instance != null)
+                {
+                    return UnderwaterPostProcessHDRP.Instance.DepthFogDensityFactor;
+                }
+#endif
+
                 return 1f;
             }
         }
-
 
         [Header("Geometry")]
 
@@ -97,12 +103,18 @@ namespace Crest
         public bool _invertCulling = false;
 
 
-        [Header("Advanced")]
+        [Header("Shader API")]
 
         [SerializeField]
         [Tooltip("Renders the underwater effect before the transparent pass (instead of after). So one can apply the underwater fog themselves to transparent objects. Cannot be changed at runtime.")]
         public bool _enableShaderAPI = false;
         public bool EnableShaderAPI { get => _enableShaderAPI; set => _enableShaderAPI = value; }
+
+        [SerializeField, Predicated("_enableShaderAPI"), RenderPipeline(RenderPipeline.Legacy, inverted: true), DecoratedField]
+        internal LayerMask _transparentObjectLayers;
+
+
+        [Header("Advanced")]
 
         [SerializeField]
         [Tooltip("Copying params each frame ensures underwater appearance stays consistent with ocean material params. Has a small overhead so should be disabled if not needed.")]
@@ -149,6 +161,11 @@ namespace Crest
         internal static Camera s_PrimaryCamera;
         static int s_InstancesCount;
 
+#if CREST_URP
+        internal UnderwaterMaskPassURP _urpMaskPass;
+        internal UnderwaterEffectPassURP _urpEffectPass;
+#endif
+
         public static bool IsCullable =>
             Instance != null && s_InstancesCount == 1 && Instance._mode == Mode.FullScreen;
         public static bool SkipSurfaceSelfIntersectionFixMode =>
@@ -194,6 +211,11 @@ namespace Crest
 
         void OnEnable()
         {
+            if (OceanRenderer.Instance == null)
+            {
+                return;
+            }
+
             if (_camera == null)
             {
                 _camera = GetComponent<Camera>();
@@ -212,12 +234,54 @@ namespace Crest
             UpdateInstance();
             s_InstancesCount++;
 
-            Enable();
+            if (RenderPipelineHelper.IsUniversal)
+            {
+#if CREST_URP
+                if (_urpMaskPass == null) _urpMaskPass = new UnderwaterMaskPassURP();
+                _urpMaskPass.Enable(this);
+                if (_urpEffectPass == null) _urpEffectPass = new UnderwaterEffectPassURP();
+                _urpEffectPass.Enable(this);
+#endif
+            }
+            else if (RenderPipelineHelper.IsHighDefinition)
+            {
+#if CREST_HDRP
+                UnderwaterMaskPassHDRP.Enable();
+                UnderwaterMaskPassHDRP.SetUp(this);
+                UnderwaterEffectPassHDRP.Enable();
+#endif
+            }
+            else
+            {
+                Enable();
+            }
         }
 
         void OnDisable()
         {
-            Disable();
+            if (RenderPipelineHelper.IsUniversal)
+            {
+#if CREST_URP
+                _urpMaskPass.Disable();
+                _urpEffectPass.Disable();
+#endif
+            }
+            else if (RenderPipelineHelper.IsHighDefinition)
+            {
+#if CREST_HDRP
+                UnderwaterMaskPassHDRP.CleanUp(this);
+
+                if (s_InstancesCount < 2)
+                {
+                    UnderwaterMaskPassHDRP.Disable();
+                    UnderwaterEffectPassHDRP.Disable();
+                }
+#endif
+            }
+            else
+            {
+                Disable();
+            }
 
             if (Instance == this)
             {
@@ -226,6 +290,17 @@ namespace Crest
             }
 
             s_InstancesCount--;
+        }
+
+        void OnDestroy()
+        {
+            if (RenderPipelineHelper.IsUniversal)
+            {
+#if CREST_URP
+                _urpEffectPass?.CleanUp();
+                _urpMaskPass?.CleanUp();
+#endif
+            }
         }
 
         void Enable()
@@ -255,6 +330,35 @@ namespace Crest
 
         void LateUpdate()
         {
+            // HDRP components live under the OR container so we need the ability to initialize
+            // after it has been created at any time otherwise the UR will stop working.
+            if (OceanRenderer.Instance == null)
+            {
+                return;
+            }
+
+            if (Instance == null)
+            {
+                enabled = false;
+                enabled = true;
+                return;
+            }
+
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition)
+            {
+                if (UnderwaterMaskPassHDRP.s_GameObject == null)
+                {
+                    UnderwaterMaskPassHDRP.Enable();
+                }
+
+                if (UnderwaterEffectPassHDRP.s_GameObject == null)
+                {
+                    UnderwaterEffectPassHDRP.Enable();
+                }
+            }
+#endif
+
             UpdateInstance();
 
             if (Instance != this)
@@ -262,6 +366,11 @@ namespace Crest
                 _sampleHeightHelper.Init(_camera.transform.position, 0f, true);
                 _sampleHeightHelper.Sample(out var waterHeight);
                 _heightAboveWater = _camera.transform.position.y - waterHeight;
+            }
+
+            if (!RenderPipelineHelper.IsLegacy)
+            {
+                return;
             }
 
             if (_enableShaderAPI != _currentEnableShaderAPI && _underwaterEffectCommandBuffer != null)
@@ -445,8 +554,11 @@ namespace Crest
                 return;
             }
 
-            Camera.onPreRender -= OnBeforeRender;
-            Camera.onPreRender += OnBeforeRender;
+            if (RenderPipelineHelper.IsLegacy)
+            {
+                Camera.onPreRender -= OnBeforeRender;
+                Camera.onPreRender += OnBeforeRender;
+            }
         }
 
         void DisableEditMode()
@@ -552,6 +664,19 @@ namespace Crest
         {
             var isValid = true;
 
+#if CREST_HDRP
+            if (RenderPipelineHelper.IsHighDefinition && XRHelpers.IsRunning && _camera.usePhysicalProperties)
+            {
+                showMessage
+                (
+                    "Underwater Renderer is currently not compatible with physical cameras in XR for HDRP. " +
+                    "It could be a Unity bug which Unity is looking into.",
+                    "Disable <i>Link FOV to Physical Camera</i> on the <i>Camera</i> component.",
+                    ValidatedHelper.MessageType.Error, _camera
+                );
+            }
+#endif
+
             if (_mode != Mode.FullScreen && _volumeGeometry == null)
             {
                 showMessage
@@ -572,7 +697,7 @@ namespace Crest
             {
                 var material = ocean.OceanMaterial;
 
-                if (!material.IsKeywordEnabled("_UNDERWATER_ON"))
+                if (!RenderPipelineHelper.IsHighDefinition && !material.IsKeywordEnabled("_UNDERWATER_ON"))
                 {
                     showMessage
                     (
@@ -592,9 +717,55 @@ namespace Crest
                         "The underside of the ocean surface will not be rendered.",
                         $"Set <i>Cull Mode</i> to <i>Off</i> (or <i>Front</i>) on <i>{material.name}</i>.",
                         ValidatedHelper.MessageType.Warning, material,
-                        (material) => ValidatedHelper.FixSetMaterialIntProperty(material, "Cull Mode", "_CullMode", (int)CullMode.Off)
+                        (material) =>
+                        {
+                            ValidatedHelper.FixSetMaterialIntProperty(material, "Cull Mode", "_CullMode", (int)CullMode.Off);
+                            if (RenderPipelineHelper.IsHighDefinition)
+                            {
+                                // HDRP material will not update without viewing it...
+                                Selection.activeObject = material.targetObject;
+                            }
+                        }
                     );
                 }
+
+#if CREST_HDRP
+                if (RenderPipelineHelper.IsHighDefinition)
+                {
+                    if (material.GetFloat("_CullMode") == (int)CullMode.Off && !material.IsKeywordEnabled("_DOUBLESIDED_ON"))
+                    {
+                        showMessage
+                        (
+                            $"<i>Double-Sided</i> is not enabled on material <i>{material.name}</i>. " +
+                            "The underside of the ocean surface will not be rendered correctly.",
+                            $"Enable <i>Double-Sided</i> on <i>{material.name}</i>.",
+                            ValidatedHelper.MessageType.Warning, material,
+                            (material) =>
+                            {
+                                ValidatedHelper.FixSetMaterialOptionEnabled(material, "_DOUBLESIDED_ON", "_DoubleSidedEnable", enabled: true);
+                                // HDRP material will not update without viewing it...
+                                Selection.activeObject = material.targetObject;
+                            }
+                        );
+                    }
+                }
+#endif
+
+#if CREST_URP
+                if (RenderPipelineHelper.IsUniversal)
+                {
+                    if (_mode != Mode.FullScreen && showMessage != ValidatedHelper.DebugLog)
+                    {
+                        showMessage
+                        (
+                            $"The <i>{_mode}</i> mode is incompatible with SSAO. " +
+                            "We cannot detect whether SSAO is enabled or not so this is general advice and can be ignored.",
+                            "",
+                            ValidatedHelper.MessageType.Info, this
+                        );
+                    }
+                }
+#endif
 
                 if (_enableShaderAPI && ocean.OceanMaterial.IsKeywordEnabled("_SUBSURFACESHALLOWCOLOUR_ON"))
                 {

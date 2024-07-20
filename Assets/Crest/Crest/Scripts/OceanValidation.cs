@@ -1,6 +1,6 @@
 ﻿// Crest Ocean System
 
-// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+// Copyright 2020 Wave Harmonic Ltd
 
 // How to use:
 // Create a custom editor that inherits from ValidatedEditor. Then implement IValidated on the component.
