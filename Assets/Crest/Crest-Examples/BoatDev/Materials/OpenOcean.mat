@@ -18,6 +18,7 @@ Material:
   - _ALPHATEST_ON
   - _DOUBLESIDED_ON
   - _ENABLE_FOG_ON_TRANSPARENT
+  - _MATERIAL_FEATURE_SPECULAR_COLOR
   - _SURFACE_TYPE_TRANSPARENT
   - _TRANSPARENT_WRITES_MOTION_VEC
   m_InvalidKeywords: []
@@ -169,8 +170,10 @@ Material:
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
+    - _DstBlend2: 10
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
+    - _ExcludeFromTUAndAA: 0
     - _Flow: 1
     - _Foam: 1
     - _Foam3DLighting: 1
@@ -185,6 +188,8 @@ Material:
     - _FresnelPower: 5
     - _Invert: 1
     - _LightIntensityMultiplier: 1
+    - _MaterialID: 4
+    - _MaterialTypeMask: 16
     - _MinReflectionDirectionY: 0
     - _MipBias: 0
     - _Moving: 0.17
@@ -196,6 +201,7 @@ Material:
     - _Offset: 0.00008
     - _OpaqueCullMode: 2
     - _OverrideReflectionCubemap: 0
+    - _PerPixelSorting: 0
     - _PlanarReflectionIntensity: 1
     - _PlanarReflectionNormalsStrength: 1
     - _PlanarReflections: 0
@@ -237,10 +243,10 @@ Material:
     - _StencilRefGBuffer: 10
     - _StencilRefMV: 40
     - _StencilWriteMask: 6
-    - _StencilWriteMaskDepth: 8
+    - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4
-    - _StencilWriteMaskGBuffer: 14
-    - _StencilWriteMaskMV: 40
+    - _StencilWriteMaskGBuffer: 15
+    - _StencilWriteMaskMV: 41
     - _SubSurfaceBase: 0.67
     - _SubSurfaceDepthMax: 9.4
     - _SubSurfaceDepthPower: 2.57
@@ -255,6 +261,7 @@ Material:
     - _SurfaceType: 1
     - _TexelSize: 0.125
     - _TextureRes: 1024
+    - _TransmissionEnable: 1
     - _Transparency: 1
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
