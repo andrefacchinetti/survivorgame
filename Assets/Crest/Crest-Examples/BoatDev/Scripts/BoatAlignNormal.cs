@@ -18,6 +18,29 @@ namespace Crest.Examples
     [AddComponentMenu(Crest.Internal.Constants.MENU_PREFIX_EXAMPLE + "Boat Align Normal")]
     public class BoatAlignNormal : FloatingObjectBase
     {
+
+        [SerializeField] public GameObject posicaoPiloto;
+        bool temAlguemPilotando = false;
+        public bool PilotarBarco()
+        {
+            if (temAlguemPilotando) return false; //ja tem alguem pilotando
+            _playerControlled = true; //NAO mandar pro servidor
+            Debug.Log("pilotando barco: " + _playerControlled);
+            temAlguemPilotando = true; //mandar essa variavel pro servidor
+            return true;
+        }
+
+        public void PararDePilotarBarco()
+        {
+            if (_playerControlled) //sou eu que estou pilotando
+            {
+                _playerControlled = false; //NAO mandar pro servidor
+                temAlguemPilotando = false; //mandar essa variavel pro servidor
+                Debug.Log("parando de pilotar barco: " + _playerControlled);
+            }
+        }
+
+
         /// <summary>
         /// The version of this asset. Can be used to migrate across versions. This value should
         /// only be changed when the editor upgrades the version.

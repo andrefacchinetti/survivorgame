@@ -1,13 +1,15 @@
 using UnityEngine;
 using Photon.Pun;
 using Opsive.Shared.Inventory;
+using Crest.Examples;
+using Crest;
 
 public class GrabObjects : MonoBehaviourPunCallbacks
 {
 
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAguaPotavel = "AguaPotavel", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagCorpoMortoCollider = "CorpoMortoCollider", tagEnemyCollider = "EnemyCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
-    private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore", tagArmazenamento = "Armazenamento";
+    private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore", tagArmazenamento = "Armazenamento", tagBarco = "Barco";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -306,6 +308,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoArmazenamento(hit);
         }
+        else if (hit.transform.tag == tagBarco)
+        {
+            interacaoBarco(hit);
+        }
     }
 
     private void interacaoComFrutaEmArvore(RaycastHit hit)
@@ -582,6 +588,40 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Use"))
         {
             playerController.inventario.armazenamentoInventario.AcessarArmazenamento(hit.transform.GetComponent<Armazenamento>());
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoBarco(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            if(!playerController.estouPilotando)
+            {
+                BoatAlignNormal barcoController = hit.transform.GetComponent<BoatAlignNormal>();
+                Submarine submarinoController = null;
+                if (barcoController == null) submarinoController = hit.transform.GetComponent<Submarine>();
+                if (barcoController != null)
+                {
+                    playerController.PararAbilitys();
+                    bool estouPilotando = barcoController.PilotarBarco();
+                    playerController.estouPilotando = estouPilotando;
+                    if (estouPilotando)
+                    {
+                        playerController.barcoPilotando = barcoController;
+                    }
+                }
+                if (submarinoController != null)
+                {
+                    playerController.PararAbilitys();
+                    bool estouPilotando = submarinoController.PilotarBarco();
+                    playerController.estouPilotando = estouPilotando;
+                    if (estouPilotando)
+                    {
+                        playerController.submarinoPilotando = submarinoController;
+                    }
+                }
+            }
         }
         possibleInteraction = true;
     }

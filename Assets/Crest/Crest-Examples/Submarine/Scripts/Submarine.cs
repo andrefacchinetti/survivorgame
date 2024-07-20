@@ -1,4 +1,4 @@
-﻿// Crest Ocean System
+// Crest Ocean System
 
 // Copyright 2020 Wave Harmonic Ltd
 
@@ -13,6 +13,28 @@ namespace Crest.Examples
     /// </summary>
     public class Submarine : FloatingObjectBase
     {
+
+        [SerializeField] public GameObject posicaoPiloto;
+        bool temAlguemPilotando = false;
+        public bool PilotarBarco()
+        {
+            if (temAlguemPilotando) return false; //ja tem alguem pilotando
+            _playerControlled = true; //NAO mandar pro servidor
+            Debug.Log("pilotando barco: " + _playerControlled);
+            temAlguemPilotando = true; //mandar essa variavel pro servidor
+            return true;
+        }
+
+        public void PararDePilotarBarco()
+        {
+            if (_playerControlled) //sou eu que estou pilotando
+            {
+                _playerControlled = false; //NAO mandar pro servidor
+                temAlguemPilotando = false; //mandar essa variavel pro servidor
+                Debug.Log("parando de pilotar barco: " + _playerControlled);
+            }
+        }
+
         [Header("Buoyancy Force")]
         [Tooltip("Height offset from transform center to bottom of boat (if any)."), SerializeField]
         float _bottomH = 0f;
@@ -142,7 +164,7 @@ namespace Crest.Examples
             _rb.AddForceAtPosition(transform.right * Vector3.Dot(transform.right, -velocityRelativeToWater) * _dragInWaterRight, forcePosition, ForceMode.Acceleration);
             _rb.AddForceAtPosition(transform.forward * Vector3.Dot(transform.forward, -velocityRelativeToWater) * _dragInWaterForward, forcePosition, ForceMode.Acceleration);
 
-            float rawForward = Input.GetAxis("Vertical");
+            float rawForward = _playerControlled ? Input.GetAxis("Vertical"): 0;
             _submarineSpeed += rawForward * Time.deltaTime * 0.3f;
             _submarineSpeed = Mathf.Clamp(_submarineSpeed, -0.25f, 1f);
             _rb.AddForceAtPosition(transform.forward * _enginePower * _submarineSpeed, forcePosition, ForceMode.Acceleration);
@@ -154,7 +176,7 @@ namespace Crest.Examples
             _rb.AddTorque(transform.up * _turnPower * sideways, ForceMode.Acceleration);
 
             // up
-            if (Input.GetKey(KeyCode.E) == true)
+            if (_playerControlled && Input.GetKey(KeyCode.E) == true)
             {
                 if (_buoyancyFactor < 1f)
                 {
@@ -168,7 +190,7 @@ namespace Crest.Examples
             }
 
             // down
-            if (Input.GetKey(KeyCode.Q) == true)
+            if (_playerControlled && Input.GetKey(KeyCode.Q) == true)
             {
                 if (_buoyancyFactor > 0f)
                 {

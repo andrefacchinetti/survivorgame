@@ -10,6 +10,8 @@ using Opsive.UltimateCharacterController.Character;
 using Opsive.UltimateCharacterController.Character.Abilities;
 using Opsive.UltimateCharacterController.AddOns.Swimming;
 using Opsive.Shared.Events;
+using Crest.Examples;
+using Crest;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -58,7 +60,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	[HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
 	[HideInInspector] public CordaWeapon cordaWeaponFP, cordaWeaponTP;
 
-	[HideInInspector] public bool canMove = true;
+	[HideInInspector] public bool canMove = true, estouPilotando = false;
+	[HideInInspector] public BoatAlignNormal barcoPilotando;
+	[HideInInspector] public Submarine submarinoPilotando;
+
 	public float pesoGrab = 0.0f;
 
 	public PhotonView PV;
@@ -118,10 +123,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 		if (!inventario.canvasInventario.activeSelf && podeSeMexer())
 		{
-			if (Input.GetButtonDown("Crouch"))
-			{
-				if (heightChangeAbility.IsActive) heightChangeAbility.StopAbility(true);
-                else heightChangeAbility.StartAbility();
+            if (!estouPilotando)
+            {
+				if (Input.GetButtonDown("Crouch"))
+				{
+					if (heightChangeAbility.IsActive) heightChangeAbility.StopAbility(true);
+					else heightChangeAbility.StartAbility();
+				}
 			}
 
 			bool isRunning = Input.GetButton("Change Speeds") && pesoGrab == 0 && !recarregandoEnergia;
@@ -147,6 +155,29 @@ public class PlayerController : MonoBehaviourPunCallbacks
 				if (Input.GetButtonDown("Dropar"))
 				{
 					inventario.itemNaMao.DroparItem(1);
+				}
+			}
+
+            if (estouPilotando)
+            {
+				if (barcoPilotando != null || submarinoPilotando != null)
+                {
+					if (Input.GetButtonDown("Action"))
+					{
+						if(barcoPilotando != null) barcoPilotando.PararDePilotarBarco();
+						if (submarinoPilotando != null) submarinoPilotando.PararDePilotarBarco();
+						estouPilotando = false;
+						barcoPilotando = null;
+						submarinoPilotando = null;
+					}
+					Vector3 posicaoPiloto = Vector3.zero;
+					if (barcoPilotando != null) posicaoPiloto = barcoPilotando.posicaoPiloto.transform.position;
+					if (submarinoPilotando != null) posicaoPiloto = submarinoPilotando.posicaoPiloto.transform.position;
+					if(posicaoPiloto != Vector3.zero) characterLocomotion.SetPosition(posicaoPiloto);
+				}
+                else
+                {
+					estouPilotando = false;
 				}
 			}
 
@@ -177,6 +208,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 					statsJogador.ToggleHudFolego(false);
 				}
 			}
+
 		}
 		if (characterLocomotion.Moving)
 		{
