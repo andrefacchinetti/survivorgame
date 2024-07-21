@@ -831,7 +831,9 @@ namespace Opsive.UltimateCharacterController.Character
             }
 
             // Start the ability if it is not active or can be started multiple times, enabled, and can be started.
-            if ((!ability.IsActive || ability.CanReceiveMultipleStarts) && ability.Enabled && (ignoreCanStartCheck || ability.CanStartAbility())) {
+            if ((!ability.IsActive || ability.CanReceiveMultipleStarts) 
+                && ability.Enabled
+                && (ignoreCanStartCheck || ability.CanStartAbility())) {
                 // The ability may already be active if the ability can receive multiple starts. Multiple starts are useful for item abilities that need to be active
                 // over a period of time but can be updated with the input start type while active. A good example of this is the Toggle Equip Item ability. When
                 // this ability starts it sets an Animator parameter to equip or unequip the item. The ability continues to run while equipping or unequipping the item

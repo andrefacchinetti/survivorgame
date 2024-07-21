@@ -100,6 +100,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		reviveAbility = characterLocomotion.GetAbility<Revive>();
 		jumpAbility = characterLocomotion.GetAbility<Jump>();
 
+		sampleHeightHelper = new SampleHeightHelper();
+
 		motorAccelerationInicial = characterLocomotion.MotorAcceleration;
 		jumpForceInicial = jumpAbility.Force;
 		EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
@@ -113,6 +115,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	void Start()
 	{
 		if (PV == null) return;
+		swimAbility.SetWaterSurfacePosition(5f);
 	}
 
 	bool jaSaiuDaAgua = true, tt=false;
@@ -213,6 +216,39 @@ public class PlayerController : MonoBehaviourPunCallbacks
 		if (characterLocomotion.Moving)
 		{
 			PararAbilitys();
+		}
+
+		verificarSwimCrestOcean();
+	}
+
+	public float swimThreshold = 0.5f; // Ajuste conforme necessário
+	private SampleHeightHelper sampleHeightHelper;
+
+	private void verificarSwimCrestOcean()
+    {
+
+		if (sampleHeightHelper == null || characterLocomotion == null || swimAbility == null) return;
+
+		Vector3 playerPosition = characterLocomotion.transform.position;
+
+		// Initialize the sample height helper with the player's position
+		sampleHeightHelper.Init(playerPosition, 0f);
+
+		// Query the height of the water at the player's position
+		if (sampleHeightHelper.Sample(out float waterHeight))
+		{
+			Debug.Log("Altura Jogador: " + playerPosition.y + " | altura oceano: "+ waterHeight);
+			// Check if the player is submerged
+			if (playerPosition.y < waterHeight + swimThreshold)
+			{
+				if(!swimAbility.IsActive) swimAbility.TryStartStopSwim(true);
+				Debug.Log("nadando: "+swimAbility.IsActive);
+			}
+			else
+			{
+				if (swimAbility.IsActive) swimAbility.TryStartStopSwim(false);
+				Debug.Log("parando de nadar: " + swimAbility.IsActive);
+			}
 		}
 	}
 
