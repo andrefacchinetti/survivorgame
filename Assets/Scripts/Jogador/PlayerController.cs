@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
 				if (barcoPilotando != null || submarinoPilotando != null)
                 {
-					if (Input.GetButtonDown("Action"))
+					if (Input.GetButtonDown("Action")) //PARANDO DE PILOTAR BARCO
 					{
 						if(barcoPilotando != null) barcoPilotando.PararDePilotarBarco();
 						if (submarinoPilotando != null) submarinoPilotando.PararDePilotarBarco();

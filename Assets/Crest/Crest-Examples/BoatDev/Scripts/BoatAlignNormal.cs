@@ -25,7 +25,6 @@ namespace Crest.Examples
         {
             if (temAlguemPilotando) return false; //ja tem alguem pilotando
             _playerControlled = true; //NAO mandar pro servidor
-            Debug.Log("pilotando barco: " + _playerControlled);
             temAlguemPilotando = true; //mandar essa variavel pro servidor
             return true;
         }
@@ -36,7 +35,6 @@ namespace Crest.Examples
             {
                 _playerControlled = false; //NAO mandar pro servidor
                 temAlguemPilotando = false; //mandar essa variavel pro servidor
-                Debug.Log("parando de pilotar barco: " + _playerControlled);
             }
         }
 
