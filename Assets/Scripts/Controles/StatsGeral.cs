@@ -56,7 +56,7 @@ public class StatsGeral : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (transform.position.y < -40)
+        if (transform.position.y < -9999)
         {
             TakeDamage(9999, false);
         }
