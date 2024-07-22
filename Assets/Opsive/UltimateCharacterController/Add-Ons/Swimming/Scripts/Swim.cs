@@ -1,4 +1,4 @@
-﻿/// ---------------------------------------------
+/// ---------------------------------------------
 /// Ultimate Character Controller
 /// Copyright (c) Opsive. All Rights Reserved.
 /// https://www.opsive.com

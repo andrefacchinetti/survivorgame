@@ -225,34 +225,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
 	private SampleHeightHelper sampleHeightHelper;
 
 	private void verificarSwimCrestOcean()
-    {
-
+	{
+		// Verificar se as referências necessárias estão disponíveis
 		if (sampleHeightHelper == null || characterLocomotion == null || swimAbility == null) return;
-
+		// Obter a posição atual do jogador
 		Vector3 playerPosition = characterLocomotion.transform.position;
-
-		// Initialize the sample height helper with the player's position
+		// Inicializar o sampleHeightHelper com a posição do jogador
 		sampleHeightHelper.Init(playerPosition, 0f);
-
-		// Query the height of the water at the player's position
+		// Consultar a altura da água na posição do jogador
 		if (sampleHeightHelper.Sample(out float waterHeight))
 		{
-			Debug.Log("Altura Jogador: " + playerPosition.y + " | altura oceano: "+ waterHeight);
-			// Check if the player is submerged
-			if (playerPosition.y < waterHeight + swimThreshold)
-			{
-				if(!swimAbility.IsActive) swimAbility.TryStartStopSwim(true);
-				Debug.Log("nadando: "+swimAbility.IsActive);
-			}
-			else
-			{
-				if (swimAbility.IsActive) swimAbility.TryStartStopSwim(false);
-				Debug.Log("parando de nadar: " + swimAbility.IsActive);
-			}
+			// Definir a posição da superfície da água na habilidade de nadar
+			swimAbility.SetWaterSurfacePosition(waterHeight);
 		}
 	}
 
-    public void TogglePlayerModoConstrucao(bool construcaoAtiva)
+	public void TogglePlayerModoConstrucao(bool construcaoAtiva)
     {
 		if (construcaoAtiva)
 		{
