@@ -277,12 +277,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             // Definir a posição da superfície da água na habilidade de nadar
             swimAbility.SetWaterSurfacePosition(waterHeight);
-            if (playerPosition.y < waterHeight + swimAntiBug)
+            if (playerPosition.y < waterHeight - swimAntiBug)
             {
-                if (!swimAbility.IsActive)
+                if (estouPilotando)
+                {
+                    PararDePilotarBarco();
+                }
+                /*if (!swimAbility.IsActive)
                 {
                     swimAbility.TryStartStopSwim(true);
-                }
+                }*/
             }
         }
     }
@@ -417,6 +421,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     // Método para verificar se o jogador capotou
     public float paramTimeCapotar = 0.5f;
+    public float paramMargemBarcoAfundou = 1.5f;
     private bool BarcoCapotou()
     {
         // Verifica se o vetor "up" está apontando para baixo
