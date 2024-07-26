@@ -146,11 +146,11 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character
             m_RendererThirdPersonObjects.Add(thirdPersonobject);
             m_RegisteredRenderers.Add(materialRenderer);
             m_OriginalMaterials.Add(materialRenderer.materials);
-            /*var invisibleMaterials = new Material[materialRenderer.materials.Length];
+            var invisibleMaterials = new Material[materialRenderer.materials.Length];
             for (int i = 0; i < materialRenderer.materials.Length; ++i) {
                 invisibleMaterials[i] = m_InvisibleMaterial;
             }
-            m_InvisibleMaterials.Add(invisibleMaterials);*/
+            m_InvisibleMaterials.Add(invisibleMaterials);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character
                 return;
             }
 
-            //UpdateThirdPersonMaterials(false);
+            UpdateThirdPersonMaterials(false);
 
             // The FirstPersonObjects GameObject must be changed first to prevent activation errors/warnings. After the GameObject has been changed the 
             // character components can safely receive the event.
@@ -210,9 +210,9 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character
                             CacheRendererMaterials(renderers[i]);
 
                             // If the first person perspective is active then any third person item materials should use the invisible material.
-                            /*if (m_CharacterLocomotion.FirstPersonPerspective) {
+                            if (m_CharacterLocomotion.FirstPersonPerspective) {
                                 renderers[i].materials = m_InvisibleMaterials[m_InvisibleMaterials.Count - 1];
-                            }*/
+                            }
                         }
                     }
                 }
@@ -260,7 +260,7 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character
                     invisibleObject = m_CharacterLocomotion.FirstPersonPerspective && 
                         (thirdPersonObject != null && !thirdPersonObject.FirstPersonVisibleOnDeath && !thirdPersonObject.ForceVisible);
                 }
-                //m_Renderers[i].materials = (invisibleObject ? m_InvisibleMaterials[i] : m_OriginalMaterials[i]);
+                m_Renderers[i].materials = (invisibleObject ? m_InvisibleMaterials[i] : m_OriginalMaterials[i]);
                 m_Renderers[i].materials = m_OriginalMaterials[i];
             }
             return true;
@@ -285,10 +285,10 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character
         {
             EventHandler.UnregisterEvent<CharacterItem, int>(m_GameObject, "OnInventoryUnequipItem", OnUnequipItem);
 
-            /*for (int i = 0; i < m_Renderers.Count; ++i) {
+            for (int i = 0; i < m_Renderers.Count; ++i) {
                 m_Renderers[i].materials = (!m_CharacterLocomotion.FirstPersonPerspective || 
                     (m_RendererThirdPersonObjects[i] == null)) ? m_OriginalMaterials[i] : m_InvisibleMaterials[i];
-            }*/
+            }
         }
 
         /// <summary>
