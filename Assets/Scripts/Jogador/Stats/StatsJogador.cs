@@ -220,6 +220,7 @@ public class StatsJogador : MonoBehaviour
         playerController.corpoDissecando = null;
         playerController.animalCapturado = null;
         TakeHealHealth(playerController.characterAttributeManager.GetAttribute(playerController.characterHealth.HealthAttributeName).MaxValue * 0.20f); //CURA 20% DA VIDA MAXIMA
+        playerController.characterAttributeManager.GetAttribute("Breath").ResetValue();
         setarFomeAtual(fomeMaxima*0.25f);
         setarSedeAtual(sedeMaxima * 0.25f);
         setarEnergiaAtual(energiaMaxima);

@@ -598,27 +598,16 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             if(!playerController.estouPilotando)
             {
-                BoatAlignNormal barcoController = hit.transform.GetComponent<BoatAlignNormal>();
-                Submarine submarinoController = null;
-                if (barcoController == null) submarinoController = hit.transform.GetComponent<Submarine>();
+                BoatProbes barcoController = hit.transform.GetComponent<BoatProbes>();
                 if (barcoController != null)
                 {
                     playerController.PararAbilitys();
-                    bool estouPilotando = barcoController.PilotarBarco();
-                    playerController.estouPilotando = estouPilotando;
+                    bool estouPilotando = barcoController.TryPilotarBarco(); //Tenta pilotar barco
                     if (estouPilotando)
                     {
+                        playerController.estouPilotando = estouPilotando;
                         playerController.barcoPilotando = barcoController;
-                    }
-                }
-                if (submarinoController != null)
-                {
-                    playerController.PararAbilitys();
-                    bool estouPilotando = submarinoController.PilotarBarco();
-                    playerController.estouPilotando = estouPilotando;
-                    if (estouPilotando)
-                    {
-                        playerController.submarinoPilotando = submarinoController;
+                        playerController.cameraController.SetPerspective(false);
                     }
                 }
             }

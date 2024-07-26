@@ -245,25 +245,36 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         /// <param name="other">The trigger collider that the character entered.</param>
         public override void OnTriggerEnter(Collider other)
         {
+            acoesOntriggerEnter(other);
+        }
+
+        public void acoesOntriggerEnter(Collider other)
+        {
             // The object may not be detected with a trigger.
-            if ((m_ObjectDetection & ObjectDetectionMode.Trigger) == 0) {
+            if ((m_ObjectDetection & ObjectDetectionMode.Trigger) == 0)
+            {
                 return;
             }
 
             // The object has to use the correct mask.
-            if (!MathUtility.InLayerMask(other.gameObject.layer, m_DetectLayers)) {
+            if (!MathUtility.InLayerMask(other.gameObject.layer, m_DetectLayers))
+            {
                 return;
             }
 
             // Ensure the detected object isn't duplicated within the list.
-            for (int i = 0; i < m_DetectedTriggerObjectsCount; ++i) {
-                if (m_DetectedTriggerObjects[i] == other.gameObject) {
+            for (int i = 0; i < m_DetectedTriggerObjectsCount; ++i)
+            {
+                if (m_DetectedTriggerObjects[i] == other.gameObject)
+                {
                     return;
                 }
             }
 
-            if (ValidateObject(other.gameObject, null)) {
-                if (m_DetectedTriggerObjects.Length == m_DetectedTriggerObjectsCount) {
+            if (ValidateObject(other.gameObject, null))
+            {
+                if (m_DetectedTriggerObjects.Length == m_DetectedTriggerObjectsCount)
+                {
                     Debug.LogError($"Error: The maximum number of trigger objects should be increased on the {GetType().Name} ability.", m_GameObject);
                     return;
                 }

@@ -1,4 +1,4 @@
-﻿// Crest Ocean System
+// Crest Ocean System
 
 // Copyright 2020 Wave Harmonic Ltd
 
@@ -22,6 +22,26 @@ namespace Crest
     [AddComponentMenu(Internal.Constants.MENU_PREFIX_SCRIPTS + "Boat Probes")]
     public class BoatProbes : FloatingObjectBase
     {
+
+        [SerializeField] public GameObject posicaoPiloto;
+        bool temAlguemPilotando = false;
+        public bool TryPilotarBarco()
+        {
+            if (temAlguemPilotando) return false; //ja tem alguem pilotando
+            _playerControlled = true; //NAO mandar pro servidor
+            temAlguemPilotando = true; //mandar essa variavel pro servidor
+            return true;
+        }
+
+        public void PararDePilotarBarco()
+        {
+            if (_playerControlled) //sou eu que estou pilotando
+            {
+                _playerControlled = false; //NAO mandar pro servidor
+                temAlguemPilotando = false; //mandar essa variavel pro servidor
+            }
+        }
+
         /// <summary>
         /// The version of this asset. Can be used to migrate across versions. This value should
         /// only be changed when the editor upgrades the version.
@@ -184,15 +204,14 @@ namespace Crest
         void FixedUpdateEngine()
         {
             var forcePosition = _rb.position;
-
+           
+            if (_playerControlled)
+            {
+                _engineBias = !Application.isFocused ? 0 :
+                ((Keyboard.current.wKey.isPressed ? 0.5f : 0) + (Keyboard.current.sKey.isPressed ? -0.2f : 0));
+            }
             var forward = _engineBias;
-            if (_playerControlled) forward +=
-#if INPUT_SYSTEM_ENABLED
-                !Application.isFocused ? 0 :
-                ((Keyboard.current.wKey.isPressed ? 1 : 0) + (Keyboard.current.sKey.isPressed ? -1 : 0));
-#else
-                Input.GetAxis("Vertical");
-#endif
+
             _rb.AddForceAtPosition(_enginePower * forward * transform.forward, forcePosition, ForceMode.Acceleration);
 
             var sideways = _turnBias;

@@ -9,9 +9,11 @@ using Opsive.UltimateCharacterController.Traits;
 using Opsive.UltimateCharacterController.Character;
 using Opsive.UltimateCharacterController.Character.Abilities;
 using Opsive.UltimateCharacterController.AddOns.Swimming;
+using Opsive.UltimateCharacterController.Camera.ViewTypes;
 using Opsive.Shared.Events;
 using Crest.Examples;
 using Crest;
+using Opsive.UltimateCharacterController.Camera;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] public ControleConstruir controleConstruir;
     [SerializeField] public EventsAnimJogador eventsAnimJogador;
     [SerializeField] public Animator animatorVaraDePesca, animatorJogador;
+    [SerializeField] public CameraController cameraController;
     [SerializeField] public GameObject contentItemsTP, contentItemsFP, objAlerta;
     [SerializeField] public TMP_Text txMsgAlerta;
 
@@ -53,14 +56,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] [HideInInspector] public EncherGarrafaRio encherGarrafaRioAbility;
     [SerializeField] [HideInInspector] public Revive reviveAbility;
     [SerializeField] [HideInInspector] public Jump jumpAbility;
+    [SerializeField] [HideInInspector] public Fall fallAbility;
 
     [HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
     [HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
     [HideInInspector] public CordaWeapon cordaWeaponFP, cordaWeaponTP;
 
     [HideInInspector] public bool canMove = true, estouPilotando = false;
-    [HideInInspector] public BoatAlignNormal barcoPilotando;
-    [HideInInspector] public Submarine submarinoPilotando;
+    [HideInInspector] public BoatProbes barcoPilotando;
 
     public float pesoGrab = 0.0f;
 
@@ -69,9 +72,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     //PARAMETROS Configurados automaticamente pelas Abilitys
     [HideInInspector] public float jumpForceInicial;
     [HideInInspector] public Vector3 motorAccelerationInicial;
-
-    private Quaternion lastRotation;
-    private float abruptRotationThreshold = 45f; // Ajuste conforme necessário
 
     void Awake()
     {
@@ -100,14 +100,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
         encherGarrafaRioAbility = characterLocomotion.GetAbility<EncherGarrafaRio>();
         reviveAbility = characterLocomotion.GetAbility<Revive>();
         jumpAbility = characterLocomotion.GetAbility<Jump>();
+        fallAbility = characterLocomotion.GetAbility<Fall>();
 
         sampleHeightHelper = new SampleHeightHelper();
 
         motorAccelerationInicial = characterLocomotion.MotorAcceleration;
         jumpForceInicial = jumpAbility.Force;
         EventHandler.RegisterEvent<Ability, bool>(gameObject, "OnCharacterAbilityActive", OnAbilityActive);
-
-        lastRotation = characterLocomotion.transform.rotation;
     }
 
     public void OnDestroy()
@@ -166,7 +165,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (estouPilotando)
             {
-                if (barcoPilotando != null || submarinoPilotando != null)
+                if (barcoPilotando != null)
                 {
                     if (Input.GetButtonDown("Action") || BarcoCapotou()) //PARANDO DE PILOTAR BARCO
                     {
@@ -213,18 +212,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         verificarSwimCrestOcean();
-
-        // Atualiza a rotação do jogador
-        lastRotation = characterLocomotion.transform.rotation;
     }
 
     public void PararDePilotarBarco()
     {
         if (barcoPilotando != null) barcoPilotando.PararDePilotarBarco();
-        if (submarinoPilotando != null) submarinoPilotando.PararDePilotarBarco();
+        cameraController.SetPerspective(true);
         estouPilotando = false;
         barcoPilotando = null;
-        submarinoPilotando = null;
         characterLocomotion.DetectHorizontalCollisions = true;
         characterLocomotion.DetectVerticalCollisions = true;
     }
@@ -244,19 +239,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 characterLocomotion.transform.rotation = rotacaoPiloto;
             }
         }
-        else if (submarinoPilotando != null)
-        {
-            // Atualiza a posição e rotação do jogador com base na posição e rotação do submarino
-            Vector3 posicaoPiloto = submarinoPilotando.posicaoPiloto.transform.position;
-            Quaternion rotacaoPiloto = submarinoPilotando.transform.rotation;
-            if (posicaoPiloto != Vector3.zero)
-            {
-                // Ajusta a posição do jogador
-                characterLocomotion.SetPosition(posicaoPiloto);
-                // Ajusta a rotação do jogador
-                characterLocomotion.transform.rotation = rotacaoPiloto;
-            }
-        }
         // Desativa a detecção de colisões enquanto o jogador está pilotando
         characterLocomotion.DetectHorizontalCollisions = false;
         characterLocomotion.DetectVerticalCollisions = false;
@@ -264,6 +246,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private SampleHeightHelper sampleHeightHelper;
     private float swimAntiBug = 4.0f;
+    public Collider colliderNatacao;
     private void verificarSwimCrestOcean()
     {
         // Verificar se as referências necessárias estão disponíveis
@@ -271,7 +254,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         // Obter a posição atual do jogador
         Vector3 playerPosition = characterLocomotion.transform.position;
         // Inicializar o sampleHeightHelper com a posição do jogador
-        sampleHeightHelper.Init(playerPosition, 0f);
+        sampleHeightHelper.Init(playerPosition);
         // Consultar a altura da água na posição do jogador
         if (sampleHeightHelper.Sample(out float waterHeight))
         {
@@ -283,12 +266,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 {
                     PararDePilotarBarco();
                 }
-                /*if (!swimAbility.IsActive)
+                if (fallAbility.IsActive)
                 {
-                    swimAbility.TryStartStopSwim(true);
-                }*/
+                    swimAbility.acoesOntriggerEnter(colliderNatacao);
+                    fallAbility.StopAbility(true);
+                }
             }
         }
+
+        
     }
 
     public void TogglePlayerModoConstrucao(bool construcaoAtiva)
