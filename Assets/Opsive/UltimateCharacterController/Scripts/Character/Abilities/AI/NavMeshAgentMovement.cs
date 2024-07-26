@@ -184,7 +184,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.AI
                         direction = m_NavMeshAgent.destination - m_CharacterLocomotion.Position;
                     }
                     Vector3 velocity;
-                    if (direction.sqrMagnitude > 0 && 
+                    if (direction.sqrMagnitude > 0 &&
                         ((m_NavMeshAgent.updateRotation && m_RotationOverride == RotationOverrideMode.NoOverride) || m_RotationOverride == RotationOverrideMode.NavMesh)) {
                         lookRotation = Quaternion.LookRotation(direction.normalized, m_CharacterLocomotion.Up);
                         // The normalized velocity should be relative to the target rotation.
@@ -244,7 +244,11 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.AI
         protected virtual bool UpdateOffMeshLink()
         {
             if (m_NavMeshAgent.currentOffMeshLinkData.linkType == OffMeshLinkType.LinkTypeJumpAcross ||
-                (m_NavMeshAgent.currentOffMeshLinkData.linkType == OffMeshLinkType.LinkTypeManual && m_NavMeshAgent.currentOffMeshLinkData.offMeshLink.area == m_ManualOffMeshLinkIndex)) {
+                (m_NavMeshAgent.currentOffMeshLinkData.linkType == OffMeshLinkType.LinkTypeManual
+#if !UNITY_6000_0_OR_NEWER
+                && m_NavMeshAgent.currentOffMeshLinkData.offMeshLink.area == m_ManualOffMeshLinkIndex
+#endif
+                )) {
                 // Ignore the y difference when determining a look direction and velocity.
                 // This will give XZ distances a greater impact when normalized.
                 var direction = m_NavMeshAgent.currentOffMeshLinkData.endPos - m_CharacterLocomotion.Position;
@@ -260,8 +264,11 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.AI
 
                 // Jump if the agent hasn't jumped yet.
                 if (m_JumpAbility != null && (m_NavMeshAgent.currentOffMeshLinkData.linkType == OffMeshLinkType.LinkTypeJumpAcross ||
-                    (m_JumpAcrossManualOffMeshLink && m_NavMeshAgent.currentOffMeshLinkData.linkType == OffMeshLinkType.LinkTypeManual && 
-                        m_NavMeshAgent.currentOffMeshLinkData.offMeshLink.area == m_ManualOffMeshLinkIndex))) {
+                    (m_JumpAcrossManualOffMeshLink && m_NavMeshAgent.currentOffMeshLinkData.linkType == OffMeshLinkType.LinkTypeManual
+#if !UNITY_6000_0_OR_NEWER
+                        && m_NavMeshAgent.currentOffMeshLinkData.offMeshLink.area == m_ManualOffMeshLinkIndex
+#endif
+                        ))) {
                     if (!m_JumpAbility.IsActive && (m_FallAbility == null || !m_FallAbility.IsActive)) {
                         m_CharacterLocomotion.TryStartAbility(m_JumpAbility);
                     }

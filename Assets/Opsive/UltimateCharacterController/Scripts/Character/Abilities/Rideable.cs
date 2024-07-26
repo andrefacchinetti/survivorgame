@@ -6,6 +6,10 @@
 
 namespace Opsive.UltimateCharacterController.Character.Abilities
 {
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+    using Opsive.Shared.Networking;
+#endif
+    using Opsive.Shared.Game;
     using Opsive.Shared.Utility;
     using Opsive.Shared.Events;
     using Opsive.UltimateCharacterController.Character;
@@ -32,8 +36,12 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         [NonSerialized] public Collider RightDismountCollider { get { return m_RightDismountCollider; } set { m_RightDismountCollider = value; } }
 
         private Collider[] m_OriginalColliders;
+        public Ride Ride { get { return m_Ride; } }
         private Ride m_Ride;
         private Collider[] m_OverlapColliders;
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+        private INetworkInfo m_NetworkInfo;
+#endif
 
         public override int AbilityIntData
         {
@@ -69,8 +77,26 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
                 m_RightDismountCollider.enabled = false;
             }
 
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            m_NetworkInfo = m_GameObject.GetCachedComponent<INetworkInfo>();
+#endif
             // The RideableObject should start off not responding to input.
             EventHandler.ExecuteEvent<bool>(m_GameObject, "OnEnableGameplayInput", false);
+        }
+
+        /// <summary>
+        /// The character can mount on the RideableObject.
+        /// </summary>
+        /// <returns>True if the RideableObject is free.</returns>
+        public bool CanMount()
+        {
+            if (m_Ride != null) {
+                if (m_Ride.GameObject == null) {
+                    m_Ride = null;
+                }
+            }
+
+            return m_Ride == null;
         }
 
         /// <summary>
@@ -116,8 +142,14 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         /// </summary>
         public void OnCharacterMount()
         {
-            // Enable input so the RideableObject can move.
-            EventHandler.ExecuteEvent<bool>(m_GameObject, "OnEnableGameplayInput", true);
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (m_NetworkInfo == null || m_NetworkInfo.HasAuthority() || m_NetworkInfo.IsLocalPlayer()) {
+#endif
+                // Enable input so the RideableObject can move.
+                EventHandler.ExecuteEvent<bool>(m_GameObject, "OnEnableGameplayInput", true);
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            }
+#endif
             UpdateAbilityAnimatorParameters();
 
             // The rideable object should use the character's colliders to prevent clipping.
@@ -200,6 +232,8 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         public void Dismounted()
         {
             StopAbility();
+
+            m_Ride = null;
         }
 
         /// <summary>

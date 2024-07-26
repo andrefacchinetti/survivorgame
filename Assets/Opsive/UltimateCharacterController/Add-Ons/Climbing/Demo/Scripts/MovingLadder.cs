@@ -31,7 +31,11 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing.Demo
             m_MovingPlatform = GetComponent<MovingPlatform>();
             m_Ladder = GetComponentInChildren<Ladder>();
 
-            var demoManager = FindObjectOfType<DemoManager>();
+#if UNITY_2023_1_OR_NEWER
+            var demoManager = Object.FindFirstObjectByType<DemoManager>();
+#else
+            var demoManager = Object.FindObjectOfType<DemoManager>();
+#endif
             if (demoManager.Character == null) {
                 Debug.LogError("Error: Unable to find the character.");
                 return;

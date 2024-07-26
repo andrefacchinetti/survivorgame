@@ -536,7 +536,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules
         public override void StartUnequip()
         {
             base.StartUnequip();
-            ToggleGameObjects(false);
+            Toggle(false);
         }
 
         /// <summary>

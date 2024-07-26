@@ -9,6 +9,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
     using Opsive.Shared.Events;
     using Opsive.Shared.Game;
     using Opsive.Shared.Utility;
+    using Opsive.UltimateCharacterController.Character;
     using Opsive.UltimateCharacterController.Character.Abilities;
     using Opsive.UltimateCharacterController.Objects.CharacterAssist;
     using Opsive.UltimateCharacterController.Utility;
@@ -56,13 +57,13 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 return false;
             }
 
-            var position = m_Rigidbody.InverseTransformPoint(m_RaycastResult.point);
+            var position = m_CharacterLocomotion.InverseTransformPoint(m_RaycastResult.point);
             position.y = 0;
-            position = m_Rigidbody.TransformPoint(position);
+            position = m_CharacterLocomotion.TransformPoint(position);
 
             // There must be space for the character to climb.
             RaycastHit hit;
-            if (Physics.Raycast(position + m_CharacterLocomotion.Up * m_MaxHeight + m_RaycastResult.normal * m_CharacterLocomotion.Radius, m_Rigidbody.rotation * Vector3.forward, out hit,
+            if (Physics.Raycast(position + m_CharacterLocomotion.Up * m_MaxHeight + m_RaycastResult.normal * m_CharacterLocomotion.Radius, m_CharacterLocomotion.Rotation * Vector3.forward, out hit,
                 m_CharacterLocomotion.Radius * 3, m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
                 return false;
             }
@@ -73,7 +74,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 return false;
             }
 
-            m_Height = m_Rigidbody.InverseTransformPoint(hit.point).y * m_HeightMultiplier;
+            m_Height = m_CharacterLocomotion.InverseTransformPoint(hit.point).y * m_HeightMultiplier;
             return true;
         }
 

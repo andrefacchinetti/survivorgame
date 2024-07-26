@@ -47,9 +47,9 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [Tooltip("The number of rounds to fire in a single shot.")]
         [SerializeField] protected int m_FireCount = 1;
         [Tooltip("The location that the weapon fires from.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_FirePointLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_FirePointLocation = new();
         [Tooltip("The location of the tracer (optional).")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_TracerLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_TracerLocation = new();
 
         public override bool FireInLookSourceDirection
         {
@@ -189,14 +189,19 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             // Get the preview data to set things up.
             GetFirePreviewData();
 
-            // Remove the ammo before it is fired.
-            ShootableAction.ClipModuleGroup.FirstEnabledModule.AmmoUsed(1, ammoIndex);
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (ShootableAction.NetworkInfo == null || ShootableAction.NetworkInfo.HasAuthority()) {
+#endif
+                // Remove the ammo before it is fired.
+                ShootableAction.ClipModuleGroup.FirstEnabledModule.AmmoUsed(1, ammoIndex);
 
-            // Fire as many projectiles or hitscan bullets as the fire count specifies.
-            for (int i = 0; i < m_FireCount; ++i) {
-                Scheduler.Schedule(m_HitscanFireDelay, HitscanFire, dataStream, ammoData);
+                // Fire as many projectiles or hitscan bullets as the fire count specifies.
+                for (int i = 0; i < m_FireCount; ++i) {
+                    Scheduler.Schedule(m_HitscanFireDelay, HitscanFire, dataStream, ammoData);
+                }
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             }
-
+#endif
             // Notify that the shooter fired.
             ShootableAction.OnFire(m_ShootableFireData);
         }

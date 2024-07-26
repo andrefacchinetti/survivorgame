@@ -462,7 +462,7 @@ namespace Opsive.UltimateCharacterController.Character
         {
             // A RaycastHit is required for the SurfaceManager.
             RaycastHit hit;
-            if (Physics.Raycast(foot.position + m_Transform.up * 0.2f, -m_Transform.up, out hit, 0.21f + m_FootOffset, m_CharacterLayerManager.IgnoreInvisibleCharacterWaterLayers, QueryTriggerInteraction.Ignore)) {
+            if (Physics.Raycast(foot.position + m_Transform.up * 0.2f, -m_Transform.up, out hit, 0.21f + m_FootOffset + Mathf.Abs(m_CharacterLocomotion.LocalVelocity.y / Time.deltaTime), m_CharacterLayerManager.IgnoreInvisibleCharacterWaterLayers, QueryTriggerInteraction.Ignore)) {
                 SurfaceManager.SpawnEffect(hit, m_SurfaceImpact, m_CharacterLocomotion.GravityDirection, m_CharacterLocomotion.TimeScale, foot.gameObject, m_Transform.forward, flipFootprint);
                 return true;
             }

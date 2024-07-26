@@ -88,7 +88,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
         [Tooltip("Specifies the distance from the character's pivot position when the character should dismount when near the bottom of the climb object.")]
         [SerializeField] protected float m_BottomDismountOffset = 0.3f;
         [Tooltip("Specifies the distance from the character's pivot position when the character should dismount when near the top of the climb object.")]
-        [SerializeField] protected float m_TopDismountOffset = 1.87f;
+        [SerializeField] protected float m_TopDismountOffset = 1.47f;
         [Tooltip("Horizontal and vertical distance specifying the edge offset when the character is leaping.")]
         [SerializeField] protected Vector2 m_LeapEdgeOffset = new Vector2(0.8f, 3f);
 #if ULTIMATE_CHARACTER_CONTROLLER_AGILITY
@@ -195,12 +195,12 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
             if (m_CharacterLocomotion.Grounded) {
                 var castDistance = (m_CastDistance + Mathf.Abs(m_CastOffset.z)) * 2;
                 if (base.CanStartAbility()) {
-                    var raycastDirection = m_Rigidbody.rotation * Vector3.forward;
+                    var raycastDirection = m_CharacterLocomotion.Rotation * Vector3.forward;
 
                     // The object must exist to the left and the right.
                     var lookRotation = Quaternion.LookRotation(raycastDirection);
                     for (int i = 0; i < 2; ++i) {
-                        if (!Physics.Raycast(MathUtility.TransformPoint(m_Rigidbody.position, lookRotation, new Vector3(m_HorizontalEdgeOffset * (i == 0 ? 1 : -1),
+                        if (!Physics.Raycast(MathUtility.TransformPoint(m_CharacterLocomotion.Position, lookRotation, new Vector3(m_HorizontalEdgeOffset * (i == 0 ? 1 : -1),
                                             m_CharacterLocomotion.Radius, 0)), raycastDirection, out m_RaycastHit, castDistance,
                                             m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
                             return false;
@@ -214,7 +214,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                     return true;
                 }
 
-                if (Physics.Raycast(m_Rigidbody.TransformPoint(0, -m_CharacterLocomotion.Radius, castDistance), -(m_Rigidbody.rotation * Vector3.forward), 
+                if (Physics.Raycast(m_CharacterLocomotion.TransformPoint(0, -m_CharacterLocomotion.Radius, castDistance), -(m_CharacterLocomotion.Rotation * Vector3.forward), 
                                     out m_RaycastResult, castDistance, m_DetectLayers, QueryTriggerInteraction.Ignore)) {
                     // The object must be a free climb object.
                     var hitObject = m_RaycastResult.collider.gameObject;
@@ -230,7 +230,9 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                     // There must not be an object in the way.
                     if (Physics.Raycast(MathUtility.TransformPoint(m_RaycastResult.point, Quaternion.LookRotation(raycastNormal), new Vector3(0, m_CharacterLocomotion.Radius, 0.1f)),
                                     -m_CharacterLocomotion.Up, out m_RaycastHit, m_CharacterLocomotion.Height, m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
-                        return false;
+                        if (!ValidateObject(m_RaycastResult.collider.gameObject, m_RaycastHit)) {
+                            return false;
+                        }
                     }
 
                     // The character can climb on the object.
@@ -244,13 +246,13 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 }
 
                 // The character's pivot position must be over the climbable object.
-                if (!Physics.SphereCast(m_Rigidbody.TransformPoint(m_CastOffset), m_CharacterLocomotion.Radius, (m_Rigidbody.rotation * Vector3.forward), out m_RaycastResult, (m_CastDistance + Mathf.Abs(m_CastOffset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) || 
+                if (!Physics.SphereCast(m_CharacterLocomotion.TransformPoint(m_CastOffset), m_CharacterLocomotion.Radius, (m_CharacterLocomotion.Rotation * Vector3.forward), out m_RaycastResult, (m_CastDistance + Mathf.Abs(m_CastOffset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) || 
                     (m_RaycastResult.transform != null && !ValidateObject(m_RaycastResult.collider.gameObject, m_RaycastResult))) {
                     return false;
                 }
 
                 // The top of the character must be over the climbable object.
-                if (!Physics.Raycast(m_Rigidbody.position + m_CharacterLocomotion.Up * m_CharacterLocomotion.Height, (m_Rigidbody.rotation * Vector3.forward), out m_RaycastResult, (m_CastDistance + Mathf.Abs(m_CastOffset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) ||
+                if (!Physics.Raycast(m_CharacterLocomotion.Position + m_CharacterLocomotion.Up * m_CharacterLocomotion.Height, (m_CharacterLocomotion.Rotation * Vector3.forward), out m_RaycastResult, (m_CastDistance + Mathf.Abs(m_CastOffset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) ||
                     (m_RaycastResult.transform != null && !ValidateObject(m_RaycastResult.collider.gameObject, m_RaycastResult))) {
                     return false;
                 }
@@ -296,13 +298,13 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 }
 
                 // Do a SingleCast to ensure the character doesn't get too close to a rough object.
-                if (m_CharacterLocomotion.SingleCast(m_Rigidbody.rotation * Vector3.forward, m_Rigidbody.TransformPoint(0, 0, -m_CharacterLocomotion.Radius), 
+                if (m_CharacterLocomotion.SingleCast(m_CharacterLocomotion.Rotation * Vector3.forward, m_CharacterLocomotion.TransformPoint(0, 0, -m_CharacterLocomotion.Radius), 
                                                     m_RaycastResult.distance * 2 + m_CharacterLocomotion.Radius, m_CharacterLayerManager.SolidObjectLayers, ref m_RaycastHit)) {
                     m_RaycastResult = m_RaycastHit;
                 }
 
                 var rotation = Quaternion.LookRotation(m_RaycastResult.normal, m_CharacterLocomotion.Up);
-                var localPosition = MathUtility.InverseTransformPoint(m_RaycastResult.point, rotation, m_Rigidbody.position);
+                var localPosition = MathUtility.InverseTransformPoint(m_RaycastResult.point, rotation, m_CharacterLocomotion.Position);
                 localPosition.z = m_BottomMountDistance;
                 m_BottomMoveTowardsLocation[0].transform.position = MathUtility.TransformPoint(m_RaycastResult.point, rotation, localPosition);
                 var rotationVector = Vector3.ProjectOnPlane(-m_RaycastResult.normal, m_CharacterLocomotion.Up);
@@ -382,9 +384,9 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 return;
             }
 
-            var raycastNormal = Vector3.ProjectOnPlane((m_Rigidbody.rotation * Vector3.forward), m_CharacterLocomotion.Up).normalized;
+            var raycastNormal = Vector3.ProjectOnPlane((m_CharacterLocomotion.Rotation * Vector3.forward), m_CharacterLocomotion.Up).normalized;
             // The ability should stop if a climb object is no longer in front of the character. Perform a raycast every update to keep the RaycastHit value updated.
-            if (!Physics.SphereCast(m_Rigidbody.TransformPoint(m_CastOffset), m_CharacterLocomotion.Radius, raycastNormal, out m_RaycastHit, 
+            if (!Physics.SphereCast(m_CharacterLocomotion.TransformPoint(m_CastOffset), m_CharacterLocomotion.Radius, raycastNormal, out m_RaycastHit, 
                 (m_CastDistance + Mathf.Abs(m_CastOffset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) ||
                 (m_RaycastHit.transform != m_RaycastResult.transform && !ValidateObject(m_RaycastHit.collider.gameObject, m_RaycastHit))) {
                 StopAbility();
@@ -407,7 +409,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
 #endif
 
                 // Stop the character from going through the ceiling.
-                if (m_TopStop || Physics.Raycast(m_Rigidbody.position, m_CharacterLocomotion.Up, out m_RaycastHit, m_CharacterLocomotion.Height, 
+                if (m_TopStop || Physics.Raycast(m_CharacterLocomotion.Position, m_CharacterLocomotion.Up, out m_RaycastHit, m_CharacterLocomotion.Height, 
                     m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
                     // Stop the speed change ability if the character would hit an object when the speed change ability is active.
                     if (m_SpeedChange != null && m_SpeedChange.IsActive) {
@@ -420,7 +422,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
 
                 if ((m_AllowedMovements & AllowedMovement.TopDismount) != 0) {
                     // The character may need to dismount.
-                    var rayPosition = m_Rigidbody.TransformPoint(0, m_TopDismountOffset + m_CharacterLocomotion.Radius + m_CharacterLocomotion.ColliderSpacing, -Mathf.Abs(m_CastOffset.z));
+                    var rayPosition = m_CharacterLocomotion.TransformPoint(0, m_TopDismountOffset + m_CharacterLocomotion.Radius + m_CharacterLocomotion.ColliderSpacing, -Mathf.Abs(m_CastOffset.z));
 #if UNITY_EDITOR
                     if (m_DrawDebugLines) {
                         Debug.DrawRay(rayPosition, raycastNormal, Color.green);
@@ -436,7 +438,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
             } else if (m_CharacterLocomotion.RawInputVector.y < 0) {
                 m_TopStop = false;
                 if ((m_AllowedMovements & AllowedMovement.BottomDismount) != 0 &&
-                            m_CharacterLocomotion.SingleCast(-m_CharacterLocomotion.Up, m_Rigidbody.TransformDirection(0, 0, m_CastOffset.z), m_BottomDismountOffset, m_CharacterLayerManager.SolidObjectLayers, ref m_RaycastHit)) {
+                            m_CharacterLocomotion.SingleCast(-m_CharacterLocomotion.Up, m_CharacterLocomotion.TransformDirection(0, 0, m_CastOffset.z), m_BottomDismountOffset, m_CharacterLayerManager.SolidObjectLayers, ref m_RaycastHit)) {
                     m_ClimbState = ClimbState.BottomDismount;
                     SetAbilityIntDataParameter(AbilityIntData);
                     return;
@@ -450,7 +452,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 // An object cannot block the character's path.
                 var rayDirection = MathUtility.TransformDirection(Vector3.right * Mathf.Sign(m_CharacterLocomotion.RawInputVector.x), rayRotation);
                 if (Mathf.Abs(m_CharacterLocomotion.RawInputVector.x) > 0 && 
-                                                m_CharacterLocomotion.SingleCast(rayDirection, m_Rigidbody.TransformDirection(0, 0, m_CastOffset.z * 2),
+                                                m_CharacterLocomotion.SingleCast(rayDirection, m_CharacterLocomotion.TransformDirection(0, 0, m_CastOffset.z * 2),
                                                 m_InnerCornerOffset, m_CharacterLayerManager.SolidObjectLayers, ref m_RaycastHit)) {
 #if ULTIMATE_CHARACTER_CONTROLLER_AGILITY
                     // The Hang ability may be able to start.
@@ -476,7 +478,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                     return;
                 }
 
-                var rayPosition = m_Rigidbody.TransformPoint(m_CharacterLocomotion.RawInputVector.x * ((m_SpeedChange != null && m_SpeedChange.IsActive) ? m_LeapEdgeOffset.x : m_HorizontalEdgeOffset),
+                var rayPosition = m_CharacterLocomotion.TransformPoint(m_CharacterLocomotion.RawInputVector.x * ((m_SpeedChange != null && m_SpeedChange.IsActive) ? m_LeapEdgeOffset.x : m_HorizontalEdgeOffset),
                                                                 (m_CharacterLocomotion.RawInputVector.y > 0 ?
                                                                     ((m_SpeedChange != null && m_SpeedChange.IsActive) ? m_LeapEdgeOffset.y : m_TopEdgeOffset) : m_BottomEdgeOffset), -m_CastDistance);
 #if UNITY_EDITOR
@@ -553,7 +555,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
             // The character should always face the climb object.
             var raycastNormal = Vector3.ProjectOnPlane(m_RaycastResult.normal, m_CharacterLocomotion.Up).normalized;
             var targetRotation = Quaternion.LookRotation(-raycastNormal, m_CharacterLocomotion.Up);
-            m_CharacterLocomotion.DesiredRotation = Quaternion.Inverse(m_Rigidbody.rotation) * targetRotation;
+            m_CharacterLocomotion.DesiredRotation = Quaternion.Inverse(m_CharacterLocomotion.Rotation) * targetRotation;
         }
 
         /// <summary>
@@ -568,10 +570,10 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
             }
 
             // When the character is climbing they should always be a set distance away from the object. Force that position based on the object's position and normal.
-            var offset = m_Rigidbody.InverseTransformPoint(m_RaycastResult.point).z - m_ClimbOffset;
-            var localDesiredMovement = m_Rigidbody.InverseTransformDirection(m_CharacterLocomotion.DesiredMovement);
+            var offset = m_CharacterLocomotion.InverseTransformPoint(m_RaycastResult.point).z - m_ClimbOffset;
+            var localDesiredMovement = m_CharacterLocomotion.InverseTransformDirection(m_CharacterLocomotion.DesiredMovement);
             localDesiredMovement.z = Mathf.MoveTowards(localDesiredMovement.z, offset, m_MoveTowardsSpeed * m_CharacterLocomotion.TimeScale);
-            m_CharacterLocomotion.DesiredMovement = m_Rigidbody.TransformDirection(localDesiredMovement);
+            m_CharacterLocomotion.DesiredMovement = m_CharacterLocomotion.TransformDirection(localDesiredMovement);
         }
 
         /// <summary>
@@ -625,7 +627,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
 
             // The IK needs to be updated. Perform the update for both the rotation and position so the raycast only needs to be cast once.
             var raycastNormal = Vector3.ProjectOnPlane(m_RaycastResult.normal, m_CharacterLocomotion.Up).normalized;
-            var rotation = m_Rigidbody.rotation;
+            var rotation = m_CharacterLocomotion.Rotation;
             Vector3 offset;
             if (ikGoal == CharacterIKBase.IKGoal.LeftHand || ikGoal == CharacterIKBase.IKGoal.RightHand) {
                 offset = MathUtility.TransformDirection(m_HandIKCastOffset, rotation);
@@ -694,8 +696,8 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 if ((m_AllowedMovements & AllowedMovement.Leap) == 0) {
                     return true;
                 }
-                var rayPosition = m_Rigidbody.TransformPoint(Mathf.Sign(m_CharacterLocomotion.RawInputVector.x) * m_LeapEdgeOffset.x, m_CharacterLocomotion.RawInputVector.y > 0 ? m_LeapEdgeOffset.y : 0, 0);
-                var raycastNormal = Vector3.ProjectOnPlane(-(m_Rigidbody.rotation * Vector3.forward), m_CharacterLocomotion.Up).normalized;
+                var rayPosition = m_CharacterLocomotion.TransformPoint(Mathf.Sign(m_CharacterLocomotion.RawInputVector.x) * m_LeapEdgeOffset.x, m_CharacterLocomotion.RawInputVector.y > 0 ? m_LeapEdgeOffset.y : 0, 0);
+                var raycastNormal = Vector3.ProjectOnPlane(-(m_CharacterLocomotion.Rotation * Vector3.forward), m_CharacterLocomotion.Up).normalized;
                 if (!Physics.Raycast(rayPosition, -raycastNormal, out m_RaycastHit, m_CastDistance, 1 << m_DetectedObject.layer, QueryTriggerInteraction.Ignore) || 
                     m_RaycastHit.transform != m_RaycastResult.transform) {
                     return true;
@@ -788,10 +790,10 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
             offset.y = m_CharacterLocomotion.RawInputVector.y == 0 ? Mathf.Sign(m_CharacterLocomotion.RawInputVector.y) * m_StartHangOffset.y : 0;
 #if UNITY_EDITOR
             if (m_DrawDebugLines) {
-                Debug.DrawRay(m_Rigidbody.TransformPoint(offset), (m_CastDistance + Mathf.Abs(offset.z)) * 2 * (m_Rigidbody.rotation * Vector3.forward), Color.green);
+                Debug.DrawRay(m_CharacterLocomotion.TransformPoint(offset), (m_CastDistance + Mathf.Abs(offset.z)) * 2 * (m_CharacterLocomotion.Rotation * Vector3.forward), Color.green);
             }
 #endif
-            if (!Physics.Raycast(m_Rigidbody.TransformPoint(offset), (m_Rigidbody.rotation * Vector3.forward), out m_RaycastResult, (m_CastDistance + Mathf.Abs(offset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) ||
+            if (!Physics.Raycast(m_CharacterLocomotion.TransformPoint(offset), (m_CharacterLocomotion.Rotation * Vector3.forward), out m_RaycastResult, (m_CastDistance + Mathf.Abs(offset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) ||
                 !ValidateObject(m_RaycastResult.collider.gameObject, m_RaycastResult)) {
                 return false;
             }

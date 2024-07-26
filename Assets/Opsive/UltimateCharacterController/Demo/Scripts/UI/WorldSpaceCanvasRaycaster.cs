@@ -53,7 +53,11 @@ namespace Opsive.UltimateCharacterController.Demo.UI
             m_EventSystem = EventSystem.current;
 
             if (m_Character == null) {
+#if UNITY_2023_1_OR_NEWER
+                var demoManager = FindFirstObjectByType<DemoManager>();
+#else
                 var demoManager = FindObjectOfType<DemoManager>();
+#endif
                 m_Character = demoManager.Character;
                 m_CharacterLocomotion = m_Character.GetComponent<UltimateCharacterLocomotion>();
             }

@@ -88,11 +88,11 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing.Objects
         /// <summary>
         /// Returns the look direction of the mounted character.
         /// </summary>
-        /// <param name="characterRigidbody">The character's rigidbody</param>
+        /// <param name="characterLocomotion">The character's locomotion</param>
         /// <returns>The look direction of the mounted character.</returns>
-        public Vector3 GetLookDirection(Rigidbody characterRigidbody)
+        public Vector3 GetLookDirection(CharacterLocomotion characterLocomotion)
         {
-            var forward = m_Transform.InverseTransformPoint(characterRigidbody.position).z > 0;
+            var forward = m_Transform.InverseTransformPoint(characterLocomotion.Position).z > 0;
             return m_Transform.forward * (forward ? -1 : 1);
         }
     }

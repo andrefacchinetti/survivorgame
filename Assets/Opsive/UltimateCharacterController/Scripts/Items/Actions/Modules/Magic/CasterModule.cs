@@ -142,7 +142,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
         [Tooltip("Use the Character Transform as the Cast Origin?")]
         [SerializeField] protected bool m_CharacterAsCastOrigin = false;
         [Tooltip("The Cast Origin transform.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_CastOrigin;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_CastOrigin = new ItemPerspectiveIDObjectProperty<Transform>();
         [Tooltip("Is the character required to be on the ground?")]
         [SerializeField] protected bool m_RequireGrounded = true;
         [Tooltip("The direction of the cast.")]
@@ -252,7 +252,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
             }
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             // The local surface indicator should not show for remote players.
-            if (NetworkInfo != null && !NetworkInfo.HasAuthority()) {
+            if (NetworkInfo != null && !NetworkInfo.IsLocalPlayer()) {
                 m_SurfaceIndicator = null;
             }
 #endif
@@ -289,7 +289,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
         public void OnAnimatorStartCast()
         {
             StartCastEffects();
-            
+
             if (m_CastUpdateOnCast) {
                 CastUpdate();
             }
@@ -596,9 +596,9 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
                 if (m_Direction == CastDirection.Target) {
                     DetermineTargetColliders();
                 }
-                if (!DetermineCastValues(0, ref m_CastDirection, ref m_CastTargetPosition, ref m_CastNormal)) {
-                    return false;
-                }
+            }
+            if (!DetermineCastValues(0, ref m_CastDirection, ref m_CastTargetPosition, ref m_CastNormal)) {
+                return false;
             }
             return true;
         }
@@ -612,6 +612,10 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
             // The item cannot be used while it is already casting.
             // Casting effects must stop before they can be cast again by the trigger.
             if (m_Casting) { return false; }
+
+            if (!DetermineCastValues(0, ref m_CastDirection, ref m_CastTargetPosition, ref m_CastNormal)) {
+                return false;
+            }
 
             return true;
         }
@@ -725,7 +729,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
 
                 if (hasCastValue) {
                     if (m_CharacterItemAction.IsDebugging) {
-                        Debug.DrawRay(castPosition, direction *m_MaxDistance, Color.blue, 0.1f);
+                        Debug.DrawRay(castPosition, direction * m_MaxDistance, Color.blue, 0.1f);
                     }
                 }
                 

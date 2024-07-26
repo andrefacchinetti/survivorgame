@@ -28,6 +28,9 @@ namespace Opsive.UltimateCharacterController.Editor.Inspectors
             baseCallback += () =>
             {
                 EditorGUILayout.PropertyField(PropertyFromName("m_AnimatorSpeed"));
+                EditorGUILayout.PropertyField(PropertyFromName("m_UpdateMode"));
+                EditorGUILayout.PropertyField(PropertyFromName("m_YawMultiplier"));
+                EditorGUILayout.PropertyField(PropertyFromName("m_MovingSpeedParameterValue"));
                 if (Foldout("Time")) {
                     EditorGUI.indentLevel++;
                     EditorGUILayout.PropertyField(PropertyFromName("m_HorizontalMovementDampingTime"));

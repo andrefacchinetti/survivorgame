@@ -46,8 +46,8 @@ namespace Opsive.UltimateCharacterController.Inventory
         [Shared.Utility.NonSerialized] public IItemIdentifier[] ItemIdentifiers { get { return m_ItemIdentifiers; } set { m_ItemIdentifiers = value; } }
         
         [Shared.Utility.NonSerialized] public EquipUnequip EquipUnequip => m_ItemSetGroup.EquipUnequip;
-        [Shared.Utility.NonSerialized] public int Index => m_ItemSetGroup.GetItemSetIndex(this);
-        [Shared.Utility.NonSerialized] public int GroupIndex => ItemSetGroup.GroupIndex;
+        [Shared.Utility.NonSerialized] public int Index => m_ItemSetGroup?.GetItemSetIndex(this) ?? -1;
+        [Shared.Utility.NonSerialized] public int GroupIndex => ItemSetGroup?.GroupIndex ?? -1;
         [Shared.Utility.NonSerialized] public ItemSetGroup ItemSetGroup => m_ItemSetGroup;
         [Shared.Utility.NonSerialized] public bool Default => ItemSetGroup?.GetDefaultItemSet() == this;
         [Shared.Utility.NonSerialized] public IItemSetRule ItemSetRule => ItemSetGroup?.GetItemSetRule(this);
@@ -276,8 +276,7 @@ namespace Opsive.UltimateCharacterController.Inventory
         /// </summary>
         public void OnReturnToPool()
         {
-            // Do not reset the States because it has to persist.
-            
+            // Do not reset the states because it has to persist.
             for (int i = 0; i < ItemIdentifiers.Length; i++) {
                 ItemIdentifiers[i] = null;
             }

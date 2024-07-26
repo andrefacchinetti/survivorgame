@@ -212,7 +212,7 @@ namespace Opsive.UltimateCharacterController.Inventory
             InitializePreAddedCharacterItems();
 
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
-            if (m_NetworkInfo == null || m_NetworkInfo.IsLocalPlayer() || m_NetworkInfo.HasAuthority()) {
+            if (m_NetworkInfo == null || m_NetworkInfo.HasAuthority() || m_NetworkInfo.IsLocalPlayer()) {
 #endif
                 LoadDefaultLoadout();
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
@@ -250,7 +250,6 @@ namespace Opsive.UltimateCharacterController.Inventory
         /// Pick up each ItemIdentifier within the DefaultLoadout.
         /// </summary>
         public abstract void LoadDefaultLoadoutInternal();
-
 
         /// <summary>
         /// Determines if the character has the specified item.
@@ -552,12 +551,6 @@ namespace Opsive.UltimateCharacterController.Inventory
             }
         }
 
-        protected virtual void SendPreItemIdentifierAdjustAmountEvent(IItemIdentifier itemIdentifier)
-        {
-            // Notify those interested that an item has been adjusted.
-            EventHandler.ExecuteEvent(m_GameObject, "OnPreInventoryAdjustItemIdentifierAmount", itemIdentifier);
-        }
-
         /// <summary>
         /// Adjusts the amount of the specified ItemIdentifier.
         /// </summary>
@@ -566,7 +559,7 @@ namespace Opsive.UltimateCharacterController.Inventory
         public virtual int AddItemIdentifierAmount(IItemIdentifier itemIdentifier, int amount)
         {
             if (m_AutoSpawnDestroyRuntimeCharacterItems) {
-                return PickupItem(itemIdentifier, -1, amount, false, false, true, m_AutoSpawnDestroyRuntimeCharacterItems);
+                return PickupItem(itemIdentifier, -1, amount, GetCharacterItem(itemIdentifier) == null, false, true, m_AutoSpawnDestroyRuntimeCharacterItems);
             } else {
                 return AddItemIdentifierAmount(itemIdentifier, amount, m_AutoSpawnDestroyRuntimeCharacterItems);
             }
@@ -959,14 +952,14 @@ namespace Opsive.UltimateCharacterController.Inventory
         /// <param name="drop">Should the item be dropped?</param>
         /// <param name="removeCharacterItem">Should the character item be removed?</param>
         /// <param name="destroyCharacterItem">Should the character item be destroyed?</param>
+        /// <param name="removeAssociatedItemIdentifiers">Should the associated item identifiers also be removed</param>
         /// <returns>Returns a tuple of the actual amount removed and the dropped item instance.</returns>
-        protected virtual (int amountRemoved, GameObject dropInstance) RemoveItemIdentifierAmountInternal(IItemIdentifier itemIdentifier, int slotID, int amount, bool drop, bool removeCharacterItem, bool destroyCharacterItem)
+        protected virtual (int amountRemoved, GameObject dropInstance) RemoveItemIdentifierAmountInternal(IItemIdentifier itemIdentifier, int slotID, int amount, bool drop, bool removeCharacterItem, bool destroyCharacterItem, bool removeAssociatedItemIdentifiers = true)
         {
             GameObject dropInstance = null;
             if (itemIdentifier == null || amount <= 0) {
                 return (0, dropInstance);
             }
-            SendPreItemIdentifierAdjustAmountEvent(itemIdentifier);
 
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             if (m_NetworkInfo != null && m_NetworkInfo.HasAuthority()) {
@@ -976,6 +969,7 @@ namespace Opsive.UltimateCharacterController.Inventory
 
             if (drop) {
                 dropInstance = TryDropItemInstance(itemIdentifier, slotID, amount);
+                EventHandler.ExecuteEvent(m_GameObject, "OnInventoryDropItem", dropInstance);
             }
 
             if (!CanRemoveItemIdentifier(itemIdentifier)) {
@@ -996,12 +990,12 @@ namespace Opsive.UltimateCharacterController.Inventory
                 if (slotID == -1 && newAmount == 0) {
                     for (int i = 0; i < SlotCount; i++) {
                         if (TryGetCharacterItem(itemIdentifier, i, out var characterItem)) {
-                            RemoveCharacterItem(characterItem, destroyCharacterItem);
+                            RemoveCharacterItem(characterItem, destroyCharacterItem, removeAssociatedItemIdentifiers);
                         }
                     }
                 } else if (slotID != -1) {
                     if (TryGetCharacterItem(itemIdentifier, slotID, out var characterItem)) {
-                        RemoveCharacterItem(characterItem, destroyCharacterItem);
+                        RemoveCharacterItem(characterItem, destroyCharacterItem, removeAssociatedItemIdentifiers);
                     }
                 }
             }
@@ -1048,11 +1042,20 @@ namespace Opsive.UltimateCharacterController.Inventory
         /// </summary>
         /// <param name="characterItem">The character item to remove.</param>
         /// <param name="destroyCharacterItem">Should the character item be destroyed.</param>
+        /// <param name="removeAssociatedItemIdentifiers">Should the associated item identifiers also be removed?</param>
         /// <returns>True if the character item was removed or destroyed correctly.</returns>
-        public virtual bool RemoveCharacterItem(CharacterItem characterItem, bool destroyCharacterItem)
+        public virtual bool RemoveCharacterItem(CharacterItem characterItem, bool destroyCharacterItem, bool removeAssociatedItemIdentifiers = true)
         {
             if (characterItem == null) {
                 return false;
+            }
+
+            // Remove all of the item identifiers associated with the item.
+            if (removeAssociatedItemIdentifiers) {
+                var itemIdentifiers = characterItem.GetAdditionalItemIdenitifersToDrop();
+                for (int i = itemIdentifiers.Count - 1; i >= 0; --i) {
+                    RemoveItemIdentifierAmount(itemIdentifiers[i].ItemIdentifier, itemIdentifiers[i].Amount);
+                }
             }
 
             // Remove the item from the valid character items, not from the all character item list or character items by slot list.
@@ -1286,7 +1289,7 @@ namespace Opsive.UltimateCharacterController.Inventory
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             if (m_NetworkInfo == null || m_NetworkInfo.HasAuthority()) {
 #endif
-            spawnedObject = ObjectPoolBase.Instantiate(dropPrefab, dropPosition, dropRotation);
+                spawnedObject = ObjectPoolBase.Instantiate(dropPrefab, dropPosition, dropRotation);
                 // The ItemPickup component is responsible for allowing characters to pick up the item. Save the ItemIdentifier count
                 // to the ItemIdentifierAmount array so that same amount can be picked up again.
                 var itemPickup = spawnedObject.GetCachedComponent<ItemPickupBase>();
@@ -1391,7 +1394,7 @@ namespace Opsive.UltimateCharacterController.Inventory
                             var itemDefinitionAmount = new ItemIdentifierAmount(characterItem.ItemIdentifier.GetItemDefinition(), Mathf.Min(existingAmount, amount));
 
                             // The character item can have other items which can be dropped simultaneously like ammo item. 
-                            var otherItemsToDrop = characterItem.GetAdditionalItemsToDrop();
+                            var otherItemsToDrop = characterItem.GetAdditionalItemIdenitifersToDrop();
 
                             // If the dropped Item is a usable item then the array should be larger to be able to pick up the usable ItemIdentifier.
                             // Save the main ItemIdentifier.
@@ -1402,8 +1405,7 @@ namespace Opsive.UltimateCharacterController.Inventory
                             itemDefinitionAmounts[0] = itemDefinitionAmount;
 
                             for (int i = 0; i < otherItemsToDrop.Count; i++) {
-                                var otherItemToDrop = otherItemsToDrop[i];
-                                itemDefinitionAmounts[i + 1] = otherItemToDrop;
+                                itemDefinitionAmounts[i + 1] = otherItemsToDrop[i];
                             }
 
                             // Enable the ItemPickup.
@@ -1446,7 +1448,7 @@ namespace Opsive.UltimateCharacterController.Inventory
             if (characterItem.DropItemEvent != null) {
                 characterItem.DropItemEvent.Invoke();
             }
-            
+
             EventHandler.ExecuteEvent<CharacterItem, int, GameObject>(m_GameObject, "OnInventoryDropItem", characterItem, amount, spawnedObject);
             
             return spawnedObject;
@@ -1489,9 +1491,8 @@ namespace Opsive.UltimateCharacterController.Inventory
 
                 var characterItem = allItems[i];
                 var itemIdentifier = characterItem.ItemIdentifier;
-                var slotID = characterItem.SlotID;
                 while (GetItemIdentifierAmount(itemIdentifier) > 0 && CanRemoveItemIdentifier(itemIdentifier)) {
-                    RemoveItemIdentifier(itemIdentifier, slotID, 1, drop);
+                    RemoveItemIdentifier(itemIdentifier, characterItem.SlotID, 1, drop);
                 }
             }
         }

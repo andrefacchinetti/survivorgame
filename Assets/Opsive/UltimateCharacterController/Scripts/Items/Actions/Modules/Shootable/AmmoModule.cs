@@ -217,7 +217,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
     /// Uses Items inside the Inventory to get ammo for the shootable action.
     /// </summary>
     [Serializable]
-    public class ItemAmmo : ShootableAmmoModule, IModuleGetItemsToDrop, IModuleItemDefinitionConsumer
+    public class ItemAmmo : ShootableAmmoModule, IModuleGetItemIdentifiersToDrop, IModuleItemDefinitionConsumer
     {
         /// <summary>
         /// Specifies the quantity of ammo that gets dropped when the character item is dropped.
@@ -386,10 +386,10 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         }
 
         /// <summary>
-        /// Get the items to drop by adding it to the list.
+        /// Get the items identifiers to drop by adding it to the list.
         /// </summary>
-        /// <param name="itemsToDrop">The list of items to drop, the item to drop will be added to this list.</param>
-        public void GetItemsToDrop(List<ItemIdentifierAmount> itemsToDrop)
+        /// <param name="itemsIdentifiersToDrop">The list of items identifiers to drop, the item to drop will be added to this list.</param>
+        public void GetItemIdentifiersToDrop(List<ItemIdentifierAmount> itemsIdentifiersToDrop)
         {
             var amount = -1;
             switch (m_DropOption) {
@@ -409,8 +409,8 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             if (amount == -1) {
                 return;
             }
-            
-            itemsToDrop.Add(new ItemIdentifierAmount(m_AmmoItemDefinition, amount));
+
+            itemsIdentifiersToDrop.Add(new ItemIdentifierAmount(m_AmmoItemDefinition, amount));
         }
 
         // IModuleItemDefinitionConsumer implementation:

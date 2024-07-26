@@ -184,7 +184,7 @@ namespace Opsive.UltimateCharacterController.Objects
                             direction = head.position - position;
                             if (Physics.Raycast(position, direction, out m_RaycastHit, direction.magnitude, layerMask, QueryTriggerInteraction.Ignore) &&
                                 !m_RaycastHit.transform.IsChildOf(hitCollider.transform) && !hitCollider.transform.IsChildOf(m_RaycastHit.transform) &&
-                                m_RaycastHit.transform.IsChildOf(m_Transform)
+                                !m_RaycastHit.transform.IsChildOf(m_Transform)
 #if FIRST_PERSON_CONTROLLER
                                 // The cast should not hit any colliders who are a child of the camera.
                                 && m_RaycastHit.transform.gameObject.GetCachedParentComponent<FirstPersonController.Character.FirstPersonObjects>() == null

@@ -10,6 +10,7 @@ namespace Opsive.UltimateCharacterController.Objects
     using Opsive.Shared.Events;
     using Opsive.Shared.Game;
     using Opsive.UltimateCharacterController.Character;
+    using Opsive.UltimateCharacterController.Events;
     using Opsive.UltimateCharacterController.Game;
     using Opsive.UltimateCharacterController.SurfaceSystem;
     using Opsive.UltimateCharacterController.Traits.Damage;
@@ -80,6 +81,9 @@ namespace Opsive.UltimateCharacterController.Objects
         [SerializeField] protected int m_MaxPositionCount = 150;
         [Tooltip("The audio that should be looped while the object is active.")]
         [SerializeField] protected AudioClipSet m_ActiveAudioClipSet = new AudioClipSet();
+
+        [Tooltip("Event invoked when the object collides with another object.")]
+        [SerializeField] protected UnityRaycastEvent m_OnCollisionEvent;
 
         public float Mass { get { return m_Mass; } set { m_Mass = value; } }
         public float StartVelocityMultiplier { get { return m_StartVelocityMultiplier; } set { m_StartVelocityMultiplier = value; } }
@@ -699,6 +703,10 @@ namespace Opsive.UltimateCharacterController.Objects
                 if (m_SurfaceImpact != null) {
                     SurfaceManager.SpawnEffect(hit.Value, m_SurfaceImpact, m_NormalizedGravity, m_TimeScale, m_GameObject);
                 }
+                
+                if (m_OnCollisionEvent != null) {
+                    m_OnCollisionEvent.Invoke(hit.Value);
+                }
             }
         }
 
@@ -714,7 +722,7 @@ namespace Opsive.UltimateCharacterController.Objects
             var hitCount = 0;
             if (m_Collider is SphereCollider) {
                 var sphereCollider = m_Collider as SphereCollider;
-                hitCount = Physics.SphereCastNonAlloc(position, sphereCollider.radius * MathUtility.ColliderScaleMultiplier(sphereCollider), direction.normalized, m_CombinedRaycastHits, direction.magnitude + c_ColliderSpacing, m_ImpactLayers, QueryTriggerInteraction.Ignore);
+                hitCount = Physics.SphereCastNonAlloc(position + m_Transform.TransformDirection(sphereCollider.center), sphereCollider.radius * MathUtility.ColliderScaleMultiplier(sphereCollider), direction.normalized, m_CombinedRaycastHits, direction.magnitude + c_ColliderSpacing, m_ImpactLayers, QueryTriggerInteraction.Ignore);
             } else if (m_Collider is CapsuleCollider) {
                 var capsuleCollider = m_Collider as CapsuleCollider;
                 Vector3 startEndCap, endEndCap;
@@ -723,7 +731,7 @@ namespace Opsive.UltimateCharacterController.Objects
                 hitCount = Physics.CapsuleCastNonAlloc(startEndCap, endEndCap, radius, direction.normalized, m_CombinedRaycastHits, direction.magnitude + c_ColliderSpacing, m_ImpactLayers, QueryTriggerInteraction.Ignore);
             } else if (m_Collider is BoxCollider) {
                 var boxCollider = m_Collider as BoxCollider;
-                hitCount = Physics.BoxCastNonAlloc(m_Transform.TransformPoint(boxCollider.center), boxCollider.size / 4, direction.normalized, m_CombinedRaycastHits, m_Transform.rotation, direction.magnitude + c_ColliderSpacing, m_ImpactLayers, QueryTriggerInteraction.Ignore);
+                hitCount = Physics.BoxCastNonAlloc(position + m_Transform.TransformDirection(boxCollider.center), boxCollider.size / 4, direction.normalized, m_CombinedRaycastHits, m_Transform.rotation, direction.magnitude + c_ColliderSpacing, m_ImpactLayers, QueryTriggerInteraction.Ignore);
             } else { // No collider attached.
                 hitCount = Physics.RaycastNonAlloc(position, direction.normalized, m_CombinedRaycastHits, direction.magnitude + c_ColliderSpacing, m_ImpactLayers, QueryTriggerInteraction.Ignore);
             }
@@ -737,15 +745,16 @@ namespace Opsive.UltimateCharacterController.Objects
                         var closestRaycastHit = QuickSelect.SmallestK(m_CombinedRaycastHits, hitCount, i, m_RaycastHitComparer);
                         if (closestRaycastHit.transform.IsChildOf(m_OwnerTransform)
 #if FIRST_PERSON_CONTROLLER
-                            // The object should not hit any colliders who are a child of the camera.
-                            || closestRaycastHit.transform.gameObject.GetCachedParentComponent<FirstPersonController.Character.FirstPersonObjects>() != null
+                                // The object should not hit any colliders who are a child of the camera.
+                                || closestRaycastHit.transform.gameObject.GetCachedParentComponent<FirstPersonController.Character.FirstPersonObjects>() != null
 #endif
-                    ) {
+                        ) {
                             continue;
                         } else {
                             index = i;
                             m_OwnerCollisionCheck = false;
                             absoluteIndex = true;
+                            break;
                         }
                     }
 

@@ -8,6 +8,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
 {
     using Opsive.Shared.Events;
     using Opsive.Shared.Game;
+    using Opsive.UltimateCharacterController.Character;
     using Opsive.UltimateCharacterController.Character.Abilities;
     using Opsive.UltimateCharacterController.Utility;
     using UnityEngine;
@@ -94,7 +95,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
                 return false;
             }
 
-            if (!m_CharacterLocomotion.SingleCast(m_Rigidbody.rotation * Vector3.forward, Vector3.zero, m_CastDistance, m_CharacterLayerManager.SolidObjectLayers, ref m_RaycastResult)) {
+            if (!m_CharacterLocomotion.SingleCast(m_CharacterLocomotion.Rotation * Vector3.forward, Vector3.zero, m_CastDistance, m_CharacterLayerManager.SolidObjectLayers, ref m_RaycastResult)) {
                 return false;
             }
 
@@ -107,7 +108,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
             };
 
             // Ensure the point is less than the max surface height.
-            if (m_Rigidbody.InverseTransformPoint(m_RaycastResult.point).y > m_MaxSurfaceHeight) {
+            if (m_CharacterLocomotion.InverseTransformPoint(m_RaycastResult.point).y > m_MaxSurfaceHeight) {
                 return false;
             }
 
@@ -116,7 +117,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
                 return false;
             }
 
-            m_TopClimbPosition = MathUtility.TransformPoint(m_RaycastResult.point, m_Rigidbody.rotation, m_ClimbOffset);
+            m_TopClimbPosition = MathUtility.TransformPoint(m_RaycastResult.point, m_CharacterLocomotion.Rotation, m_ClimbOffset);
 
             return true;
         }
@@ -162,7 +163,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
         {
             // Keep the character facing the object that they are climbing out on.
             var targetRotation = Quaternion.LookRotation(-m_DetectedObjectNormal, m_CharacterLocomotion.Up);
-            m_CharacterLocomotion.DesiredRotation = Quaternion.Inverse(m_Rigidbody.rotation) * targetRotation;
+            m_CharacterLocomotion.DesiredRotation = Quaternion.Inverse(m_CharacterLocomotion.Rotation) * targetRotation;
         }
 
         /// <summary>
@@ -175,7 +176,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
             }
 
             // Move the character into the starting position. The animation will put up as soon as the character is in position.
-            var direction = m_TopClimbPosition - m_Rigidbody.position;
+            var direction = m_TopClimbPosition - m_CharacterLocomotion.Position;
             if (direction.magnitude < 0.01f) {
                 m_CharacterLocomotion.DesiredMovement = Vector3.zero;
                 m_InPosition = true;

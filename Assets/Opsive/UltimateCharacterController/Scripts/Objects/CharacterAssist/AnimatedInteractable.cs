@@ -33,13 +33,13 @@ namespace Opsive.UltimateCharacterController.Objects.CharacterAssist
         [SerializeField] protected AudioClip[] m_InteractAudioClips;
 
         [System.NonSerialized] private GameObject m_GameObject;
-        private Animator m_Animator;
-        private AnimatedInteractable[] m_AnimatedInteractables;
+        protected Animator m_Animator;
+        protected AnimatedInteractable[] m_AnimatedInteractables;
         protected bool m_HasInteracted;
-        private int m_BoolParameterHash;
-        private int m_TriggerParameterHash;
-        private int m_AudioClipIndex = -1;
-        private bool m_ActiveBoolInteractable;
+        protected int m_BoolParameterHash;
+        protected int m_TriggerParameterHash;
+        protected int m_AudioClipIndex = -1;
+        protected bool m_ActiveBoolInteractable;
 
         public bool ActiveBoolInteractable { get { return m_ActiveBoolInteractable; } }
 

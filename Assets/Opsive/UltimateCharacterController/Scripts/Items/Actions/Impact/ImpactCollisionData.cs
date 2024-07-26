@@ -184,7 +184,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Impact
         /// </summary>
         public uint SourceID { get => m_SourceID; set => m_SourceID = value; }
         /// <summary>
-        /// Most impact have raycast hit.
+        /// Most impacts have a raycast hit.
         /// </summary>
         public RaycastHit RaycastHit { get => m_RaycastHit; set => m_RaycastHit = value; }
         /// <summary>

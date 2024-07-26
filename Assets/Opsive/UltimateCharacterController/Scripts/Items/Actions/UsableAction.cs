@@ -231,10 +231,8 @@ namespace Opsive.UltimateCharacterController.Items.Actions
             }
 
             m_RegisteredToEvents = register;
-            var eventTarget = m_Character;
-            
-            m_UseEvent.RegisterUnregisterEvent(register, eventTarget,"OnAnimatorItemUse",m_CharacterItem.SlotID, HandleItemUseAnimationSlotEvent);
-            m_UseCompleteEvent.RegisterUnregisterEvent(register, eventTarget,"OnAnimatorItemUseComplete",m_CharacterItem.SlotID, HandleItemUseCompleteAnimationSlotEvent);
+            m_UseEvent.RegisterUnregisterEvent(register, m_Character, "OnAnimatorItemUse",m_CharacterItem.SlotID, HandleItemUseAnimationSlotEvent);
+            m_UseCompleteEvent.RegisterUnregisterEvent(register, m_Character, "OnAnimatorItemUseComplete",m_CharacterItem.SlotID, HandleItemUseCompleteAnimationSlotEvent);
         }
 
         /// <summary>
@@ -301,7 +299,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
 
                 // The item can no longer be used. Stop the ability.
                 if (abilityState != UseAbilityState.Start) { useAbility.StopAbility(); }
-                
+
                 return false;
             }
 
@@ -355,7 +353,6 @@ namespace Opsive.UltimateCharacterController.Items.Actions
                     DebugLogger.SetInfo(InfoKey_CanUseItem, "(No) "+message);
                     DebugLogger.Log(message);
                 }
-                
                 return false;
             }
             
@@ -649,7 +646,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
             
             DebugLogger.SetInfo(InfoKey_UseInputActive, (!useInputIsTryingToStop).ToString());
             
-            // The Animator monitor updates with the simulation manager.
+            // The animator monitor updates with the simulation manager.
             // Give it an extra frame to avoid preventing transitions that are required for animation events.
             if (m_UseCompleteWaitForAnimatorUpdate) {
                 m_UseCompleteWaitForAnimatorUpdate = false;
@@ -660,8 +657,21 @@ namespace Opsive.UltimateCharacterController.Items.Actions
                 return false;
             }
 
+            var startItemUse = false;
+            if (CanStartUseItem(useItemAbility, UseAbilityState.Update)) {
+                // In some cases the item can start without having finished complete (such as the melee combo).
+                // In that case complete early and wait for the next frame.
+                if (m_UseCompleteEvent.IsWaiting) {
+                    ItemUseComplete();
+                    return true;
+                }
+
+                StartItemUse(useItemAbility);
+                startItemUse = true;
+            }
+
             // The item may not be able to be used.
-            if (CanUseItem()) {
+            if (startItemUse || CanUseItem()) {
                 UseItem();
                 EventHandler.ExecuteEvent<IUsableItem>(m_Character, "OnUseAbilityUsedItem", this);
 
@@ -679,18 +689,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
                 return false;
             }
             
-            if (CanStartUseItem(useItemAbility, UseAbilityState.Update)) {
-                // In some cases the item can start without having finished complete (such as the melee combo).
-                // In that case complete early and wait for the next frame.
-                if (m_UseCompleteEvent.IsWaiting) {
-                    ItemUseComplete();
-                    return true;
-                }
-
-                StartItemUse(useItemAbility);
-            }
-
-            return true;
+            return startItemUse;
         }
 
         /// <summary>

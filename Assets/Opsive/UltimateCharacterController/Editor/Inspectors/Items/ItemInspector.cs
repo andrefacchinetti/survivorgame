@@ -12,7 +12,6 @@ namespace Opsive.UltimateCharacterController.Editor.Inspectors.Items
     using Opsive.UltimateCharacterController.Items;
     using Opsive.UltimateCharacterController.Inventory;
     using System;
-    using Opsive.UltimateCharacterController.Character;
     using UnityEditor;
     using UnityEditorInternal;
     using UnityEngine;

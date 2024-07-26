@@ -81,18 +81,11 @@ namespace Opsive.UltimateCharacterController.Character
                 if (m_CenterOffset == value) {
                     return;
                 }
-                if (m_CenterOffsetEvent != null) {
-                    Scheduler.Cancel(m_CenterOffsetEvent);
-                    m_CenterOffsetEvent = null;
-                }
                 AdjustCenterOffset(value);
             }
         }
         public float RadiusAdjustment { get { return m_RadiusAdjustment; }
             set {
-                if (m_RadiusAdjustment == value) {
-                    return;
-                }
                 if (m_RadiusAdjustmentEvent != null) {
                     Scheduler.Cancel(m_RadiusAdjustmentEvent);
                     m_RadiusAdjustmentEvent = null;
@@ -113,6 +106,7 @@ namespace Opsive.UltimateCharacterController.Character
         private Vector3 m_SecondEndCapOffset;
         private Vector3 m_FirstEndCapLocalPosition;
         private Quaternion m_PrevLocalRotation;
+        private Vector3 m_AppliedCenterOffset;
         private ScheduledEventBase m_CenterOffsetEvent;
         private ScheduledEventBase m_RadiusAdjustmentEvent;
 
@@ -179,17 +173,11 @@ namespace Opsive.UltimateCharacterController.Character
                 EventHandler.RegisterEvent<float>(m_CharacterGameObject, "OnHeightChangeAdjustHeight", AdjustCapsuleColliderHeight);
             }
 
-            Vector3 firstEndCap, secondEndCap;
-            MathUtility.CapsuleColliderEndCaps(m_CapsuleCollider, m_Transform.position, m_Transform.rotation, out firstEndCap, out secondEndCap);
-
-            if ((m_FirstEndCapTarget.position - firstEndCap).sqrMagnitude > (m_SecondEndCapTarget.position - firstEndCap).sqrMagnitude) {
-                // The second target may be closer to the first end cap than the first target is. Switch the targets.
-                var target = m_FirstEndCapTarget;
-                m_FirstEndCapTarget = m_SecondEndCapTarget;
-                m_SecondEndCapTarget = target;
-            }
             m_Transform.position = m_FirstEndCapTarget.position;
             m_FirstEndCapLocalPosition = m_FirstEndCapTarget.localPosition;
+
+            Vector3 firstEndCap, secondEndCap;
+            MathUtility.CapsuleColliderEndCaps(m_CapsuleCollider, m_Transform.position, m_Transform.rotation, out firstEndCap, out secondEndCap);
             m_FirstEndCapOffset = m_Transform.InverseTransformDirection(m_FirstEndCapTarget.position - firstEndCap);
             m_SecondEndCapOffset = m_Transform.InverseTransformDirection(m_SecondEndCapTarget.position - secondEndCap) - m_CharacterTransform.up * m_SecondEndCapPadding;
 
@@ -289,17 +277,22 @@ namespace Opsive.UltimateCharacterController.Character
         /// <param name="targetOffset">The desired offset value.</param>
         private void AdjustCenterOffset(Vector3 targetOffset)
         {
-            var delta = targetOffset - m_CenterOffset;
+            if (m_CenterOffsetEvent != null) {
+                Scheduler.Cancel(m_CenterOffsetEvent);
+                m_CenterOffsetEvent = null;
+            }
+
+            var delta = targetOffset - m_AppliedCenterOffset;
             m_CapsuleCollider.center += delta;
             m_CapsuleCollider.height += delta.y / 2;
-            m_CenterOffsetEvent = null;
 
             if (!m_CharacterLocomotion.UsingHorizontalCollisionDetection) {
-                m_CenterOffset = targetOffset;
+                m_AppliedCenterOffset = m_CenterOffset = targetOffset;
                 return;
             }
 
             // Apply the offset if there are no collisions.
+            var collisionLayerEnabled = m_CharacterLocomotion.CollisionLayerEnabled;
             m_CharacterLocomotion.EnableColliderCollisionLayer(false);
             Vector3 firstEndCap, secondEndCap;
             MathUtility.CapsuleColliderEndCaps(m_CapsuleCollider, m_Transform.position, m_Transform.rotation, out firstEndCap, out secondEndCap);
@@ -309,9 +302,9 @@ namespace Opsive.UltimateCharacterController.Character
                 m_CapsuleCollider.height -= delta.y / 2;
                 m_CenterOffsetEvent = Scheduler.Schedule(Time.fixedDeltaTime, AdjustCenterOffset, targetOffset);
             } else {
-                m_CenterOffset = targetOffset;
+                m_AppliedCenterOffset = m_CenterOffset = targetOffset;
             }
-            m_CharacterLocomotion.EnableColliderCollisionLayer(true);
+            m_CharacterLocomotion.EnableColliderCollisionLayer(collisionLayerEnabled);
         }
 
         /// <summary>
@@ -330,6 +323,7 @@ namespace Opsive.UltimateCharacterController.Character
             }
 
             // Apply the offset if there are no collisions.
+            var collisionLayerEnabled = m_CharacterLocomotion.CollisionLayerEnabled;
             m_CharacterLocomotion.EnableColliderCollisionLayer(false);
             Vector3 firstEndCap, secondEndCap;
             MathUtility.CapsuleColliderEndCaps(m_CapsuleCollider, m_Transform.position, m_Transform.rotation, out firstEndCap, out secondEndCap);
@@ -340,7 +334,7 @@ namespace Opsive.UltimateCharacterController.Character
             } else {
                 m_RadiusAdjustment = targetOffset;
             }
-            m_CharacterLocomotion.EnableColliderCollisionLayer(true);
+            m_CharacterLocomotion.EnableColliderCollisionLayer(collisionLayerEnabled);
         }
 
         /// <summary>

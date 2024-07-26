@@ -34,7 +34,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
         /// <returns>True if the ability should be blocked.</returns>
         public override bool ShouldBlockAbilityStart(Ability startingAbility)
         {
-            return startingAbility is Fall || startingAbility is Slide;
+            return startingAbility is Fall || startingAbility is Slide || startingAbility is StopMovementAnimation;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
         /// <returns>True if the ability should be stopped.</returns>
         public override bool ShouldStopActiveAbility(Ability activeAbility)
         {
-            return activeAbility is Fall || activeAbility is Slide;
+            return activeAbility is Fall || activeAbility is Slide || activeAbility is StopMovementAnimation;
         }
 
         /// <summary>

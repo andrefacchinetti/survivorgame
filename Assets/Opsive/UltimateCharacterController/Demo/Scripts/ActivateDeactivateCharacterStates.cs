@@ -72,7 +72,11 @@ namespace Opsive.UltimateCharacterController.Demo
             }
 
             if (m_Character == null) {
-                m_Character = FindFirstObjectByType<DemoManager>()?.Character;
+#if UNITY_2023_1_OR_NEWER
+                var demoManager = UnityEngine.Object.FindFirstObjectByType<DemoManager>()?.Character;
+#else
+                m_Character = FindObjectOfType<DemoManager>()?.Character;
+#endif
             }
 
             if (m_Character == null) {

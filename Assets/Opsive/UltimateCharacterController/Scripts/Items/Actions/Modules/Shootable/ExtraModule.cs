@@ -194,8 +194,6 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         /// <returns>True if the item can be used.</returns>
         public bool CanUseItem()
         {
-            var canFire = CanFire();
-            
             // Always return true otherwise it makes the weapon stuck.
             return true;
         }
@@ -248,7 +246,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
                         if (m_ConsistantLookSensitivityCount > 1) {
 
                             Debug.LogWarning(
-                                $"Warning: The ShootableWeapon {GameObject.name} is unable to fire because of the Look Sensitivity on the ShootableWeaponProperties. See this page for more info: " +
+                                $"Warning: The ShootableAction {GameObject.name} is unable to fire because of the Look Sensitivity extra module. See this page for more info: " +
                                 "https://opsive.com/support/documentation/ultimate-character-controller/items-inventory/character-item/item-actions/usable/shootable/",
                                 ShootableAction);
                             m_ConsistantLookSensitivityCount = -1;

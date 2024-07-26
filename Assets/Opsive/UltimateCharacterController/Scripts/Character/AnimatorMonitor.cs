@@ -22,14 +22,10 @@ namespace Opsive.UltimateCharacterController.Character
     /// </summary>
     public class AnimatorMonitor : StateBehavior
     {
-#if UNITY_EDITOR
-        [Tooltip("Should the Animator log any changes to the item parameters?")]
-        [SerializeField] protected bool m_LogAbilityParameterChanges;
-        [Tooltip("Should the Animator log any changes to the item parameters?")]
-        [SerializeField] protected bool m_LogItemParameterChanges;
-        [Tooltip("Should the Animator log any events that it sends?")]
-        [SerializeField] protected bool m_LogEvents;
-#endif
+        [Tooltip("The runtime speed of the Animator.")]
+        [SerializeField] protected float m_AnimatorSpeed = 1;
+        [Tooltip("The location that the Animator should update in.")]
+        [SerializeField] protected AnimatorUpdateMode m_UpdateMode = AnimatorUpdateMode.Normal;
         [Tooltip("The damping time for the Horizontal Movement parameter. The higher the value the slower the parameter value changes.")]
         [SerializeField] protected float m_HorizontalMovementDampingTime = 0.1f;
         [Tooltip("The damping time for the Forward Movement parameter. The higher the value the slower the parameter value changes.")]
@@ -38,21 +34,28 @@ namespace Opsive.UltimateCharacterController.Character
         [SerializeField] protected float m_PitchDampingTime = 0.1f;
         [Tooltip("The damping time for the Yaw parameter. The higher the value the slower the parameter value changes.")]
         [SerializeField] protected float m_YawDampingTime = 0.1f;
-        [Tooltip("The runtime speed of the Animator.")]
-        [SerializeField] protected float m_AnimatorSpeed = 1;
         [Tooltip("Specifies how much to multiply the yaw parameter by when turning in place.")]
         [SerializeField] protected float m_YawMultiplier = 7;
         [Tooltip("Specifies the value of the Speed Parameter when the character is moving.")]
         [SerializeField] protected float m_MovingSpeedParameterValue = 1;
-
 #if UNITY_EDITOR
-        public bool LogEvents { get { return m_LogEvents; } }
+        [Tooltip("Should the Animator log any changes to the item parameters?")]
+        [SerializeField] protected bool m_LogAbilityParameterChanges;
+        [Tooltip("Should the Animator log any changes to the item parameters?")]
+        [SerializeField] protected bool m_LogItemParameterChanges;
+        [Tooltip("Should the Animator log any events that it sends?")]
+        [SerializeField] protected bool m_LogEvents;
 #endif
+        public float AnimatorSpeed { get { return m_AnimatorSpeed; } set { m_AnimatorSpeed = value; if (m_Animator != null) { m_Animator.speed = m_AnimatorSpeed; } } }
+        public AnimatorUpdateMode UpdateMode { get { return m_UpdateMode; } set { m_UpdateMode = value; if (m_Animator != null) { m_Animator.updateMode = m_UpdateMode; } } }
         public float HorizontalMovementDampingTime { get { return m_HorizontalMovementDampingTime; } set { m_HorizontalMovementDampingTime = value; } }
         public float ForwardMovementDampingTime { get { return m_ForwardMovementDampingTime; } set { m_ForwardMovementDampingTime = value; } }
         public float PitchDampingTime { get { return m_PitchDampingTime; } set { m_PitchDampingTime = value; } }
         public float YawDampingTime { get { return m_YawDampingTime; } set { m_YawDampingTime = value; } }
-        public float AnimatorSpeed { get { return m_AnimatorSpeed; } set { m_AnimatorSpeed = value; if (m_Animator != null) { m_Animator.speed = m_AnimatorSpeed; } } }
+
+#if UNITY_EDITOR
+        public bool LogEvents { get { return m_LogEvents; } }
+#endif
 
         private static int s_HorizontalMovementHash = Animator.StringToHash("HorizontalMovement");
         private static int s_ForwardMovementHash = Animator.StringToHash("ForwardMovement");
@@ -186,6 +189,7 @@ namespace Opsive.UltimateCharacterController.Character
             }
             if (m_Animator != null) {
                 m_Animator.speed = m_AnimatorSpeed;
+                m_Animator.updateMode = m_UpdateMode;
             }
         }
 
@@ -232,9 +236,6 @@ namespace Opsive.UltimateCharacterController.Character
             if (m_Animator == null) {
                 return;
             }
-
-            // As of version 3.0.10 the Animator should be updated within the normal Update loop.
-            m_Animator.updateMode = AnimatorUpdateMode.Normal;
 
             if (s_ItemSlotIDHash == null || s_ItemSlotIDHash.Length < slotCount) {
                 s_ItemSlotIDHash = new int[slotCount];
@@ -1175,7 +1176,7 @@ namespace Opsive.UltimateCharacterController.Character
                 return;
             }
 
-            forceChange = forceChange | m_DirtyItemAbilityParametersForceChange;
+            forceChange = forceChange || m_DirtyItemAbilityParametersForceChange;
             m_DirtyItemAbilityParameters = false;
             m_DirtyItemAbilityParametersForceChange = false;
 

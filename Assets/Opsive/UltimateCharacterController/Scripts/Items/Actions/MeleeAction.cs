@@ -300,7 +300,14 @@ namespace Opsive.UltimateCharacterController.Items.Actions
                 Debug.LogError("Collision Module is missing.", this);
                 return;
             }
-            MainMeleeCollisionModule.CheckCollisions(m_MeleeUseDataStream);
+
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (NetworkInfo == null || NetworkInfo.HasAuthority()) {
+#endif
+                MainMeleeCollisionModule.CheckCollisions(m_MeleeUseDataStream);
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            }
+#endif
         }
         
         /// <summary>

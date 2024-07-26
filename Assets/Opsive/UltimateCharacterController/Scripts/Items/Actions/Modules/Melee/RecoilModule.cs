@@ -78,6 +78,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Melee
         public int SubstateIndexPriority { get => m_SubstateIndexPriority; set => m_SubstateIndexPriority = value; }
         public AnimatorAudioStateSet RecoilAnimatorAudioStateSet { get { return m_RecoilAnimatorAudioStateSet; } set { m_RecoilAnimatorAudioStateSet = value; } }
 
+        public bool HasRecoil => m_HasRecoil;
         private bool m_HasRecoil;
 
         /// <summary>
@@ -87,8 +88,8 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Melee
         protected override void Initialize(CharacterItemAction itemAction)
         {
             base.Initialize(itemAction);
-            m_RecoilAnimatorAudioStateSet.Awake(CharacterItem, CharacterLocomotion);
 
+            m_RecoilAnimatorAudioStateSet.Awake(CharacterItem, CharacterLocomotion);
         }
 
 
@@ -180,6 +181,8 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Melee
             // Optionally play a recoil sound based upon the recoil animation.
             var visibleItem = CharacterItem.GetVisibleObject() != null ? CharacterItem.GetVisibleObject() : Character;
             m_RecoilAnimatorAudioStateSet.PlayAudioClip(visibleItem);
+
+            Shared.Events.EventHandler.ExecuteEvent<MeleeRecoilModule>(Character, "OnMeleeRecoil", this);
         }
 
         /// <summary>

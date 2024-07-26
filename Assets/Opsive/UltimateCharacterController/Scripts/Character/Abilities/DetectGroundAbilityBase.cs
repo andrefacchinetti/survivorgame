@@ -112,30 +112,44 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
 
             // Determine if the ground object is a valid ground object. This check only needs to be run when the grounded object changes.
             if (m_GroundCollider != raycastHit.collider) {
-                // The ground object can be detected by using the ObjectIdentifier component.
-                if (m_ObjectID != -1) {
-                    var objIdentifiers = raycastHit.collider.gameObject.GetCachedComponents<ObjectIdentifier>();
-                    if (objIdentifiers == null || objIdentifiers.Length == 0) {
-                        return false;
-                    }
-
-                    var idMatch = false;
-                    for (int i = 0; i < objIdentifiers.Length; ++i) {
-                        if (objIdentifiers[i].ID == m_ObjectID) {
-                            idMatch = true;
-                            break;
-                        }
-                    }
-
-                    if (!idMatch) {
-                        return false;
-                    }
-                }
-
-                // The ground object can be detected by using the layer mask.
-                if (!MathUtility.InLayerMask(raycastHit.collider.gameObject.layer, m_LayerMask)) {
+                if (!IsValidGroundObject(raycastHit.collider.gameObject)) {
                     return false;
                 }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Returns true if the object is a valid ground object.
+        /// </summary>
+        /// <param name="groundObject">The ground that should be checked.</param>
+        /// <returns>True if the object is is a valid ground object.</returns>
+        public bool IsValidGroundObject(GameObject groundObject)
+        {
+            // The ground object can be detected by using the ObjectIdentifier component.
+            if (m_ObjectID != -1) {
+                var objIdentifiers = groundObject.GetCachedComponents<ObjectIdentifier>();
+                if (objIdentifiers == null || objIdentifiers.Length == 0) {
+                    return false;
+                }
+
+                var idMatch = false;
+                for (int i = 0; i < objIdentifiers.Length; ++i) {
+                    if (objIdentifiers[i].ID == m_ObjectID) {
+                        idMatch = true;
+                        break;
+                    }
+                }
+
+                if (!idMatch) {
+                    return false;
+                }
+            }
+
+            // The ground object can be detected by using the layer mask.
+            if (!MathUtility.InLayerMask(groundObject.layer, m_LayerMask)) {
+                return false;
             }
 
             return true;

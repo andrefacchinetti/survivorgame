@@ -70,7 +70,7 @@ namespace Opsive.UltimateCharacterController.Character
         /// <summary>
         /// Updates the input.
         /// </summary>
-        private void Update()
+        protected virtual void Update()
         {
             UpdateAbilityInput();
         }

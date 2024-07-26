@@ -11,6 +11,7 @@ namespace Opsive.UltimateCharacterController.Editor.Controls.Types.AbilityDrawer
     using Opsive.UltimateCharacterController.Character;
     using Opsive.UltimateCharacterController.Character.Abilities;
     using Opsive.UltimateCharacterController.Character.Abilities.Starters;
+    using Opsive.UltimateCharacterController.Character.Abilities.Stoppers;
     using Opsive.UltimateCharacterController.Editor.Inspectors.Utility;
     using Opsive.UltimateCharacterController.Editor.Utility;
     using System.Collections.Generic;
@@ -28,10 +29,13 @@ namespace Opsive.UltimateCharacterController.Editor.Controls.Types.AbilityDrawer
         private const string c_EditorPrefsLastLastAnimatorCodePathKey = "Opsive.UltimateCharacterController.Editor.Inspectors.Ability.LastAnimatorCodePath";
 
         private VisualElement m_AbilityStarterContainer;
+        private VisualElement m_AbilityStopperContainer;
         private VisualElement m_InputNamesContainer;
 
         private static List<System.Type> s_AbilityStarterTypes;
         private static List<string> s_AbilityStarterTypeNames;
+        private static List<System.Type> s_AbilityStopperTypes;
+        private static List<string> s_AbilityStopperTypeNames;
 
         /// <summary>
         /// Returns the header control that should be used for the specified ControlType.
@@ -158,9 +162,20 @@ namespace Opsive.UltimateCharacterController.Editor.Controls.Types.AbilityDrawer
 
             FieldInspectorView.AddField(unityObject, ability, "m_StopType", container, (o) =>
             {
+                m_AbilityStopperContainer.Clear();
+                if (ability.StopType == Ability.AbilityStopType.Custom) {
+                    ShowAbilityStopper(unityObject, target, m_AbilityStopperContainer, onChangeEvent);
+                } else {
+                    ability.AbilityStopper = null;
+                }
                 m_InputNamesContainer.Clear();
                 ShowInputNames(unityObject, target, m_InputNamesContainer, onChangeEvent);
+                onChangeEvent(o);
             });
+
+            m_AbilityStopperContainer = new VisualElement();
+            ShowAbilityStopper(unityObject, target, m_AbilityStopperContainer, onChangeEvent);
+            container.Add(m_AbilityStopperContainer);
 
             m_InputNamesContainer = new VisualElement();
             ShowInputNames(unityObject, target, m_InputNamesContainer, onChangeEvent);
@@ -277,6 +292,115 @@ namespace Opsive.UltimateCharacterController.Editor.Controls.Types.AbilityDrawer
         }
 
         /// <summary>
+        /// Shows the UIElements for the ability stopper.
+        /// </summary>
+        /// <param name="unityObject">The Unity Object that the target belongs to.</param>
+        /// <param name="target">The object that is being drawn.</param>
+        /// <param name="container">The container UIElement.</param>
+        /// <param name="onChangeEvent">An event that is sent when the value changes.</param>
+        private void ShowAbilityStopper(Object unityObject, object target, VisualElement container, System.Action<object> onChangeEvent)
+        {
+            var ability = target as Ability;
+
+            if (ability.StopType != Ability.AbilityStopType.Custom) {
+                return;
+            }
+
+            PopulateAbilityStopperTypes();
+            if (s_AbilityStopperTypes != null && s_AbilityStopperTypes.Count > 0) {
+                var abilityStopperContainer = new VisualElement();
+                abilityStopperContainer.AddToClassList("indent");
+                var selected = 0;
+                var emptyStopper = true;
+                if (ability.AbilityStopper != null) {
+                    for (int i = 0; i < s_AbilityStopperTypes.Count; ++i) {
+                        if (s_AbilityStopperTypes[i].FullName == ability.AbilityStopper.GetType().FullName) {
+                            selected = i;
+                            emptyStopper = false;
+                            break;
+                        }
+                    }
+                }
+                if (emptyStopper) {
+                    ability.AbilityStopper = System.Activator.CreateInstance(s_AbilityStopperTypes[0]) as AbilityStopper;
+                }
+                var dropdownField = new DropdownField(s_AbilityStopperTypeNames, selected);
+                // Ensure the control is kept up to date as the value changes.
+                var stopperField = InspectorUtility.GetField(target, "m_AbilityStopper");
+                if (stopperField != null) {
+                    System.Action<object> onBindingUpdateEvent = (object newValue) => dropdownField.SetValueWithoutNotify(newValue as string);
+                    dropdownField.RegisterCallback<AttachToPanelEvent>(c =>
+                    {
+                        BindingUpdater.AddBinding(stopperField, -1, target, onBindingUpdateEvent);
+                    });
+                    dropdownField.RegisterCallback<DetachFromPanelEvent>(c =>
+                    {
+                        BindingUpdater.RemoveBinding(onBindingUpdateEvent);
+                    });
+                }
+                dropdownField.RegisterValueChangedCallback(c =>
+                {
+                    // Clear out the old.
+                    dropdownField.SetValueWithoutNotify(c.newValue);
+                    c.StopPropagation();
+                    abilityStopperContainer.Clear();
+
+                    // Create the new stopper.
+                    ability.AbilityStopper = System.Activator.CreateInstance(s_AbilityStopperTypes[dropdownField.index]) as AbilityStopper;
+                    FieldInspectorView.AddFields(unityObject, ability.AbilityStopper, Shared.Utility.MemberVisibility.Public, abilityStopperContainer, (object obj) =>
+                    {
+                        ability.AbilityStopper = obj as AbilityStopper;
+                        onChangeEvent(ability);
+                    });
+                    onChangeEvent(ability);
+                });
+                var labelControl = new LabelControl("Stopper", Opsive.Shared.Editor.Utility.EditorUtility.GetTooltip(typeof(Ability).GetField("m_AbilityStopper", BindingFlags.NonPublic | BindingFlags.Instance)), dropdownField, true);
+                labelControl.Q<Label>().AddToClassList("indent");
+                container.Add(labelControl);
+                container.Add(abilityStopperContainer);
+
+                if (ability.AbilityStopper != null) {
+                    FieldInspectorView.AddFields(unityObject, ability.AbilityStopper, Shared.Utility.MemberVisibility.Public, abilityStopperContainer, (object obj) =>
+                    {
+                        ability.AbilityStopper = obj as AbilityStopper;
+                        onChangeEvent(ability);
+                    });
+                }
+            }
+        }
+
+        /// <summary>
+        /// Searches for an adds any Stopper Types available in the project.
+        /// </summary>
+        private static void PopulateAbilityStopperTypes()
+        {
+            if (s_AbilityStopperTypes != null) {
+                return;
+            }
+
+            s_AbilityStopperTypes = new List<System.Type>();
+            s_AbilityStopperTypeNames = new List<string>();
+            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            for (int i = 0; i < assemblies.Length; ++i) {
+                var assemblyTypes = assemblies[i].GetTypes();
+                for (int j = 0; j < assemblyTypes.Length; ++j) {
+                    // Must derive from AbilityStopper.
+                    if (!typeof(AbilityStopper).IsAssignableFrom(assemblyTypes[j])) {
+                        continue;
+                    }
+
+                    // Ignore abstract classes.
+                    if (assemblyTypes[j].IsAbstract) {
+                        continue;
+                    }
+
+                    s_AbilityStopperTypes.Add(assemblyTypes[j]);
+                    s_AbilityStopperTypeNames.Add(InspectorUtility.DisplayTypeName(assemblyTypes[j], false));
+                }
+            }
+        }
+
+        /// <summary>
         /// Shows the UIElements for the input names.
         /// </summary>
         /// <param name="unityObject">The Unity Object that the target belongs to.</param>
@@ -288,12 +412,16 @@ namespace Opsive.UltimateCharacterController.Editor.Controls.Types.AbilityDrawer
             var ability = target as Ability;
 
             if ((ability.StartType == Ability.AbilityStartType.Automatic || ability.StartType == Ability.AbilityStartType.Manual || ability.StartType == Ability.AbilityStartType.Custom) &&
-                (ability.StopType == Ability.AbilityStopType.Automatic || ability.StopType == Ability.AbilityStopType.Manual)) {
+                (ability.StopType == Ability.AbilityStopType.Automatic || ability.StopType == Ability.AbilityStopType.Manual || ability.StopType == Ability.AbilityStopType.Custom)) {
                 return;
             }
 
             FieldInspectorView.AddField(unityObject, ability, "m_InputNames", container, onChangeEvent);
 
+            // Only show the wait for double press option with a ButtonDown start type.
+            if (ability.StartType == Ability.AbilityStartType.ButtonDown) {
+                FieldInspectorView.AddField(unityObject, target, "m_WaitForDoublePressTapTimeout", container, onChangeEvent);
+            }
             // Only show the duration and wait for release options with a LongPress start/stop type.
             if (ability.StartType == Ability.AbilityStartType.LongPress || ability.StopType == Ability.AbilityStopType.LongPress) {
                 FieldInspectorView.AddField(unityObject, target, "m_LongPressDuration", container, onChangeEvent);

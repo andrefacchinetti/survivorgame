@@ -169,6 +169,9 @@ namespace Opsive.UltimateCharacterController.UI
             m_CharacterLocomotion = m_Character.GetCachedComponent<UltimateCharacterLocomotion>();
             m_PlayerInput = m_Character.GetCachedComponent<Shared.Input.IPlayerInput>();
             m_AssistAim = m_CharacterLocomotion.GetAbility<Character.Abilities.AssistAim>();
+            if (m_AutoAssignAssistAimTarget && m_AssistAim != null) {
+                m_AssistAim.AutoSelectTarget = false;
+            }
             m_EnableImage = false;
             gameObject.SetActive(CanShowUI());
 
@@ -298,7 +301,7 @@ namespace Opsive.UltimateCharacterController.UI
         /// <param name="slotID">The slot that the item now occupies.</param>
         private void OnEquipItem(CharacterItem characterItem, int slotID)
         {
-            if (!characterItem.DominantItem) {
+            if (!characterItem.DominantItem || m_EquippedCharacterItem == characterItem) {
                 return;
             }
 

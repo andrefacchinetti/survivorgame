@@ -18,10 +18,10 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Effect
     public class SpawnPrefab : ItemEffect
     {
         [Tooltip("The prefab to spawn.")]
-        [SerializeField] protected ItemPerspectiveProperty<GameObject> m_Prefab;
+        [SerializeField] protected ItemPerspectiveProperty<GameObject> m_Prefab = new ItemPerspectiveProperty<GameObject>();
         [FormerlySerializedAs("m_Parent")]
         [Tooltip("The origin of the spawn, set the the character position if none is specified.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_Origin;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_Origin = new ItemPerspectiveIDObjectProperty<Transform>();
         [Tooltip("Parent the instantiated gameobject to the origin?")]
         [SerializeField] protected bool m_ParentToOrigin = true;
         [Tooltip("The positional offset that the object should be spawned.")]

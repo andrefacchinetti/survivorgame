@@ -21,7 +21,6 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic.CastEff
         protected bool m_DrawGizmos;
         protected Vector3 m_Origin;
         protected Vector3 m_Direction;
-        protected float m_Distance;
         
         /// <summary>
         /// Initialize the module.
@@ -38,14 +37,13 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic.CastEff
         /// <param name="onSelected">Show gizmos on select?</param>
         private void OnDrawGizmosHybrid(bool onSelected)
         {
-            if (m_GizmoSettings.SetGizmoSettings(onSelected) == false) {
+            if (m_GizmoSettings.SetGizmoSettings(onSelected) || !m_DrawGizmos) {
                 return;
             }
             
-            if(m_DrawGizmos == false){ return; }
             m_DrawGizmos = false;
 
-            Gizmos.DrawRay(m_Origin, m_Direction*m_Distance);
+            Gizmos.DrawRay(m_Origin, m_Direction * float.MaxValue);
         }
         
         /// <summary>
@@ -58,10 +56,9 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic.CastEff
 
             m_CastID = (uint)useDataStream.CastData.CastID;
             m_Direction = useDataStream.CastData.Direction.normalized;
-            m_Origin = useDataStream.CastData.CastTargetPosition - m_Direction.normalized * 0.1f;
-            m_Distance = m_Direction.magnitude + 0.1f;
+            m_Origin = useDataStream.CastData.CastPosition - m_Direction.normalized * 0.1f;
 
-            if (Physics.Raycast(m_Origin, m_Direction, out var hit, m_Distance, useDataStream.CastData.DetectLayers)) {
+            if (Physics.Raycast(m_Origin, m_Direction, out var hit, float.MaxValue, useDataStream.CastData.DetectLayers)) {
                 MagicAction.PerformImpact(m_CastID, GameObject, hit.transform.gameObject, hit);
             } else {
                 MagicAction.ResetImpactModules(m_CastID);

@@ -105,7 +105,7 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character.Mov
         public override Vector2 GetInputVector(Vector2 inputVector)
         {
             // PointClick does not have any direct input, but it will tell the Move Towards ability to move towards the clicked location.
-            if (m_PlayerInput.GetButton(m_ClickButtonName)) {
+            if (!m_PlayerInput.IsPointerOverUI() && m_PlayerInput.GetButton(m_ClickButtonName)) {
                 var ray = m_Camera.ScreenPointToRay(m_PlayerInput.GetMousePosition());
                 if (Physics.Raycast(ray, out var hit, float.MaxValue, m_LayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
                     // Do not allow movement if the location is close to the character.

@@ -138,7 +138,16 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
 
                     // If the target is a humanoid then a specific bone can be targeted.
                     if (m_TargetHumanoidBone) {
-                        var animator = m_Target.gameObject.GetCachedComponent<Animator>();
+                        Animator animator = null;
+                        var modelManager = m_Target.gameObject.GetCachedComponent<ModelManager>();
+                        if (modelManager != null) {
+                            animator = modelManager.ActiveModel.GetCachedComponent<Animator>();
+                        } else {
+                            var animatorMonitor = m_Target.gameObject.GetComponentInChildren<AnimatorMonitor>();
+                            if (animatorMonitor != null) {
+                                animator = animatorMonitor.gameObject.GetCachedComponent<Animator>();
+                            }
+                        }
                         if (animator != null && animator.isHuman) {
                             m_Target = animator.GetBoneTransform(m_HumanoidBoneTarget);
                         }

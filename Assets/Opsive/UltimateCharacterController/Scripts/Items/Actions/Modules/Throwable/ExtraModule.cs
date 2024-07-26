@@ -64,12 +64,16 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Throwable
             }
         }
 
-
         /// <summary>
         /// Late update called from the character item action late update.
         /// </summary>
         public void OnLateUpdate()
         {
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (NetworkInfo != null && !NetworkInfo.IsLocalPlayer()) {
+                return;
+            }
+#endif
             if (!(m_Aiming && m_ShowTrajectoryOnAim)) {
                 return;
             }
@@ -161,7 +165,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Throwable
         [Tooltip("Specifies if the item should wait for the OnAnimatorItemRemovePin animation event or wait for the specified duration before removing the pin from the object.")]
         [SerializeField] protected AnimationEventTrigger m_RemovePinEvent = new AnimationEventTrigger(true, 0.4f);
         [Tooltip("The Transform that the pin attaches to.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_PinAttachmentLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_PinAttachmentLocation = new();
 
         public bool AnimatePinRemoval { get { return m_AnimatePinRemoval; } set { m_AnimatePinRemoval = value; } }
         public AnimationEventTrigger RemovePinEvent { get { return m_RemovePinEvent; } set { m_RemovePinEvent.CopyFrom(value); } }

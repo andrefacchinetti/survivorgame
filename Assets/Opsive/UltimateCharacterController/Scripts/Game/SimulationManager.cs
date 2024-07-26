@@ -21,7 +21,7 @@ namespace Opsive.UltimateCharacterController
     public class SimulationManager : MonoBehaviour
     {
         private static SimulationManager s_Instance;
-        private static SimulationManager Instance
+        protected static SimulationManager Instance
         {
             get {
                 if (!s_Initialized) {
@@ -38,7 +38,7 @@ namespace Opsive.UltimateCharacterController
         /// <summary>
         /// A small storage class used for storing the fixed and smooth location. This component will also move the interpolate the objects during the Update loop.
         /// </summary>
-        private class SmoothedTransform
+        protected class SmoothedTransform
         {
             protected Transform m_Transform;
             protected Rigidbody m_Rigidbody;
@@ -128,7 +128,7 @@ namespace Opsive.UltimateCharacterController
         /// <summary>
         /// Smoothly moves the character.
         /// </summary>
-        private class SmoothedCharacter : SmoothedTransform
+        protected class SmoothedCharacter : SmoothedTransform
         {
             private CharacterLocomotion m_Locomotion;
             private ICharacterHandler m_Handler;
@@ -196,7 +196,7 @@ namespace Opsive.UltimateCharacterController
         /// <summary>
         /// Smoothly moves the camera.
         /// </summary>
-        private class SmoothedCamera : SmoothedTransform
+        protected class SmoothedCamera : SmoothedTransform
         {
             private CameraController m_Controller;
             private CameraControllerHandler m_Handler;
@@ -308,7 +308,7 @@ namespace Opsive.UltimateCharacterController
         /// <summary>
         /// Smoothly moves the object.
         /// </summary>
-        private class SmoothedObject : SmoothedTransform
+        protected class SmoothedObject : SmoothedTransform
         {
             private ISmoothedObject m_SmoothedObject;
             private ISmoothMover m_SmoothMover;
@@ -352,9 +352,9 @@ namespace Opsive.UltimateCharacterController
             }
         }
 
-        private ResizableArray<SmoothedCharacter> m_Characters = new ResizableArray<SmoothedCharacter>();
-        private ResizableArray<SmoothedCamera> m_Cameras = new ResizableArray<SmoothedCamera>();
-        private ResizableArray<SmoothedObject> m_SmoothedObjects = new ResizableArray<SmoothedObject>();
+        protected ResizableArray<SmoothedCharacter> m_Characters = new ResizableArray<SmoothedCharacter>();
+        protected ResizableArray<SmoothedCamera> m_Cameras = new ResizableArray<SmoothedCamera>();
+        protected ResizableArray<SmoothedObject> m_SmoothedObjects = new ResizableArray<SmoothedObject>();
 
         /// <summary>
         /// The object has been enabled.
@@ -497,7 +497,7 @@ namespace Opsive.UltimateCharacterController
         /// <param name="rotation">The rotation of the object.</param>
         private void SetSmoothedObjectRotationInternal(int simulationIndex, Quaternion rotation)
         {
-            if (simulationIndex < 0 || simulationIndex >= m_Cameras.Count) {
+            if (simulationIndex < 0 || simulationIndex >= m_SmoothedObjects.Count) {
                 return;
             }
 
@@ -569,7 +569,7 @@ namespace Opsive.UltimateCharacterController
         /// <param name="position">The position of the object.</param>
         private void SetSmoothedObjectPositionInternal(int simulationIndex, Vector3 position)
         {
-            if (simulationIndex < 0 || simulationIndex >= m_Cameras.Count) {
+            if (simulationIndex < 0 || simulationIndex >= m_SmoothedObjects.Count) {
                 return;
             }
 
@@ -663,7 +663,15 @@ namespace Opsive.UltimateCharacterController
         /// <summary>
         /// Executes during the FixedUpdate loop.
         /// </summary>
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
+        {
+            FixedMove();
+        }
+
+        /// <summary>
+        /// Moves the characters and cameras duing a fixed update.
+        /// </summary>
+        public void FixedMove()
         {
             MoveSmoothedObjects(-1);
             MoveCharacters(true, -1);
@@ -677,7 +685,15 @@ namespace Opsive.UltimateCharacterController
         /// <summary>
         /// Executes during the Update loop.
         /// </summary>
-        private void Update()
+        protected virtual void Update()
+        {
+            SmoothMove();
+        }
+
+        /// <summary>
+        /// Moves the characters and cameras duing the update loop.
+        /// </summary>
+        public void SmoothMove()
         {
             var interpAmount = (Time.time - m_FixedTime) / Time.fixedDeltaTime;
             MoveSmoothedObjects(interpAmount);

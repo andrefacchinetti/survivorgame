@@ -9,6 +9,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
     using Opsive.Shared.Events;
     using Opsive.Shared.Game;
     using Opsive.UltimateCharacterController.Character;
+    using Opsive.UltimateCharacterController.Character.Abilities.Items;
     using Opsive.UltimateCharacterController.Items.Actions.Impact;
     using Opsive.UltimateCharacterController.Items.AnimatorAudioStates;
     using Opsive.UltimateCharacterController.Traits;
@@ -67,6 +68,8 @@ namespace Opsive.UltimateCharacterController.Items.Actions
 
         public float DurabilityValue { get { return (m_DurabilityAttribute != null ? m_DurabilityAttribute.Value : 0); } }
 
+        public bool WaitingForImpactCompleteEvent => m_ImpactCompleteEvent.IsWaiting;
+
         /// <summary>
         /// Initialize the item action.
         /// </summary>
@@ -87,7 +90,11 @@ namespace Opsive.UltimateCharacterController.Items.Actions
                     }
                 }
             }
-            
+
+            var aim = m_CharacterLocomotion.GetAbility<Aim>();
+            if (aim != null) {
+                m_Aiming = aim.IsActive && aim.InputStart;
+            }
             m_ImpactAnimatorAudioStateSet.Awake(CharacterItem, m_Character.GetCachedComponent<UltimateCharacterLocomotion>());
             EventHandler.RegisterEvent<bool, bool>(m_Character, "OnAimAbilityStart", OnAim);
         }

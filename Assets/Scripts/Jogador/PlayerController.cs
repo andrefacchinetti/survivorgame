@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 }
                 if (fallAbility.IsActive)
                 {
-                    swimAbility.acoesOntriggerEnter(colliderNatacao);
+                    swimAbility.acoesOnTriggerEnter(colliderNatacao);
                     fallAbility.StopAbility(true);
                 }
             }

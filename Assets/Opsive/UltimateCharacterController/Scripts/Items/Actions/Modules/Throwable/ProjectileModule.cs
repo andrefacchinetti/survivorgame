@@ -256,7 +256,13 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Throwable
             m_ThrowableProjectileData.SpawnedTrajectoryObject = m_InstantiatedTrajectoryObject;
             
             if (remove) {
-                ThrowableAction.AmmoModuleGroup.FirstEnabledModule.LoadNextAmmoData();
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+                if (NetworkInfo == null || NetworkInfo.HasAuthority()) {
+#endif
+                    ThrowableAction.AmmoModuleGroup.FirstEnabledModule.LoadNextAmmoData();
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+                }
+#endif
             }
             
             return m_ThrowableProjectileData;

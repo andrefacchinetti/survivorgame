@@ -261,7 +261,6 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Character
                         (thirdPersonObject != null && !thirdPersonObject.FirstPersonVisibleOnDeath && !thirdPersonObject.ForceVisible);
                 }
                 m_Renderers[i].materials = (invisibleObject ? m_InvisibleMaterials[i] : m_OriginalMaterials[i]);
-                m_Renderers[i].materials = m_OriginalMaterials[i];
             }
             return true;
         }

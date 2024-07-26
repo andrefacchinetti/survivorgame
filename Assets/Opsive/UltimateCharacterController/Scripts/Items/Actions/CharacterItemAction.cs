@@ -223,7 +223,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
             }
             
             for (int i = 0; i < m_AllModuleGroups.Count; i++) {
-                // Initialize all modules, not just the active/enabled ones
+                // Initialize all modules, not just the active/enabled ones.
                 var modules = m_AllModuleGroups[i].BaseModules;
                 for (int j = 0; j < modules.Count; j++) {
                     modules[j].OnAllModulesPreInitialized();
@@ -711,15 +711,15 @@ namespace Opsive.UltimateCharacterController.Items.Actions
         /// <summary>
         /// Get the other items to drop, when the character item drops.
         /// </summary>
-        public virtual ListSlice<ItemIdentifierAmount> GetItemsToDrop()
+        /// <param name="itemsToDrop">The list of items to drop.</param>
+        public virtual ListSlice<ItemIdentifierAmount> GetItemIdentifiersToDrop()
         {
             if (m_CachedItemIdentifierAmounts == null) {
                 m_CachedItemIdentifierAmounts = new List<ItemIdentifierAmount>();
             } else {
                 m_CachedItemIdentifierAmounts.Clear();
             }
-            InvokeOnModulesWithType(m_CachedItemIdentifierAmounts,
-                (IModuleGetItemsToDrop module, List<ItemIdentifierAmount> i1) => module.GetItemsToDrop(i1));
+            InvokeOnModulesWithType(m_CachedItemIdentifierAmounts, (IModuleGetItemIdentifiersToDrop module, List<ItemIdentifierAmount> i1) => module.GetItemIdentifiersToDrop(i1));
 
             return m_CachedItemIdentifierAmounts;
         }
@@ -729,7 +729,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
         /// </summary>
         public virtual void Remove()
         {
-            if(m_IsEquipped) {
+            if (m_IsEquipped) {
                 Unequip();
             }
             for (int i = 0; i < m_AllModuleGroups.Count; i++) {

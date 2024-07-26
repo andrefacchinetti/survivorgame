@@ -53,6 +53,11 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Impact
             var surfaceImpact = (!m_UseContextData || ctx.ImpactDamageData == null || ctx.ImpactDamageData.SurfaceImpact == null) ? m_SurfaceImpact : ctx.ImpactDamageData.SurfaceImpact;
             var originator = impactData.SourceItemAction?.CharacterItem?.GetVisibleObject() ?? impactData.SourceGameObject;
 
+            // The shield can block the impact.
+            if (ctx.ImpactDamageData.DamageAmount == 0 && ctx.ImpactCollisionData.ImpactCollider.gameObject.GetCachedComponent<ShieldCollider>() == null) {
+                return;
+            }
+
             // The surface manager will apply effects based on the type of impact.
             SurfaceManager.SpawnEffect(
                 impactData.RaycastHit, 

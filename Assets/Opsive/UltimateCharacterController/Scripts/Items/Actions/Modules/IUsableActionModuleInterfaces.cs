@@ -67,13 +67,13 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules
     /// <summary>
     /// A Character Item Action Module for Changing perspective.
     /// </summary>
-    public interface IModuleGetItemsToDrop: IActionModule
+    public interface IModuleGetItemIdentifiersToDrop: IActionModule
     {
         /// <summary>
         /// Get the items to drop by adding it to the list.
         /// </summary>
         /// <param name="itemsToDrop">The list of items to drop, the item to drop will be added to this list.</param>
-        public void GetItemsToDrop(List<ItemIdentifierAmount> itemsToDrop);
+        public void GetItemIdentifiersToDrop(List<ItemIdentifierAmount> itemsToDrop);
     }
     
     /// <summary>

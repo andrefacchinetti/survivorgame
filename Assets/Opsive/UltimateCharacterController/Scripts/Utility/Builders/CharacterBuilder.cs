@@ -112,7 +112,11 @@ namespace Opsive.UltimateCharacterController.Utility.Builders
             if (rigidbody == null) {
                 rigidbody = character.AddComponent<Rigidbody>();
             }
+#if UNITY_6000_0_OR_NEWER
             rigidbody.linearDamping = rigidbody.angularDamping = 0;
+#else
+            rigidbody.drag = rigidbody.angularDrag = 0;
+#endif
             rigidbody.useGravity = false;
             rigidbody.isKinematic = true;
             rigidbody.mass = 80;
@@ -280,7 +284,11 @@ namespace Opsive.UltimateCharacterController.Utility.Builders
 #if UNITY_EDITOR
                 var physicMaterialPath = UnityEditor.AssetDatabase.GUIDToAssetPath(c_CharacterPhysicMaterialGUID);
                 if (!string.IsNullOrEmpty(physicMaterialPath)) {
+#if UNITY_6000_0_OR_NEWER
                     var colliderPhysicMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath(physicMaterialPath, typeof(PhysicsMaterial)) as PhysicsMaterial;
+#else
+                    var colliderPhysicMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath(physicMaterialPath, typeof(PhysicMaterial)) as PhysicMaterial;
+#endif
                     capsuleCollider.material = colliderPhysicMaterial;
                 }
 #endif
@@ -288,7 +296,7 @@ namespace Opsive.UltimateCharacterController.Utility.Builders
 
             if (collider != null) {
                 var animator = character.GetComponent<Animator>();
-                if (animator == null || animator.isHuman) {
+                if (animator != null && animator.isHuman) {
                     var positioner = collider.AddComponent<CapsuleColliderPositioner>();
                     positioner.FirstEndCapTarget = character.transform;
 
@@ -457,7 +465,7 @@ namespace Opsive.UltimateCharacterController.Utility.Builders
                 // Add the Jump, Fall, Speed Change, and Height Change abilities.
                 var characterLocomotion = character.GetComponent<UltimateCharacterLocomotion>();
                 var jump = AbilityBuilder.AddAbility(characterLocomotion, typeof(Jump));
-                if (characterLocomotion.GetComponentInChildren<AnimatorMonitor>() == null) {
+                if (characterLocomotion.GetComponent<AnimatorMonitor>() != null) {
                     (jump as Jump).JumpEvent = new AnimationEventTrigger(false, 0);
                 }
                 AbilityBuilder.AddAbility(characterLocomotion, typeof(Fall));

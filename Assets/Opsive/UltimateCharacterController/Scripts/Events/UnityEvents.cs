@@ -94,4 +94,10 @@ namespace Opsive.UltimateCharacterController.Events
     /// </summary>
     [System.Serializable]
     public class UnityViewTypeBoolEvent : UnityEvent<ViewType, bool> { }
+
+    /// <summary>
+    /// (RaycastHit) UnityEvent subclass so the event will appear in the inspector.
+    /// </summary>
+    [System.Serializable]
+    public class UnityRaycastEvent : UnityEvent<RaycastHit> { }
 }

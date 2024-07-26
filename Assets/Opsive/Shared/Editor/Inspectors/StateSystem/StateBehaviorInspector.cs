@@ -120,15 +120,13 @@ namespace Opsive.Shared.Editor.Inspectors.StateSystem
             }
 
             if (Foldout("States")) {
-                m_ReorderableStateList = StateInspector.DrawStates(m_ReorderableStateList, serializedObject, PropertyFromName("m_States"), 
-                                            SelectedIndexKey, OnStateListDraw, OnStateListAdd, OnStateListReorder, OnStateListRemove);
-                // EditorGUILayout.PropertyField(PropertyFromName("m_States"), true);
+                DrawReorderableStateList();
             }
 
             if (EditorGUI.EndChangeCheck()) {
                 Shared.Editor.Utility.EditorUtility.RecordUndoDirtyObject(target, "Change Value");
                 serializedObject.ApplyModifiedProperties();
-                StateInspector.UpdateDefaultStateValues((target as StateBehavior).States);
+                StateInspector.UpdateDefaultStateValues((target as IStateOwner).States);
             }
         }
 
@@ -142,13 +140,23 @@ namespace Opsive.Shared.Editor.Inspectors.StateSystem
         }
 
         /// <summary>
+        /// Draws reorderable state list.
+        /// </summary>
+        protected void DrawReorderableStateList()
+        {
+            m_ReorderableStateList = StateInspector.DrawStates(m_ReorderableStateList, serializedObject, PropertyFromName("m_States"),
+                                        SelectedIndexKey, OnStateListDraw, OnStateListAdd, OnStateListReorder, OnStateListRemove);
+            // EditorGUILayout.PropertyField(PropertyFromName("m_States"), true);
+        }
+
+        /// <summary>
         /// Draws all of the added states.
         /// </summary>
         private void OnStateListDraw(Rect rect, int index, bool isActive, bool isFocused)
         {
             EditorGUI.BeginChangeCheck();
 
-            StateInspector.OnStateListDraw(target, (target as StateBehavior).States, PropertyFromName("m_States"), rect, index);
+            StateInspector.OnStateListDraw(target, (target as IStateOwner).States, PropertyFromName("m_States"), rect, index);
 
             if (EditorGUI.EndChangeCheck()) {
                 Shared.Editor.Utility.EditorUtility.RecordUndoDirtyObject(target, "Change Value");
@@ -171,8 +179,8 @@ namespace Opsive.Shared.Editor.Inspectors.StateSystem
         {
             EditorGUI.BeginChangeCheck();
 
-            var stateComponent = target as StateBehavior;
-            stateComponent.States = StateInspector.AddExistingPreset(stateComponent.GetType(), stateComponent.States, m_ReorderableStateList, SelectedIndexKey);
+            var stateOwner = target as IStateOwner;
+            stateOwner.States = StateInspector.AddExistingPreset(stateOwner.GetType(), stateOwner.States, m_ReorderableStateList, SelectedIndexKey);
 
             if (EditorGUI.EndChangeCheck()) {
                 Shared.Editor.Utility.EditorUtility.RecordUndoDirtyObject(target, "Change Value");
@@ -187,8 +195,8 @@ namespace Opsive.Shared.Editor.Inspectors.StateSystem
         {
             EditorGUI.BeginChangeCheck();
 
-            var stateComponent = target as StateBehavior;
-            stateComponent.States = StateInspector.CreatePreset(target, stateComponent.States, m_ReorderableStateList, SelectedIndexKey);
+            var stateOwner = target as IStateOwner;
+            stateOwner.States = StateInspector.CreatePreset(target, stateOwner.States, m_ReorderableStateList, SelectedIndexKey);
             if (EditorGUI.EndChangeCheck()) {
                 Shared.Editor.Utility.EditorUtility.RecordUndoDirtyObject(target, "Change Value");
                 serializedObject.ApplyModifiedProperties();
@@ -202,8 +210,8 @@ namespace Opsive.Shared.Editor.Inspectors.StateSystem
         {
             EditorGUI.BeginChangeCheck();
             
-            var stateComponent = target as StateBehavior;
-            stateComponent.States = StateInspector.OnStateListReorder(stateComponent.States);
+            var stateOwner = target as IStateOwner;
+            stateOwner.States = StateInspector.OnStateListReorder(stateOwner.States);
 
             if (EditorGUI.EndChangeCheck()) {
                 EditorPrefs.SetInt(SelectedIndexKey, list.index);
@@ -219,8 +227,8 @@ namespace Opsive.Shared.Editor.Inspectors.StateSystem
         {
             EditorGUI.BeginChangeCheck();
 
-            var stateComponent = target as StateBehavior;
-            stateComponent.States = StateInspector.OnStateListRemove(stateComponent.States, PropertyFromName("m_States"), SelectedIndexKey, list);
+            var stateOwner = target as IStateOwner;
+            stateOwner.States = StateInspector.OnStateListRemove(stateOwner.States, PropertyFromName("m_States"), SelectedIndexKey, list);
 
             if (EditorGUI.EndChangeCheck()) {
                 Shared.Editor.Utility.EditorUtility.RecordUndoDirtyObject(target, "Change Value");

@@ -248,7 +248,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
         /// <summary>
         /// The trigger is trying to cast the weapon.
         /// </summary>
-        /// <param name="triggerData"></param>
+        /// <param name="triggerData">The associated trigger data.</param>
         public override void TriggerItemAction(TriggerData triggerData)
         {
             if (IsDebugging) {
@@ -294,7 +294,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
 #endif
             }
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
-            if (invokedBitmask > 0 && m_NetworkInfo != null && m_NetworkInfo.HasAuthority()) {
+            if (invokedBitmask != 0 && m_NetworkInfo != null && m_NetworkInfo.HasAuthority()) {
                 m_NetworkCharacter.InvokeShootableFireEffectModules(this, m_FireEffectsModuleGroup, invokedBitmask, m_ShootableUseDataStream);
             }
 #endif
@@ -546,7 +546,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions
             if (!modulesCanStart) {
                 if (IsDebugging) {
                     DebugLogger.SetInfo(InfoKey_CanReload, "(No) because of module: " + moduleThatStopped);
-                    DebugLogger.Log("Cannot Reload because of module: " + moduleThatStopped);
+                    DebugLogger.Log("Cannot reload because of module: " + moduleThatStopped);
                 }
 
                 return false;

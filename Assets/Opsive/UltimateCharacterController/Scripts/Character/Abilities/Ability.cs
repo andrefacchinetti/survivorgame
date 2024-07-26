@@ -14,6 +14,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
     using Opsive.Shared.Utility;
     using Opsive.UltimateCharacterController.Character;
     using Opsive.UltimateCharacterController.Character.Abilities.Starters;
+    using Opsive.UltimateCharacterController.Character.Abilities.Stoppers;
     using Opsive.UltimateCharacterController.Character.Effects;
     using Opsive.UltimateCharacterController.Items;
     using Opsive.UltimateCharacterController.Motion;
@@ -58,7 +59,8 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             ButtonDown,             // The ability will stop when the specified button is down.
             ButtonToggle,           // The ability will stop when the same button as been pressed again after the ability has started.
             LongPress,              // The ability will stop when the specified button has been pressed for more than the specified duration.
-            Axis                    // The ability will stop when the specified axis is a zero value.
+            Axis,                   // The ability will stop when the specified axis is a zero value.
+            Custom                  // The ability will stop after a user defined stopper has indicated that the ability should stop.
         }
 
         /// <summary>
@@ -79,12 +81,16 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         [HideInInspector] [SerializeField] protected AbilityStopType m_StopType = AbilityStopType.Manual;
         [Tooltip("The button name(s) that can start or stop the ability.")]
         [HideInInspector] [Utility.AdjustableStringArray] [SerializeField] protected string[] m_InputNames;
+        [Tooltip("Should the button down type wait for the double press tap timeout?")]
+        [SerializeField] protected bool m_WaitForDoublePressTapTimeout = false;
         [Tooltip("Specifies how long the button should be pressed down until the ability starts/stops. Only used when the ability has a start/stop type of LongPress.")]
         [HideInInspector] [SerializeField] protected float m_LongPressDuration = 0.5f;
         [Tooltip("Should the long press wait to be activated until the button has been released?")]
         [HideInInspector] [SerializeField] protected bool m_WaitForLongPressRelease;
         [Tooltip("A custom object that determines when the ability can start.")]
         [HideInInspector] [SerializeReference] [SerializeField] protected AbilityStarter m_AbilityStarter;
+        [Tooltip("A custom object that determines when the ability can stop.")]
+        [HideInInspector][SerializeReference][SerializeField] protected AbilityStopper m_AbilityStopper;
         [Tooltip("Optionally specify an attribute that the ability should affect when active.")]
         [HideInInspector] [SerializeField] protected Traits.AttributeModifier m_AttributeModifier = new Traits.AttributeModifier();
         [Tooltip("Specifies the name of the state that the ability should use when active.")]
@@ -168,6 +174,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
                 m_ActiveInput = new bool[m_InputNames.Length];
             }
         }
+        public bool WaitForDoublePressTapTimeout { get { return m_WaitForDoublePressTapTimeout; } set { m_WaitForDoublePressTapTimeout = value; } }
         public float LongPressDuration { get { return m_LongPressDuration; } set { m_LongPressDuration = value; } }
         public bool WaitForLongPressRelease { get { return m_WaitForLongPressRelease; } set { m_WaitForLongPressRelease = value; } }
         [Shared.Utility.NonSerialized] public Traits.AttributeModifier AttributeModifier { get { return m_AttributeModifier; } set { m_AttributeModifier = value; } }
@@ -213,6 +220,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         protected AnimatorMonitor m_AnimatorMonitor;
         protected CharacterLayerManager m_CharacterLayerManager;
         protected Inventory.InventoryBase m_Inventory;
+        protected ModelManager m_ModelManager;
 
         private bool m_CheckForAbilityMessage;
         private bool m_AbilityMessageCanStart;
@@ -225,6 +233,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         private float m_StartTime = -1;
         private int m_ActiveCount;
         private Effect m_StartEffect;
+        private string m_PreviousModelName;
 
         public bool IsActive { get { return m_ActiveIndex != -1; } }
         [Shared.Utility.NonSerialized] public int Index { get { return m_Index; } set { m_Index = value; } }
@@ -257,6 +266,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         protected bool AllowRootMotionPosition { set { m_CharacterLocomotion.AllowRootMotionPosition = value; } }
         protected bool AllowRootMotionRotation { set { m_CharacterLocomotion.AllowRootMotionRotation = value; } }
         public AbilityStarter AbilityStarter { get { return m_AbilityStarter; } set { m_AbilityStarter = value; } }
+        public AbilityStopper AbilityStopper { get { return m_AbilityStopper; } set { m_AbilityStopper = value; } }
 
         /// <summary>
         /// Initializes the ability to the specified character controller.
@@ -278,6 +288,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             }
             m_CharacterLayerManager = m_GameObject.GetCachedComponent<CharacterLayerManager>();
             m_Inventory = m_GameObject.GetCachedComponent<Inventory.InventoryBase>();
+            m_ModelManager = m_GameObject.GetCachedComponent<ModelManager>();
             m_Index = index;
             m_CheckForAbilityMessage = !string.IsNullOrEmpty(m_AbilityMessageText) || m_AbilityMessageIcon != null;
 
@@ -327,7 +338,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
                     }
 
                     if (m_ButtonUp[i] &&
-                        (m_StartType == AbilityStartType.ButtonDown && playerInput.GetButtonDown(m_InputNames[i])) ||
+                        (m_StartType == AbilityStartType.ButtonDown && playerInput.GetButtonDown(m_InputNames[i], m_WaitForDoublePressTapTimeout)) ||
                         (m_StartType == AbilityStartType.ButtonDownContinuous && playerInput.GetButton(m_InputNames[i])) ||
                         (m_StartType == AbilityStartType.DoublePress && playerInput.GetDoublePress(m_InputNames[i])) ||
                         (m_StartType == AbilityStartType.LongPress && playerInput.GetLongPress(m_InputNames[i], m_LongPressDuration, m_WaitForLongPressRelease)) ||
@@ -354,6 +365,10 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         /// <returns>True if the input can stop the ability.</returns>
         public virtual bool CanInputStopAbility(IPlayerInput playerInput)
         {
+            if (m_StartType == AbilityStartType.Custom && m_AbilityStopper != null) {
+                return m_AbilityStopper.CanInputStopAbility(playerInput);
+            }
+
             if (m_InputNames != null && m_InputNames.Length > 0) {
                 for (int i = 0; i < m_InputNames.Length; ++i) {
                     if (!m_ActiveInput[i]) {
@@ -502,6 +517,9 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             if (m_AbilityStarter != null) {
                 m_AbilityStarter.AbilityStarted();
             }
+            if (m_AbilityStopper != null) {
+                m_AbilityStopper.AbilityStarted();
+            }
 
             m_StartAudioClipSet.PlayAudioClip(m_GameObject);
 
@@ -565,6 +583,11 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
                             StateManager.SetState(m_GameObject, itemStateName, active);
                         }
                     }
+                }
+                // Allow each character to have a unique ability name.
+                if (m_ModelManager != null) {
+                    m_PreviousModelName = m_ModelManager.ActiveModel.name;
+                    StateManager.SetState(m_GameObject, m_ModelManager.ActiveModel.name + m_State, active);
                 }
             }
         }
@@ -726,6 +749,9 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             if (m_AbilityStarter != null) {
                 m_AbilityStarter.AbilityStopped();
             }
+            if (m_AbilityStopper != null) {
+                m_AbilityStopper.AbilityStopped();
+            }
             if (m_UseGravity == AbilityBoolOverride.True) {
                 m_CharacterLocomotion.ForceUseGravity = false;
             } else if (m_UseGravity == AbilityBoolOverride.False) {
@@ -835,6 +861,9 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         {
             if (m_AbilityStarter != null) {
                 m_AbilityStarter.OnDestroy();
+            }
+            if (m_AbilityStopper != null) {
+                m_AbilityStopper.OnDestroy();
             }
             EventHandler.UnregisterEvent<GameObject>(m_GameObject, "OnCharacterSwitchModels", OnSwitchModels);
         }
@@ -1042,6 +1071,14 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         protected virtual void OnSwitchModels(GameObject activeModel)
         {
             m_AnimatorMonitor = activeModel.GetCachedComponent<AnimatorMonitor>();
+
+            if (IsActive) {
+                if (!string.IsNullOrEmpty(m_PreviousModelName)) {
+                    StateManager.SetState(m_GameObject, activeModel.name + m_State, false);
+                }
+                m_PreviousModelName = activeModel.name;
+                StateManager.SetState(m_GameObject, activeModel.name + m_State, true);
+            }
         }
 
         /// <summary>

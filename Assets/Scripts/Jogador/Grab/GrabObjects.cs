@@ -598,7 +598,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             if(!playerController.estouPilotando)
             {
-                BoatProbes barcoController = hit.transform.GetComponent<BoatProbes>();
+                BoatProbes barcoController = hit.transform.GetComponentInParent<BoatProbes>();
                 if (barcoController != null)
                 {
                     playerController.PararAbilitys();

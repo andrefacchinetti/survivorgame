@@ -1,4 +1,4 @@
-﻿/// ---------------------------------------------
+/// ---------------------------------------------
 /// Ultimate Character Controller
 /// Copyright (c) Opsive. All Rights Reserved.
 /// https://www.opsive.com
@@ -151,48 +151,32 @@ namespace Opsive.UltimateCharacterController.Traits
             m_ForceObject = m_GameObject.GetCachedComponent<IForceObject>();
             m_Rigidbody = m_GameObject.GetCachedComponent<Rigidbody>();
             m_AttributeManager = GetComponent<AttributeManager>();
-            if (!string.IsNullOrEmpty(m_HealthAttributeName))
-            {
+            if (!string.IsNullOrEmpty(m_HealthAttributeName)) {
                 m_HealthAttribute = m_AttributeManager.GetAttribute(m_HealthAttributeName);
-            }
-            else
-            {
+            } else {
                 m_HealthAttribute = null;
             }
-            if (!string.IsNullOrEmpty(m_ShieldAttributeName))
-            {
+            if (!string.IsNullOrEmpty(m_ShieldAttributeName)) {
                 m_ShieldAttribute = m_AttributeManager.GetAttribute(m_ShieldAttributeName);
-            }
-            else
-            {
+            } else {
                 m_ShieldAttribute = null;
             }
             m_AliveLayer = m_GameObject.layer;
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
-    m_NetworkInfo = m_GameObject.GetCachedComponent<INetworkInfo>();
-    m_NetworkHealthMonitor = m_GameObject.GetCachedComponent<INetworkHealthMonitor>();
-    if (m_NetworkInfo != null && m_NetworkHealthMonitor == null) {
-        Debug.LogError("Error: The object " + m_GameObject.name + " must have a NetworkHealthMonitor component.");
-    }
+            m_NetworkInfo = m_GameObject.GetCachedComponent<INetworkInfo>();
+            m_NetworkHealthMonitor = m_GameObject.GetCachedComponent<INetworkHealthMonitor>();
+            if (m_NetworkInfo != null && m_NetworkHealthMonitor == null) {
+                Debug.LogError("Error: The object " + m_GameObject.name + " must have a NetworkHealthMonitor component.");
+            }
 #endif
 
-            if (m_Hitboxes != null && m_Hitboxes.Length > 0)
-            {
+            if (m_Hitboxes != null && m_Hitboxes.Length > 0) {
                 m_ColliderHitboxMap = new Dictionary<Collider, Hitbox>();
-                for (int i = 0; i < m_Hitboxes.Length; ++i)
-                {
-                    if (m_Hitboxes[i] == null || m_Hitboxes[i].Collider == null)
-                    {
+                for (int i = 0; i < m_Hitboxes.Length; ++i) {
+                    if (m_Hitboxes[i] == null) {
                         continue;
                     }
-                    if (!m_ColliderHitboxMap.ContainsKey(m_Hitboxes[i].Collider))
-                    {
-                        m_ColliderHitboxMap.Add(m_Hitboxes[i].Collider, m_Hitboxes[i]);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"Hitbox collider {m_Hitboxes[i].Collider} is already in the dictionary.");
-                    }
+                    m_ColliderHitboxMap.Add(m_Hitboxes[i].Collider, m_Hitboxes[i]);
                 }
                 m_RaycastHits = new RaycastHit[m_MaxHitboxCollisionCount];
                 m_RaycastHitComparer = new Utility.UnityEngineUtility.RaycastHitComparer();
@@ -349,7 +333,7 @@ namespace Opsive.UltimateCharacterController.Traits
         public virtual void OnDamage(DamageData damageData)
         {
             if (damageData == null) { return; }
-            Debug.Log("OnDamage");
+
             // Add a multiplier if a particular collider was hit. Do not apply a multiplier if the damage is applied through a radius because multiple
             // collider are hit.
             if (damageData.Radius == 0 && damageData.Direction != Vector3.zero && damageData.HitCollider != null) {
@@ -385,6 +369,8 @@ namespace Opsive.UltimateCharacterController.Traits
                     }
                 }
             }
+            var attacker = damageData.DamageSource?.SourceOwner;
+            EventHandler.ExecuteEvent<float, Vector3, GameObject, Collider>(m_GameObject, "OnPreHealthDamage", damageData.Amount, damageData.Position, attacker, damageData.HitCollider);
 
             // Apply the damage to the shield first because the shield can regenrate.
             if (m_ShieldAttribute != null && m_ShieldAttribute.Value > m_ShieldAttribute.MinValue) {
@@ -392,13 +378,11 @@ namespace Opsive.UltimateCharacterController.Traits
                 damageData.Amount -= shieldAmount;
                 m_ShieldAttribute.Value -= shieldAmount;
             }
-            var attacker = damageData.DamageSource?.SourceOwner;
-
-            EventHandler.ExecuteEvent<float, Vector3, GameObject, Collider>(m_GameObject, "OnPreHealthDamage", damageData.Amount, damageData.Position, attacker, damageData.HitCollider);
-
 
             // Decrement the health by remaining amount after the shield has taken damage.
-            //AplicarDanonoHealth();
+            if (m_HealthAttribute != null && m_HealthAttribute.Value > m_HealthAttribute.MinValue) {
+                m_HealthAttribute.Value -= Mathf.Min(damageData.Amount, m_HealthAttribute.Value - m_HealthAttribute.MinValue);
+            }
 
             var force = damageData.Direction * damageData.ForceMagnitude;
             if (damageData.ForceMagnitude > 0) {
@@ -416,7 +400,6 @@ namespace Opsive.UltimateCharacterController.Traits
                     }
                 }
             }
-
             
             // Let other interested objects know that the object took damage.
             EventHandler.ExecuteEvent<float, Vector3, Vector3, GameObject, Collider>(m_GameObject, "OnHealthDamage", damageData.Amount, damageData.Position, force, attacker, damageData.HitCollider);
@@ -646,7 +629,5 @@ namespace Opsive.UltimateCharacterController.Traits
         {
             EventHandler.UnregisterEvent(m_GameObject, "OnRespawn", OnRespawn);
         }
-
     }
-
 }

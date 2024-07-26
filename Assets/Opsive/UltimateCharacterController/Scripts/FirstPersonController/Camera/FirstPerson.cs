@@ -670,17 +670,6 @@ namespace Opsive.UltimateCharacterController.FirstPersonController.Camera.ViewTy
             m_Pitch = MathUtility.ClampInnerAngle(m_Pitch);
             m_Yaw = MathUtility.ClampInnerAngle(m_Yaw);
 
-            // A method can override the rotation.
-            if (m_RotationalOverride != null) {
-                var currentRotation = MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0));
-                var targetRotation = Quaternion.Slerp(currentRotation, m_RotationalOverride(m_Transform.position, currentRotation), m_SecondaryRotationSpeed);
-
-                // Set the pitch and yaw so when the override is reset the view type won't snap back to the previous rotation value.
-                var localAssistRotation = MathUtility.InverseTransformQuaternion(m_BaseRotation, targetRotation).eulerAngles;
-                m_Pitch = MathUtility.ClampInnerAngle(localAssistRotation.x);
-                m_Yaw = MathUtility.ClampInnerAngle(localAssistRotation.y);
-            }
-
             var headRotation = Quaternion.identity;
             if (m_RotateWithHead) {
                 headRotation = MathUtility.InverseTransformQuaternion(m_BaseRotation, m_CharacterAnchor.rotation) * Quaternion.Inverse(m_CharacterAnchorRotation);
@@ -694,6 +683,40 @@ namespace Opsive.UltimateCharacterController.FirstPersonController.Camera.ViewTy
             return MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0)) *
                                                         Quaternion.Euler(m_RotationSpring.Value) *
                                                         Quaternion.Euler(m_SecondaryRotationSpring.Value) * headRotation;
+        }
+
+        /// <summary>
+        /// Rotates the camera within the LateUpdate loop.
+        /// </summary>
+        /// <param name="immediateUpdate">Should the camera be updated immediately?</param>
+        /// <returns>The updated rotation.</returns>
+        public override Quaternion LateRotate(bool immediateUpdate)
+        {
+            // A method can override the rotation.
+            if (m_RotationalOverride != null) {
+                var currentRotation = MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0));
+                var targetRotation = Quaternion.Slerp(currentRotation, m_RotationalOverride(m_Transform.position, currentRotation), m_SecondaryRotationSpeed);
+
+                // Set the pitch and yaw so when the override is reset the view type won't snap back to the previous rotation value.
+                var localAssistRotation = MathUtility.InverseTransformQuaternion(m_BaseRotation, targetRotation).eulerAngles;
+                m_Pitch = MathUtility.ClampInnerAngle(localAssistRotation.x);
+                m_Yaw = MathUtility.ClampInnerAngle(localAssistRotation.y);
+
+                var headRotation = Quaternion.identity;
+                if (m_RotateWithHead) {
+                    headRotation = MathUtility.InverseTransformQuaternion(m_BaseRotation, m_CharacterAnchor.rotation) * Quaternion.Inverse(m_CharacterAnchorRotation);
+                    // The camera should only follow the pitch of the head rotation.
+                    var eulerHeadRotation = headRotation.eulerAngles;
+                    eulerHeadRotation.y = eulerHeadRotation.z = 0;
+                    headRotation = Quaternion.Euler(eulerHeadRotation);
+                }
+
+                return MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0)) *
+                                                            Quaternion.Euler(m_RotationSpring.Value) *
+                                                            Quaternion.Euler(m_SecondaryRotationSpring.Value) * headRotation;
+            }
+
+            return m_Transform.rotation;
         }
 
         /// <summary>

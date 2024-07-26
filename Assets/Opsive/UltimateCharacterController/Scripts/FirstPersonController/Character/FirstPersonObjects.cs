@@ -212,7 +212,7 @@ namespace Opsive.UltimateCharacterController.FirstPersonController.Character
             m_CameraTransform = (m_CameraController != null ? m_CameraController.Transform : null);
             // Delay the parent being set to prevent the transform from changing when the application is shutting down.
             Scheduler.Schedule(0.001f, () => { 
-                m_Transform.parent = (m_CameraController != null ? m_CameraTransform : (m_CharacterTransform != null ? m_CharacterTransform.parent : null));
+                m_Transform.parent = (m_CameraController != null ? m_CameraTransform : (m_CharacterTransform != null ? m_CharacterTransform : null));
                 m_Transform.localPosition = Vector3.zero;
                 m_Transform.localRotation = Quaternion.identity;
             });

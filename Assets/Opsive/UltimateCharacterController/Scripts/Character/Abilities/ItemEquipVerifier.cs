@@ -251,7 +251,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             if (m_StartingAbility == null) {
                 return false;
             }
-            return m_StartingAbility.ShouldStopActiveAbility(activeAbility) || m_StartingAbility.Index < activeAbility.Index;
+            return m_StartingAbility.ShouldStopActiveAbility(activeAbility) || (m_StartingAbility.Index < activeAbility.Index && !activeAbility.IsConcurrent);
         }
 
         /// <summary>
@@ -342,7 +342,9 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             if (!m_Equip && (m_CharacterLocomotion.MoveTowardsAbility == null || m_CharacterLocomotion.MoveTowardsAbility.OnArriveAbility == null)) {
                 m_CanToggleItem = false;
                 if (!m_StartingAbility.IsActive) {
-                    m_CharacterLocomotion.TryStartAbility(m_StartingAbility, true, true);
+                    if (!m_StartingAbility.ImmediateUnequip) { // If the ability unequips immediately then the original TryStartAbility will start the ability.
+                        m_CharacterLocomotion.TryStartAbility(m_StartingAbility, true, true);
+                    }
                 } else if (m_StartingAbility is IItemToggledReceiver) {
                     // If the ability is already active then the ability is the one that toggled the item and it should receive the callback.
                     (m_StartingAbility as IItemToggledReceiver).ItemToggled();

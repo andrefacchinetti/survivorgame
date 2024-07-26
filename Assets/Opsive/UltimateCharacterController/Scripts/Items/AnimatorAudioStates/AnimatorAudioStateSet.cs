@@ -74,6 +74,8 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
 
         public AnimatorAudioStateSelector AnimatorAudioStateSelector { get => m_AnimatorAudioStateSelector; set => m_AnimatorAudioStateSelector = value; }
         public AnimatorAudioState[] States { get => m_States; set => m_States = value; }
+        public int Length => m_AnimatorAudioStateSelector.Length;
+        public bool IsArrayIndexes => m_AnimatorAudioStateSelector.IsArrayIndexes;
 
         /// <summary>
         /// Default constructor.
@@ -125,13 +127,24 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         /// </summary>
         /// <param name="characterItem">A reference to the item that the state belongs to.</param>
         /// <param name="characterLocomotion">A reference to the character that the state belongs to.</param>
-        public void Awake(CharacterItem characterItem, UltimateCharacterLocomotion characterLocomotion)
+        /// <param name="count">The count of states to expect.</param>
+        public void Awake(CharacterItem characterItem, UltimateCharacterLocomotion characterLocomotion, int count = 1)
         {
-            m_AnimatorAudioStateSelector.Initialize(characterItem.gameObject, characterLocomotion, characterItem, m_States);
+            m_AnimatorAudioStateSelector.Initialize(characterItem.gameObject, characterLocomotion, characterItem, m_States, count);
 
             for (int i = 0; i < m_States.Length; ++i) {
                 m_States[i].Initialize(characterItem.gameObject);
             }
+        }
+
+        /// <summary>
+        /// Starts or stops the state selection. Will activate or deactivate the state with the name specified within the AnimatorAudioState.
+        /// </summary>
+        /// <param name="start">Is the object starting?</param>
+        /// <param name="count">The count of states to expect.</param>
+        public void StartStopStateSelection(bool start, int count = 1)
+        {
+            m_AnimatorAudioStateSelector.StartStopStateSelection(start, count);
         }
 
         /// <summary>
@@ -147,12 +160,42 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         }
 
         /// <summary>
-        /// Starts or stops the state selection. Will activate or deactivate the state with the name specified within the AnimatorAudioState.
+        /// Set the new state index of the selector.
         /// </summary>
-        /// <param name="start">Is the object starting?</param>
-        public void StartStopStateSelection(bool start)
+        /// <param name="stateIndex">The new state index.</param>
+        public void SetStateIndex(int stateIndex)
         {
-            m_AnimatorAudioStateSelector.StartStopStateSelection(start);
+            if (m_AnimatorAudioStateSelector == null || m_States.Length == 0) {
+                return;
+            }
+
+            m_AnimatorAudioStateSelector.SetStateIndex(stateIndex);
+        }
+
+        /// <summary>
+        /// Returns the current state indexes of the selector. Null indicates this index is not set by the class.
+        /// </summary>
+        /// <returns>The current state indexes.</returns>
+        public int[] GetStateIndexes()
+        {
+            if (m_AnimatorAudioStateSelector == null || m_States.Length == 0) {
+                return null;
+            }
+
+            return m_AnimatorAudioStateSelector.GetStateIndexes();
+        }
+
+        /// <summary>
+        /// Set the new state indexes of the selector.
+        /// </summary>
+        /// <param name="stateIndexes">The new state indexes.</param>
+        public void SetStateIndexes(int[] stateIndexes)
+        {
+            if (m_AnimatorAudioStateSelector == null || m_States.Length == 0) {
+                return;
+            }
+
+            m_AnimatorAudioStateSelector.SetStateIndexes(stateIndexes);
         }
 
         /// <summary>

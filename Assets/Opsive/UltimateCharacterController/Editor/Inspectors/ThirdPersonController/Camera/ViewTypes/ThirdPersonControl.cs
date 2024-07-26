@@ -34,7 +34,6 @@ namespace Opsive.UltimateCharacterController.Editor.Controls.Types.ViewTypeDrawe
             FieldInspectorView.AddField(unityObject, target, "m_RotationSpeed", container, onChangeEvent, onValidateChange);
             FieldInspectorView.AddField(unityObject, target, "m_SecondaryRotationSpeed", container, onChangeEvent, onValidateChange);
             FieldInspectorView.AddField(unityObject, target, "m_HorizontalPivotFreedom", container, onChangeEvent, onValidateChange);
-            FieldInspectorView.AddField(unityObject, target, "m_ObstructionPositionSmoothing", container, onChangeEvent, onValidateChange);
             FieldInspectorView.AddField(unityObject, target, "m_FieldOfView", container, onChangeEvent, onValidateChange);
             FieldInspectorView.AddField(unityObject, target, "m_FieldOfViewDamping", container, onChangeEvent, onValidateChange);
             FieldInspectorView.AddField(unityObject, target, "m_CollisionRadius", container, onChangeEvent, onValidateChange);

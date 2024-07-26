@@ -7,6 +7,7 @@
 namespace Opsive.UltimateCharacterController.Character
 {
     using Opsive.Shared.StateSystem;
+    using Opsive.UltimateCharacterController.Items;
     using System;
     using UnityEngine;
 
@@ -56,11 +57,12 @@ namespace Opsive.UltimateCharacterController.Character
         /// <summary>
         /// Specifies the location of the left or right hand IK target and IK hint target.
         /// </summary>
+        /// <param name="characterItem">The character item.</param>
         /// <param name="itemTransform">The transform of the item.</param>
         /// <param name="itemHand">The hand that the item is parented to.</param>
         /// <param name="nonDominantHandTarget">The target of the left or right hand. Can be null.</param>
         /// <param name="nonDominantHandElbowTarget">The target of the left or right elbow. Can be null.</param>
-        public abstract void SetItemIKTargets(Transform itemTransform, Transform itemHand, Transform nonDominantHandTarget, Transform nonDominantHandElbowTarget);
+        public abstract void SetItemIKTargets(CharacterItem characterItem, Transform itemTransform, Transform itemHand, Transform nonDominantHandTarget, Transform nonDominantHandElbowTarget);
 
         /// <summary>
         /// Specifies the target location of the limb.

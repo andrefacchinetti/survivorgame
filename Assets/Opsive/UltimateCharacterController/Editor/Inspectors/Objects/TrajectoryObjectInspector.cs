@@ -93,16 +93,21 @@ namespace Opsive.UltimateCharacterController.Editor.Inspectors.Objects
                 m_ImpactFoldout.Add(GetPropertyField("m_ImpactActionGroup"));
             }
 
-            var audioFoldout = PropertiesFoldout(container, "Audio", m_ExcludeFields, new[]
+            PropertiesFoldout(container, "Audio", m_ExcludeFields, new[]
             {
                 "m_ActiveAudioClipSet",
             });
 
             DrawObjectFields(container);
 
-            var curveFoldout = PropertiesFoldout(container, "Curve", m_ExcludeFields, new[]
+            PropertiesFoldout(container, "Curve", m_ExcludeFields, new[]
             {
                 "m_MaxPositionCount",
+            });
+
+            PropertiesFoldout(container, "Events", m_ExcludeFields, new[]
+            {
+                "m_OnCollisionEvent",
             });
 
             OnCollisionModeChange((target as TrajectoryObject)?.Collision ?? TrajectoryObject.CollisionMode.Collide, false);

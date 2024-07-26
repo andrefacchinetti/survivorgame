@@ -125,9 +125,9 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Throwable
         [Tooltip("Throw in the look source direction.")]
         [SerializeField] protected bool m_ThrowInLookSourceDirection;
         [Tooltip("The location at which the throw should occur.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ThrowLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ThrowLocation = new();
         [Tooltip("The location of the throw Trajectory.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_TrajectoryLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_TrajectoryLocation = new();
         [Tooltip("The offset of the trajectory visualization relative to the trajectory transform set on the Throwable Item Properties.")]
         [SerializeField] protected Vector3 m_TrajectoryOffset;
         [Tooltip("The starting velocity of the thrown object.")]

@@ -36,9 +36,9 @@ namespace Opsive.UltimateCharacterController.Character
         [SerializeField] protected Vector3 m_LookAtOffset;
         [Shared.Utility.InspectorFoldout("Body")]
         [Tooltip("Determines how much weight is applied to the body when looking at the target. (0-1).")]
-        [Range(0, 1)] [SerializeField] protected float m_LookAtBodyWeight = 0.05f;
+        [Range(0, 1)] [SerializeField] protected float m_LookAtBodyWeight = 0.025f;
         [Tooltip("Determines how much weight is applied to the head when looking at the target. (0-1).")]
-        [Range(0, 1)] [SerializeField] protected float m_LookAtHeadWeight = 0.425f;
+        [Range(0, 1)] [SerializeField] protected float m_LookAtHeadWeight = 0.2f;
         [Tooltip("Determines how much weight is applied to the eyes when looking at the target. (0-1).")]
         [Range(0, 1)] [SerializeField] protected float m_LookAtEyesWeight = 1;
         [Tooltip("A value of 0 means the character is completely unrestrained in motion, 1 means the character motion completely clamped (look at becomes impossible) (0-1).")]
@@ -83,6 +83,8 @@ namespace Opsive.UltimateCharacterController.Character
         [Tooltip("The right hand rotational spring used for IK movement.")]
         [SerializeField] protected Spring m_RightHandRotationSpring = new Spring(0.2f, 0.05f);
 
+        public int BaseLayerIndex { get { return m_BaseLayerIndex; } set { m_BaseLayerIndex = value; } }
+        public int UpperBodyLayerIndex { get { return m_UpperBodyLayerIndex; } set { m_UpperBodyLayerIndex = value; } }
         public LayerMask LayerMask { get { return m_LayerMask; } set { m_LayerMask = value; } }
         public Vector3 LookAtOffset { get { return m_LookAtOffset; } set { m_LookAtOffset = value; } }
         public float LookAtBodyWeight { get { return m_LookAtBodyWeight; } set { m_LookAtBodyWeight = value; } }
@@ -428,11 +430,12 @@ namespace Opsive.UltimateCharacterController.Character
         /// <summary>
         /// Specifies the location of the left or right hand IK target and IK hint target.
         /// </summary>
+        /// <param name="characterItem">The character item.</param>
         /// <param name="itemTransform">The transform of the item.</param>
         /// <param name="itemHand">The hand that the item is parented to.</param>
         /// <param name="nonDominantHandTarget">The target of the left or right hand. Can be null.</param>
         /// <param name="nonDominantHandElbowTarget">The target of the left or right elbow. Can be null.</param>
-        public override void SetItemIKTargets(Transform itemTransform, Transform itemHand, Transform nonDominantHandTarget, Transform nonDominantHandElbowTarget)
+        public override void SetItemIKTargets(CharacterItem characterItem, Transform itemTransform, Transform itemHand, Transform nonDominantHandTarget, Transform nonDominantHandElbowTarget)
         {
             if (itemHand == null) {
                 return;

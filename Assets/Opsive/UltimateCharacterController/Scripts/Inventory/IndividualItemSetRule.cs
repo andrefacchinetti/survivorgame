@@ -59,16 +59,14 @@ namespace Opsive.UltimateCharacterController.Inventory
         public override bool DoesCharacterItemMatchRule(ItemSetRuleStreamData itemSetRuleStreamData,
             ListSlice<IItemIdentifier> currentPermutation, CharacterItem characterItem)
         {
-            var item = characterItem.ItemIdentifier;
-            var slotID = characterItem.SlotID;
-
-            //Only allow item sets with a single item per set.
+            // Only allow item sets with a single item per set.
             for (int i = 0; i < currentPermutation.Count; i++) {
                 if (currentPermutation[i] != null) {
                     return false;
                 }
             }
 
+            var item = characterItem.ItemIdentifier;
             if (m_ItemTypeExceptions != null) {
                 for (int i = 0; i < m_ItemTypeExceptions.Length; i++) {
                     if (m_ItemTypeExceptions[i].InherentlyContains(item)) {

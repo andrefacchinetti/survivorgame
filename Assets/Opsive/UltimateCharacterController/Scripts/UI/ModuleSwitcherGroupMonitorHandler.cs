@@ -76,7 +76,7 @@ namespace Opsive.UltimateCharacterController.UI
         /// </summary>
         private void Update()
         {
-            if(m_AllowGameplayInput == false || m_PlayerInput == null ){ return;}
+            if (!m_AllowGameplayInput || m_PlayerInput == null) { return; }
 
             if (m_PlayerInput.GetButtonDown(m_SelectPreviousMonitorInput)) {
                 m_ModuleSwitcherGroupMonitor.SelectPreviousMonitor();
@@ -133,6 +133,4 @@ namespace Opsive.UltimateCharacterController.UI
             enabled = m_AllowGameplayInput && m_Character != null && activate;
         }
     }
-    
-    
 }

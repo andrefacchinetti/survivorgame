@@ -231,8 +231,12 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
                     if (child.gameObject.GetComponentInChildren<CapsuleColliderPositioner>(true) || 
                         child.gameObject.GetComponent<Character.Identifiers.CharacterColliderBaseIdentifier>()) {
                         var collider = child.gameObject.GetComponent<Collider>();
-                        if (collider != null) { 
+                        if (collider != null) {
+#if UNITY_6000_0_OR_NEWER
                             collider.material = Shared.Editor.Utility.EditorUtility.LoadAsset<PhysicsMaterial>(c_CharacterPhysicMaterialGUID);
+#else
+                            collider.material = Shared.Editor.Utility.EditorUtility.LoadAsset<PhysicMaterial>(c_CharacterPhysicMaterialGUID);
+#endif
                         }
                         moveGameObject = true;
                     }

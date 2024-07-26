@@ -93,6 +93,26 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
 
             m_Container.Clear();
 
+            var horizontalLayout = new VisualElement();
+            horizontalLayout.AddToClassList("horizontal-layout");
+            horizontalLayout.style.flexShrink = 0;
+            horizontalLayout.style.marginTop = 5;
+            m_Container.Add(horizontalLayout);
+
+            var startLinkLabel = new Label("New animations can be generated and downloaded with ");
+            horizontalLayout.Add(startLinkLabel);
+            var linkConfigLabel = new Label(string.Format("<color={0}>Omni Animation</color>", EditorGUIUtility.isProSkin ? "#00aeff" : "#0000ee"));
+            linkConfigLabel.RegisterCallback<ClickEvent>(c =>
+            {
+                Application.OpenURL("https://omnianimation.ai");
+            });
+            linkConfigLabel.enableRichText = true;
+            linkConfigLabel.AddToClassList("hyperlink");
+            horizontalLayout.Add(linkConfigLabel);
+            var endClickLabel = new Label(".");
+            endClickLabel.style.marginLeft = -3;
+            horizontalLayout.Add(endClickLabel);
+
             var animatorControllerField = new ObjectField("Animator Controller");
             animatorControllerField.objectType = typeof(AnimatorController);
             animatorControllerField.allowSceneObjects = false;
@@ -157,7 +177,7 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
                     return null;
                 }
                 AnimationClip replacementClip = null;
-                if (m_ReplacementsTemplate != null){
+                if (m_ReplacementsTemplate != null) {
                     m_ReplacementsTemplate.ReplacementMap.TryGetValue(animationClip, out replacementClip);
                 }
                 m_Animations.Add(animationClip, replacementClip);
@@ -296,25 +316,26 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
                 // Add the animation events at the same relative time.
                 if (m_ReplaceEvents) {
                     var animationEvents = animationClip.events;
-                    var newAnimationEvents = new AnimationEvent[animationEvents.Length];
-                    for (int i = 0; i < animationEvents.Length; ++i) {
-                        var animationEvent = animationEvents[i];
-                        if (animationEvent == null) {
-                            continue;
-                        }
+                    if (animationEvents.Length > 0) {
+                        var newAnimationEvents = new AnimationEvent[animationEvents.Length];
+                        for (int i = 0; i < animationEvents.Length; ++i) {
+                            var animationEvent = animationEvents[i];
+                            if (animationEvent == null) {
+                                continue;
+                            }
 
-                        var newAnimationEvent = new AnimationEvent();
-                        newAnimationEvent.functionName = animationEvent.functionName;
-                        newAnimationEvent.floatParameter = animationEvent.floatParameter;
-                        newAnimationEvent.intParameter = animationEvent.intParameter;
-                        newAnimationEvent.stringParameter = animationEvent.stringParameter;
-                        newAnimationEvent.objectReferenceParameter = animationEvent.objectReferenceParameter;
-                        newAnimationEvent.messageOptions = animationEvent.messageOptions;
-                        var relativeTime = animationEvent.time / animationClip.length;
-                        newAnimationEvent.time = relativeTime * value.length;
-                        newAnimationEvents[i] = newAnimationEvent;
+                            var newAnimationEvent = new AnimationEvent();
+                            newAnimationEvent.functionName = animationEvent.functionName;
+                            newAnimationEvent.floatParameter = animationEvent.floatParameter;
+                            newAnimationEvent.intParameter = animationEvent.intParameter;
+                            newAnimationEvent.stringParameter = animationEvent.stringParameter;
+                            newAnimationEvent.objectReferenceParameter = animationEvent.objectReferenceParameter;
+                            newAnimationEvent.messageOptions = animationEvent.messageOptions;
+                            newAnimationEvent.time = Mathf.Clamp01(animationEvent.time / animationClip.length);
+                            newAnimationEvents[i] = newAnimationEvent;
+                        }
+                        SetAnimationEvents(value, newAnimationEvents);
                     }
-                    AnimationUtility.SetAnimationEvents(value, newAnimationEvents);
                 }
 
                 m_ReplacedCount++;
@@ -328,6 +349,49 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
             if (m_ReplacedCount > 0) {
                 ShowReplacer();
                 m_ReplacedCount = 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the animation events on the specified clip.
+        /// </summary>
+        /// <param name="clip">The clip that should have its animation events set.</param>
+        /// <param name="animationEvents">The new animation events.</param>
+        private void SetAnimationEvents(AnimationClip clip, AnimationEvent[] animationEvents)
+        {
+            // The events must be set on the model rather than directly on the clip.
+            var modelImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(clip)) as ModelImporter;
+            if (modelImporter == null) {
+                return;
+            }
+
+            var serializedObject = new SerializedObject(modelImporter);
+            var clipAnimationsProperty = serializedObject.FindProperty("m_ClipAnimations");
+
+            if (!clipAnimationsProperty.isArray) {
+                return;
+            }
+
+            for (int i = 0; i < clipAnimationsProperty.arraySize; ++i) {
+                var clipElementProperties = clipAnimationsProperty.GetArrayElementAtIndex(i);
+                // Find the matching clip.
+                if (clipElementProperties.FindPropertyRelative("name").stringValue == clip.name) {
+                    // Update the events through the SerializedProperty.
+                    var events = clipElementProperties.FindPropertyRelative("events");
+                    events.ClearArray();
+                    for (int j = 0; j < animationEvents.Length; ++j) {
+                        events.InsertArrayElementAtIndex(j);
+                        events.GetArrayElementAtIndex(j).FindPropertyRelative("functionName").stringValue = animationEvents[j].functionName;
+                        events.GetArrayElementAtIndex(j).FindPropertyRelative("floatParameter").floatValue = animationEvents[j].floatParameter;
+                        events.GetArrayElementAtIndex(j).FindPropertyRelative("intParameter").intValue = animationEvents[j].intParameter;
+                        events.GetArrayElementAtIndex(j).FindPropertyRelative("data").stringValue = animationEvents[j].stringParameter;
+                        events.GetArrayElementAtIndex(j).FindPropertyRelative("objectReferenceParameter").objectReferenceValue = animationEvents[j].objectReferenceParameter;
+                        events.GetArrayElementAtIndex(j).FindPropertyRelative("time").floatValue = animationEvents[j].time;
+                    }
+                    serializedObject.ApplyModifiedProperties();
+                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(clip));
+                    break;
+                }
             }
         }
     }

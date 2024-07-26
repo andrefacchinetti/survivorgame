@@ -39,7 +39,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [Tooltip("The number of rounds to fire in a single shot.")]
         [SerializeField] protected int m_FireCount = 1;
         [Tooltip("The fire point location.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_FirePointLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_FirePointLocation = new();
         [Tooltip("The random spread of the bullets once they are fired.")]
         [Range(0, 360)] [SerializeField] protected float m_Spread = 0.01f;
         [Tooltip("A LayerMask of the layers that can be hit when fired at.")]
@@ -185,14 +185,19 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             // Get the preview data to set things up.
             GetFirePreviewData();
             
-            // Remove the ammo before it is fired.
-            ShootableAction.ClipModuleGroup.FirstEnabledModule.AmmoUsed(1, ammoIndex);
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (ShootableAction.NetworkInfo == null || ShootableAction.NetworkInfo.HasAuthority()) {
+#endif
+                // Remove the ammo before it is fired.
+                ShootableAction.ClipModuleGroup.FirstEnabledModule.AmmoUsed(1, ammoIndex);
             
-            // Fire as many projectiles or hitscan bullets as the fire count specifies.
-            for (int i = 0; i < m_FireCount; ++i) {
-                ProjectileFire(dataStream, ammoData);
+                // Fire as many projectiles or hitscan bullets as the fire count specifies.
+                for (int i = 0; i < m_FireCount; ++i) {
+                    ProjectileFire(dataStream, ammoData);
+                }
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             }
-            
+#endif
             // Notify that the shooter fired.
             ShootableAction.OnFire(m_ShootableFireData);
         }
@@ -224,6 +229,11 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             }
             
             var spawnedProjectile = projectileData.SpawnedProjectile;
+            if (spawnedProjectile == null) {
+                Debug.LogWarning("Spawned Projectile is null, cannot fire null projectile.");
+                return;
+            }
+            
             if (projectileData.WasPrespawnedProjectile) {
                 CharacterItemAction.DebugLogger.Log(this,"Prespawned");
 

@@ -382,5 +382,15 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
 
             return sharedCount;
         }
+
+        /// <summary>
+        /// The item was removed from the character.
+        /// </summary>
+        public override void RemoveItem()
+        {
+            base.RemoveItem();
+
+            EmptyClip(false);
+        }
     }
 }

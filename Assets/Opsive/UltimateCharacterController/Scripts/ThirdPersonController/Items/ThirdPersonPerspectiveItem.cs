@@ -28,7 +28,18 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Items
 
         [NonSerialized] public Transform NonDominantHandIKTarget { get { return m_NonDominantHandIKTarget; } set { m_NonDominantHandIKTarget = value; } }
         [NonSerialized] public Transform NonDominantHandIKTargetHint { get { return m_NonDominantHandIKTargetHint; } set { m_NonDominantHandIKTargetHint = value; } }
-        [NonSerialized] public Transform HolsterTarget { get { return m_HolsterTarget.GetObject(m_CharacterModel, true); } set { m_HolsterTarget.Obj = value; } }
+
+        [NonSerialized] public Transform HolsterTarget {
+            get
+            {
+                return m_HolsterTarget.GetObject(m_CharacterModel, true);
+            }
+            set
+            {
+                m_HolsterTarget.Obj = value;
+            }
+        }
+
         [NonSerialized] public IDObject<Transform> HolsterTargetIDObject { get { return m_HolsterTarget; } set { m_HolsterTarget = value; } }
 
         private CharacterIKBase m_CharacterIK;
@@ -92,11 +103,23 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Items
             var itemSlots = character.GetComponentsInChildren<CharacterItemSlot>(true);
             for (int i = 0; i < itemSlots.Length; ++i) {
 #if FIRST_PERSON_CONTROLLER
-                if (itemSlots[i].GetComponentInParent<FirstPersonController.Character.Identifiers.FirstPersonBaseObject>(true) != null) {
+                var emptyBase = itemSlots[i].GetComponentInParent<FirstPersonController.Character.Identifiers.FirstPersonBaseObject>(true) != null;
+                // GetComponentInParent may not find the component.
+                if (emptyBase) {
+                    var parent = itemSlots[i].transform;
+                    while (parent != character && parent != null) {
+                        if (parent.GetComponent<FirstPersonController.Character.Identifiers.FirstPersonBaseObject>() != null) {
+                            emptyBase = false;
+                            break;
+                        }
+                        parent = parent.parent;
+                    }
+                }
+                if (emptyBase) {
                     continue;
                 }
 #endif
-                
+
                 if (itemSlots[i].ID == slotID) {
                     itemSlotTransform = itemSlots[i].transform;
                     break;
@@ -168,7 +191,7 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Items
 
             // When the item activates or deactivates it should specify the IK target of the non-dominant hand (if any).
             if (m_CharacterIK != null && setIKTargets) {
-                m_CharacterIK.SetItemIKTargets(active ? m_ObjectTransform : null, m_ParentBone, active ? NonDominantHandIKTarget : null, active ? NonDominantHandIKTargetHint : null);
+                m_CharacterIK.SetItemIKTargets(m_CharacterItem, active ? m_ObjectTransform : null, m_ParentBone, active ? NonDominantHandIKTarget : null, active ? NonDominantHandIKTargetHint : null);
             }
         }
 

@@ -133,8 +133,8 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
             // The character may be trying to start from the top of the ladder. Cast a ray towards the character just below the front of the character.
             // If an object is hit then a ladder is beneath the character.
             if (m_CharacterLocomotion.Grounded) {
-                var position = m_Rigidbody.TransformPoint(0, -0.5f, m_CastDistance);
-                if (Physics.Raycast(position, -(m_Rigidbody.rotation * Vector3.forward), out m_RaycastResult, m_CastDistance, m_DetectLayers, QueryTriggerInteraction.Ignore)) {
+                var position = m_CharacterLocomotion.TransformPoint(0, -0.5f, m_CastDistance);
+                if (Physics.Raycast(position, -(m_CharacterLocomotion.Rotation * Vector3.forward), out m_RaycastResult, m_CastDistance, m_DetectLayers, QueryTriggerInteraction.Ignore)) {
                     // The object must be a ladder.
                     var hitObject = m_RaycastResult.collider.gameObject;
                     if (!ValidateObject(hitObject, m_RaycastResult)) {
@@ -191,7 +191,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
 
             // The y location will always be the character's current vertical location.
             var offset = m_MoveTowardsLocation[0].Offset;
-            offset.y = m_MoveTowardsLocation[0].transform.InverseTransformPoint(m_Rigidbody.position).y;
+            offset.y = m_MoveTowardsLocation[0].transform.InverseTransformPoint(m_CharacterLocomotion.Position).y;
             m_MoveTowardsLocation[0].Offset = offset;
 
             return m_MoveTowardsLocation;
@@ -263,7 +263,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
 
             // The character may be able to dismount.
             if (inputVector.y > 0) {
-                var localDismountLocation = m_Rigidbody.InverseTransformPoint(m_Ladder.TopDismountLocation);
+                var localDismountLocation = m_CharacterLocomotion.InverseTransformPoint(m_Ladder.TopDismountLocation);
                 if (localDismountLocation.y <= 0) {
 #if ULTIMATE_CHARACTER_CONTROLLER_AGILITY
                     // The Hang ability may be able to start.
@@ -282,7 +282,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                     }
                 }
             } else if (inputVector.y < 0) {
-                var localDismountLocation = m_Rigidbody.InverseTransformPoint(m_Ladder.BottomDismountLocation);
+                var localDismountLocation = m_CharacterLocomotion.InverseTransformPoint(m_Ladder.BottomDismountLocation);
                 if (localDismountLocation.y >= 0) {
                     if ((m_AllowedMovements & AllowedMovement.BottomDismount) != 0) {
                         m_ClimbState = ClimbState.BottomDismount;
@@ -312,8 +312,8 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
                 m_CharacterLocomotion.DesiredRotation = Quaternion.identity;
             }
 
-            var targetRotation = Quaternion.LookRotation(m_Ladder.GetLookDirection(m_Rigidbody), m_Ladder.transform.up);
-            m_CharacterLocomotion.DesiredRotation = Quaternion.Inverse(m_Rigidbody.rotation) * targetRotation;
+            var targetRotation = Quaternion.LookRotation(m_Ladder.GetLookDirection(m_CharacterLocomotion), m_Ladder.transform.up);
+            m_CharacterLocomotion.DesiredRotation = Quaternion.Inverse(m_CharacterLocomotion.Rotation) * targetRotation;
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
 
             // The character should move to the ladder rung if they are mounting from a jump.
             if (m_ClimbState == ClimbState.AirMount){
-                var position = m_Rigidbody.position;
+                var position = m_CharacterLocomotion.Position;
                 var targetPosition = Vector3.MoveTowards(position, m_AirborneMountPosition, m_AirborneMoveTowardsSpeed * m_CharacterLocomotion.TimeScale);
                 m_CharacterLocomotion.DesiredMovement = targetPosition - position;
                 // The character has arrived on a rung.
@@ -404,9 +404,9 @@ namespace Opsive.UltimateCharacterController.AddOns.Climbing
             var offset = m_StartHangOffset;
             offset.x = m_CharacterLocomotion.RawInputVector.x > 0 ? m_StartHangOffset.x : -m_StartHangOffset.x;
 #if UNITY_EDITOR
-            Debug.DrawRay(m_Rigidbody.TransformPoint(offset), (m_CastDistance + Mathf.Abs(offset.z)) * 2 * (m_Rigidbody.rotation * Vector3.forward), Color.red);
+            Debug.DrawRay(m_CharacterLocomotion.TransformPoint(offset), (m_CastDistance + Mathf.Abs(offset.z)) * 2 * (m_CharacterLocomotion.Rotation * Vector3.forward), Color.red);
 #endif
-            if (!Physics.Raycast(m_Rigidbody.TransformPoint(offset), m_Rigidbody.rotation * Vector3.forward, out m_RaycastResult, (m_CastDistance + Mathf.Abs(offset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) ||
+            if (!Physics.Raycast(m_CharacterLocomotion.TransformPoint(offset), m_CharacterLocomotion.Rotation * Vector3.forward, out m_RaycastResult, (m_CastDistance + Mathf.Abs(offset.z)) * 2, m_DetectLayers, QueryTriggerInteraction.Ignore) ||
                 !ValidateObject(m_RaycastResult.collider.gameObject, m_RaycastResult)) {
                 return false;
             }

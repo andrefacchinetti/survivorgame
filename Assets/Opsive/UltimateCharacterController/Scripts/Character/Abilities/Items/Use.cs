@@ -447,6 +447,11 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
         /// </summary>
         public override void LateUpdate()
         {
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (m_CharacterLocomotion.IsPassiveReconciliation) {
+                return;
+            }
+#endif
             // Enable the collision layer so the weapons can apply damage the originating character.
             var collisionEnabled = m_CharacterLocomotion.CollisionLayerEnabled;
             m_CharacterLocomotion.EnableColliderCollisionLayer(true);

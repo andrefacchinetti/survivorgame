@@ -19,7 +19,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Bindings
     public class BoundStateObject : StateObject
     {
         [Tooltip("The state object bindings used to bind properties with external values.")]
-        [HideInInspector] [SerializeField] protected StateObjectBindingGroup m_Bindings;
+        [HideInInspector] [SerializeField] protected StateObjectBindingGroup m_Bindings = new StateObjectBindingGroup();
 
         //The Bound GamObject can be overriden by sub classes.
         protected virtual GameObject BoundGameObject => StateBoundGameObject;

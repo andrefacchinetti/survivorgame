@@ -161,7 +161,7 @@ namespace Opsive.UltimateCharacterController.Editor.Utility
 #if UNITY_2023_1_OR_NEWER
             var buildTarget = EditorUserBuildSettings.activeBuildTarget;
             var targetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
-            var namedBuildTarget = NamedBuildTarget.FromBuildTargetGroup(targetGroup);
+            var namedBuildTarget = UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(targetGroup);
             var symbols = PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget);
 #else
             var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
@@ -186,7 +186,7 @@ namespace Opsive.UltimateCharacterController.Editor.Utility
 #if UNITY_2023_1_OR_NEWER
             var buildTarget = EditorUserBuildSettings.activeBuildTarget;
             var targetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
-            var namedBuildTarget = NamedBuildTarget.FromBuildTargetGroup(targetGroup);
+            var namedBuildTarget = UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(targetGroup);
             var symbols = PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget);
 #else
             var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);

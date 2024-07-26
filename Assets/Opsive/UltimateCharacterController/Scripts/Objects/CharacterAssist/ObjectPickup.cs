@@ -38,6 +38,8 @@ namespace Opsive.UltimateCharacterController.Objects.CharacterAssist
         [SerializeField] protected UnityEvent m_OnSelect;
         [Tooltip("The object is no longer detected by the character.")]
         [SerializeField] protected UnityEvent m_OnDeselect;
+        [Tooltip("Delay in seconds. If set to 0 there will be no delay, if -1 the item will not be destroyed.")]
+        [SerializeField] protected float m_DestroyDelay;
 
         public float TriggerEnableDelay { get { return m_TriggerEnableDelay; } set { m_TriggerEnableDelay = value; } }
         public bool PickupOnTriggerEnter { get { return m_PickupOnTriggerEnter; } set { m_PickupOnTriggerEnter = value; } }
@@ -135,7 +137,11 @@ namespace Opsive.UltimateCharacterController.Objects.CharacterAssist
         /// </summary>
         private void CheckVelocity()
         {
+#if UNITY_6000_0_OR_NEWER
             if (m_Rigidbody.linearVelocity.sqrMagnitude < 0.01f) {
+#else
+            if (m_Rigidbody.velocity.sqrMagnitude < 0.01f) {
+#endif
                 m_TriggerEnableEvent = Scheduler.Schedule(m_TriggerEnableDelay, EnableTrigger);
                 return;
             }
@@ -224,6 +230,18 @@ namespace Opsive.UltimateCharacterController.Objects.CharacterAssist
                 m_PickupAudioClipSet.PlayAtPosition(m_Transform.position);
             }
 
+            if (m_DestroyDelay == 0) {
+                DestroyPickup();
+            } else if (m_DestroyDelay > 0) {
+                Scheduler.Schedule(m_DestroyDelay, DestroyPickup);
+            }
+        }
+
+        /// <summary>
+        /// Destroys the pickup.
+        /// </summary>
+        public virtual void DestroyPickup()
+        {
             if (ObjectPoolBase.InstantiatedWithPool(m_GameObject)) {
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
                 if (NetworkObjectPool.IsNetworkActive()) {

@@ -72,6 +72,14 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic.CastEff
                 Debug.LogWarning($"Warning: The projectile {m_ProjectilePrefab.name} does not have the MagicProjectile component attached.");
             }
 
+            // The projectile should not collide with the character spawning the effect.
+            var projectileColliders = obj.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < CharacterLocomotion.ColliderCount; ++i) {
+                for (int j = 0; j < projectileColliders.Length; ++j) {
+                    Physics.IgnoreCollision(CharacterLocomotion.Colliders[i], projectileColliders[j], true);
+                }
+            }
+
             var magicParticle = obj.GetComponent<MagicParticle>();
             if (magicParticle != null) { magicParticle.Initialize(MagicAction, m_CastID); }
 
@@ -96,7 +104,12 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic.CastEff
         /// <param name="hitNormal">The normal direction of the destruction.</param>
         public void OnProjectileDestruct(ProjectileBase projectile, Vector3 hitPosition, Vector3 hitNormal)
         {
-            // Do nothing.
+            var projectileColliders = projectile.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < CharacterLocomotion.ColliderCount; ++i) {
+                for (int j = 0; j < projectileColliders.Length; ++j) {
+                    Physics.IgnoreCollision(CharacterLocomotion.Colliders[i], projectileColliders[j], false);
+                }
+            }
         }
 
         /// <summary>

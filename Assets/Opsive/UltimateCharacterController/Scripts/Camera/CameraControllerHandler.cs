@@ -84,7 +84,7 @@ namespace Opsive.UltimateCharacterController.Camera
         /// <summary>
         /// Handles the player input.
         /// </summary>
-        private void Update()
+        protected virtual void Update()
         {
             bool zoom;
             if (m_ContinuousZoom) {

@@ -279,40 +279,42 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTy
             var up = m_CharacterLocomotion.AlignToUpDirection ? m_CharacterLocomotion.Up : m_UpAxis;
             m_Ray.direction = MathUtility.TransformQuaternion(lookRotation, Quaternion.Euler(90 - m_PitchLimit.MinValue, 0, 0)) * up;
 
-            var collisionEnabled = m_CharacterLocomotion.CollisionLayerEnabled;
-            m_CharacterLocomotion.EnableColliderCollisionLayer(false);
-            var step = 0f;
-            // Prevent the character from being obstructed by adjusting the pitch of the camera and testing for an obstruction free path.
-            while (Physics.SphereCast(m_Ray, m_CollisionRadius, out m_RaycastHit, m_ViewDistance, m_CharacterLayerManager.IgnoreInvisibleCharacterWaterLayers, QueryTriggerInteraction.Ignore)) {
-                if (m_ObjectFader != null) {
-                    var canFade = true;
-                    // If the object can be faded then the view does not need to readjust.
-                    var renderers = m_RaycastHit.collider.gameObject.GetCachedComponents<Renderer>();
-                    for (int i = 0; i < renderers.Length; ++i) {
-                        var materials = renderers[i].materials;
-                        for (int j = 0; j < materials.Length; ++j) {
-                            if (!m_ObjectFader.CanMaterialFade(materials[j])) {
-                                canFade = false;
+            if (m_CollisionRadius > 0) {
+                var collisionEnabled = m_CharacterLocomotion.CollisionLayerEnabled;
+                m_CharacterLocomotion.EnableColliderCollisionLayer(false);
+                var step = 0f;
+                // Prevent the character from being obstructed by adjusting the pitch of the camera and testing for an obstruction free path.
+                while (Physics.SphereCast(m_Ray, m_CollisionRadius, out m_RaycastHit, m_ViewDistance, m_CharacterLayerManager.IgnoreInvisibleCharacterWaterLayers, QueryTriggerInteraction.Ignore)) {
+                    if (m_ObjectFader != null) {
+                        var canFade = true;
+                        // If the object can be faded then the view does not need to readjust.
+                        var renderers = m_RaycastHit.collider.gameObject.GetCachedComponents<Renderer>();
+                        for (int i = 0; i < renderers.Length; ++i) {
+                            var materials = renderers[i].materials;
+                            for (int j = 0; j < materials.Length; ++j) {
+                                if (!m_ObjectFader.CanMaterialFade(materials[j])) {
+                                    canFade = false;
+                                    break;
+                                }
+                            }
+                            if (!canFade) {
                                 break;
                             }
                         }
-                        if (!canFade) {
+                        // If the material will fade then the view does not need to readjust.
+                        if (canFade) {
                             break;
                         }
                     }
-                    // If the material will fade then the view does not need to readjust.
-                    if (canFade) {
+                    if (m_PitchLimit.MinValue + step >= m_PitchLimit.MaxValue) {
+                        m_Ray.direction = MathUtility.TransformQuaternion(lookRotation, Quaternion.Euler(90 - m_PitchLimit.MaxValue, 0, 0)) * up;
                         break;
                     }
+                    step += m_ViewStep;
+                    m_Ray.direction = MathUtility.TransformQuaternion(lookRotation, Quaternion.Euler(90 - m_PitchLimit.MinValue - step, 0, 0)) * up;
                 }
-                if (m_PitchLimit.MinValue + step >= m_PitchLimit.MaxValue) {
-                    m_Ray.direction = MathUtility.TransformQuaternion(lookRotation, Quaternion.Euler(90 - m_PitchLimit.MaxValue, 0, 0)) * up;
-                    break;
-                }
-                step += m_ViewStep;
-                m_Ray.direction = MathUtility.TransformQuaternion(lookRotation, Quaternion.Euler(90 - m_PitchLimit.MinValue - step, 0, 0)) * up;
+                m_CharacterLocomotion.EnableColliderCollisionLayer(collisionEnabled);
             }
-            m_CharacterLocomotion.EnableColliderCollisionLayer(collisionEnabled);
             var targetPosition = m_Ray.origin + m_Ray.direction * m_ViewDistance;
             return (immediateUpdate ? targetPosition : Vector3.SmoothDamp(m_Transform.position, targetPosition, ref m_SmoothPositionVelocity, m_MoveSmoothing)) + m_SecondaryPositionSpring.Value;
         }

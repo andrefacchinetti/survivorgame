@@ -115,11 +115,11 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
         {
             switch (UltimateCharacterController.Utility.AssetInfo.Name) {
                 case "Ultimate Character Controller":
-                    return "https://opsive.com/videos/?pid=923";
+                    return "https://opsive.com/videos/?pid=25992";
                 case "Ultimate First Person Shooter":
-                    return "https://opsive.com/videos/?pid=185";
+                    return "https://opsive.com/videos/?pid=25993";
                 case "Third Person Controller":
-                    return "https://opsive.com/videos/?pid=926";
+                    return "https://opsive.com/videos/?pid=25994";
             }
             return string.Empty;
         }

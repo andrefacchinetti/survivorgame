@@ -1,4 +1,4 @@
-/// ---------------------------------------------
+﻿/// ---------------------------------------------
 /// Ultimate Character Controller
 /// Copyright (c) Opsive. All Rights Reserved.
 /// https://www.opsive.com
@@ -283,7 +283,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
 
             // Play a splashing animation if the character entered the water from the air. Do not play if the character is already underwater or the dive ability recently ended.
             if (m_SwimState != SwimStates.UnderwaterSwim && m_EntranceSplash != null && GetDepthInWater(true) < m_StartSwimDepth && Time.frameCount > m_DiveDeactivated + 1) {
-                m_EntranceSplash.Play(m_Rigidbody.TransformPoint(new Vector3(0, GetDepthInWater(false) - m_CharacterLocomotion.SkinWidth, 0)));
+                m_EntranceSplash.Play(m_CharacterLocomotion.TransformPoint(new Vector3(0, GetDepthInWater(false) - m_CharacterLocomotion.SkinWidth, 0)));
                 m_AirbourneEntrance = true;
             }
         }
@@ -362,7 +362,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
             // The character can exit the water while moving or while idle. When the character is moving the collider is more horizontal than vertical so the ground must be closer when the character
             // is idle versus moving. When the character is idle they will exit the swim ability when the character is able to stand on the surface.
             if (m_WaterDepth < m_SurfaceSwimDepth && m_CharacterLocomotion.Moving && m_CharacterLocomotion.LocalVelocity.z > 0 &&
-                Physics.Raycast(m_Rigidbody.position + m_WaterDepth * m_CharacterLocomotion.Up, -m_CharacterLocomotion.Up, out var hitSurface, m_SurfaceSwimDepth + m_CharacterLocomotion.Radius,
+                Physics.Raycast(m_CharacterLocomotion.Position + m_WaterDepth * m_CharacterLocomotion.Up, -m_CharacterLocomotion.Up, out var hitSurface, m_SurfaceSwimDepth + m_CharacterLocomotion.Radius,
                 m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore) &&
                 Vector3.Angle(m_CharacterLocomotion.Up, hitSurface.normal) <= m_CharacterLocomotion.SlopeLimit
                 ) {
@@ -373,7 +373,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
                 }
                 SwimState = SwimStates.ExitWaterMoving;
             } else if (m_SwimState == SwimStates.SurfaceSwim && (!m_CharacterLocomotion.Moving || m_CharacterLocomotion.LocalVelocity.z < 0) && m_WaterDepth < m_StartSwimDepth && 
-                                Physics.Raycast(m_Rigidbody.position + m_WaterDepth * m_CharacterLocomotion.Up, -m_CharacterLocomotion.Up, m_StartSwimDepth, m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
+                                Physics.Raycast(m_CharacterLocomotion.Position + m_WaterDepth * m_CharacterLocomotion.Up, -m_CharacterLocomotion.Up, m_StartSwimDepth, m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
                 // No exit animations can play if the character doesn't have an animator.
                 if (m_Neck == null) {
                     StopAbility();
@@ -448,7 +448,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
                 ApplyBouyancy();
                 // If the character doesn't have an animator then the ability motor has to move the character in the vertical direction.
                 if (m_Neck == null && m_SwimState == SwimStates.UnderwaterSwim) {
-                    var verticalDirection = Vector3.ProjectOnPlane(m_LookSource.LookDirection(true), m_Rigidbody.rotation * Vector3.forward);
+                    var verticalDirection = Vector3.ProjectOnPlane(m_LookSource.LookDirection(true), m_CharacterLocomotion.Rotation * Vector3.forward);
                     m_CharacterLocomotion.DesiredMovement += m_CharacterLocomotion.InputVector.y * Time.timeScale * m_CharacterLocomotion.TimeScale * Time.deltaTime * verticalDirection;
                 }
             }

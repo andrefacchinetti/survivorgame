@@ -629,27 +629,42 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules
         /// <param name="modules">The modules list.</param>
         public override void SetModulesAsBase(IReadOnlyList<ActionModule> modules)
         {
-            //Remove the previous modules.
-            if (Application.isPlaying) {
-                for (int i = m_Modules.Count - 1; i >= 0; i--) {
-                    var module = m_Modules[i];
-                    if (module == null) { continue; }
-                    RemoveModule(module);
-                }
-            }
-
             if (m_Modules == null) {
                 m_Modules = new List<T>();
             }
-            m_Modules.Clear();
+
+            var moduleTempList = new List<ActionModule>(modules);
+            
+            //Remove the previous modules if they are not part of the new list.
+            if (Application.isPlaying) {
+                for (int i = m_Modules.Count - 1; i >= 0; i--) {
+                    var module = m_Modules[i];
+                    if (module == null) {
+                        m_Modules.RemoveAt(i);
+                        continue;
+                    }
+
+                    var newIndex = moduleTempList.IndexOf(module);
+                    if (newIndex == -1) {
+                        RemoveModule(module);
+                    } else {
+                        moduleTempList.RemoveAt(newIndex);
+                    }
+                }
+            } else {
+                m_Modules.Clear();
+            }
 
             // Add modules and notify in playmode.
             if (Application.isPlaying) {
-                for (int i = 0; i < modules.Count; i++) {
-                    if (modules[i] is T correctTypeModule) {
+                for (int i = 0; i < moduleTempList.Count; i++) {
+                    if (moduleTempList[i] is T correctTypeModule) {
                         AddModule(correctTypeModule);
                     }
                 }
+                
+                //Make sure the order is the same as the input list.
+                m_Modules.Sort((x,y) => modules.IndexOf(x).CompareTo(modules.IndexOf(y)));
 
                 RefreshCachedEnabledModulesList();
             } else {

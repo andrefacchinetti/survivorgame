@@ -6,9 +6,7 @@
 
 namespace Opsive.UltimateCharacterController.Inventory
 {
-    using System;
     using Opsive.Shared.Inventory;
-    using Opsive.Shared.StateSystem;
     using Opsive.Shared.Utility;
     using Opsive.UltimateCharacterController.Items;
     using System.Collections.Generic;
@@ -63,7 +61,8 @@ namespace Opsive.UltimateCharacterController.Inventory
     /// </summary>
     public abstract class ItemSetRule : ItemSetRuleBase
     {
-        
+        [Tooltip("If true, an empty ItemSet will be created, useful to allow items be unequipped by switching to the empty ItemSet.")]
+        [SerializeField] protected bool m_AllowEmptyItemSet = true;
         [Tooltip("The default Item Set that is used to create the runtime item sets.")]
         [SerializeField] protected ItemSet m_DefaultItemSet = new ItemSet("{0}");
         [Tooltip("Is the ItemSet the default ItemSet?")]
@@ -107,9 +106,8 @@ namespace Opsive.UltimateCharacterController.Inventory
             // Set all the possible valid permutations. 
             var validSlotPermutations = GetValidSlotPermutations(itemSetRuleStreamData);
 
-            //Set what item set are to keep, add or remove.
+            // Set item sets are kept, added or removed.
             for (int i = 0; i < currentItemSets.Count; i++) {
-
                 var currentItemSet = currentItemSets[i];
                 var foundSetMatch = false;
                 for (int j = validSlotPermutations.Count - 1; j >= 0; j--) {
@@ -137,10 +135,9 @@ namespace Opsive.UltimateCharacterController.Inventory
                         new ItemSetStateInfo(itemSetRuleInfo, currentItemSet,ItemSetStateInfo.SetState.Remove, m_Default));
                 }
             }
-            
 
             for (int i = 0; i < validSlotPermutations.Count; i++) {
-                //New item set index set to -1 it will be updated once it is really set.
+                // New item set index set to -1, it will be updated once it is really set.
                 var newItemSet = CreateItemSet(itemSetManager, validSlotPermutations[i]);
                 newItemSet.SetItemSetGroup(itemSetRuleStreamData.ItemSetGroup);
                 
@@ -177,7 +174,6 @@ namespace Opsive.UltimateCharacterController.Inventory
         /// <returns>Returns a pooled item permutation list which can be used to create ItemSets.</returns>
         public virtual PooledItemPermutationList GetValidSlotPermutations(ItemSetRuleStreamData itemSetRuleStreamData)
         {
-           
             m_PooledItemSlotPermutations.Clear();
             m_PooledItemSlotPermutations.SlotCount = itemSetRuleStreamData.SlotCount;
 
@@ -203,13 +199,27 @@ namespace Opsive.UltimateCharacterController.Inventory
             for (int slotID = startSlotID; slotID < slotCount; slotID++) {
 
                 if (CanSlotBeNull(slotID)) {
-                    //Other match must create new set.
+                    
                     var nextSlotID = slotID + 1;
-                    var newPermutation = result.Add();
-                    currentSlotPermutation.CopyTo(newPermutation, 0, nextSlotID);
-                    newPermutation[slotID] = null;
 
-                    GetAllValidSlotPermutations(itemSetRuleStreamData, nextSlotID, newPermutation,result);
+                    var allNull = true;
+                    for (int i = 0; i < currentSlotPermutation.Count; i++) {
+                        if (currentSlotPermutation[i] == null) { continue; }
+
+                        allNull = false;
+                        break;
+                    }
+                    
+                    //If it's the last slot, check if all the slots are null.
+                    if (nextSlotID < slotCount || !allNull || m_AllowEmptyItemSet) {
+                        
+                        //Other match must create new set.
+                        var newPermutation = result.Add();
+                        currentSlotPermutation.CopyTo(newPermutation, 0, nextSlotID);
+                        newPermutation[slotID] = null;
+
+                        GetAllValidSlotPermutations(itemSetRuleStreamData, nextSlotID, newPermutation,result);
+                    }
                 }
                 
                 var foundMatch = false;

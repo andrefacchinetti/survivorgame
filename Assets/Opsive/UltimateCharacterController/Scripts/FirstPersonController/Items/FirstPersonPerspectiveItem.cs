@@ -217,7 +217,7 @@ namespace Opsive.UltimateCharacterController.FirstPersonController.Items
         { get { return m_PivotRotationOffset; }
             set {
                 m_PivotRotationOffset = value;
-                if (m_PivotRotationSpring != null) { m_PivotRotationSpring.RestValue = m_PivotRotationOffset; }
+                if (m_PivotRotationSpring != null) { m_PivotRotationSpring.RestValue = (m_LeanTilt * Vector3.forward) + m_PivotRotationOffset; }
             }
         }
         public float ShakeSpeed { get { return m_ShakeSpeed; } set { m_ShakeSpeed = value; } }

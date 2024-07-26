@@ -8,6 +8,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
 {
     using Opsive.Shared.Events;
     using Opsive.Shared.Input;
+    using Opsive.UltimateCharacterController.Character.Abilities.AI;
     using UnityEngine;
 
     /// <summary>
@@ -40,6 +41,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
 #if THIRD_PERSON_CONTROLLER
         private ThirdPersonController.Character.Abilities.Items.ItemPullback m_ItemPullback;
 #endif
+        private PathfindingMovement m_PathfindingMovement;
 
         public override bool CanReceiveMultipleStarts { get { return true; } }
         public bool InputStart { get { return m_InputStart; } }
@@ -61,6 +63,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
 #if THIRD_PERSON_CONTROLLER
             m_ItemPullback = m_CharacterLocomotion.GetAbility<ThirdPersonController.Character.Abilities.Items.ItemPullback>();
 #endif
+            m_PathfindingMovement = m_CharacterLocomotion.GetAbility<PathfindingMovement>();
 
             EventHandler.RegisterEvent<ILookSource>(m_GameObject, "OnCharacterAttachLookSource", OnAttachLookSource);
             EventHandler.RegisterEvent<bool>(m_GameObject, "OnCameraWillChangePerspectives", OnChangePerspectives);
@@ -225,7 +228,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
             EventHandler.ExecuteEvent(m_GameObject, "OnAimAbilityAim", true);
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             // Item abilities only execute on the local client.
-            if (m_NetworkInfo != null) {
+            if (m_NetworkInfo != null && m_NetworkInfo.HasAuthority()) {
                 m_NetworkCharacter.ExecuteBoolEvent("OnAimAbilityAim", true);
             }
 #endif
@@ -242,7 +245,8 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
             }
 
             // The look source may be null if a remote player is still being initialized.
-            if (m_LookSource == null || !m_RotateTowardsLookSourceTarget || (m_AssistAim != null && m_AssistAim.IsActive && m_AssistAim.RotateCharacterTowardsTarget)) {
+            if (m_LookSource == null || !m_RotateTowardsLookSourceTarget || (m_AssistAim != null && m_AssistAim.IsActive && m_AssistAim.RotateCharacterTowardsTarget) ||
+                (m_PathfindingMovement != null && m_PathfindingMovement.IsActive)) {
                 return;
             }
 
@@ -300,7 +304,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
             EventHandler.ExecuteEvent(m_GameObject, "OnAimAbilityAim", false);
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             // Item abilities only execute on the local client.
-            if (m_NetworkInfo != null) {
+            if (m_NetworkInfo != null && m_NetworkInfo.HasAuthority()) {
                 m_NetworkCharacter.ExecuteBoolEvent("OnAimAbilityAim", false);
             }
 #endif
@@ -360,7 +364,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities.Items
                 EventHandler.ExecuteEvent(m_GameObject, "OnAimAbilityAim", !active);
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
                 // Item abilities only execute on the local client.
-                if (m_NetworkInfo != null) {
+                if (m_NetworkInfo != null && m_NetworkInfo.HasAuthority()) {
                     m_NetworkCharacter.ExecuteBoolEvent("OnAimAbilityAim", !active);
                 }
 #endif

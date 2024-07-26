@@ -270,14 +270,8 @@ namespace Opsive.UltimateCharacterController.Editor.Inspectors.Items.Actions
         /// <param name="refresh">Should the editor be refreshed?</param>
         protected override void InvokeValueChanged(bool refresh = true)
         {
-            // Do not set modules while in play mode, this causes issues with the state system and more.
-            if (!Application.isPlaying) {
-                m_ItemActionModuleGroupBase.SetModulesAsBase(m_List);
-            }
-
-            //Do not call base intentionally.
-            
-            //Instead set modules manually.
+            // Do not call base intentionally.
+            // Instead set modules manually.
             m_ItemActionModuleGroupBase.SetModulesAsBase(m_List);
 
             OnValueChange?.Invoke(m_ItemActionModuleGroupBase);

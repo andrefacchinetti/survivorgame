@@ -6,6 +6,9 @@
 
 namespace Opsive.UltimateCharacterController.Character.Abilities
 {
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+    using Opsive.Shared.Networking;
+#endif
     using Opsive.Shared.Game;
     using Opsive.UltimateCharacterController.Character;
     using Opsive.UltimateCharacterController.Objects.CharacterAssist;
@@ -53,7 +56,13 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         public AnimationEventTrigger DismountEvent { get { return m_DismountEvent; } set { m_DismountEvent.CopyFrom(value); } }
         public bool ReequipItemAfterMount { get { return m_ReequipItemAfterMount; } set { m_ReequipItemAfterMount = value; } }
 
+        public Rideable Rideable { get { return m_Rideable; } }
         private Rideable m_Rideable;
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+        private INetworkInfo m_NetworkInfo;
+        private bool m_NetworkRide;
+        private bool m_InstantRide;
+#endif
 
         private int m_StartAllowEquippedItemSlotsMask;
         private bool m_LeftMount;
@@ -79,6 +88,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             }
         }
         public UltimateCharacterLocomotion CharacterLocomotion { get { return m_CharacterLocomotion; } }
+        public GameObject GameObject { get { return m_GameObject; } }
 
         /// <summary>
         /// Initialize the default values.
@@ -87,6 +97,9 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         {
             base.Awake();
 
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            m_NetworkInfo = m_GameObject.GetCachedComponent<INetworkInfo>();
+#endif
             m_MountEvent.RegisterUnregisterAnimationEvent(true, m_GameObject, "OnAnimatorRideMount", OnMount);
             m_DismountEvent.RegisterUnregisterAnimationEvent(true, m_GameObject, "OnAnimatorRideDismount", OnDismount);
         }
@@ -114,7 +127,14 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
                 return false;
             }
 
-            m_Rideable = rideable;
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (!m_NetworkRide) {
+#endif
+                m_Rideable = rideable;
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            }
+#endif
+
             return true;
         }
 
@@ -124,7 +144,12 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         /// <returns>The possible MoveTowardsLocations that the character can move towards.</returns>
         public override MoveTowardsLocation[] GetMoveTowardsLocations()
         {
-            return m_Rideable.GameObject.GetComponentsInChildren<MoveTowardsLocation>();
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (m_NetworkRide) {
+                return null;
+        }
+#endif
+            return m_Rideable?.GameObject.GetComponentsInChildren<MoveTowardsLocation>();
         }
 
         /// <summary>
@@ -137,6 +162,60 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
 
             return base.AbilityWillStart();
         }
+
+        /// <summary>
+        /// Called when the ablity is tried to be started. If false is returned then the ability will not be started.
+        /// </summary>
+        /// <returns>True if the ability can be started.</returns>
+        public override bool CanStartAbility()
+        {
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (m_NetworkRide) {
+                if (m_Rideable != null) {
+                    return m_Rideable.CanMount();
+                } else {
+                    return false;
+                }
+            }
+#endif
+            // An attribute may prevent the ability from starting.
+            if (!base.CanStartAbility()) {
+                return false;
+            }
+
+            if (m_Rideable == null) {
+                return false;
+            }
+
+            if (!m_Rideable.CanMount()) {
+                return false;
+            }
+
+            return true;
+        }
+
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+        /// <summary>
+        /// The remote client rides on the RideableObject.
+        /// </summary>
+        /// <param name="rideable">The RideableObject mounted by the remote client.</param>
+        /// <param name="instant">Set to true if the owner client is already mounted on the RideableObject.</param>
+        /// <returns>True if the capacity has been started.</returns>
+        public virtual bool NetworkStart(Rideable rideable, bool instant)
+        {
+            m_NetworkRide = true;
+            m_InstantRide = instant;
+            m_Rideable = rideable;
+
+            if (m_CharacterLocomotion.TryStartAbility(this)) {
+                return true;
+            } else {
+                m_InstantRide = false;
+                m_NetworkRide = false;
+                return false;
+            }
+        }
+#endif
 
         /// <summary>
         /// The ability has started.
@@ -155,12 +234,29 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             // The character will look independently of the rotation.
             EventHandler.ExecuteEvent(m_GameObject, "OnCharacterForceIndependentLook", true);
             m_RideState = RideState.Mount;
-            UpdateAbilityAnimatorParameters();
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (!m_InstantRide) {
+#endif
+                UpdateAbilityAnimatorParameters();
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            }
+#endif
 
-            // The rideable character should execute first.
-            SimulationManager.SetUpdateOrder(m_Rideable.CharacterLocomotion, m_CharacterLocomotion);
-
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (m_NetworkInfo == null || m_NetworkInfo.HasAuthority() || m_NetworkInfo.IsLocalPlayer()) {
+#endif
+                // The rideable character should execute first.
+                SimulationManager.SetUpdateOrder(m_Rideable.CharacterLocomotion, m_CharacterLocomotion);
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            }
+#endif
             m_MountEvent.WaitForEvent();
+
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (m_InstantRide) {
+                EventHandler.ExecuteEvent(m_GameObject, "OnAnimatorRideMount");
+            }
+#endif
         }
 
         /// <summary>
@@ -329,9 +425,15 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             m_DismountEvent.CancelWaitForEvent();
 
             m_RideState = RideState.DismountComplete;
-            m_Rideable.Dismounted();
-            m_Rideable = null;
+            if (m_Rideable != null) {
+                m_Rideable.Dismounted();
+                m_Rideable = null;
+            }
             m_MountDismountEvent = null;
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            m_NetworkRide = false;
+            m_InstantRide = false;
+#endif
             m_CharacterLocomotion.SetMovingPlatform(null);
             m_CharacterLocomotion.AlignToUpDirection = false;
             EventHandler.ExecuteEvent(m_GameObject, "OnCharacterForceIndependentLook", false);

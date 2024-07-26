@@ -165,7 +165,7 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
             m_ItemSetRule = ManagerUtility.FindItemSetRule(m_MainManagerWindow);
             m_InvisibleShadowCaster = ManagerUtility.FindInvisibleShadowCaster(m_MainManagerWindow);
 
-            if (m_CharacterContainer != null) {
+            if (m_CharacterContainer != null && Event.current == null || Event.current.type != EventType.MouseUp) {
                 ShowCharacter(m_CharacterContainer);
             }
         }
@@ -353,14 +353,14 @@ namespace Opsive.UltimateCharacterController.Editor.Managers
             var perspective = m_Perspective;
 #if !FIRST_PERSON_CONTROLLER
             if (perspective == Perspective.First || perspective == Perspective.Both) {
-                var helpBox = new HelpBox("Unable to select the first person perspective. If you'd like to create a first person character ensure the First Person Controller is imported.", HelpBoxMessageType.Error);
+                var helpBox = new HelpBox("Unable to select the first person perspective. If you'd like to create a first person character ensure UFPS or the Ultimate Character Controller is imported.", HelpBoxMessageType.Error);
                 container.Add(helpBox);
                 return false;
             }
 #endif
 #if !THIRD_PERSON_CONTROLLER
             if (perspective == Perspective.Third || perspective == Perspective.Both) {
-                var helpBox = new HelpBox("Unable to select the third person perspective. If you'd like to create a third person character ensure the Third Person Controller is imported.", HelpBoxMessageType.Error);
+                var helpBox = new HelpBox("Unable to select the third person perspective. If you'd like to create a third person character ensure the Third Person Controller or the Ultimate Character Controller is imported.", HelpBoxMessageType.Error);
                 container.Add(helpBox);
                 return false;
             }

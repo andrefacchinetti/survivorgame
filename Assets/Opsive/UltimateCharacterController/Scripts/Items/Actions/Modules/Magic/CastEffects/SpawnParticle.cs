@@ -335,15 +335,13 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic.CastEff
             }
             
             var origin = MagicAction?.MagicUseDataStream?.CastData?.CastOrigin;
-            if (m_ParticleSystem.transform.parent == origin) {
+            var spawnedTransform = m_ParticleSystem.transform;
+            if (spawnedTransform.parent == origin) {
                 return;
             }
 
-            var spawnedTransform = m_ParticleSystem.transform;
             spawnedTransform.parent = origin;
             spawnedTransform.position = MathUtility.TransformPoint(origin.position, CharacterTransform.rotation, m_PositionOffset);
-            spawnedTransform.localRotation = spawnedTransform.localRotation;
-            spawnedTransform.localScale = spawnedTransform.localScale;
         }
     }
 }

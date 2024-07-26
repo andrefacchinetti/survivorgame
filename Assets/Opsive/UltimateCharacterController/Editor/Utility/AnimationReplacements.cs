@@ -34,6 +34,7 @@ namespace Opsive.UltimateCharacterController.Editor.Utility
                 return;
             }
 
+            m_ReplacementMap.Clear();
             for (int i = 0; i < m_Originals.Length; ++i) { 
                 if (m_Originals[i] == null || m_Replacements[i] == null) {
                     continue;

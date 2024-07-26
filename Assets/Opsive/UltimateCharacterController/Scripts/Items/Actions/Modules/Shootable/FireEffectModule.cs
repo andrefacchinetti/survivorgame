@@ -35,7 +35,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
     public class GenericItemEffects : ShootableFireEffectModule
     {
         [Tooltip("The item effect group is a list of effects.")]
-        [SerializeField] protected ItemEffectGroup m_EffectGroup;
+        [SerializeField] protected ItemEffectGroup m_EffectGroup = new ItemEffectGroup();
 
         public ItemEffectGroup EffectGroup { get => m_EffectGroup; set => m_EffectGroup = value; }
 
@@ -91,7 +91,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [Tooltip("Should the muzzle flash be pooled? If false a single muzzle flash object will be used.")]
         [SerializeField] protected bool m_PoolMuzzleFlash = true;
         [Tooltip("The location of the muzzle flash.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_MuzzleLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_MuzzleLocation = new ItemPerspectiveIDObjectProperty<Transform>();
 
         public GameObject MuzzleFlash { get { return m_MuzzleFlash; } set { m_MuzzleFlash = value; } }
         public bool PoolMuzzleFlash { get { return m_PoolMuzzleFlash; } set { m_PoolMuzzleFlash = value; } }
@@ -212,7 +212,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [Tooltip("Eject the shell after the specified delay.")]
         [SerializeField] protected float m_ShellEjectDelay;
         [Tooltip("The location that the shell ejects from.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ShellLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ShellLocation = new ItemPerspectiveIDObjectProperty<Transform>();
 
         public GameObject Shell { get => m_Shell; set => m_Shell = value; }
         public MinMaxVector3 ShellVelocity { get => m_ShellVelocity; set => m_ShellVelocity = value; }
@@ -311,7 +311,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [Tooltip("Spawn the smoke after the specified delay.")]
         [SerializeField] protected float m_SmokeSpawnDelay;
         [Tooltip("The smoke location.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_SmokeLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_SmokeLocation = new ItemPerspectiveIDObjectProperty<Transform>();
         
         public GameObject Smoke { get { return m_Smoke; } set { m_Smoke = value; } }
         public float SmokeSpawnDelay { get { return m_SmokeSpawnDelay; } set { m_SmokeSpawnDelay = value; } }

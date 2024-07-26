@@ -22,17 +22,29 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         private float m_LastUsedTime = -1;
 
         /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public SequenceRecoil() : base() { }
+
+        /// <summary>
+        /// Overloaded constructor.
+        /// </summary>
+        /// <param name="blockedRecoilItemSubstateIndex">The blocked recoil item substate index.</param>
+        public SequenceRecoil(int blockedRecoilItemSubstateIndex) : base(blockedRecoilItemSubstateIndex) { }
+
+        /// <summary>
         /// Starts or stops the state selection.
         /// </summary>
         /// <param name="start">Is the object starting?</param>
-        public override void StartStopStateSelection(bool start)
+        /// <param name="count">The count of states to expect.</param>
+        public override void StartStopStateSelection(bool start, int count)
         {
-            base.StartStopStateSelection(start);
-
             // The Sequence task can reset which index is returned if the next state is selected too slowly. 
             if (start && m_ResetDelay != -1 && m_LastUsedTime != -1 && m_LastUsedTime + m_ResetDelay < Time.time) {
                 m_CurrentIndex = -1;
             }
+
+            base.StartStopStateSelection(start, count);
         }
 
         /// <summary>
@@ -42,6 +54,20 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         public override int GetStateIndex()
         {
             return m_CurrentIndex;
+        }
+
+        /// <summary>
+        /// Set the new state index.
+        /// </summary>
+        /// <param name="stateIndex">The new state index.</param>
+        public override void SetStateIndex(int stateIndex)
+        {
+            var size = m_States.Length;
+            m_CurrentIndex = stateIndex % size;
+
+            if (m_CurrentIndex < 0) {
+                m_CurrentIndex += size;
+            }
         }
 
         /// <summary>

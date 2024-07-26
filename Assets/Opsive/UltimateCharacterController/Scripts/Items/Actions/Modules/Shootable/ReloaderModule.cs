@@ -18,6 +18,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
     using Opsive.UltimateCharacterController.Utility;
     using System;
     using UnityEngine;
+    using UnityEngine.Serialization;
     using EventHandler = Opsive.Shared.Events.EventHandler;
 
     /// <summary>
@@ -121,7 +122,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [SerializeField] protected AnimationSlotEventTrigger m_ReloadCompleteEvent = new AnimationSlotEventTrigger(true, 0);
         [Tooltip("The clip that should be played after the item has finished reloading.")]
         [SerializeField] protected AudioClipSet m_ReloadCompleteAudioClipSet;
-        [Tooltip("Should the reload clip be used as the drop clip?")]
+        [Tooltip("Should the reload and drop clip prefabs be used? if not the clips will simply be enabled/disabled.")]
         [SerializeField] protected bool m_InstantiateReloadClip;
         [Tooltip("Should the reload clip be reset to its parent position and rotation when detached?")]
         [SerializeField] protected bool m_ResetClipTransformOnDetach;
@@ -131,8 +132,11 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [SerializeField] protected bool m_ReloadDetachAttachClip;
         [Tooltip("Specifies if the item should wait for the OnAnimatorItemReloadDetachClip animation event or wait for the specified duration before detaching the clip from the weapon.")]
         [SerializeField] protected AnimationEventTrigger m_ReloadDetachClipEvent = new AnimationEventTrigger(true, 0.4f);
+        [Tooltip("The prefab used when reloading.")]
+        [SerializeField] protected GameObject m_ReloadAddClipPrefab;
+        [FormerlySerializedAs("m_ReloadDropClip")]
         [Tooltip("The prefab that is dropped when the character is reloading.")]
-        [SerializeField] protected GameObject m_ReloadDropClip;
+        [SerializeField] protected GameObject m_ReloadDropClipPrefab;
         [Tooltip("The amount of time after the clip has been removed to change the layer.")]
         [SerializeField] protected float m_ReloadClipLayerChangeDelay = 0.1f;
         [Tooltip("The layer that the clip object should change to after being reloaded.")]
@@ -142,9 +146,9 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [Tooltip("Specifies if the item should wait for the OnAnimatorItemReloadAttachClip animation event or wait for the specified duration before attaching the clip back to the weapon.")]
         [SerializeField] protected AnimationEventTrigger m_ReloadAttachClipEvent = new AnimationEventTrigger(true, 0.4f);
         [Tooltip("The reoloadable clip visual to move when reloading.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ReloadableClip;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ReloadableClip = new();
         [Tooltip("The reoloadable clip attachement position.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ReloadableClipAttachment;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ReloadableClipAttachment = new();
 
         private bool m_Reloading;
         protected bool m_Reloaded;
@@ -189,11 +193,15 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             }
         }
         public AnimationEventTrigger ReloadDetachClipEvent { get { return m_ReloadDetachClipEvent; } set { m_ReloadDetachClipEvent.CopyFrom(value); } }
-        public GameObject ReloadDropClip { get { return m_ReloadDropClip; } set { m_ReloadDropClip = value; } }
+        public GameObject ReloadAddClipPrefab { get { return m_ReloadAddClipPrefab; } set { m_ReloadAddClipPrefab = value; } }
+        public GameObject ReloadDropClipPrefab { get { return m_ReloadDropClipPrefab; } set { m_ReloadDropClipPrefab = value; } }
         public float ReloadClipLayerChangeDelay { get { return m_ReloadClipLayerChangeDelay; } set { m_ReloadClipLayerChangeDelay = value; } }
         public int ReloadClipTargetLayer { get { return m_ReloadClipTargetLayer; } set { m_ReloadClipTargetLayer = value; } }
         public AnimationEventTrigger ReloadDropClipEvent { get { return m_ReloadDropClipEvent; } set { m_ReloadDropClipEvent.CopyFrom(value); } }
         public AnimationEventTrigger ReloadAttachClipEvent { get { return m_ReloadAttachClipEvent; } set { m_ReloadAttachClipEvent.CopyFrom(value); } }
+
+        public bool WaitingForReloadEvent => m_ReloadEvent.IsWaiting;
+        public bool WaitingForReloadCompleteEvent => m_ReloadCompleteEvent.IsWaiting;
 
         /// <summary>
         /// Should the item reload when the item is equipped?
@@ -206,7 +214,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
 
             base.OnAllModulesPreInitialized();
 
-            if ((m_AutoReload & Reload.AutoReloadType.Equip) != 0) {
+            if (ShootableAction != null && (m_AutoReload & Reload.AutoReloadType.Equip) != 0) {
                 ShootableAction.ReloadClip(true, true);
             }
         }
@@ -273,7 +281,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         {
             base.InitializeInternal();
 
-            m_ReloadAnimatorAudioStateSet.Awake(CharacterItem, CharacterLocomotion);
+            m_ReloadAnimatorAudioStateSet.Awake(CharacterItem, CharacterLocomotion, m_ReloadType == ReloadClipType.Single ? ShootableAction.MainAmmoModule.GetAmmoRemainingCount() : 1);
             m_ReloadableClip.Initialize(m_CharacterItemAction);
             m_ReloadableClipAttachment.Initialize(m_CharacterItemAction);
         }
@@ -533,7 +541,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             }
 
             // The reload AnimatorAudioState is starting.
-            m_ReloadAnimatorAudioStateSet.StartStopStateSelection(true);
+            m_ReloadAnimatorAudioStateSet.StartStopStateSelection(true, m_ReloadType == ReloadClipType.Single ? ShootableAction.MainAmmoModule.GetAmmoRemainingCount() : 1);
             m_ReloadAnimatorAudioStateSet.NextState();
 
             // Optionally play a reload sound based upon the reload animation.
@@ -551,7 +559,13 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             // If your item gets stuck while spamming the button, add a transition using the SlotXItemStatChange Trigger.
             UpdateItemAbilityAnimatorParameters(true);
 
-            Shared.Events.EventHandler.ExecuteEvent(Character, "OnStartReload");
+            Shared.Events.EventHandler.ExecuteEvent<ShootableReloaderModule>(Character, "OnStartReload", this);
+
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (NetworkInfo != null && NetworkInfo.HasAuthority()) {
+                NetworkCharacter.StartItemReload(this);
+            }
+#endif
         }
 
         /// <summary>
@@ -574,7 +588,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             m_ReloadAttachClipEvent.CancelWaitForEvent();
 
             // The clip can actually be dropped.
-            if (m_ReloadDropClip != null) {
+            if (m_ReloadDropClipPrefab != null) {
                 m_ReloadDropClipEvent.WaitForEvent(false);
             }
 
@@ -645,7 +659,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         /// </summary>
         private void DropClip()
         {
-            if (!m_Reloading || m_ReloadDropClip == null || m_DroppedClip) {
+            if (!m_Reloading || m_ReloadDropClipPrefab == null || m_DroppedClip) {
                 return;
             }
 
@@ -660,7 +674,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
                 ReactivateClipEvent.WaitForEvent(true);
             }
 
-            var dropClip = ObjectPoolBase.Instantiate(m_ReloadDropClip, clip.position, clip.rotation);
+            var dropClip = ObjectPoolBase.Instantiate(m_ReloadDropClipPrefab, clip.position, clip.rotation);
             // The first person perspective requires the clip to be on the overlay layer so the fingers won't render in front of the clip.
             dropClip.transform.SetLayerRecursively(CharacterLocomotion.FirstPersonPerspective ? LayerManager.Overlay : clip.gameObject.layer);
             Scheduler.Schedule(m_ReloadClipLayerChangeDelay, UpdateDropClipLayer, dropClip);
@@ -746,7 +760,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
                 }
             }
 
-            if (!fullClip && m_ReloadDropClip != null) {
+            if (!fullClip && m_ReloadDropClipPrefab != null) {
                 // When the item is reloaded the clip should also be replaced.
 #if FIRST_PERSON_CONTROLLER
                 AddRemoveReloadableClip(true, true);
@@ -763,6 +777,12 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
                 UpdateItemAbilityAnimatorParameters();
                 // The reload ability isn't done until the ReloadItemComplete method is called.
                 ReloadCompleteEvent.WaitForEvent(false);
+
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+                if (NetworkInfo != null && NetworkInfo.HasAuthority()) {
+                    NetworkCharacter.ReloadItem(this, fullClip);
+                }
+#endif
             }
         }
 
@@ -773,8 +793,9 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         /// <param name="firstPerson">Is the first person perspective being affected?</param>
         private void AddRemoveReloadableClip(bool add, bool firstPerson)
         {
+            var reloadClipPrefab = m_ReloadAddClipPrefab ?? m_ReloadDropClipPrefab;
             // If the perspective properties is null then that perspective isn't setup for the character.
-            if (m_ReloadDropClip == null) {
+            if (reloadClipPrefab == null) {
                 return;
             }
 
@@ -790,7 +811,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
 
             var reloadableClipAttachment = GetReloadableClipAttachment(firstPerson);
             if (add) {
-                var clip = ObjectPoolBase.Instantiate(m_ReloadDropClip, reloadableClip.position, reloadableClip.rotation);
+                var clip = ObjectPoolBase.Instantiate(reloadClipPrefab, reloadableClip.position, reloadableClip.rotation);
                 var remover = clip.GetCachedComponent<Remover>();
                 if (remover != null) {
                     remover.CancelRemoveEvent();
@@ -842,6 +863,12 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
 
             // The item has been reloaded - inform the state set.
             m_ReloadAnimatorAudioStateSet.StartStopStateSelection(false);
+
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (NetworkInfo != null && NetworkInfo.HasAuthority()) {
+                NetworkCharacter.ItemReloadComplete(this, success, immediateReload);
+            }
+#endif
         }
 
         /// <summary>
@@ -871,6 +898,12 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         /// </summary>
         public void ItemUseComplete()
         {
+#if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+            if (NetworkInfo != null && !NetworkInfo.HasAuthority()) {
+                return;
+            }
+#endif
+
             // When the clip is empty the weapon should be reloaded if specified.
             if (ShootableAction.ClipRemainingCount == 0 && (m_AutoReload & Reload.AutoReloadType.Empty) != 0) {
                 EventHandler.ExecuteEvent<int, IItemIdentifier, IItemIdentifier, bool, bool>(Character, "OnItemTryReload", CharacterItem.SlotID, CharacterItem.ItemIdentifier, null, false, true);

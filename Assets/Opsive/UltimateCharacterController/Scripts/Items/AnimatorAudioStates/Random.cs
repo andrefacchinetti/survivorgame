@@ -23,9 +23,10 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         /// <param name="characterLocomotion">The character that the state belongs to.</param>
         /// <param name="characterItem">The item that the state belongs to.</param>
         /// <param name="states">The states which are being selected.</param>
-        public override void Initialize(GameObject gameObject, UltimateCharacterLocomotion characterLocomotion, CharacterItem characterItem, AnimatorAudioStateSet.AnimatorAudioState[] states)
+        /// <param name="count">The count of states to expect.</param>
+        public override void Initialize(GameObject gameObject, UltimateCharacterLocomotion characterLocomotion, CharacterItem characterItem, AnimatorAudioStateSet.AnimatorAudioState[] states, int count)
         {
-            base.Initialize(gameObject, characterLocomotion, characterItem, states);
+            base.Initialize(gameObject, characterLocomotion, characterItem, states, count);
 
             // Call next state so the index will be initialized to a random value.
             NextState();
@@ -38,6 +39,20 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         public override int GetStateIndex()
         {
             return m_CurrentIndex;
+        }
+
+        /// <summary>
+        /// Set the new state index.
+        /// </summary>
+        /// <param name="stateIndex">The new state index.</param>
+        public override void SetStateIndex(int stateIndex)
+        {
+            var size = m_States.Length;
+            m_CurrentIndex = stateIndex % size;
+
+            if (m_CurrentIndex < 0) {
+                m_CurrentIndex += size;
+            }
         }
 
         /// <summary>

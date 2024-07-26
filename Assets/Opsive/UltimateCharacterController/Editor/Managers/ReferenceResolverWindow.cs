@@ -471,7 +471,7 @@ namespace Opsive.Shared.Editor.UIElements.Managers
             if (s_TemplateBoneByTransform.Count == 0) {
                 if (templateAnimatorIdentifier != null) {
                     var templateAnimator = templateAnimatorIdentifier.GetComponent<Animator>();
-                    if (templateAnimator != null) {
+                    if (templateAnimator != null && templateAnimator.isHuman) {
                         for (int i = 0; i < (int)HumanBodyBones.LastBone; ++i) {
                             var templateBone = templateAnimator.GetBoneTransform((HumanBodyBones)i);
                             if (templateBone != null) {
@@ -487,7 +487,7 @@ namespace Opsive.Shared.Editor.UIElements.Managers
             if (s_TemplateBoneByTransform.TryGetValue(transform, out var bone)) {
                 if (targetAnimatorIdentifier != null) {
                     var targetAnimator = targetAnimatorIdentifier.GetComponent<Animator>();
-                    if (targetAnimator != null) {
+                    if (targetAnimator != null && targetAnimator.isHuman) {
                         return targetAnimator.GetBoneTransform(bone);
                     }
                 }

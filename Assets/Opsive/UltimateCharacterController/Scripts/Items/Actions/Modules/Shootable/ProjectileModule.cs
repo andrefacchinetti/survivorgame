@@ -192,7 +192,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         [Tooltip("Specifies if the item should wait for the OnAnimatorItemReloadShowProjectile animation event or wait for the specified duration before showing the projectile.")]
         [SerializeField] protected AnimationEventTrigger m_StartVisibleProjectileEvent = new AnimationEventTrigger(false, 0.4f);
         [Tooltip("The attachment to which the projectile is attached to while reloading the item (if the projectile visibility allows it).")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ReloadProjectileAttachment;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_ReloadProjectileAttachment = new ItemPerspectiveIDObjectProperty<Transform>();
         [Tooltip("Specifies if the item should wait for the OnAnimatorItemReloadShowProjectile animation event or wait for the specified duration before showing the projectile.")]
         [SerializeField] protected AnimationEventTrigger m_ReloadShowProjectileEvent = new AnimationEventTrigger(false, 0.4f);
         [Tooltip("Specifies if the item should wait for the OnAnimatorItemReloadAttachProjectile animation event or wait for the specified duration before parenting the projectile to the fire point.")]
@@ -261,7 +261,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
             m_ReloadShowProjectileEvent.RegisterUnregisterAnimationEvent(register, Character, "OnAnimatorItemReloadShowProjectile", OnShowReloadProjectile);
             m_ReloadAttachProjectileEvent.RegisterUnregisterAnimationEvent(register, Character, "OnAnimatorItemReloadAttachProjectile", OnAttachReloadProjectile);
 
-            Shared.Events.EventHandler.RegisterUnregisterEvent(register, Character, "OnStartReload", StartItemReload);
+            Shared.Events.EventHandler.RegisterUnregisterEvent<ShootableReloaderModule>(register, Character, "OnStartReload", StartItemReload);
         }
 
         /// <summary>
@@ -390,7 +390,8 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable
         /// <summary>
         /// Starts to reload the item.
         /// </summary>
-        private void StartItemReload()
+        /// <param name="reloaderModule">The reloader module.</param>
+        private void StartItemReload(ShootableReloaderModule reloaderModule)
         {
             // The projectile may become visible when the item is reloaded.
             if (m_ProjectileVisibility == ProjectileVisiblityType.OnReload || m_ProjectileVisibility == ProjectileVisiblityType.Always) {

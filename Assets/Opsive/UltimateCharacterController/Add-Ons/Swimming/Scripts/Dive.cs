@@ -8,6 +8,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
 {
     using Opsive.Shared.Events;
     using Opsive.Shared.Game;
+    using Opsive.UltimateCharacterController.Character;
     using Opsive.UltimateCharacterController.Character.Abilities;
     using Opsive.UltimateCharacterController.Game;
     using Opsive.UltimateCharacterController.Utility;
@@ -95,14 +96,14 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
             }
 
             // Water must be in front of the character.
-            if (Physics.Raycast(m_Rigidbody.TransformPoint(m_EdgeOffset), -m_CharacterLocomotion.Up, out var hit, float.MaxValue, -1, QueryTriggerInteraction.Collide)) {
+            if (Physics.Raycast(m_CharacterLocomotion.TransformPoint(m_EdgeOffset), -m_CharacterLocomotion.Up, out var hit, float.MaxValue, -1, QueryTriggerInteraction.Collide)) {
                 if (!MathUtility.InLayerMask(hit.transform.gameObject.layer, 1 << LayerManager.Water)) {
                     return false;
                 }
             }
 
             // No objects can be in front of the character.
-            if (Physics.Raycast(m_Rigidbody.TransformPoint(new Vector3(0, 0.1f, 0)), m_Rigidbody.rotation * Vector3.forward, m_EdgeOffset.z, 
+            if (Physics.Raycast(m_CharacterLocomotion.TransformPoint(new Vector3(0, 0.1f, 0)), m_CharacterLocomotion.Rotation * Vector3.forward, m_EdgeOffset.z, 
                 m_CharacterLayerManager.SolidObjectLayers, QueryTriggerInteraction.Ignore)) {
                 return false;
             }
@@ -118,7 +119,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
             base.AbilityStarted();
 
             RaycastHit hit;
-            if (Physics.Raycast(m_Rigidbody.TransformPoint(m_EdgeOffset), -m_GroundTransform.up, out hit, m_MinHighDiveHeight, 1 << LayerManager.Water, QueryTriggerInteraction.Collide)) {
+            if (Physics.Raycast(m_CharacterLocomotion.TransformPoint(m_EdgeOffset), -m_GroundTransform.up, out hit, m_MinHighDiveHeight, 1 << LayerManager.Water, QueryTriggerInteraction.Collide)) {
                 m_DiveState = DiveStates.Shallow;
             } else {
                 m_DiveState = DiveStates.High;
@@ -169,7 +170,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
             }
 
             // The character should prepare for entry when they get close to the water.
-            if (m_DiveState != DiveStates.EnterWater && Physics.Raycast(m_Rigidbody.position, -m_CharacterLocomotion.Up, out var hit, m_WillEnterWaterDistance, 1 << LayerManager.Water, QueryTriggerInteraction.Collide)) {
+            if (m_DiveState != DiveStates.EnterWater && Physics.Raycast(m_CharacterLocomotion.Position, -m_CharacterLocomotion.Up, out var hit, m_WillEnterWaterDistance, 1 << LayerManager.Water, QueryTriggerInteraction.Collide)) {
                 m_DiveState = DiveStates.EnterWater;
                 SetAbilityIntDataParameter((int)m_DiveState);
             }
@@ -199,7 +200,7 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming
             }
 
             if (m_EntranceSplash != null && Mathf.Abs(m_CharacterLocomotion.LocalVelocity.y) > m_EntranceSplash.MinVelocity) {
-                m_EntranceSplash.Play(other.ClosestPointOnBounds(m_Rigidbody.position) - m_CharacterLocomotion.Up * m_CharacterLocomotion.SkinWidth);
+                m_EntranceSplash.Play(other.ClosestPointOnBounds(m_CharacterLocomotion.Position) - m_CharacterLocomotion.Up * m_CharacterLocomotion.SkinWidth);
             }
 
             // When AllowUseGravity is false the GravityAccumulation will not be added. Add it by the ability within UpdateDesiredMovement.

@@ -9,6 +9,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules
     using Opsive.Shared.Audio;
     using Opsive.UltimateCharacterController.Character.Abilities;
     using Opsive.UltimateCharacterController.Character.Abilities.Items;
+    using Opsive.UltimateCharacterController.Items.Actions.Modules.Shootable;
     using Opsive.UltimateCharacterController.Items.AnimatorAudioStates;
     using Opsive.UltimateCharacterController.Utility;
     using System;
@@ -210,7 +211,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules
         {
             base.UpdateRegisteredEventsInternal(register);
 
-            Shared.Events.EventHandler.RegisterUnregisterEvent(register, Character, "OnStartReload", StartItemReload);
+            Shared.Events.EventHandler.RegisterUnregisterEvent<ShootableReloaderModule>(register, Character, "OnStartReload", StartItemReload);
         }
 
         /// <summary>
@@ -253,7 +254,8 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules
         /// <summary>
         /// The item is being reloaded.
         /// </summary>
-        private void StartItemReload()
+        /// <param name="reloaderModule">The reloader module.</param>
+        private void StartItemReload(ShootableReloaderModule reloaderModule)
         {
             if (m_UseItemAbility != null && m_UseItemAbility.IsActive) {
                 m_UseItemAbility.StopAbility(true);
@@ -386,10 +388,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules
             
             m_IsTriggering = true;
             
-            // Using Force Change true.
-            // This makes sure the weapon isn't stuck within the Use Animation if the transitions are set properly.
-            // If your item gets stuck while spamming the button, add a transition using the SlotXItemStatChange Trigger.
-            UpdateItemAbilityAnimatorParameters(true);
+            UpdateItemAbilityAnimatorParameters(false);
         }
 
         /// <summary>

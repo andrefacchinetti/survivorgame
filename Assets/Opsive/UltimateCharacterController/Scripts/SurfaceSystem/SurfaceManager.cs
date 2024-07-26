@@ -7,7 +7,6 @@
 namespace Opsive.UltimateCharacterController.SurfaceSystem
 {
     using Opsive.Shared.Game;
-    using Opsive.UltimateCharacterController.Character;
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.SceneManagement;

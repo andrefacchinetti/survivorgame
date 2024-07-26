@@ -18,6 +18,7 @@ namespace Opsive.UltimateCharacterController.Utility
         public const float RigidbodyForceMultiplier = 50;
         private static Dictionary<Collider, Transform> m_ColliderTransformMap = new Dictionary<Collider, Transform>();
 
+#if UNITY_6000_0_OR_NEWER
         /// <summary>
         /// Returns the friction value between material1 and material2.
         /// </summary>
@@ -58,6 +59,48 @@ namespace Opsive.UltimateCharacterController.Utility
             }
             return (material1.bounciness + material2.bounciness) / 2; // Average combine.
         }
+#else
+        /// <summary>
+        /// Returns the friction value between material1 and material2.
+        /// </summary>
+        /// <param name="material1">The first material to get the friction value of.</param>
+        /// <param name="material2">The second material to get the friction value of.</param>
+        /// <param name="dynamicFriction">Should the dynamic friction be retrieved?</param>
+        /// <returns>The combined friction value.</returns>
+        public static float FrictionValue(PhysicMaterial material1, PhysicMaterial material2, bool dynamicFriction)
+        {
+            if (material1.frictionCombine == PhysicMaterialCombine.Maximum || material2.frictionCombine == PhysicMaterialCombine.Maximum) {
+                return dynamicFriction ? Mathf.Max(material1.dynamicFriction, material2.dynamicFriction) : Mathf.Max(material1.staticFriction, material2.staticFriction);
+            }
+            if (material1.frictionCombine == PhysicMaterialCombine.Minimum || material2.frictionCombine == PhysicMaterialCombine.Minimum) {
+                return dynamicFriction ? Mathf.Min(material1.dynamicFriction, material2.dynamicFriction) : Mathf.Min(material1.staticFriction, material2.staticFriction);
+            }
+            if (material1.frictionCombine == PhysicMaterialCombine.Multiply || material2.frictionCombine == PhysicMaterialCombine.Multiply) {
+                return dynamicFriction ? (material1.dynamicFriction * material2.dynamicFriction) : (material1.staticFriction * material2.staticFriction);
+            }
+            return dynamicFriction ? ((material1.dynamicFriction + material2.dynamicFriction) / 2) : ((material1.staticFriction + material2.staticFriction) / 2); // Average combine.
+        }
+
+        /// <summary>
+        /// Returns the bounciness value between material1 and material2.
+        /// </summary>
+        /// <param name="material1">The first material to get the bounciness value of.</param>
+        /// <param name="material2">The second material to get the bounciness value of.</param>
+        /// <returns>The combined bounciness value.</returns>
+        public static float BouncinessValue(PhysicMaterial material1, PhysicMaterial material2)
+        {
+            if (material1.bounceCombine == PhysicMaterialCombine.Maximum || material2.bounceCombine == PhysicMaterialCombine.Maximum) {
+                return Mathf.Max(material1.bounciness, material2.bounciness);
+            }
+            if (material1.bounceCombine == PhysicMaterialCombine.Minimum || material2.bounceCombine == PhysicMaterialCombine.Minimum) {
+                return Mathf.Min(material1.bounciness, material2.bounciness);
+            }
+            if (material1.bounceCombine == PhysicMaterialCombine.Multiply || material2.bounceCombine == PhysicMaterialCombine.Multiply) {
+                return (material1.bounciness * material2.bounciness);
+            }
+            return (material1.bounciness + material2.bounciness) / 2; // Average combine.
+        }
+#endif
 
         /// <summary>
         /// Transforms the position from local space to world space. This is similar to Transform.TransformPoint but does not require a Transform.

@@ -109,8 +109,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
             if (m_CurrentState != EffectState.Pending) { return false;}
 
             // The cast can be prevented/interupted, causing it to no longer being pending. 
-            var canCast = CanDoCast(useDataStream);
-            if (canCast == false) { return false; }
+            if (!CanDoCast(useDataStream)) { return false; }
 
             var delay = m_InitialDelay < 0 ? m_Delay : m_InitialDelay;
             if (delay <= 0) {
@@ -122,7 +121,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
                 return true;
             }
 
-            // It is no longer pending
+            // It is no longer pending.
             return false;
         }
         
@@ -133,8 +132,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
         public virtual bool IsRepeatPendingDoCast(MagicUseDataStream useDataStream)
         {
             // The delay can make the cast pending.
-            if (m_LastCastTime + m_Delay  > Time.time 
-                || m_LastCompletedTime + m_Delay > Time.time) {
+            if (m_LastCastTime + m_Delay  > Time.time || m_LastCompletedTime + m_Delay > Time.time) {
                 return true;
             }
 
@@ -176,6 +174,10 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
         /// <param name="useDataStream">The use data stream.</param>
         public virtual void OnCastLateUpdate(MagicUseDataStream useDataStream)
         {
+            if (m_CurrentState != EffectState.Processing && m_CurrentState != EffectState.Complete) {
+                return;
+            }
+
             DoCastInternal(useDataStream);
         }
 
@@ -389,8 +391,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Magic
             var lastCastCompleteTime = m_TargetCaches[targetIndex].LastCastCompleteTime;
             
             // The delay can make the cast pending.
-            if (lastCastTime + m_Delay  > Time.time 
-                || lastCastCompleteTime + m_Delay > Time.time) {
+            if (lastCastTime + m_Delay  > Time.time || lastCastCompleteTime + m_Delay > Time.time) {
                 return true;
             }
 

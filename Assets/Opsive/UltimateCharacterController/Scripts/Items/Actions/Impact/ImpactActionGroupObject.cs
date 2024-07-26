@@ -75,7 +75,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Impact
         /// <param name="ctx">Context about the hit.</param>
         protected override void OnImpactInternal(ImpactCallbackContext ctx)
         {
-            //DO nothing.
+            // Do nothing.
         }
 
         /// <summary>

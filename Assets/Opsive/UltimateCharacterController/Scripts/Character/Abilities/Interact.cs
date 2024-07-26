@@ -248,7 +248,7 @@ using Opsive.Shared.Networking;
 
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
             // The Interact event will be sent through a message. The ability does not need to call the interaction.
-            if (m_NetworkInfo != null && !m_NetworkInfo.HasAuthority()) {
+            if (m_NetworkInfo != null && !m_NetworkInfo.HasAuthority() && !m_NetworkInfo.IsLocalPlayer()) {
                 return;
             }
 #endif

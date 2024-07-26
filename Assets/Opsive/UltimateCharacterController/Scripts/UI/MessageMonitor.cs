@@ -75,8 +75,14 @@ namespace Opsive.UltimateCharacterController.UI
         private void OnAbilityCanStart(Ability ability, bool canStart)
         {
             // Only one ability message can be shown at a time.
-            if (m_Ability != null && m_Ability != ability && m_Ability.Index < ability.Index) {
-                return;
+            if (canStart) {
+                if (m_Ability != null && m_Ability != ability && m_Ability.Index < ability.Index) {
+                    return;
+                }
+            } else {
+                if (m_Ability == null) {
+                    return;
+                }
             }
 
             if (canStart && (!string.IsNullOrEmpty(ability.AbilityMessageText) || ability.AbilityMessageIcon != null)) {

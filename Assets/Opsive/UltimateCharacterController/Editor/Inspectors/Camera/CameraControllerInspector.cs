@@ -73,6 +73,7 @@ namespace Opsive.UltimateCharacterController.Editor.Inspectors.Camera
             container.Add(foldout);
             FieldInspectorView.AddField(target, "m_CanZoom", foldout);
             FieldInspectorView.AddField(target, "m_ZoomState", foldout);
+            FieldInspectorView.AddField(target, "m_AdjustWithTimescale", foldout);
             FieldInspectorView.AddField(target, "m_StateAppendItemIdentifierName", foldout);
 
             foldout = new Foldout() { text = "Events" };

@@ -183,8 +183,8 @@ namespace Opsive.UltimateCharacterController.Motion
             }
 
             // Update the velocity based on the current stiffness and damping values.
-            m_Velocity += (m_RestValue - m_Value) * (1 - m_Stiffness);
-            m_Velocity *= m_Damping;
+            m_Velocity += (m_RestValue - m_Value) * (1 - m_Stiffness) * (1 / Time.deltaTime);
+            m_Velocity *= m_Damping * Time.deltaTime;
             m_Velocity = Vector3.ClampMagnitude(m_Velocity, m_MaxVelocity);
             // Move towards the rest point.
             Move();

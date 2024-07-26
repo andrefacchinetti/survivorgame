@@ -281,8 +281,10 @@ namespace Opsive.UltimateCharacterController.Objects
                 // When there is a collision the object should move to the position that was hit so if it's not destroyed then it looks like it
                 // is penetrating the hit object.
                 if (hit != null && hit.HasValue && m_Collider != null) {
-                    var closestPoint = m_Collider.ClosestPoint(hit.Value.point);
-                    m_Transform.position += (hit.Value.point - closestPoint);
+                    if (!m_DestroyOnCollision) {
+                        var closestPoint = m_Collider.ClosestPointOnBounds(hit.Value.point);
+                        m_Transform.position += (hit.Value.point - closestPoint);
+                    }
                     // Only set the parent to the hit transform on uniform objects to prevent stretching.
                     if (MathUtility.IsUniform(hit.Value.transform.localScale)) {
                         // The parent layer must be within the sticky layer mask.
@@ -387,7 +389,7 @@ namespace Opsive.UltimateCharacterController.Objects
                 }
                 var explosion = spawnedObject.GetCachedComponent<Explosion>();
                 if (explosion != null) {
-                    explosion.Explode(m_ImpactDamageData, m_Owner, m_OwnerDamageSource);
+                    explosion.Explode(m_ImpactDamageData, m_GameObject, m_OwnerDamageSource);
                 }
             }
 

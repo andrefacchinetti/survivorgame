@@ -62,9 +62,18 @@ namespace Opsive.UltimateCharacterController.Editor.Inspectors.Character
             FieldInspectorView.AddField(target, "m_MotorDamping", nonRootMotionPositionFields);
             FieldInspectorView.AddField(target, "m_MotorBackwardsMultiplier", nonRootMotionPositionFields);
             FieldInspectorView.AddField(target, "m_PreviousAccelerationInfluence", nonRootMotionPositionFields);
-            FieldInspectorView.AddField(target, "m_AdjustMotorForceOnSlope", foldout);
-            FieldInspectorView.AddField(target, "m_MotorSlopeForceUp", foldout);
-            FieldInspectorView.AddField(target, "m_MotorSlopeForceDown", foldout);
+
+            var slopeFields = new VisualElement();
+            slopeFields.AddToClassList("indent");
+            FieldInspectorView.AddField(target, target, "m_AdjustMotorForceOnSlope", foldout, (object o) =>
+            {
+                EditorUtility.SetDirty(target);
+                slopeFields.style.display = characterLocomotion.AdjustMotorForceOnSlope ? DisplayStyle.Flex : DisplayStyle.None;
+            });
+            slopeFields.style.display = characterLocomotion.AdjustMotorForceOnSlope ? DisplayStyle.Flex : DisplayStyle.None;
+            foldout.Add(slopeFields);
+            FieldInspectorView.AddField(target, "m_MotorSlopeForceUp", slopeFields);
+            FieldInspectorView.AddField(target, "m_MotorSlopeForceDown", slopeFields);
 
             var rootMotionRotationFields = new VisualElement();
             var nonRootMotionRotationFields = new VisualElement();
@@ -94,6 +103,7 @@ namespace Opsive.UltimateCharacterController.Editor.Inspectors.Character
             FieldInspectorView.AddField(target, "m_SkinWidth", foldout);
             FieldInspectorView.AddField(target, "m_StickToGround", foldout);
             FieldInspectorView.AddField(target, "m_StickToGroundDistance", foldout);
+            FieldInspectorView.AddField(target, "m_VerticalCastBuffer", foldout);
             FieldInspectorView.AddField(target, "m_ExternalForceDamping", foldout);
             FieldInspectorView.AddField(target, "m_MaxSoftForceFrames", foldout);
             FieldInspectorView.AddField(target, "m_SlopeLimit", foldout);

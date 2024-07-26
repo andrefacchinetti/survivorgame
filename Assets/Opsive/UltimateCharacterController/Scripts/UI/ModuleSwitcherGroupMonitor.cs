@@ -7,8 +7,6 @@
 namespace Opsive.UltimateCharacterController.UI
 {
     using Opsive.Shared.Events;
-    using Opsive.Shared.Inventory;
-    using Opsive.UltimateCharacterController.Inventory;
     using Opsive.UltimateCharacterController.Items;
     using Opsive.UltimateCharacterController.Items.Actions;
     using Opsive.UltimateCharacterController.Items.Actions.Modules;

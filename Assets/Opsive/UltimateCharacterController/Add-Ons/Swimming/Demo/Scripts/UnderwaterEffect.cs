@@ -37,7 +37,11 @@ namespace Opsive.UltimateCharacterController.AddOns.Swimming.Demo
             m_GlobalFog = GetComponent<GlobalFog>();
             EnableEffect(false);
 
+#if UNITY_2023_1_OR_NEWER
+            var objectIdentifiers = GameObject.FindObjectsByType<ObjectIdentifier>(FindObjectsSortMode.None);
+#else
             var objectIdentifiers = GameObject.FindObjectsOfType<ObjectIdentifier>();
+#endif
             for (int i = 0; i < objectIdentifiers.Length; ++i) {
                 if (objectIdentifiers[i].ID != m_WaterID) {
                     continue;

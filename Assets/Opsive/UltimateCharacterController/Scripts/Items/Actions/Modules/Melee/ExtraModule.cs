@@ -46,7 +46,7 @@ namespace Opsive.UltimateCharacterController.Items.Actions.Modules.Melee
         [Tooltip("Specifies if the item should wait for the OnAnimatorStopTrail animation event or wait for the specified duration before stopping the trail during an attack.")]
         [SerializeField] protected AnimationEventTrigger m_AttackStopTrailEvent = new AnimationEventTrigger(false, 0.5f);
         [Tooltip("The location that the melee weapon trail is spawned at.")]
-        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_TrailLocation;
+        [SerializeField] protected ItemPerspectiveIDObjectProperty<Transform> m_TrailLocation = new();
         
         public GameObject Trail { get { return m_Trail; } set { m_Trail = value; } }
         public TrailVisibilityType TrailVisibility { get { return m_TrailVisibility; } set { m_TrailVisibility = value; } }

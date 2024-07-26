@@ -433,7 +433,7 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
             }
 
             // Dampen external forces.
-            m_ActiveForce /= (1 + m_ForceDamping * (m_CharacterLocomotion.TimeScale * Time.timeScale));
+            m_ActiveForce -= (m_ForceDamping * 0.1f * (m_CharacterLocomotion.TimeScale * Time.timeScale));
         }
 
         /// <summary>

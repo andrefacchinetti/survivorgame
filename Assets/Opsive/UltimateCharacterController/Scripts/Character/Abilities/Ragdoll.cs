@@ -36,12 +36,18 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         [Layer] [SerializeField] protected int m_InactiveRagdollLayer = LayerManager.SubCharacter;
         [Tooltip("The amount of force to add to the camera. This value will be multiplied by the death force magnitude.")]
         [SerializeField] protected Vector3 m_CameraRotationalForce = new Vector3(0, 0, 0.75f);
+        [Tooltip("Specifies the interpolation mode of the ragdoll.")]
+        [SerializeField] protected RigidbodyInterpolation m_InterpolationMode = RigidbodyInterpolation.None;
+        [Tooltip("Specifies the collision detection mode of the ragdoll.")]
+        [SerializeField] protected CollisionDetectionMode m_CollisionDetectionMode = CollisionDetectionMode.Continuous;
 
         public bool StartOnDeath { get { return m_StartOnDeath; } set { m_StartOnDeath = value; } }
         public float StartDelay { get { return m_StartDelay; } set { m_StartDelay = value; } }
         public int RagdollLayer { get { return m_RagdollLayer; } set { m_RagdollLayer = value; } }
         public int InactiveRagdollLayer { get { return m_InactiveRagdollLayer; } set { m_InactiveRagdollLayer = value; } }
         public Vector3 CameraRotationalForce { get { return m_CameraRotationalForce; } set { m_CameraRotationalForce = value; } }
+        public RigidbodyInterpolation InterpolationMode { get { return m_InterpolationMode; } set { m_InterpolationMode = value; } }
+        public CollisionDetectionMode CollisionDetectionMode { get { return m_CollisionDetectionMode; } set { m_CollisionDetectionMode = value; } }
         
         private Rigidbody[] m_Rigidbodies;
         private GameObject[] m_RigidbodyGameObjects;
@@ -128,7 +134,8 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
                 m_Rigidbodies[i].collisionDetectionMode = enable ? CollisionDetectionMode.ContinuousSpeculative : CollisionDetectionMode.Discrete;
                 m_Rigidbodies[i].isKinematic = !enable;
                 m_Rigidbodies[i].constraints = (enable ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeAll);
-                m_Rigidbodies[i].interpolation = (enable ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None);
+                m_Rigidbodies[i].interpolation = (enable ? m_InterpolationMode : RigidbodyInterpolation.None);
+                m_Rigidbodies[i].collisionDetectionMode = (enable ? m_CollisionDetectionMode : CollisionDetectionMode.Discrete);
                 m_RigidbodyGameObjects[i].layer = enable ? m_RagdollLayer : m_InactiveRagdollLayer;
                 if (enable && force.sqrMagnitude > 0) {
                     m_Rigidbodies[i].AddForceAtPosition(force, position, ForceMode.Force);

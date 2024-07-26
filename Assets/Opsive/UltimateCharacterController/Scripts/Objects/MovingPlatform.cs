@@ -175,7 +175,7 @@ namespace Opsive.UltimateCharacterController.Objects
         protected ScheduledEventBase m_NextWaypointEvent;
         protected int m_ActiveCharacterCount;
 
-        protected int m_SimulationIndex;
+        protected int m_SimulationIndex = -1;
 
         public int NextWaypoint { get { return m_NextWaypoint; } }
         public int ActiveCharacterCount { get { return m_ActiveCharacterCount; } }

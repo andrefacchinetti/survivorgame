@@ -156,6 +156,13 @@ namespace Opsive.UltimateCharacterController.Camera.ViewTypes
         public abstract Quaternion Rotate(float horizontalMovement, float verticalMovement, bool immediateUpdate);
 
         /// <summary>
+        /// Rotates the camera within the LateUpdate loop.
+        /// </summary>
+        /// <param name="immediateUpdate">Should the camera be updated immediately?</param>
+        /// <returns>The updated rotation.</returns>
+        public virtual Quaternion LateRotate(bool immediateUpdate) { return m_Transform.rotation; }
+
+        /// <summary>
         /// Moves the camera according to the current pitch and yaw values.
         /// </summary>
         /// <param name="immediateUpdate">Should the camera be updated immediately?</param>

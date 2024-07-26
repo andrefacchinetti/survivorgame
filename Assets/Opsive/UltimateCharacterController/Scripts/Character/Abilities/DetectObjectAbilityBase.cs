@@ -245,10 +245,10 @@ namespace Opsive.UltimateCharacterController.Character.Abilities
         /// <param name="other">The trigger collider that the character entered.</param>
         public override void OnTriggerEnter(Collider other)
         {
-            acoesOntriggerEnter(other);
+            acoesOnTriggerEnter(other);
         }
 
-        public void acoesOntriggerEnter(Collider other)
+        public void acoesOnTriggerEnter(Collider other)
         {
             // The object may not be detected with a trigger.
             if ((m_ObjectDetection & ObjectDetectionMode.Trigger) == 0)

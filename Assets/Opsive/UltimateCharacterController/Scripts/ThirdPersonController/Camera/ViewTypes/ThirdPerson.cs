@@ -43,8 +43,6 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTy
         [Range(0, 1)] [SerializeField] protected float m_SecondaryRotationSpeed = 0.8f;
         [Tooltip("The amount of freedom the character has on the horizontal axis before the camera starts to follow the character.")]
         [SerializeField] protected float m_HorizontalPivotFreedom = 0f;
-        [Tooltip("The amount of smoothing to apply to the position when an object is obstructing the target position. Can be zero.")]
-        [SerializeField] protected float m_ObstructionPositionSmoothing = 0.04f;
         [Tooltip("The positional spring used for regular movement.")]
         [SerializeField] protected Spring m_PositionSpring = new Spring();
         [Tooltip("The rotational spring used for regular movement.")]
@@ -73,7 +71,6 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTy
         public float RotationSpeed { get { return m_RotationSpeed; } set { m_RotationSpeed = value; } }
         public float SecondaryRotationSpeed { get { return m_SecondaryRotationSpeed; } set { m_SecondaryRotationSpeed = value; } }
         public float HorizontalPivotFreedom { get { return m_HorizontalPivotFreedom; } set { m_HorizontalPivotFreedom = value; } }
-        public float ObstructionPositionSmoothing { get { return m_ObstructionPositionSmoothing; } set {m_ObstructionPositionSmoothing = value; } }
         public Spring PositionSpring { get { return m_PositionSpring;
             } set {
                 m_PositionSpring = value;
@@ -321,16 +318,6 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTy
                 }
             }
 
-            if (m_RotationalOverride != null) {
-                var currentRotation = MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0));
-                var targetRotation = Quaternion.Slerp(currentRotation, m_RotationalOverride(m_Transform.position, currentRotation), m_SecondaryRotationSpeed);
-
-                // Set the pitch and yaw so when the override is reset the view type won't snap back to the previous rotation value.
-                var localRotation = MathUtility.InverseTransformQuaternion(m_BaseRotation, targetRotation).eulerAngles;
-                m_Pitch = localRotation.x;
-                m_Yaw = localRotation.y;
-            }
-
             // Update the rotation. The pitch may have a limit.
             if (Mathf.Abs(m_PitchLimit.MinValue - m_PitchLimit.MaxValue) < 180) {
                 m_Pitch = MathUtility.ClampAngle(m_Pitch, -verticalMovement, m_PitchLimit.MinValue, m_PitchLimit.MaxValue);
@@ -345,6 +332,33 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTy
             // Return the rotation.
             var rotation = MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0)) * Quaternion.LookRotation(m_ForwardAxis) * Quaternion.Euler(m_RotationSpring.Value) * Quaternion.Euler(m_SecondaryRotationSpring.Value);
             return immediateUpdate ? rotation : Quaternion.Slerp(m_Transform.rotation * m_CharacterLocomotion.MovingPlatformRotation, rotation, m_RotationSpeed);
+        }
+
+        /// <summary>
+        /// Rotates the camera within the LateUpdate loop.
+        /// </summary>
+        /// <param name="immediateUpdate">Should the camera be updated immediately?</param>
+        /// <returns>The updated rotation.</returns>
+        public override Quaternion LateRotate(bool immediateUpdate)
+        {
+            if (m_RotationalOverride != null) {
+                var currentRotation = MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0));
+                var targetRotation = Quaternion.Slerp(currentRotation, m_RotationalOverride(m_Transform.position, currentRotation), m_SecondaryRotationSpeed);
+
+                // Set the pitch and yaw so when the override is reset the view type won't snap back to the previous rotation value.
+                var localRotation = MathUtility.InverseTransformQuaternion(m_BaseRotation, m_RotationalOverride(m_Transform.position, currentRotation)).eulerAngles;
+                m_Pitch = localRotation.x;
+                m_Yaw = localRotation.y;
+
+                // Prevent the values from getting too large.
+                m_Pitch = MathUtility.ClampInnerAngle(m_Pitch);
+                m_Yaw = MathUtility.ClampInnerAngle(m_Yaw);
+
+                var rotation = MathUtility.TransformQuaternion(m_BaseRotation, Quaternion.Euler(m_Pitch, m_Yaw, 0)) * Quaternion.LookRotation(m_ForwardAxis) * Quaternion.Euler(m_RotationSpring.Value) * Quaternion.Euler(m_SecondaryRotationSpring.Value);
+                return immediateUpdate ? rotation : Quaternion.Slerp(m_Transform.rotation * m_CharacterLocomotion.MovingPlatformRotation, rotation, m_RotationSpeed);
+            }
+
+            return m_Transform.rotation;
         }
 
         /// <summary>
@@ -390,9 +404,6 @@ namespace Opsive.UltimateCharacterController.ThirdPersonController.Camera.ViewTy
                                 m_CharacterLayerManager.IgnoreInvisibleCharacterWaterLayers, QueryTriggerInteraction.Ignore)) {
                 // Move the camera in if the character isn't in view.
                 targetPosition = m_RaycastHit.point + m_RaycastHit.normal * m_CollisionRadius;
-                if (!immediateUpdate) {
-                    targetPosition = Vector3.SmoothDamp(m_Transform.position + m_CharacterLocomotion.MovingPlatformMovement, targetPosition, ref m_ObstructionSmoothPositionVelocity, m_ObstructionPositionSmoothing);
-                }
 
                 // Keep a constant height if there is nothing getting in the way of that position.
                 var localDirection = MathUtility.TransformDirection(direction, characterRotation);

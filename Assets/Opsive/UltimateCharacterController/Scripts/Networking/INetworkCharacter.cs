@@ -35,11 +35,11 @@ namespace Opsive.UltimateCharacterController.Networking.Character
         /// The ItemIdentifier has been picked up.
         /// </summary>
         /// <param name="itemIdentifierID">The ID of the ItemIdentifier that was picked up.</param>
-        /// <param name="amount">The number of ItemIdentifier picked up.</param>
         /// <param name="slotID">The ID of the slot which the item belongs to.</param>
+        /// <param name="amount">The number of ItemIdentifier picked up.</param>
         /// <param name="immediatePickup">Was the item be picked up immediately?</param>
         /// <param name="forceEquip">Should the item be force equipped?</param>
-        void ItemIdentifierPickup(uint itemIdentifierID, int amount, int slotID, bool immediatePickup, bool forceEquip);
+        void ItemIdentifierPickup(uint itemIdentifierID, int slotID, int amount, bool immediatePickup, bool forceEquip);
 
         /// <summary>
         /// Remove an item amount from the inventory.

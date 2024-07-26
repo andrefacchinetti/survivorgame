@@ -20,6 +20,8 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         protected GameObject m_Character;
         protected UltimateCharacterLocomotion m_CharacterLocomotion;
         protected AnimatorAudioStateSet.AnimatorAudioState[] m_States;
+        public int Length => m_States.Length;
+        public virtual bool IsArrayIndexes => false;
 
         /// <summary>
         /// Initializes the selector.
@@ -28,7 +30,8 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         /// <param name="characterLocomotion">The character that the state belongs to.</param>
         /// <param name="characterItem">The item that the state belongs to.</param>
         /// <param name="states">The states which are being selected.</param>
-        public virtual void Initialize(GameObject gameObject, UltimateCharacterLocomotion characterLocomotion, CharacterItem characterItem, AnimatorAudioStateSet.AnimatorAudioState[] states)
+        /// <param name="count">The count of states to expect.</param>
+        public virtual void Initialize(GameObject gameObject, UltimateCharacterLocomotion characterLocomotion, CharacterItem characterItem, AnimatorAudioStateSet.AnimatorAudioState[] states, int count)
         {
             m_CharacterItem = characterItem;
             m_Character = characterLocomotion.gameObject;
@@ -40,7 +43,8 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         /// Starts or stops the state selection.
         /// </summary>
         /// <param name="start">Is the object starting?</param>
-        public virtual void StartStopStateSelection(bool start) 
+        /// <param name="count">The count of states to expect.</param>
+        public virtual void StartStopStateSelection(bool start, int count)
         {
             // Activate or deactivate the state.
             var stateIndex = GetStateIndex();
@@ -59,6 +63,27 @@ namespace Opsive.UltimateCharacterController.Items.AnimatorAudioStates
         {
             return -1;
         }
+
+        /// <summary>
+        /// Set the new state index.
+        /// </summary>
+        /// <param name="stateIndex">The new state index.</param>
+        public virtual void SetStateIndex(int stateIndex) { }
+
+        /// <summary>
+        /// Returns the current state indexes. Null indicates this index is not set by the class.
+        /// </summary>
+        /// <returns>The current state indexes.</returns>
+        public virtual int[] GetStateIndexes()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Set the new state indexes.
+        /// </summary>
+        /// <param name="stateIndexes">The new state indexes.</param>
+        public virtual void SetStateIndexes(int[] stateIndexes) { }
 
         /// <summary>
         /// Moves to the next state.

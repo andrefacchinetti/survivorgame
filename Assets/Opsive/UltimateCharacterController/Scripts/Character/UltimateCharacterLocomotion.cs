@@ -7,8 +7,8 @@
 namespace Opsive.UltimateCharacterController.Character
 {
     using Opsive.Shared.Events;
-    using Opsive.Shared.Game;
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
+    using Opsive.Shared.Game;
     using Opsive.Shared.Networking;
 #endif
     using Opsive.Shared.StateSystem;
@@ -210,6 +210,8 @@ namespace Opsive.UltimateCharacterController.Character
 #if ULTIMATE_CHARACTER_CONTROLLER_MULTIPLAYER
         private INetworkInfo m_NetworkInfo;
         private INetworkCharacter m_NetworkCharacter;
+        private bool m_IsPassiveReconciliation;
+        [Shared.Utility.NonSerialized] public bool IsPassiveReconciliation { get { return m_IsPassiveReconciliation; } set { m_IsPassiveReconciliation = value; } }
 #endif
 
         private MovementType m_ActiveMovementType;
@@ -592,8 +594,13 @@ namespace Opsive.UltimateCharacterController.Character
             if (OnAnimationUpdate != null) {
                 m_OnAnimationUpdate();
             }
+        }
 
-            // Allow the abilities to update after the character has been moved.
+        /// <summary>
+        /// Allow the abilities to update after the character has moved.
+        /// </summary>
+        public void Update()
+        {
             LateUpdateActiveAbilities(m_ActiveAbilities, ref m_ActiveAbilityCount);
             LateUpdateActiveAbilities(m_ActiveItemAbilities, ref m_ActiveItemAbilityCount);
         }
@@ -831,9 +838,7 @@ namespace Opsive.UltimateCharacterController.Character
             }
 
             // Start the ability if it is not active or can be started multiple times, enabled, and can be started.
-            if ((!ability.IsActive || ability.CanReceiveMultipleStarts) 
-                && ability.Enabled
-                && (ignoreCanStartCheck || ability.CanStartAbility())) {
+            if ((!ability.IsActive || ability.CanReceiveMultipleStarts) && ability.Enabled && (ignoreCanStartCheck || ability.CanStartAbility())) {
                 // The ability may already be active if the ability can receive multiple starts. Multiple starts are useful for item abilities that need to be active
                 // over a period of time but can be updated with the input start type while active. A good example of this is the Toggle Equip Item ability. When
                 // this ability starts it sets an Animator parameter to equip or unequip the item. The ability continues to run while equipping or unequipping the item
@@ -885,11 +890,19 @@ namespace Opsive.UltimateCharacterController.Character
 
                     // The ability can start. Stop any currently active abilities that should not be started because the current ability has started.
                     for (int i = m_ActiveAbilityCount - 1; i >= 0; --i) {
+                        // The ability may be removed within the nested TryStopAbility.
+                        if (m_ActiveAbilities[i] == null) {
+                            continue;
+                        }
                         if (ability.ShouldStopActiveAbility(m_ActiveAbilities[i])) {
                             TryStopAbility(m_ActiveAbilities[i], true);
                         }
                     }
                     for (int i = m_ActiveItemAbilityCount - 1; i >= 0; --i) {
+                        // The ability may be removed within the nested TryStopAbility.
+                        if (m_ActiveItemAbilities[i] == null) {
+                            continue;
+                        }
                         if (ability.ShouldStopActiveAbility(m_ActiveItemAbilities[i])) {
                             TryStopAbility(m_ActiveItemAbilities[i], true);
                         }
@@ -1884,6 +1897,17 @@ namespace Opsive.UltimateCharacterController.Character
         /// </summary>
         protected virtual void OnDestroy()
         {
+            if (m_Abilities != null) {
+                for (int i = 0; i < m_Abilities.Length; ++i) {
+                    m_Abilities[i].OnDestroy();
+                }
+            }
+            if (m_ItemAbilities != null) {
+                for (int i = 0; i < m_ItemAbilities.Length; ++i) {
+                    m_ItemAbilities[i].OnDestroy();
+                }
+            }
+
             EventHandler.UnregisterEvent<ILookSource>(m_GameObject, "OnCharacterAttachLookSource", OnAttachLookSource);
             EventHandler.UnregisterEvent<bool>(gameObject, "OnCharacterChangePerspectives", OnChangePerspectives);
             EventHandler.UnregisterEvent<GameObject>(m_GameObject, "OnCharacterSwitchModels", OnSwitchModels);

@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateCharacterController.Inventory
 {
-    using System;
     using Opsive.Shared.Inventory;
     using Opsive.Shared.Utility;
     using System.Collections.Generic;

@@ -136,12 +136,12 @@ namespace Opsive.UltimateCharacterController.Editor
             GUILayout.Label("The character controller can be installed after the following requirements are satisifed:");
             var validInstallPackage = m_InstallPackages != null && m_InstallPackages.Length > 0;
             DrawRequirement("Located Install Package", validInstallPackage);
-            var height = 125;
+            var height = 135;
             if (!validInstallPackage) {
                 EditorGUILayout.HelpBox("Unable to find the install package. The package can be installed manually within the Opsive/Installer/UltimateCharacterController folder.", MessageType.Warning);
                 height += 45;
             }
-#if UNITY_2021_3_OR_NEWER
+#if UNITY_2021_3_OR_NEWER || UNITY_2022_1_OR_NEWER
             var validUnityVersion = true;
 #else
             var validUnityVersion= false;
@@ -158,12 +158,14 @@ namespace Opsive.UltimateCharacterController.Editor
                     var versionProperty = assetInfoType.GetProperty("Version", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                     if (versionProperty != null) {
                         var versionString = versionProperty.GetValue(null, null) as string;
-                        var version = new Version(versionString);
-                        if (version.CompareTo(new Version("3.0")) < 0) {
-                            priorVersionInstalled = true;
-                        } else {
-                            requireCleanInstall = false;
-                        }
+                        try {
+                            var version = new Version(versionString);
+                            if (version.CompareTo(new Version("3.0")) < 0) {
+                                priorVersionInstalled = true;
+                            } else {
+                                requireCleanInstall = false;
+                            }
+                        } catch (Exception /*e*/) { }
                     }
                 }
             }

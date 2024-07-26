@@ -475,9 +475,8 @@ namespace Opsive.UltimateCharacterController.Items
                 Start();
             }
             
-            // If the item is picked up again set it visible.
             SetVisibleObjectActive(false, m_Inventory.GetItemIdentifierAmount(m_ItemIdentifier) > 0, false);
-
+            
 #if FIRST_PERSON_CONTROLLER
             if (m_FirstPersonPerspectiveItem != null) {
                 m_FirstPersonPerspectiveItem.Pickup();
@@ -1230,10 +1229,10 @@ namespace Opsive.UltimateCharacterController.Items
         }
         
         /// <summary>
-        /// Returns the additional items that should be dropped when the item is dropped.
+        /// Returns the additional items identifiers that should be removed when the item is dropped.
         /// </summary>
-        /// <returns>The additional items that should be dropped when the item is dropped.</returns>
-        public virtual ListSlice<ItemIdentifierAmount> GetAdditionalItemsToDrop()
+        /// <returns>The additional items identifiers that should be removed when the item dropped.</returns>
+        public virtual ListSlice<ItemIdentifierAmount> GetAdditionalItemIdenitifersToDrop()
         {
             if (m_CachedDropItemIdentifierAmounts == null) {
                 m_CachedDropItemIdentifierAmounts = new List<ItemIdentifierAmount>();
@@ -1242,7 +1241,7 @@ namespace Opsive.UltimateCharacterController.Items
             }
 
             for (int i = 0; i < m_ItemActions.Length; i++) {
-                m_CachedDropItemIdentifierAmounts.AddRange(m_ItemActions[i].GetItemsToDrop());
+                m_CachedDropItemIdentifierAmounts.AddRange(m_ItemActions[i].GetItemIdentifiersToDrop());
             }
 
             return m_CachedDropItemIdentifierAmounts;

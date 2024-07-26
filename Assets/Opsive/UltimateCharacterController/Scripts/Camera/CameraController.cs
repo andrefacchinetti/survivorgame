@@ -51,6 +51,8 @@ namespace Opsive.UltimateCharacterController.Camera
         [SerializeField] protected bool m_CanZoom = true;
         [Tooltip("The state that should be activated when zoomed.")]
         [SerializeField] protected string m_ZoomState = "Zoom";
+        [Tooltip("Should the camera movement be adjusted based on the character and Unity timescale?")]
+        [SerializeField] protected bool m_AdjustWithTimescale = true;
         [Tooltip("Should the ItemIdentifier name be appened to the name of the state name?")]
         [HideInInspector] [SerializeField] protected bool m_StateAppendItemIdentifierName;
         [Tooltip("Unity event invoked when an view type has been started or stopped.")]
@@ -66,6 +68,7 @@ namespace Opsive.UltimateCharacterController.Camera
         public Vector3 AnchorOffset { get { return m_AnchorOffset; } set { m_AnchorOffset = value; if (Application.isPlaying) { EventHandler.ExecuteEvent(m_GameObject, "OnAnchorOffsetUpdated"); } } }
         public bool CanChangePerspectives { get { return m_CanChangePerspectives; } set { m_CanChangePerspectives = value; } }
         public bool CanZoom { get { return m_CanZoom; } set { m_CanZoom = value; if (m_CanZoom && m_ZoomInput && !m_Zoom) { SetZoom(true); } else if (!m_CanZoom && m_Zoom) { SetZoom(false); } } }
+        public bool AdjustWithTimescale { get { return m_AdjustWithTimescale; } set { m_AdjustWithTimescale = value; } }
         public string ZoomState { get { return m_ZoomState; } set { m_ZoomState = value; } }
         public UnityViewTypeBoolEvent OnChangeViewTypesEvent { get { return m_OnChangeViewTypesEvent; } set { m_OnChangeViewTypesEvent = value; } }
         public UnityBoolEvent OnChangePerspectivesEvent { get { return m_OnChangePerspectivesEvent; } set { m_OnChangePerspectivesEvent = value; } }
@@ -538,11 +541,34 @@ namespace Opsive.UltimateCharacterController.Camera
                 return;
             }
 
+            // Move at different rates depending on the timescale.
+            if (m_AdjustWithTimescale) {
+                horizontalMovement *= m_CharacterLocomotion.TimeScale * Time.timeScale;
+                verticalMovement *= m_CharacterLocomotion.TimeScale * Time.timeScale;
+            }
+
             // If a transition is active then move the transition rather then the active view type. The transitioner will move the view type.
             if (m_Transitioner != null && m_Transitioner.IsTransitioning) {
                 m_Transform.rotation = m_Transitioner.Rotate(horizontalMovement, verticalMovement, false);
             } else {
                 m_Transform.rotation = m_ActiveViewType.Rotate(horizontalMovement, verticalMovement, false);
+            }
+        }
+
+        /// <summary>
+        /// Updates the CameraController within LateUpdate.
+        /// </summary>
+        public void LateUpdate()
+        {
+            if (m_CharacterLocomotion.TimeScale == 0) {
+                return;
+            }
+
+            // If a transition is active then move the transition rather then the active view type. The transitioner will move the view type.
+            if (m_Transitioner != null && m_Transitioner.IsTransitioning) {
+                m_Transform.rotation = m_Transitioner.LateRotate(false);
+            } else {
+                m_Transform.rotation = m_ActiveViewType.LateRotate(false);
             }
         }
 

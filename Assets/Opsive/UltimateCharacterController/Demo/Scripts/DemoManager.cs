@@ -113,7 +113,7 @@ namespace Opsive.UltimateCharacterController.Demo
         [Tooltip("Specifies the perspective that the character should start in if there is no perspective selection GameObject.")]
         [SerializeField] protected bool m_DefaultFirstPersonStart = true;
 #endif
-        [Tooltip("Is this manager part of an add-on?")]
+        [Tooltip("Event when the character is initialized.")]
         [SerializeField] protected UnityEvent m_OnCharacterInitialized;
 
         public bool FreeRoam { get => m_FreeRoam; set => m_FreeRoam = value; }
@@ -335,8 +335,11 @@ namespace Opsive.UltimateCharacterController.Demo
 
 
             // Rhea should follow the spawned character.
-            var followAgent = UnityEngine.Object.FindFirstObjectByType<Demo.AI.FollowAgent>();
-
+#if UNITY_2023_1_OR_NEWER
+            var followAgent = UnityEngine.Object.FindFirstObjectByType<Demo.AI.FollowAgent>(FindObjectsInactive.Include);
+#else
+            var followAgent = UnityEngine.Object.FindObjectOfType<Demo.AI.FollowAgent>(true);
+#endif
             if (followAgent != null) {
                 followAgent.Target = character.transform;
             }
