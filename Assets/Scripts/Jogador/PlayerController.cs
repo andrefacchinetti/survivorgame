@@ -220,8 +220,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         cameraController.SetPerspective(true);
         estouPilotando = false;
         barcoPilotando = null;
-        characterLocomotion.DetectHorizontalCollisions = true;
-        characterLocomotion.DetectVerticalCollisions = true;
     }
 
     private void atualizacaoPilotandoBarco()
@@ -239,9 +237,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 characterLocomotion.transform.rotation = rotacaoPiloto;
             }
         }
-        // Desativa a detecção de colisões enquanto o jogador está pilotando
-        characterLocomotion.DetectHorizontalCollisions = false;
-        characterLocomotion.DetectVerticalCollisions = false;
     }
 
     private SampleHeightHelper sampleHeightHelper;
@@ -255,26 +250,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
         Vector3 playerPosition = characterLocomotion.transform.position;
         // Inicializar o sampleHeightHelper com a posição do jogador
         sampleHeightHelper.Init(playerPosition);
-        // Consultar a altura da água na posição do jogador
-        if (sampleHeightHelper.Sample(out float waterHeight))
+
+        float waterHeight = OceanRenderer.Instance.SeaLevel;
+        // Consultar a altura da água na posição do jogador >> 
+        // Definir a posição da superfície da água na habilidade de nadar
+        Debug.Log("water height: " + waterHeight);
+        swimAbility.SetWaterSurfacePosition(waterHeight);
+        if (playerPosition.y < waterHeight - swimAntiBug)
         {
-            // Definir a posição da superfície da água na habilidade de nadar
-            swimAbility.SetWaterSurfacePosition(waterHeight);
-            if (playerPosition.y < waterHeight - swimAntiBug)
+            if (estouPilotando)
             {
-                if (estouPilotando)
-                {
-                    PararDePilotarBarco();
-                }
-                if (fallAbility.IsActive)
-                {
-                    swimAbility.acoesOnTriggerEnter(colliderNatacao);
-                    fallAbility.StopAbility(true);
-                }
+                PararDePilotarBarco();
+            }
+            if (fallAbility.IsActive)
+            {
+                swimAbility.acoesOnTriggerEnter(colliderNatacao);
+                fallAbility.StopAbility(true);
             }
         }
 
-        
+
     }
 
     public void TogglePlayerModoConstrucao(bool construcaoAtiva)
