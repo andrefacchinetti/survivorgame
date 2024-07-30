@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] [HideInInspector] public Revive reviveAbility;
     [SerializeField] [HideInInspector] public Jump jumpAbility;
     [SerializeField] [HideInInspector] public Fall fallAbility;
+    [SerializeField] [HideInInspector] public Pilotar pilotarAbility;
 
     [HideInInspector] public VaraDePesca varaDePescaTP, varaDePescaFP;
     [HideInInspector] public AcendedorFogueira acendedorFogueiraTP, acendedorFogueiraFP;
@@ -101,6 +102,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         reviveAbility = characterLocomotion.GetAbility<Revive>();
         jumpAbility = characterLocomotion.GetAbility<Jump>();
         fallAbility = characterLocomotion.GetAbility<Fall>();
+        pilotarAbility = characterLocomotion.GetAbility<Pilotar>();
 
         sampleHeightHelper = new SampleHeightHelper();
 
@@ -171,7 +173,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
                     {
                         PararDePilotarBarco();
                     }
-                    atualizacaoPilotandoBarco();
                 }
                 else
                 {
@@ -214,9 +215,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
         verificarSwimCrestOcean();
     }
 
+    public void PilotarBarco(BoatProbes barcoResponse)
+    {
+        estouPilotando = true;
+        barcoPilotando = barcoResponse;
+        cameraController.SetPerspective(false);
+        PararAbilitys();
+        StartarAbility(pilotarAbility);
+    }
+
+    public void SubirNoBarco(BoatProbes barcoController)
+    {
+        setarPosicaoNoBarco(barcoController);
+    }
+
     public void PararDePilotarBarco()
     {
-
+        PararAbility(pilotarAbility);
         if (barcoPilotando != null)
         {
             barcoPilotando.PararDePilotarBarco();
@@ -226,20 +241,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         barcoPilotando = null;
     }
 
-    private void atualizacaoPilotandoBarco()
+    private void setarPosicaoNoBarco(BoatProbes barcoResponse)
     {
-        if (barcoPilotando != null)
+        if (barcoResponse != null)
         {
-            // Atualiza a posição e rotação do jogador com base na posição e rotação do barco
-            Vector3 posicaoPiloto = barcoPilotando.posicaoPiloto.transform.position;
-            Quaternion rotacaoPiloto = barcoPilotando.transform.rotation;
-            if (posicaoPiloto != Vector3.zero)
-            {
-                // Ajusta a posição do jogador
-                characterLocomotion.SetPosition(posicaoPiloto);
-                // Ajusta a rotação do jogador
-                characterLocomotion.transform.rotation = rotacaoPiloto;
-            }
+            characterLocomotion.SetPosition(barcoResponse.obterPosicaoPassageiro()); // Ajusta a posição do jogador
         }
     }
 
@@ -339,15 +345,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
         objAlerta.SetActive(false);
     }
 
-    public void PararAbilitys()
+    public void PararAbilitys() //Parar todas as habilidades executadas manualmente. Obs: Parar habilidades que podem devem ser paradas atraves de uma ação maior;
     {
         PararAbility(pescarAbility);
         PararAbility(acenderFogueiraAbility);
         PararAbility(apagarFogueiraAbility);
-        PararAbility(dissecarAbility);
         PararAbility(beberAguaRioAbility);
         PararAbility(encherGarrafaRioAbility);
         PararAbility(capturarAbility);
+        PararAbility(dissecarAbility);
     }
 
     public void PararAbility(Ability habilidade)

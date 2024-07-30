@@ -23,7 +23,7 @@ namespace Crest
     public class BoatProbes : FloatingObjectBase
     {
 
-        [SerializeField] public GameObject posicaoPiloto;
+        [SerializeField] private GameObject[] posicoesPassageiros;
         bool temAlguemPilotando = false;
         public bool TryPilotarBarco()
         {
@@ -41,6 +41,11 @@ namespace Crest
                 temAlguemPilotando = false; //mandar essa variavel pro servidor
                 _engineBias = 0;
             }
+        }
+
+        public Vector3 obterPosicaoPassageiro()
+        {
+            return posicoesPassageiros[UnityEngine.Random.Range(0, posicoesPassageiros.Length)].transform.position;
         }
 
         /// <summary>

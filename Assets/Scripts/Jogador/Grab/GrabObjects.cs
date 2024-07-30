@@ -9,7 +9,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
 
     private string tagInterruptor = "Interruptor", tagObjGrab = "ObjetoGrab", tagItemDrop = "ItemDrop", tagEnemy = "Inimigo", tagAguaPotavel = "AguaPotavel", tagPesca = "Pesca", tagConsumivelNaPanela = "ConsumivelNaPanela", tagIncendiavel = "Incendiavel", tagArvore = "Arvore";
     private string tagAreaColeta = "AreaColeta", tagReconstruivelQuebrado = "ReconstruivelQuebrado", tagAnimalCollider = "AnimalCollider", tagCorpoMortoCollider = "CorpoMortoCollider", tagEnemyCollider = "EnemyCollider", tagToggleAnimationObjeto = "ToggleAnimationObjeto";
-    private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore", tagArmazenamento = "Armazenamento", tagBarco = "Barco";
+    private string tagKeypagButton = "KeypadButton", tagNote = "Note", tagFrutaEmArvore = "FrutaEmArvore", tagArmazenamento = "Armazenamento", tagBarco = "Barco", tagPilotar = "Pilotar";
 
     [Tooltip("Force to apply in object")]
     [SerializeField] public float forceGrab = 5;
@@ -312,6 +312,10 @@ public class GrabObjects : MonoBehaviourPunCallbacks
         {
             interacaoBarco(hit);
         }
+        else if (hit.transform.tag == tagPilotar)
+        {
+            interacaoPilotar(hit);
+        }
     }
 
     private void interacaoComFrutaEmArvore(RaycastHit hit)
@@ -596,7 +600,20 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         if (Input.GetButtonDown("Use"))
         {
-            if(!playerController.estouPilotando)
+            BoatProbes barcoController = hit.transform.GetComponentInParent<BoatProbes>();
+            if (barcoController != null)
+            {
+                playerController.SubirNoBarco(barcoController);
+            }
+        }
+        possibleInteraction = true;
+    }
+
+    private void interacaoPilotar(RaycastHit hit)
+    {
+        if (Input.GetButtonDown("Use"))
+        {
+            if (!playerController.estouPilotando)
             {
                 BoatProbes barcoController = hit.transform.GetComponentInParent<BoatProbes>();
                 if (barcoController != null)
@@ -605,9 +622,11 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                     bool estouPilotando = barcoController.TryPilotarBarco(); //Tenta pilotar barco
                     if (estouPilotando)
                     {
-                        playerController.estouPilotando = estouPilotando;
-                        playerController.barcoPilotando = barcoController;
-                        playerController.cameraController.SetPerspective(false);
+                        playerController.PilotarBarco(barcoController);
+                    }
+                    else
+                    {
+                        Debug.Log("Nao pode pilotar agora"); //TODO: Alertar e traduzir
                     }
                 }
             }
