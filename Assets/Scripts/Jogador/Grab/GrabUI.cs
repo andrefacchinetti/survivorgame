@@ -8,17 +8,15 @@ using Photon.Realtime;
 [RequireComponent(typeof(Image))]
 public class GrabUI : MonoBehaviourPunCallbacks
 {
-    public Sprite DefaultAim, passiveAim, grabAim, interactionAim;
+    public Sprite DefaultAim, passiveAim, grabAim, interactionAim, driveAim;
 
     private Image img;
-    private GrabObjects grabSys;
+    public GrabObjects grabSys;
 
     void Start()
     {
         img = GetComponent<Image>();
         img.sprite = null;
-
-        grabSys = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GrabObjects>(); ;
     }
 
     void Update()
@@ -37,6 +35,10 @@ public class GrabUI : MonoBehaviourPunCallbacks
             else if (grabSys.possibleInteraction)
             {
                 img.sprite = interactionAim;
+            }
+            else if (grabSys.possibleDrive)
+            {
+                img.sprite = driveAim;
             }
             else
             {

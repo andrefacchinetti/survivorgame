@@ -17,7 +17,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     float anguloLimiteOlhandoPraBaixo = 140.0f;
 
     [HideInInspector] public GameObject grabedObj;
-    [HideInInspector] public bool possibleGrab = false, possibleInteraction = false;
+    [HideInInspector] public bool possibleGrab = false, possibleInteraction = false, possibleDrive = false;
     private Vector2 rigSaveGrabed;
 
     [SerializeField] Camera cam;
@@ -142,6 +142,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     {
         possibleGrab = false;
         possibleInteraction = false;
+        possibleDrive = false;
     }
 
     private void DestruirObjeto(GameObject obj) //destruir recurso apos jogador pegar
@@ -151,8 +152,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
     }
     private void executarAcoesDoHit(RaycastHit hit)
     {
-        possibleGrab = false;
-        possibleInteraction = false;
+        limparViewGrabed();
 
         if (hit.transform.tag == tagObjGrab || hit.transform.tag == tagItemDrop || hit.transform.tag == tagConsumivelNaPanela)
         {
@@ -631,7 +631,7 @@ public class GrabObjects : MonoBehaviourPunCallbacks
                 }
             }
         }
-        possibleInteraction = true;
+        possibleDrive = true;
     }
 
 }
