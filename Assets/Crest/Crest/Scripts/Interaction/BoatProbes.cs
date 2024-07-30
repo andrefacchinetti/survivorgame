@@ -39,6 +39,7 @@ namespace Crest
             {
                 _playerControlled = false; //NAO mandar pro servidor
                 temAlguemPilotando = false; //mandar essa variavel pro servidor
+                _engineBias = 0;
             }
         }
 

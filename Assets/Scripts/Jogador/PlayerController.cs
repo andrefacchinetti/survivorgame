@@ -216,7 +216,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void PararDePilotarBarco()
     {
-        if (barcoPilotando != null) barcoPilotando.PararDePilotarBarco();
+
+        if (barcoPilotando != null)
+        {
+            barcoPilotando.PararDePilotarBarco();
+        }
         cameraController.SetPerspective(true);
         estouPilotando = false;
         barcoPilotando = null;
@@ -250,22 +254,21 @@ public class PlayerController : MonoBehaviourPunCallbacks
         Vector3 playerPosition = characterLocomotion.transform.position;
         // Inicializar o sampleHeightHelper com a posição do jogador
         sampleHeightHelper.Init(playerPosition);
-
-        float waterHeight = OceanRenderer.Instance.SeaLevel;
-        // Consultar a altura da água na posição do jogador >> 
         // Definir a posição da superfície da água na habilidade de nadar
-        Debug.Log("water height: " + waterHeight);
-        swimAbility.SetWaterSurfacePosition(waterHeight);
-        if (playerPosition.y < waterHeight - swimAntiBug)
+        if(sampleHeightHelper.Sample(out float waterHeight))  // Consultar a altura da água na posição do jogador >> 
         {
-            if (estouPilotando)
+            swimAbility.SetWaterSurfacePosition(waterHeight);
+            if (playerPosition.y < waterHeight - swimAntiBug)
             {
-                PararDePilotarBarco();
-            }
-            if (fallAbility.IsActive)
-            {
-                swimAbility.acoesOnTriggerEnter(colliderNatacao);
-                fallAbility.StopAbility(true);
+                if (estouPilotando)
+                {
+                    PararDePilotarBarco();
+                }
+                if (fallAbility.IsActive)
+                {
+                    swimAbility.acoesOnTriggerEnter(colliderNatacao);
+                    fallAbility.StopAbility(true);
+                }
             }
         }
 

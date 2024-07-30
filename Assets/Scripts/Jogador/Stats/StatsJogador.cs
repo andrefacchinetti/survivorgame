@@ -211,6 +211,7 @@ public class StatsJogador : MonoBehaviour
     {
         //TODO: DROPAR MOCHILA
         playerController.canMove = false;
+        playerController.PararDePilotarBarco();
     }
 
     public void AcoesReviveu()
