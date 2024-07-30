@@ -44,7 +44,17 @@ namespace RealTimeWeather.UI
         /// <param name="dateTime">A DateTime value that represents the time when the request has been made.</param>
         public static string ReturnDateTimeInfo(DateTime dateTime)
         {
-            return dateTime.Date.ToLongDateString();
+            //return dateTime.Date.ToLongDateString();
+            return "Yacy Island, "+ "Day " + calculateDaysPassed(dateTime);
+        }
+
+        private static DateTime startDate = new DateTime(1, 1, 1);
+        private static int calculateDaysPassed(DateTime currentDate)
+        {
+            //"Day " + calculateDaysPassed(dateTime) +"\n"
+            // Calcula a diferença em dias entre a data atual e a data inicial
+            TimeSpan difference = currentDate - startDate;
+            return difference.Days;
         }
 
         /// <summary>
@@ -127,9 +137,8 @@ namespace RealTimeWeather.UI
         /// <param name="dateTime">The current date time.</param>
         public static string ReturnWeatherStateInfo(WeatherState weatherState, float temperature, DateTime dateTime)
         {
-            return weatherState.ToString()
-                        + kSeparatorStr
-                        + temperature.ToString(kTwoDecimalsFloatFormat)
+            //weatherState.ToString()
+            return temperature.ToString(kTwoDecimalsFloatFormat)
                         + kCelsiusDegreeStr
                         + kSeparatorStr
                         + dateTime.ToLongTimeString();
