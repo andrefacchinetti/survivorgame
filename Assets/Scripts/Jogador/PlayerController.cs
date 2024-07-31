@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 {
                     if (Input.GetButtonDown("Action") || BarcoCapotou()) //PARANDO DE PILOTAR BARCO
                     {
-                        PararDePilotarBarco();
+                        PararAbility(pilotarAbility);
                     }
                 }
                 else
@@ -210,9 +210,39 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (characterLocomotion.Moving)
         {
             PararAbilitys();
+            toggleOceanTrailsPes(true);
+        }
+        else
+        {
+            toggleOceanTrailsPes(false);
         }
 
         verificarSwimCrestOcean();
+    }
+
+    [SerializeField] GameObject[] oceanTrailPes;
+
+    private void toggleOceanTrailsPes(bool ativando)
+    {
+        foreach (GameObject oceanTrailPe in oceanTrailPes)
+        {
+            
+            if (ativando)
+            {
+                if (oceanTrailPe.transform.position.y < waterHeight)
+                {
+                    if (!oceanTrailPe.activeSelf) oceanTrailPe.SetActive(true);
+                }
+                else
+                {
+                    if (oceanTrailPe.activeSelf) oceanTrailPe.SetActive(false);
+                }
+            }
+            else
+            {
+                if (oceanTrailPe.activeSelf) oceanTrailPe.SetActive(false);
+            }
+        }
     }
 
     public void PilotarBarco(BoatProbes barcoResponse)
@@ -231,12 +261,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void PararDePilotarBarco()
     {
-        PararAbility(pilotarAbility);
+        cameraController.SetPerspective(true, true);
         if (barcoPilotando != null)
         {
             barcoPilotando.PararDePilotarBarco();
         }
-        cameraController.SetPerspective(true);
         estouPilotando = false;
         barcoPilotando = null;
     }
@@ -250,8 +279,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
     private SampleHeightHelper sampleHeightHelper;
-    private float swimAntiBug = 4.0f;
-    public Collider colliderNatacao;
+    private float swimAntiBug = 4.0f, waterHeight;
+    public Collider colliderNatacao; //TODO: Setar dinamico no awake
     private void verificarSwimCrestOcean()
     {
         // Verificar se as referências necessárias estão disponíveis
@@ -261,14 +290,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         // Inicializar o sampleHeightHelper com a posição do jogador
         sampleHeightHelper.Init(playerPosition);
         // Definir a posição da superfície da água na habilidade de nadar
-        if(sampleHeightHelper.Sample(out float waterHeight))  // Consultar a altura da água na posição do jogador >> 
+        if(sampleHeightHelper.Sample(out waterHeight))  // Consultar a altura da água na posição do jogador >> 
         {
             swimAbility.SetWaterSurfacePosition(waterHeight);
             if (playerPosition.y < waterHeight - swimAntiBug)
             {
                 if (estouPilotando)
                 {
-                    PararDePilotarBarco();
+                    PararAbility(pilotarAbility);
                 }
                 if (fallAbility.IsActive)
                 {
@@ -405,6 +434,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
                     cordaWeaponFP.objCordaMaos.SetActive(true);
                     cordaWeaponTP.objCordaMaos.SetActive(true);
                 }
+            }
+        }
+        else if (ability.AbilityIndexParameter == pilotarAbility.AbilityIndexParameter)
+        {
+            if (!activated)
+            {
+                PararDePilotarBarco();
             }
         }
     }
