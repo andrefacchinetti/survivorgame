@@ -1,64 +1,45 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SplineWalker.cs" company="Exit Games GmbH">
-//   Part of: Photon Unity Networking Demos
-// </copyright>
-// <summary>
-//  Original: http://catlikecoding.com/unity/tutorials/curves-and-splines/
-//  Used in SlotRacer Demo
-// </summary>
-// <author>developer@exitgames.com</author>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using UnityEngine;
 
-using UnityEngine;
-
-namespace Photon.Pun.Demo.SlotRacer.Utils
+namespace Digger.Modules.AdvancedOperations.Splines
 {
-	[ExecuteInEditMode]
-	public class SplineWalker : MonoBehaviour {
+    public class SplineWalker : MonoBehaviour
+    {
+        public BezierSpline spline;
 
-		public BezierSpline spline;
+        public float duration;
 
-		public float Speed = 0f;
+        public bool lookForward;
 
-		public bool lookForward;
+        public SplineWalkerMode mode;
+        private bool goingForward = true;
 
-		public bool reverse;
+        private float progress;
 
-		private float progress;
+        private void Update()
+        {
+            if (goingForward) {
+                progress += Time.deltaTime / duration;
+                if (progress > 1f) {
+                    if (mode == SplineWalkerMode.Once) {
+                        progress = 1f;
+                    } else if (mode == SplineWalkerMode.Loop) {
+                        progress -= 1f;
+                    } else {
+                        progress = 2f - progress;
+                        goingForward = false;
+                    }
+                }
+            } else {
+                progress -= Time.deltaTime / duration;
+                if (progress < 0f) {
+                    progress = -progress;
+                    goingForward = true;
+                }
+            }
 
-		public float currentDistance =0f;
-
-		public float currentClampedDistance;
-
-		public void SetPositionOnSpline(float position)
-		{
-			currentDistance = position;
-			ExecutePositioning ();
-		}
-
-		void Update()
-		{
-			// update the distance used.
-			currentDistance += Speed * Time.deltaTime;
-			ExecutePositioning ();
-		}
-
-		public void ExecutePositioning()
-		{
-			if(spline==null)
-			{
-				return;
-			}
-			// move the transform to the new point
-			transform.position = spline.GetPositionAtDistance(currentDistance,this.reverse);
-
-			// update the distance used.
-			currentDistance += Speed * Time.deltaTime;
-
-
-			if (lookForward) {
-				transform.LookAt(spline.GetPositionAtDistance(currentDistance+1,this.reverse));
-			}
-		}
-	}	
+            var position = spline.GetPoint(progress);
+            transform.localPosition = position;
+            if (lookForward) transform.LookAt(position + spline.GetDirection(progress));
+        }
+    }
 }

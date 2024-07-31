@@ -1,154 +1,132 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BezierSplineInspector.cs" company="Exit Games GmbH">
-//   Part of: Photon Unity Networking Demos
-// </copyright>
-// <summary>
-//  Original: http://catlikecoding.com/unity/tutorials/curves-and-splines/
-//  Used in SlotRacer Demo
-// </summary>
-// <author>developer@exitgames.com</author>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿using Digger.Modules.AdvancedOperations.Splines.ProceduralGeneration;
 using UnityEditor;
 using UnityEngine;
 
-namespace Photon.Pun.Demo.SlotRacer.Utils
+namespace Digger.Modules.AdvancedOperations.Splines.Editor
 {
-	[CustomEditor(typeof(BezierSpline))]
-	public class BezierSplineInspector : Editor
-	{
-		private const int stepsPerCurve = 10;
-		private const float directionScale = 0.5f;
-		private const float handleSize = 0.04f;
-		private const float pickSize = 0.06f;
+    [CustomEditor(typeof(BezierSpline))]
+    public class BezierSplineInspector : UnityEditor.Editor
+    {
+        private BezierSplineEditor bezierSplineEditor;
+        private int selectedIndex;
 
-		private static Color[] modeColors = {
-			Color.white,
-			Color.yellow,
-			Color.cyan
-		};
+        [MenuItem("Tools/Digger/Create Bezier Spline", false, 50)]
+        public static void CreateSpline()
+        {
+            var spline = NewSpline();
+            Selection.activeGameObject = spline.gameObject;
+        }
 
-		private BezierSpline spline;
-		private Transform handleTransform;
-		private Quaternion handleRotation;
-		private int selectedIndex = -1;
+        public static BezierSpline NewSpline()
+        {
+            var go = new GameObject("Spline");
+            var spline = go.AddComponent<BezierSpline>();
+            go.transform.position = SceneView.lastActiveSceneView.pivot;
+            return spline;
+        }
 
-		public override void OnInspectorGUI()
-		{
-			spline = target as BezierSpline;
-			EditorGUI.BeginChangeCheck();
-			bool loop = EditorGUILayout.Toggle("Loop", spline.Loop);
-			if (EditorGUI.EndChangeCheck())
-			{
-				Undo.RecordObject(spline, "Toggle Loop");
-				EditorUtility.SetDirty(spline);
-				spline.Loop = loop;
-			}
+        private void OnSceneGUI()
+        {
+            var spline = target as BezierSpline;
+            if (bezierSplineEditor == null) {
+                bezierSplineEditor = new BezierSplineEditor();
+            }
 
-			if (selectedIndex >= 0 && selectedIndex < spline.ControlPointCount)
-			{
-				DrawSelectedPointInspector();
-			}
+            UpdateSelectedIndex();
+            bezierSplineEditor.OnSceneGUI(spline);
+        }
 
-			if (GUILayout.Button("Add Curve"))
-			{
-				Undo.RecordObject(spline, "Add Curve");
-				spline.AddCurve();
-				EditorUtility.SetDirty(spline);
-			}
-		}
+        private void UpdateSelectedIndex()
+        {
+            if (selectedIndex != bezierSplineEditor.SelectedIndex) {
+                selectedIndex = bezierSplineEditor.SelectedIndex;
+                Repaint();
+            }
+        }
 
-		private void DrawSelectedPointInspector()
-		{
-			GUILayout.Label("Selected Point");
-			EditorGUI.BeginChangeCheck();
-			Vector3 point = EditorGUILayout.Vector3Field("Position", spline.GetControlPoint(selectedIndex));
-			if (EditorGUI.EndChangeCheck())
-			{
-				Undo.RecordObject(spline, "Move Point");
-				EditorUtility.SetDirty(spline);
-				spline.SetControlPoint(selectedIndex, point);
-			}
-			EditorGUI.BeginChangeCheck();
-			BezierControlPointMode mode = (BezierControlPointMode)EditorGUILayout.EnumPopup("Mode", spline.GetControlPointMode(selectedIndex));
-			if (EditorGUI.EndChangeCheck())
-			{
-				Undo.RecordObject(spline, "Change Point Mode");
-				spline.SetControlPointMode(selectedIndex, mode);
-				EditorUtility.SetDirty(spline);
-			}
-		}
+        public override void OnInspectorGUI()
+        {
+            var spline = target as BezierSpline;
+            if (spline == null) return;
+            if (bezierSplineEditor == null) {
+                bezierSplineEditor = new BezierSplineEditor();
+            }
 
-		private void OnSceneGUI()
-		{
-			spline = target as BezierSpline;
-			handleTransform = spline.transform;
-			handleRotation = Tools.pivotRotation == PivotRotation.Local ?
-				handleTransform.rotation : Quaternion.identity;
-			
-			Vector3 p0 = ShowPoint(0);
-			for (int i = 1; i < spline.ControlPointCount; i += 3)
-			{
-				Vector3 p1 = ShowPoint(i);
-				Vector3 p2 = ShowPoint(i + 1);
-				Vector3 p3 = ShowPoint(i + 2);
-				
-				Handles.color = Color.gray;
-				Handles.DrawLine(p0, p1);
-				Handles.DrawLine(p2, p3);
-				
-				Handles.DrawBezier(p0, p3, p1, p2, Color.white, null, 2f);
-				p0 = p3;
-			}
-			ShowDirections();
-		}
+            UpdateSelectedIndex();
 
-		private void ShowDirections()
-		{
-			Handles.color = Color.green;
-			Vector3 point = spline.GetPoint(0f);
-			Handles.DrawLine(point, point + spline.GetDirection(0f) * directionScale);
-			int steps = stepsPerCurve * spline.CurveCount;
-			for (int i = 1; i <= steps; i++)
-			{
-				point = spline.GetPoint(i / (float)steps);
-				Handles.DrawLine(point, point + spline.GetDirection(i / (float)steps) * directionScale);
-			}
-		}
+            EditorGUILayout.HelpBox("A Bezier Spline is composed of multiple points that are connected together. " +
+                                    "You can add more points using the button below.\n\n" +
+                                    "To change the position of a point, just click on the point, and then use the usual Unity's Move Tool to move it.", MessageType.Info);
 
-		private Vector3 ShowPoint(int index)
-		{
-			Vector3 point = handleTransform.TransformPoint(spline.GetControlPoint(index));
-			float size = HandleUtility.GetHandleSize(point);
-			if (index == 0)
-			{
-				size *= 2f;
-			}
-			Handles.color = modeColors[(int)spline.GetControlPointMode(index)];
+            EditorGUILayout.Space();
+            EditorGUILayout.HelpBox("Once you are happy with the shape of the spline, " +
+                                    "select the Digger Master object to show its inspector, and then " +
+                                    "chose 'Spline' operation to perform an operation along the spline.", MessageType.Info);
 
+            EditorGUILayout.Space();
+            EditorGUI.BeginChangeCheck();
 
-			#if UNITY_5_6_OR_NEWER
-			if (Handles.Button(point, handleRotation, size * handleSize, size * pickSize, Handles.DotHandleCap)) 
-			#else
-			if (Handles.Button(point, handleRotation, size * handleSize, size * pickSize, Handles.DotCap))
-			#endif
-			{
-				selectedIndex = index;
-				Repaint();
-			}
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            if (selectedIndex >= 0 && selectedIndex < spline.ControlPointCount) 
+                DrawSelectedPointInspector(spline);
+            
+            if (GUILayout.Button("Add Point")) {
+                Undo.RecordObject(spline, "Add Point");
+                spline.AddCurve();
+                EditorUtility.SetDirty(spline);
+            }
+            
+            if (selectedIndex == spline.GetControlPointIndex(selectedIndex) && GUILayout.Button("Remove Point")) {
+                Undo.RecordObject(spline, "Remove Point");
+                bezierSplineEditor.Unselect();
+                spline.RemoveCurve(selectedIndex);
+                UpdateSelectedIndex();
+                EditorUtility.SetDirty(spline);
+            }
 
-			if (selectedIndex == index)
-			{
-				EditorGUI.BeginChangeCheck();
-				point = Handles.DoPositionHandle(point, handleRotation);
-				if (EditorGUI.EndChangeCheck())
-				{
-					Undo.RecordObject(spline, "Move Point");
-					EditorUtility.SetDirty(spline);
-					spline.SetControlPoint(index, handleTransform.InverseTransformPoint(point));
-				}
-			}
-			return point;
-		}
-	}
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUILayout.LabelField("Procedural Generation", EditorStyles.boldLabel);
+            EditorGUILayout.MinMaxSlider("Min/Max altitude variation", ref spline.minY, ref spline.maxY, -200f, 200f);
+            spline.altitudeVariationFrequency = EditorGUILayout.FloatField("Altitude variation frequency", spline.altitudeVariationFrequency);
+            spline.horizontalVariationFrequency = EditorGUILayout.FloatField("Horizontal variation frequency", spline.horizontalVariationFrequency);
+            spline.step = EditorGUILayout.FloatField(new GUIContent("Step", "Distance between 2 points of the curve"), spline.step);
+            spline.stepCount = EditorGUILayout.IntField(new GUIContent("Step count", "Number of points in the curve (ie. curve length)"), spline.stepCount);
+            spline.seed1 = EditorGUILayout.IntField(new GUIContent("Seed 1", "Seed for the noise controlling x coordinate of points forming the cave"), spline.seed1);
+            spline.seed2 = EditorGUILayout.IntField(new GUIContent("Seed 2", "Seed for the noise controlling z coordinate of points forming the cave"), spline.seed2);
+            spline.seed3 = EditorGUILayout.IntField(new GUIContent("Seed 3", "Seed for the noise controlling y coordinate of points forming the cave"), spline.seed3);
+
+            if (GUILayout.Button("Generate Cave")) {
+                Undo.RecordObject(spline, "Generate Cave");
+                var generator = new CaveGenerator(spline.step, spline.stepCount, spline.minY, spline.maxY, spline.altitudeVariationFrequency, spline.horizontalVariationFrequency, spline.seed1, spline.seed2, spline.seed3);
+                generator.GeneratePoints(spline.transform.position, spline);
+                EditorUtility.SetDirty(spline);
+            }
+
+            EditorGUILayout.EndVertical();
+        }
+
+        private void DrawSelectedPointInspector(BezierSpline spline)
+        {
+            GUILayout.Label("Selected Point");
+            EditorGUI.BeginChangeCheck();
+            var point = EditorGUILayout.Vector3Field("Position", spline.GetControlPoint(selectedIndex));
+            if (EditorGUI.EndChangeCheck()) {
+                Undo.RecordObject(spline, "Move Point");
+                EditorUtility.SetDirty(spline);
+                spline.SetControlPoint(selectedIndex, point);
+            }
+
+            EditorGUI.BeginChangeCheck();
+            var mode = (BezierControlPointMode)EditorGUILayout.EnumPopup("Mode", spline.GetControlPointMode(selectedIndex));
+            if (EditorGUI.EndChangeCheck()) {
+                Undo.RecordObject(spline, "Change Point Mode");
+                spline.SetControlPointMode(selectedIndex, mode);
+                EditorUtility.SetDirty(spline);
+            }
+        }
+    }
 }
