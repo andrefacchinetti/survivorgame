@@ -24,6 +24,7 @@ namespace Crest
     {
 
         [SerializeField] private GameObject[] posicoesPassageiros;
+        [SerializeField] public GameObject posicaoVolante;
         bool temAlguemPilotando = false;
         public bool TryPilotarBarco()
         {

@@ -169,7 +169,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 if (barcoPilotando != null)
                 {
-                    if (Input.GetButtonDown("Action") || BarcoCapotou()) //PARANDO DE PILOTAR BARCO
+                    if (Input.GetButtonDown("Action") || BarcoCapotou() || distanteDoBarco()) //PARANDO DE PILOTAR BARCO
                     {
                         PararAbility(pilotarAbility);
                     }
@@ -182,6 +182,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (swimAbility.IsActive || climbWaterAbility.IsActive)
             {
+                if(pilotarAbility.IsActive) PararAbility(pilotarAbility);
                 // Se o personagem está nadando, desequipe todos os itens
                 if (jaSaiuDaAgua)
                 {
@@ -465,6 +466,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private bool distanteDoBarco()
+    {
+        if (barcoPilotando == null) return true;
+        if (Vector3.Distance(characterLocomotion.transform.position, barcoPilotando.posicaoVolante.transform.position) > 5)
+        {
+            return true;
         }
         return false;
     }
