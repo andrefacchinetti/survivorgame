@@ -127,9 +127,9 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.03
-  m_Height: 0
-  m_Direction: 1
+  m_Radius: 0.04
+  m_Height: 0.19
+  m_Direction: 0
   m_Center: {x: 0.02, y: 0, z: 0}
 --- !u!1 &1093034937466406
 GameObject:
@@ -558,7 +558,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1336841924710946}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 1.86
   m_Speed: 3.5
   m_Acceleration: 8
@@ -570,7 +570,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 0.73
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 16
   m_ObstacleAvoidanceType: 4
 --- !u!114 &269315391696910800
 MonoBehaviour:
@@ -593,6 +593,7 @@ MonoBehaviour:
     materialPersonalizado: {fileID: 0}
     qtdMinDrops: 1
     qtdMaxDrops: 2
+  dropsObjs: []
   dropPosition: {fileID: 721030012345372398}
   direcaoDrop: 121
   isAttacking: 0
@@ -606,6 +607,7 @@ MonoBehaviour:
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
   tipoEstilhaco: 1
+  bloodController: {fileID: 0}
 --- !u!114 &6424370199210595995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +629,6 @@ MonoBehaviour:
   leadTime: 1.2
   leadDistance: 2
   estaFugindo: 0
-  genero: 0
 --- !u!114 &7920003080818649791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,8 +647,8 @@ MonoBehaviour:
   isPredador: 1
   isPequenoPorte: 0
   eatTime: 5
-  walkSpeed: 1
-  runSpeed: 3
+  walkSpeed: 3
+  runSpeed: 6
   isProcuraComida: 0
   isCapturado: 0
   objRopePivot: {fileID: 0}
@@ -671,6 +672,7 @@ MonoBehaviour:
   targetCapturador: {fileID: 0}
   PV: {fileID: 0}
   detectionRadius: 40
+  preditorMultiplicador: 1.5
 --- !u!114 &4938051935722300260
 MonoBehaviour:
   m_ObjectHideFlags: 0

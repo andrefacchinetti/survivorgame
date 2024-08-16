@@ -105,7 +105,9 @@ public class AnimalController : MonoBehaviourPunCallbacks
     public float detectionRadius = 10f;
     private void DetectNearbyObjects()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        int layerMask = LayerMask.GetMask("SubCharacter");
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
+
         foreach (var hitCollider in hitColliders)
         {
             if (targetInimigo != null || !statsGeral.health.IsAlive() || animalStats.estaFugindo) return;
@@ -117,10 +119,12 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
             if (!isAnimalAgressivo) continue;
 
-            if (hitCollider.CompareTag("Player"))
+            StatsGeral statsGeralEnemy = hitCollider.transform.GetComponentInParent<StatsGeral>();
+            if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive() && statsGeralEnemy.lobisomemStats == null)
             {
-                targetInimigo = hitCollider.GetComponent<StatsGeral>();
+                targetInimigo = statsGeralEnemy;
                 targetComida = null;
+                break;
             }
 
             if (!isPredador) continue;
@@ -334,7 +338,7 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
         else
         {
-            if (PodeAtacarAlvo(transform, targetInimigo.transform.position))
+            if (PodeAtacarAlvo())
             {
                 AtacarAlvo(targetInimigo.transform.position);
             }
@@ -345,10 +349,11 @@ public class AnimalController : MonoBehaviourPunCallbacks
         }
     }
 
-    private bool PodeAtacarAlvo(Transform transformInicial, Vector3 positionTarget)
+    private bool PodeAtacarAlvo()
     {
-        float distanceToInimigo = Vector3.Distance(transformInicial.position, positionTarget);
-        return distanceToInimigo <= animalStats.distanciaDeAtaque;
+        if(targetInimigo == null) return false;
+        float distanceToInimigo = Vector3.Distance(transform.position, targetInimigo.transform.position);
+        return distanceToInimigo <= animalStats.distanciaDeAtaque*2;
     }
 
     private void AtacarObstaculoOuInimigo()
@@ -375,7 +380,11 @@ public class AnimalController : MonoBehaviourPunCallbacks
     {
         if (!statsGeral.isAttacking && Time.time > animalStats.lastAttackTime + animalStats.attackInterval)
         {
-            transform.LookAt(positionAlvo);
+            // Calcula a posição prevista do alvo
+            Vector3 predictedPosition = PreverPosicaoAlvo(positionAlvo);
+            // Ajusta a direção do lobisomem para a posição prevista
+            transform.LookAt(predictedPosition);
+
             animalStats.lastAttackTime = Time.time;
             animator.SetTrigger("isAttacking");
         }
@@ -383,6 +392,16 @@ public class AnimalController : MonoBehaviourPunCallbacks
         {
             PerseguirInimigo();
         }
+    }
+
+    public float preditorMultiplicador = 1.5f;
+    private Vector3 PreverPosicaoAlvo(Vector3 positionAlvo)
+    {
+        if (targetInimigo == null) return positionAlvo;
+        Vector3 alvoPosition = targetInimigo.transform.position;
+        Vector3 alvoVelocity = (alvoPosition - targetInimigo.transform.position) / detectionInterval;
+        Vector3 predictedPosition = alvoPosition + alvoVelocity * preditorMultiplicador;
+        return predictedPosition;
     }
 
     public void PerseguirInimigo()
