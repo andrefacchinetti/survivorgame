@@ -13,10 +13,10 @@ public class SpawnController : MonoBehaviour
     [SerializeField] int qtdBasePorNoiteLobos = 3, qtdAMaisPorNoiteLobos = 1, qtdMaxLobos = 50, qtdMaxAnimaisAgressivos = 10, qtdMaxAnimaisPassivos = 15;
     [SerializeField] public float minDistanceSpawnDosPlayers = 15f, maxDistanceSpawnDosPlayers = 50f;
     [SerializeField] float distanciaMaxEntreSpawnPointLoboxJogadores = 100;
-    [SerializeField] SpawnArea spawnLobos;
+    [SerializeField] SpawnArea spawnLobos, spawnAnimaisAquaticos;
     [SerializeField] SpawnArea[] spawnAnimaisAgressivos, spawnAnimaisPassivos;
 
-    [SerializeField] [HideInInspector] List<StatsGeral> lobosInGame, animaisAgressivosInGame, animaisPassivosInGame;
+    [SerializeField] [HideInInspector] List<StatsGeral> lobosInGame, animaisAgressivosInGame, animaisPassivosInGame, animaisAquaticosInGame;
 
     PhotonView PV;
 
@@ -34,7 +34,8 @@ public class SpawnController : MonoBehaviour
         lobosInGame = new List<StatsGeral>();
         animaisAgressivosInGame = new List<StatsGeral>();
         animaisPassivosInGame = new List<StatsGeral>();
-        spawnLobos.spawnPoints = spawnLobos.contentSpawnPoints.GetComponentsInChildren<Transform>(true);
+        animaisAquaticosInGame = new List<StatsGeral>();
+
         for (int i = 0; i < spawnAnimaisAgressivos.Length; i++)
         {
             spawnAnimaisAgressivos[i].spawnPoints = spawnAnimaisAgressivos[i].contentSpawnPoints.GetComponentsInChildren<Transform>(true);
@@ -92,15 +93,31 @@ public class SpawnController : MonoBehaviour
         InstanciarPrefabPorPathAnimais(path, spawnAnimaisPassivos, false, PV.ViewID);
     }
 
+    public void SpawnarAnimaisAquaticos()
+    {
+        Debug.Log("Spawnando animais agressivos");
+        animaisAquaticosInGame.RemoveAll(animal => {
+            if (animal != null && !animal.health.IsAlive())
+            {
+                Destroy(animal.gameObject);
+                return true;
+            }
+            return false;
+        });
+
+        InstanciarPrefabPorPathAnimaisAquaticos(PV.ViewID);
+    }
+
     public void InstanciarPrefabPorPathLobos(int diaAtual, int viewID)
     {
         int quantidade = qtdBasePorNoiteLobos + (qtdAMaisPorNoiteLobos * diaAtual);
         bool isPhotonConnected = PhotonNetwork.IsConnected;
         int maxLobosToSpawn = Mathf.Min(qtdMaxLobos - lobosInGame.Count, quantidade);
+        int walkableArea = NavMesh.GetAreaFromName("Walkable");
 
         for (int i = 0; i < maxLobosToSpawn; i++)
         {
-            Vector3 spawnPosition = GetRandomNavMeshPositionNearPlayer();
+            Vector3 spawnPosition = GetRandomNavMeshPositionNearPlayer(walkableArea);
 
             if (spawnPosition != Vector3.zero)
             {
@@ -147,20 +164,49 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    private Vector3 GetRandomNavMeshPositionNearPlayer()
+    public void InstanciarPrefabPorPathAnimaisAquaticos(int viewID)
     {
-        if (gameController.playersOnline == null || gameController.playersOnline.Length == 0) gameController.playersOnline = GameObject.FindGameObjectsWithTag("Player");
-        if (gameController.playersOnline == null || gameController.playersOnline.Length == 0) return Vector3.zero;
+        int quantidade = Random.Range(1, 3);
+        bool isPhotonConnected = PhotonNetwork.IsConnected;
+        int maskAgentArea = NavMesh.GetAreaFromName("Aquatico");
+
+        for (int i = 0; i < quantidade; i++)
+        {
+            Vector3 spawnPosition = GetRandomNavMeshPositionNearPlayer(maskAgentArea);
+
+            if (spawnPosition != Vector3.zero)
+            {
+                string animalRandom = spawnAnimaisAquaticos.nomesPrefab[Random.Range(0, spawnAnimaisAquaticos.nomesPrefab.Length)];
+                string prefabPath = Path.Combine("Animais/Aquaticos/", animalRandom);
+                GameObject prefab = Resources.Load<GameObject>(prefabPath);
+                GameObject objInstanciado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, spawnPosition, Quaternion.identity, 0, new object[] { viewID }) : Instantiate(prefab, spawnPosition, Quaternion.identity);
+                objInstanciado.GetComponent<LobisomemController>().gameController = gameController;
+                animaisAquaticosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
+            }
+        }
+    }
+
+    private Vector3 GetRandomNavMeshPositionNearPlayer(int agentAreaMask)
+    {
+        // Verifica se há jogadores online
+        if (gameController.playersOnline == null || gameController.playersOnline.Length == 0)
+            gameController.playersOnline = GameObject.FindGameObjectsWithTag("Player");
+        if (gameController.playersOnline == null || gameController.playersOnline.Length == 0)
+            return Vector3.zero;
+
+        // Pega um jogador aleatório para calcular a posição
         int index = Random.Range(0, gameController.playersOnline.Length);
         Vector3 randomDirection = Random.insideUnitSphere * Random.Range(minDistanceSpawnDosPlayers, maxDistanceSpawnDosPlayers);
         randomDirection += gameController.playersOnline[index].transform.position;
 
+        // Encontra a posição correta no NavMesh com a máscara de área específica
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistanceSpawnDosPlayers, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistanceSpawnDosPlayers, 1 << agentAreaMask))
         {
-            return hit.position;
+            return hit.position; // Retorna a posição válida
         }
-        return Vector3.zero;
+
+        return Vector3.zero; // Retorna zero caso nenhuma posição seja válida
     }
 
     private Vector3 GetRandomNavMeshPositionNearSpawnPoint(Vector3 spawnPointPosition, float minDistance, float maxDistance)
@@ -169,7 +215,7 @@ public class SpawnController : MonoBehaviour
         randomDirection += spawnPointPosition;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, 1 << NavMesh.GetAreaFromName("Walkable")))
         {
             return hit.position;
         }

@@ -58,6 +58,8 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         playersOnline = GameObject.FindGameObjectsWithTag("Player");
+
+        SpawnarAnimaisPorDia(); //teste... o spawn de animais é controlado pela hora do dia em TimeController.cs
     }
 
     private float getGameHour()
@@ -143,6 +145,7 @@ public class GameController : MonoBehaviour
         if (!isRespawnarAnimais) return;
         spawnController.SpawnarAnimaisPassivos();
         spawnController.SpawnarAnimaisAgressivos();
+        spawnController.SpawnarAnimaisAquaticos();
     }
 
     void OnGUI()
