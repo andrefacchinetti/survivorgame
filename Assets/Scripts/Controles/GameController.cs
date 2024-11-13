@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] public bool isRespawnarInimigos = true, isRespawnarAnimais = true; //DEIXAR TRUE
     [HideInInspector] public PhotonView PV;
-    [HideInInspector] public GameObject[] playersOnline;
+    [HideInInspector] public GameObject[] playersOnline; //TODO: implementar
 
     //clima
     public float temperaturaClima = 0, temperaturaCalculada = 0;
@@ -52,14 +52,6 @@ public class GameController : MonoBehaviour
         spawnController = GetComponent<SpawnController>();
         timeController.gameController = this;
         PV = GetComponent<PhotonView>();
-        Time.fixedDeltaTime = 0.05f; //Unity roda o FixedUpdate a cada 0,02 segundos (50 vezes por segundo). Você pode ajustar isso para reduzir a carga da CPU:
-    }
-
-    private void Start()
-    {
-        playersOnline = GameObject.FindGameObjectsWithTag("Player");
-
-        SpawnarAnimaisPorDia(); //teste... o spawn de animais é controlado pela hora do dia em TimeController.cs
     }
 
     private float getGameHour()
@@ -107,17 +99,6 @@ public class GameController : MonoBehaviour
         luzDoSol.color = currentColor;
 
         objMoon.transform.Rotate(Vector3.forward, moonRotationSpeed * Time.deltaTime);
-    }
-
-    private void LateUpdate()
-    {
-        if (playersOnline == null || playersOnline.Length <= 0 )
-        {
-            if (!PhotonNetwork.IsConnected || playersOnline.Length != PhotonNetwork.CurrentRoom.PlayerCount)
-            {
-                playersOnline = GameObject.FindGameObjectsWithTag("Player");
-            }
-        }
     }
 
     public void SpawnarLootsPorDia()

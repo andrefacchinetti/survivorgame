@@ -98,7 +98,7 @@ public class SpawnController : MonoBehaviour
         bool isPhotonConnected = PhotonNetwork.IsConnected;
         int maxLobosToSpawn = Mathf.Min(qtdMaxLobos - lobosInGame.Count, quantidade);
         int walkableArea = NavMesh.GetAreaFromName("Walkable");
-
+        Debug.Log("spawnando " + maxLobosToSpawn + " lobos por dia");
         for (int i = 0; i < maxLobosToSpawn; i++)
         {
             Vector3 spawnPosition = GetRandomNavMeshPositionNearPlayer(walkableArea);
@@ -113,6 +113,11 @@ public class SpawnController : MonoBehaviour
                 GameObject objInstanciado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, spawnPosition, Quaternion.identity, 0, new object[] { viewID }) : Instantiate(prefab, spawnPosition, Quaternion.identity);
                 objInstanciado.GetComponent<LobisomemController>().gameController = gameController;
                 lobosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
+                Debug.Log("spawnou lobos com sucesso");
+            }
+            else
+            {
+                Debug.Log("nao foi possivel  spawnar os lobos ");
             }
         }
     }
@@ -158,18 +163,30 @@ public class SpawnController : MonoBehaviour
 
         // Pega um jogador aleatório para calcular a posição
         int index = Random.Range(0, gameController.playersOnline.Length);
-        Vector3 randomDirection = Random.insideUnitSphere * Random.Range(minDistanceSpawnDosPlayers, maxDistanceSpawnDosPlayers);
-        randomDirection += gameController.playersOnline[index].transform.position;
+        Vector3 playerPosition = gameController.playersOnline[index].transform.position;
 
-        // Encontra a posição correta no NavMesh com a máscara de área específica
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistanceSpawnDosPlayers, 1 << agentAreaMask))
+        // Tenta encontrar uma posição válida no NavMesh dentro do alcance especificado
+        int maxAttempts = 10;
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
-            return hit.position; // Retorna a posição válida
+            Vector3 randomDirection = Random.insideUnitSphere * Random.Range(minDistanceSpawnDosPlayers, maxDistanceSpawnDosPlayers);
+            randomDirection += playerPosition;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, maxDistanceSpawnDosPlayers, 1 << agentAreaMask))
+            {
+                // Verifica se a área encontrada é realmente "Walkable"
+                if (hit.mask == (1 << agentAreaMask))
+                {
+                    return hit.position; // Retorna uma posição válida no NavMesh
+                }
+            }
         }
 
-        return Vector3.zero; // Retorna zero caso nenhuma posição seja válida
+        return Vector3.zero; // Retorna zero caso nenhuma posição válida seja encontrada após todas as tentativas
     }
+
+
 
     private Vector3 GetRandomNavMeshPositionNearSpawnPoint(Vector3 spawnPointPosition, float minDistance, float maxDistance)
     {
