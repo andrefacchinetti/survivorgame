@@ -7,6 +7,7 @@ public class AnimalStats : MonoBehaviourPunCallbacks
 {
 
     //ATAQUE
+    [SerializeField] public bool isTubarao = false;
     [SerializeField] public float distanciaDePerseguicao = 10f, distanciaDeAtaque = 2f;
     [SerializeField] public float attackInterval = 1f; // Intervalo de tempo entre ataques
     [HideInInspector] public float lastAttackTime; // Tempo do �ltimo ataque
@@ -16,25 +17,37 @@ public class AnimalStats : MonoBehaviourPunCallbacks
     [HideInInspector] public bool estaFugindo = false;
     StatsGeral statsGeral;
     AnimalController animalController;
-   
+    TubaraoController tubaraoController;
+
 
     private void Awake()
     {
         animalController = GetComponent<AnimalController>();
+        tubaraoController = GetComponent<TubaraoController>();
         statsGeral = GetComponent<StatsGeral>();
         estaFugindo = false;
     }
 
     public void AcoesTomouDano()
     {
-        animalController.animator.SetTrigger("isHit");
-        animalController.AcoesTomouDano();
+        if (isTubarao)
+        {
+            tubaraoController.animator.SetTrigger("isHit");
+        }
+        else
+        {
+            animalController.animator.SetTrigger("isHit");
+            animalController.AcoesTomouDano();
+        }
     }
 
     public void AcoesMorreu()
     {
-        animalController.agent.speed = 0;
-        animalController.agent.isStopped = true;
+        if (!isTubarao)
+        {
+            animalController.agent.speed = 0;
+            animalController.agent.isStopped = true;
+        }
     }
 
 }

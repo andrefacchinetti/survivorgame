@@ -479,9 +479,9 @@ GameObject:
   - component: {fileID: 5358632488475697414}
   - component: {fileID: 269315391696910800}
   - component: {fileID: 6424370199210595995}
-  - component: {fileID: 7920003080818649791}
   - component: {fileID: 4938051935722300260}
   - component: {fileID: 1949541196581522734}
+  - component: {fileID: 1861848297681349277}
   m_Layer: 11
   m_Name: shark
   m_TagString: Animal
@@ -620,6 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTubarao: 1
   distanciaDePerseguicao: 10
   distanciaDeAtaque: 2
   attackInterval: 1
@@ -629,50 +630,6 @@ MonoBehaviour:
   leadTime: 1.2
   leadDistance: 2
   estaFugindo: 0
---- !u!114 &7920003080818649791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1336841924710946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc6a60a2bbe8c3340ac33efebcb97619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAnimalAgressivo: 1
-  isAnimalCarnivoro: 1
-  isAnimalHerbivoro: 0
-  isPredador: 1
-  isPequenoPorte: 0
-  eatTime: 5
-  walkSpeed: 3
-  runSpeed: 6
-  isProcuraComida: 0
-  isCapturado: 0
-  objRopePivot: {fileID: 0}
-  objColeiraRope: {fileID: 0}
-  eatDistance: 2
-  tempoCorridaFugindo: 5
-  restTime: 20
-  raioDeDistanciaMinParaAndarAleatoriamente: 10
-  raioDeDistanciaMaxParaAndarAleatoriamente: 40
-  timerParaAndarAleatoriamente: 5
-  pathUpdateDistanceThreshold: 10
-  detectionInterval: 0.5
-  gameController: {fileID: 0}
-  statsGeral: {fileID: 0}
-  animalStats: {fileID: 0}
-  animator: {fileID: 0}
-  agent: {fileID: 0}
-  targetInimigo: {fileID: 0}
-  targetComida: {fileID: 0}
-  targetObstaculo: {fileID: 0}
-  targetCapturador: {fileID: 0}
-  PV: {fileID: 0}
-  detectionRadius: 40
-  preditorMultiplicador: 1.5
 --- !u!114 &4938051935722300260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,6 +710,27 @@ MonoBehaviour:
   m_OnDeathEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1861848297681349277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336841924710946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d49b7ab92552d74c97952b61d2f025e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSharkAggressive: 1
+  detectionRadius: 20
+  swimSpeed: 3
+  chaseSpeed: 7
+  rotationSpeed: 2
+  attackDistance: 2
+  playerTarget: {fileID: 0}
+  playerObject: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!1 &1379767940808454
 GameObject:
   m_ObjectHideFlags: 0
