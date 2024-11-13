@@ -13,10 +13,10 @@ public class SpawnController : MonoBehaviour
     [SerializeField] int qtdBasePorNoiteLobos = 3, qtdAMaisPorNoiteLobos = 1, qtdMaxLobos = 50, qtdMaxAnimaisAgressivos = 10, qtdMaxAnimaisPassivos = 15;
     [SerializeField] public float minDistanceSpawnDosPlayers = 15f, maxDistanceSpawnDosPlayers = 50f;
     [SerializeField] float distanciaMaxEntreSpawnPointLoboxJogadores = 100;
-    [SerializeField] SpawnArea spawnLobos, spawnAnimaisAquaticos;
+    [SerializeField] SpawnArea spawnLobos;
     [SerializeField] SpawnArea[] spawnAnimaisAgressivos, spawnAnimaisPassivos;
 
-    [SerializeField] [HideInInspector] List<StatsGeral> lobosInGame, animaisAgressivosInGame, animaisPassivosInGame, animaisAquaticosInGame;
+    [SerializeField] [HideInInspector] List<StatsGeral> lobosInGame, animaisAgressivosInGame, animaisPassivosInGame;
 
     PhotonView PV;
 
@@ -34,7 +34,6 @@ public class SpawnController : MonoBehaviour
         lobosInGame = new List<StatsGeral>();
         animaisAgressivosInGame = new List<StatsGeral>();
         animaisPassivosInGame = new List<StatsGeral>();
-        animaisAquaticosInGame = new List<StatsGeral>();
 
         for (int i = 0; i < spawnAnimaisAgressivos.Length; i++)
         {
@@ -93,21 +92,6 @@ public class SpawnController : MonoBehaviour
         InstanciarPrefabPorPathAnimais(path, spawnAnimaisPassivos, false, PV.ViewID);
     }
 
-    public void SpawnarAnimaisAquaticos()
-    {
-        Debug.Log("Spawnando animais agressivos");
-        animaisAquaticosInGame.RemoveAll(animal => {
-            if (animal != null && !animal.health.IsAlive())
-            {
-                Destroy(animal.gameObject);
-                return true;
-            }
-            return false;
-        });
-
-        InstanciarPrefabPorPathAnimaisAquaticos(PV.ViewID);
-    }
-
     public void InstanciarPrefabPorPathLobos(int diaAtual, int viewID)
     {
         int quantidade = qtdBasePorNoiteLobos + (qtdAMaisPorNoiteLobos * diaAtual);
@@ -160,28 +144,6 @@ public class SpawnController : MonoBehaviour
                 objInstanciado.GetComponent<AnimalController>().gameController = gameController;
                 if (isAnimaisAgressivos) animaisAgressivosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
                 else animaisPassivosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
-            }
-        }
-    }
-
-    public void InstanciarPrefabPorPathAnimaisAquaticos(int viewID)
-    {
-        int quantidade = Random.Range(1, 3);
-        bool isPhotonConnected = PhotonNetwork.IsConnected;
-        int maskAgentArea = NavMesh.GetAreaFromName("Aquatico");
-
-        for (int i = 0; i < quantidade; i++)
-        {
-            Vector3 spawnPosition = GetRandomNavMeshPositionNearPlayer(maskAgentArea);
-
-            if (spawnPosition != Vector3.zero)
-            {
-                string animalRandom = spawnAnimaisAquaticos.nomesPrefab[Random.Range(0, spawnAnimaisAquaticos.nomesPrefab.Length)];
-                string prefabPath = Path.Combine("Animais/Aquaticos/", animalRandom);
-                GameObject prefab = Resources.Load<GameObject>(prefabPath);
-                GameObject objInstanciado = isPhotonConnected ? PhotonNetwork.Instantiate(prefabPath, spawnPosition, Quaternion.identity, 0, new object[] { viewID }) : Instantiate(prefab, spawnPosition, Quaternion.identity);
-                objInstanciado.GetComponent<LobisomemController>().gameController = gameController;
-                animaisAquaticosInGame.Add(objInstanciado.GetComponent<StatsGeral>());
             }
         }
     }

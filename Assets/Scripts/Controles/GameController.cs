@@ -145,7 +145,6 @@ public class GameController : MonoBehaviour
         if (!isRespawnarAnimais) return;
         spawnController.SpawnarAnimaisPassivos();
         spawnController.SpawnarAnimaisAgressivos();
-        spawnController.SpawnarAnimaisAquaticos();
     }
 
     void OnGUI()

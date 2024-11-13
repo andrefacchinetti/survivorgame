@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Photon.Pun;
+using Crest;
 
 [RequireComponent(typeof(PhotonView), typeof(StatsGeral))]
 [RequireComponent(typeof(AnimalStats))]
@@ -13,18 +14,27 @@ public class TubaraoController : MonoBehaviourPunCallbacks
     public float rotationSpeed = 2f;
     public float attackDistance = 2f;
     public float patrolWaitTime = 3f;
+    public float timeOutsidePatrolAreaLimit = 5f; // Tempo limite fora da área antes de morrer
+    public BoxCollider patrolArea;
 
-    [SerializeField] private StatsGeral playerTarget;
-    [SerializeField] private GameObject playerObject;
+    [HideInInspector] public GameController gameController;
+    [HideInInspector] private StatsGeral playerTarget;
+    [HideInInspector] private GameObject playerObject;
+    [HideInInspector] public Animator animator;
 
     private bool isChasing = false;
     private bool isPatrolling = true;
+    private bool isOutsidePatrolArea = false;
+    private float timeOutsidePatrolArea = 0f; // Temporizador de permanência fora da área
+
     private PhotonView PV;
     private StatsGeral statsGeral;
     private AnimalStats animalStats;
-    public Animator animator;
 
     private Vector3 patrolTarget;
+    private SampleHeightHelper sampleHeightHelper;
+    public float swimAntiBug = 1.0f;
+    private float waterHeight;
 
     private void Awake()
     {
@@ -32,6 +42,7 @@ public class TubaraoController : MonoBehaviourPunCallbacks
         statsGeral = GetComponent<StatsGeral>();
         animalStats = GetComponent<AnimalStats>();
         animator = GetComponent<Animator>();
+        sampleHeightHelper = new SampleHeightHelper();
     }
 
     void Start()
@@ -44,22 +55,75 @@ public class TubaraoController : MonoBehaviourPunCallbacks
     {
         if (statsGeral.health.IsAlive())
         {
-            if (isChasing && playerTarget != null)
+            CheckPatrolArea();
+
+            // Mantém o tubarão abaixo da altura do oceano
+            RestrictSharkBelowWater();
+
+            if (!isOutsidePatrolArea) // Somente permite ações se o tubarão estiver dentro da área
             {
-                ChasePlayer();
+                if (isChasing && playerTarget != null)
+                {
+                    ChasePlayer();
+                }
+                else
+                {
+                    Patrol();
+                }
+                UpdateAnimation();
+                CheckAttack();
             }
-            else
-            {
-                Patrol();
-            }
-            UpdateAnimation();
-            CheckAttack();
         }
         else
         {
             animator.SetBool("isDead", true);
             playerTarget = null;
         }
+    }
+
+    private void RestrictSharkBelowWater()
+    {
+        if (verificarSharkUltrapassouAlturaOceano())
+        {
+            Vector3 position = transform.position;
+            position.y = Mathf.Min(position.y, waterHeight - swimAntiBug);
+            transform.position = position;
+        }
+    }
+
+    private void CheckPatrolArea()
+    {
+        if (patrolArea != null && !patrolArea.bounds.Contains(transform.position))
+        {
+            if (!isOutsidePatrolArea)
+            {
+                isOutsidePatrolArea = true;
+                timeOutsidePatrolArea = 0f; // Reinicia o temporizador ao sair da área
+            }
+
+            timeOutsidePatrolArea += Time.deltaTime;
+
+            // Se o tubarão ficar fora da área por mais tempo que o limite, ele morre
+            if (timeOutsidePatrolArea >= timeOutsidePatrolAreaLimit)
+            {
+                DieOutsidePatrolArea();
+            }
+        }
+        else
+        {
+            // Reseta o estado e temporizador se o tubarão estiver dentro da área
+            isOutsidePatrolArea = false;
+            timeOutsidePatrolArea = 0f;
+        }
+    }
+
+    private void DieOutsidePatrolArea()
+    {
+        statsGeral.TakeDamage(9999, false); // Causa dano suficiente para matar o tubarão
+        animator.SetBool("isDead", true);
+        isChasing = false;
+        isPatrolling = false;
+        playerTarget = null;
     }
 
     private IEnumerator DetectionCoroutine()
@@ -73,6 +137,8 @@ public class TubaraoController : MonoBehaviourPunCallbacks
 
     private void DetectPlayer()
     {
+        if (isOutsidePatrolArea) return; // Impede a detecção de jogadores se estiver fora da área
+
         int layerMask = LayerMask.GetMask("SubCharacter");
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
 
@@ -89,7 +155,7 @@ public class TubaraoController : MonoBehaviourPunCallbacks
 
     private void ChasePlayer()
     {
-        if (playerTarget == null || !playerTarget.health.IsAlive())
+        if (isOutsidePatrolArea || playerTarget == null || !playerTarget.health.IsAlive())
         {
             isChasing = false;
             isPatrolling = true;
@@ -99,18 +165,16 @@ public class TubaraoController : MonoBehaviourPunCallbacks
         Vector3 direction = (playerObject.transform.position - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, playerObject.transform.position);
 
-        // Rotaciona o tubarão em direção ao jogador
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-        // Define a velocidade do tubarão com base na distância do jogador
         float currentSpeed = (distance <= attackDistance) ? 0 : chaseSpeed;
         transform.position += direction * currentSpeed * Time.deltaTime;
     }
 
     private void Patrol()
     {
-        if (!isPatrolling) return;
+        if (!isPatrolling || isOutsidePatrolArea) return; // Impede a patrulha se estiver fora da área
 
         float distanceToTarget = Vector3.Distance(transform.position, patrolTarget);
 
@@ -139,10 +203,18 @@ public class TubaraoController : MonoBehaviourPunCallbacks
 
     private void SetNewPatrolTarget()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * detectionRadius;
-        randomDirection += transform.position;
-        randomDirection.y = transform.position.y; // Mantém o tubarão na mesma profundidade
-        patrolTarget = randomDirection;
+        if (patrolArea != null)
+        {
+            Bounds bounds = patrolArea.bounds;
+            float patrolX = Random.Range(bounds.min.x, bounds.max.x);
+            float patrolZ = Random.Range(bounds.min.z, bounds.max.z);
+
+            patrolTarget = new Vector3(patrolX, transform.position.y, patrolZ);
+        }
+        else
+        {
+            patrolTarget = transform.position;
+        }
     }
 
     private void StartPatrolling()
@@ -178,6 +250,20 @@ public class TubaraoController : MonoBehaviourPunCallbacks
         {
             animator.SetTrigger("isAttacking");
         }
+    }
+
+    private bool verificarSharkUltrapassouAlturaOceano()
+    {
+        if (sampleHeightHelper == null) return false;
+
+        Vector3 sharkPosition = transform.position;
+        sampleHeightHelper.Init(sharkPosition);
+
+        if (sampleHeightHelper.Sample(out waterHeight))
+        {
+            return sharkPosition.y > waterHeight - swimAntiBug;
+        }
+        return false;
     }
 
     void GoAtk()
