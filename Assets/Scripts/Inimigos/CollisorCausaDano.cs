@@ -17,14 +17,15 @@ public class CollisorCausaDano : MonoBehaviourPunCallbacks
     {
         if (!statsGeral.isAttacking) return;
 
-        if(other.transform.tag == "PlayerCollider")
+        Debug.Log("bateu na tag: "+ other.transform.tag);
+        if (other.transform.CompareTag("PlayerCollider"))
         {
+            Debug.Log("collisor causa dano esta dando dano em player: " + statsGeral.damage);
             other.GetComponentInParent<StatsGeral>().TakeDamage(statsGeral.damage, true);
             statsGeral.isAttacking = false;
         }
-        if(other.transform.tag == "AnimalCollider" || other.transform.tag == "ConstrucaoStats")
+        if(other.transform.CompareTag("AnimalCollider") || other.transform.CompareTag("ConstrucaoStats"))
         {
-            Debug.Log("bateu no animal ou construcao collider");
             CollisorSofreDano collisorSofreDano = other.gameObject.GetComponent<CollisorSofreDano>();
             if (collisorSofreDano != null && collisorSofreDano.PV.ViewID != PV.ViewID) //VERIFICA SE NAO ESTA BATENDO EM SI PROPRIO
             {

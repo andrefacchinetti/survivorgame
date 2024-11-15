@@ -32,7 +32,7 @@ public class StatsGeral : MonoBehaviour
     [HideInInspector] public BFX_DemoTest bloodController;
     EstilhacoFxController estilhacoFxController;
 
-    PhotonView PV;
+    public PhotonView PV;
 
     private void Awake()
     {

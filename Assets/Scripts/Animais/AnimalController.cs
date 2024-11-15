@@ -120,7 +120,9 @@ public class AnimalController : MonoBehaviourPunCallbacks
             if (!isAnimalAgressivo) continue;
 
             StatsGeral statsGeralEnemy = hitCollider.transform.GetComponentInParent<StatsGeral>();
-            if (statsGeralEnemy != null && statsGeralEnemy.health.IsAlive() && statsGeralEnemy.lobisomemStats == null)
+
+            // Verifica se o inimigo não é o próprio animal
+            if (statsGeralEnemy != null && statsGeralEnemy.PV.ViewID != statsGeral.PV.ViewID && statsGeralEnemy.health.IsAlive() && statsGeralEnemy.lobisomemStats == null)
             {
                 targetInimigo = statsGeralEnemy;
                 targetComida = null;
@@ -129,15 +131,16 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
             if (!isPredador) continue;
 
-            if (hitCollider.TryGetComponent(out CollisorSofreDano collisorSofreDano) && collisorSofreDano.PV.ViewID != PV.ViewID)
+            if(statsGeralEnemy != null) //verificar se essa alteração ainda funciona (se predadores conseguem perseguir animais ou lobisomens)
             {
-                var objPai = collisorSofreDano.statsGeral;
+                var objPai = statsGeralEnemy;
                 var animalController = objPai.GetComponent<AnimalController>();
                 var lobisomemController = objPai.GetComponent<LobisomemController>();
 
                 if (animalController != null && statsGeral.health.IsAlive())
                 {
-                    if (!animalController.isPredador && (isPequenoPorte || (!isPequenoPorte && !animalController.isPequenoPorte)))
+                    // Evita que o animal se selecione como seu próprio alvo
+                    if (animalController != this && !animalController.isPredador && (isPequenoPorte || (!isPequenoPorte && !animalController.isPequenoPorte)))
                     {
                         targetInimigo = objPai;
                         targetComida = null;

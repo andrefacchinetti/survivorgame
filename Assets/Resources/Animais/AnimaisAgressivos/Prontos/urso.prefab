@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4664379766558976}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_FrontLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4271449098087934}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_Clavicle_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,10 +75,9 @@ GameObject:
   - component: {fileID: 4332512197099984}
   - component: {fileID: 233157473209147500}
   - component: {fileID: 3663831038825670706}
-  - component: {fileID: 5920855404841503952}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Bear_l_FrontLeg_HipSHJnt
-  m_TagString: AnimalCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,10 +117,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.18
-  m_Height: 0.76
+  m_Radius: 0.09
+  m_Height: 0.34
   m_Direction: 0
-  m_Center: {x: -0.36, y: 0, z: 0}
+  m_Center: {x: -0.34, y: 0, z: 0.07}
 --- !u!54 &3663831038825670706
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,7 +129,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046684930638158}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 4
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -145,27 +144,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &5920855404841503952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046684930638158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
-  isApenasFerramentaRecomendadaCausaDano: 0
-  statsGeral: {fileID: 0}
-  isConstrucao: 0
-  PV: {fileID: 80182621574638762}
 --- !u!1 &1048028720104268
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +165,7 @@ GameObject:
   - component: {fileID: 7507389397986691587}
   - component: {fileID: 2161848908664624229}
   - component: {fileID: 6870315716326995923}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: urso
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -318,6 +300,7 @@ MonoBehaviour:
     materialPersonalizado: {fileID: 0}
     qtdMinDrops: 1
     qtdMaxDrops: 2
+  dropsObjs: []
   dropPosition: {fileID: 2469989063643746812}
   direcaoDrop: 121
   isAttacking: 0
@@ -331,6 +314,8 @@ MonoBehaviour:
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
   tipoEstilhaco: 1
+  bloodController: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!114 &8964762350233604053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTubarao: 0
   distanciaDePerseguicao: 10
   distanciaDeAtaque: 2
   attackInterval: 1
@@ -352,7 +338,6 @@ MonoBehaviour:
   leadTime: 1.2
   leadDistance: 2
   estaFugindo: 0
-  genero: 0
 --- !u!114 &7507389397986691587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +381,7 @@ MonoBehaviour:
   targetCapturador: {fileID: 0}
   PV: {fileID: 0}
   detectionRadius: 40
+  preditorMultiplicador: 1.5
 --- !u!114 &2161848908664624229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,7 +481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4994162722649638}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Spine_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4721011634378828}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_FrontLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4493857021484916}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_FrontLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,7 +639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4276047801008588}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_HindLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,7 +671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4458662920879116}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_HindLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -717,7 +703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4188286220282052}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_HindLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4860448601667202}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Head_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -782,7 +768,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4272999395433942}
   - component: {fileID: 137769314954099230}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: brown_bea4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -910,7 +896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4946851439317796}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Tail_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -942,7 +928,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4428578923627412}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Head_JawEndSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -973,7 +959,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4491608961001208}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_FrontLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1005,7 +991,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4603110492303208}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_HindLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1036,7 +1022,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4099671684885286}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_Clavicle_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1068,7 +1054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4235022168031924}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Neck_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1102,10 +1088,9 @@ GameObject:
   - component: {fileID: 4217755006386048}
   - component: {fileID: 226500503164531135}
   - component: {fileID: 9078582519795232374}
-  - component: {fileID: 1325086856999383138}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Bear_Head_JawSHJnt
-  m_TagString: AnimalCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1157,9 +1142,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518993717678608}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1172,27 +1157,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1325086856999383138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1518993717678608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
-  isApenasFerramentaRecomendadaCausaDano: 0
-  statsGeral: {fileID: 0}
-  isConstrucao: 0
-  PV: {fileID: 80182621574638762}
 --- !u!1 &1539967966238042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1233,7 +1201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4925396614665518}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_FrontLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1267,10 +1235,9 @@ GameObject:
   - component: {fileID: 4832697329924536}
   - component: {fileID: 5505167350126341409}
   - component: {fileID: 684285268393776921}
-  - component: {fileID: 1364663885852576813}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Bear_r_FrontLeg_HipSHJnt
-  m_TagString: AnimalCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1310,10 +1277,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.18
-  m_Height: 0.76
+  m_Radius: 0.09
+  m_Height: 0.34
   m_Direction: 0
-  m_Center: {x: -0.36, y: 0, z: 0}
+  m_Center: {x: -0.34, y: 0, z: 0.07}
 --- !u!54 &684285268393776921
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1322,9 +1289,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1599936402778546}
   serializedVersion: 4
-  m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1337,27 +1304,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1364663885852576813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599936402778546}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
-  isApenasFerramentaRecomendadaCausaDano: 0
-  statsGeral: {fileID: 0}
-  isConstrucao: 0
-  PV: {fileID: 80182621574638762}
 --- !u!1 &1629789558967434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,7 +1317,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4130781183835726}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Spine_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1401,7 +1351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4308630879038816}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_ROOTSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1437,11 +1387,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4249870988271500}
   - component: {fileID: 832578345351656925}
-  - component: {fileID: 1403633123199170392}
   - component: {fileID: 2165485448322743037}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Bear_l_HindLeg_HipSHJnt
-  m_TagString: AnimalCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1470,9 +1419,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668970850641220}
   serializedVersion: 4
-  m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1485,27 +1434,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1403633123199170392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1668970850641220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
-  isApenasFerramentaRecomendadaCausaDano: 0
-  statsGeral: {fileID: 0}
-  isConstrucao: 0
-  PV: {fileID: 80182621574638762}
 --- !u!136 &2165485448322743037
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1538,7 +1470,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4211031915548264}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_r_HindLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1572,10 +1504,9 @@ GameObject:
   - component: {fileID: 4293454917856386}
   - component: {fileID: 1241145998982188036}
   - component: {fileID: 1416672225463601104}
-  - component: {fileID: 3428532090759588852}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Bear_r_HindLeg_HipSHJnt
-  m_TagString: AnimalCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1627,9 +1558,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703950348978882}
   serializedVersion: 4
-  m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1642,27 +1573,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3428532090759588852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1703950348978882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
-  isApenasFerramentaRecomendadaCausaDano: 0
-  statsGeral: {fileID: 0}
-  isConstrucao: 0
-  PV: {fileID: 80182621574638762}
 --- !u!1 &1706201372593014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1672,7 +1586,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4558972401713200}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_HindLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1704,7 +1618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4041942198033760}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_HindLeg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1768,7 +1682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4542701444633192}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_FrontLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1800,11 +1714,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4668047397457864}
   - component: {fileID: 8617861851752675796}
-  - component: {fileID: 2652253541625903980}
   - component: {fileID: 6586709025545542468}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Bear_Neck_02SHJnt
-  m_TagString: AnimalCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1833,9 +1746,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760726691228212}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1848,27 +1761,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2652253541625903980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1760726691228212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
-  isApenasFerramentaRecomendadaCausaDano: 0
-  statsGeral: {fileID: 0}
-  isConstrucao: 0
-  PV: {fileID: 80182621574638762}
 --- !u!136 &6586709025545542468
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1901,7 +1797,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4262526566832136}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Spine_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1933,7 +1829,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4501268302741050}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Tail_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1964,7 +1860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4065992713082498}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_l_HindLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1996,7 +1892,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4104805934462098}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_MAINSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2029,11 +1925,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4490018490652056}
   - component: {fileID: 3815353241086479514}
-  - component: {fileID: 5285948785253357207}
   - component: {fileID: 4968071921919285866}
-  m_Layer: 26
+  m_Layer: 30
   m_Name: Bear_Spine_03SHJnt
-  m_TagString: AnimalCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2063,9 +1958,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862166912914394}
   serializedVersion: 4
-  m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2078,27 +1973,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5285948785253357207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862166912914394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53b02ffb8e3d9a48a575b41ad9afc83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ferramentasRecomendadas: []
-  isApenasFerramentaRecomendadaCausaDano: 0
-  statsGeral: {fileID: 0}
-  isConstrucao: 0
-  PV: {fileID: 80182621574638762}
 --- !u!136 &4968071921919285866
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2131,7 +2009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4725025889025000}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Spine_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2165,7 +2043,8 @@ GameObject:
   - component: {fileID: 4842428189855742}
   - component: {fileID: 6766967701535365643}
   - component: {fileID: 1002496200776555953}
-  m_Layer: 0
+  - component: {fileID: 6063601551353125208}
+  m_Layer: 30
   m_Name: Bear_l_FrontLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2223,6 +2102,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bccfc8d74111c564c9c57d7603d63091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &6063601551353125208
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877416517729028}
+  serializedVersion: 4
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1958472106974672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2232,7 +2138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4195565617192610}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Bear_Neck_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2267,7 +2173,8 @@ GameObject:
   - component: {fileID: 4046322791463926}
   - component: {fileID: 3106336282703529935}
   - component: {fileID: 2185789072611618555}
-  m_Layer: 0
+  - component: {fileID: 5293536595831875904}
+  m_Layer: 30
   m_Name: Bear_r_FrontLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2325,6 +2232,33 @@ CapsuleCollider:
   m_Height: 0.43
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &5293536595831875904
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966174620173892}
+  serializedVersion: 4
+  m_Mass: 4
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2469989063643746812
 GameObject:
   m_ObjectHideFlags: 0
