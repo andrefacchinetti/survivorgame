@@ -22,6 +22,8 @@ public class AnimalController : MonoBehaviourPunCallbacks
     [SerializeField] public float pathUpdateDistanceThreshold = 10;
     [SerializeField] private float detectionInterval = 2f;
 
+    private float caminhoCooldown = 0.5f;
+    private float proximaAtualizacaoCaminho;
     private float detectionTimer = 0;
     private float timer = 0;
     private bool isEating = false;
@@ -42,6 +44,8 @@ public class AnimalController : MonoBehaviourPunCallbacks
         PV = GetComponent<PhotonView>();
         statsGeral = GetComponent<StatsGeral>();
         animalStats = GetComponent<AnimalStats>();
+        timer = timerParaAndarAleatoriamente;
+        proximaAtualizacaoCaminho = Time.time;
     }
 
     void Start()
@@ -208,11 +212,18 @@ public class AnimalController : MonoBehaviourPunCallbacks
     private void AndarAleatoriamentePeloMapa()
     {
         if (animalStats.estaFugindo) return;
-
-        if (AgentEstaIndoParaDestino(agent.destination))
+        if (timer >= timerParaAndarAleatoriamente)
         {
-            agent.speed = walkSpeed;
-            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+            if (targetInimigo == null)
+            {
+                timer = 0;
+                MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
+            }
+            else if (Vector3.Distance(transform.position, targetInimigo.transform.position) > raioDeDistanciaMaxParaAndarAleatoriamente)
+            {
+                targetInimigo = null;
+                timer = 0;
+            }
         }
     }
 
@@ -265,14 +276,19 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     private void MoveToPosition(Vector3 position)
     {
-        if (NavMesh.SamplePosition(position, out NavMeshHit hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas))
+        if (Time.time < proximaAtualizacaoCaminho) return;  // Limita a atualização do caminho para evitar cálculos excessivos
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(position, out hit, raioDeDistanciaMaxParaAndarAleatoriamente, NavMesh.AllAreas))
         {
-            agent.SetDestination(position);
+            // Verifica se a posição projetada está dentro do NavMesh
+            if (hit.hit)
+            {
+                agent.SetDestination(hit.position);
+            }
         }
-        else
-        {
-            MoveToRandomPosition(raioDeDistanciaMinParaAndarAleatoriamente, raioDeDistanciaMaxParaAndarAleatoriamente);
-        }
+
+        proximaAtualizacaoCaminho = Time.time + caminhoCooldown;  // Reduz a frequência de atualizações
     }
 
     private void MoveToRandomPosition(float minDistance, float maxDistance)
@@ -409,32 +425,46 @@ public class AnimalController : MonoBehaviourPunCallbacks
 
     public void PerseguirInimigo()
     {
-        if (targetInimigo == null) return;
-        Vector3 targetVelocity = GetTargetVelocity(targetInimigo);
+        if (targetInimigo == null) return;  // Verifica se há um inimigo alvo
 
-        if (targetVelocity != Vector3.zero)
+        // Calcula a posição do alvo com base na sua velocidade
+        Vector3 alvoPosition = targetInimigo.transform.position;
+        Vector3 alvoVelocity = (alvoPosition - targetInimigo.transform.position) / detectionInterval;
+        Vector3 predictedPosition = alvoPosition + alvoVelocity * preditorMultiplicador;
+
+        // Se o inimigo está muito perto ou parado, prevemos um comportamento mais agressivo e direto
+        if (Vector3.Distance(transform.position, targetInimigo.transform.position) < animalStats.distanciaDeAtaque)
         {
-            Vector3 predictedPosition = PredictTargetPosition(targetInimigo, targetVelocity);
-
-            Vector3 randomOffset = Random.insideUnitSphere * animalStats.destinationOffset;
-
-            Vector3 destination = predictedPosition + (predictedPosition - targetInimigo.transform.position).normalized * animalStats.leadDistance + randomOffset;
-
-            if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > pathUpdateDistanceThreshold))
-            {
-                MoveToPosition(destination);
-            }
-
-            agent.speed = runSpeed;
+            // Aqui podemos adicionar lógica para o animal atacar ou se aproximar mais rapidamente
+            predictedPosition = alvoPosition;
         }
-        else
+
+        // Movimenta o animal para a posição prevista (prevendo o movimento do inimigo)
+        if (Time.time >= proximaAtualizacaoCaminho && agent.isOnNavMesh)
         {
-            if (agent.velocity == Vector3.zero)
+            // Atualiza o caminho somente se o animal ainda não estiver no destino ou próximo dele
+            if (!agent.hasPath || agent.remainingDistance > pathUpdateDistanceThreshold)
             {
-                MoveToPosition(targetInimigo.transform.position);
+                MoveToPosition(predictedPosition);
+            }
+            else if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                agent.ResetPath();  // Para o movimento quando chega ao destino
+            }
+            else
+            {
+                targetInimigo = null;  // Se não houver caminho viável, reinicia a busca por outros alvos
+                AndarAleatoriamentePeloMapa();  // Chama a função para movimentação aleatória caso não haja perseguição
             }
         }
+
+        // Ajusta a velocidade do animal durante a perseguição (vai para uma velocidade mais alta)
+        agent.speed = runSpeed;
+
+        // Aqui podemos adicionar animações de perseguição
+        SetarAnimacaoPorVelocidade();
     }
+
 
     private Vector3 GetTargetVelocity(StatsGeral target)
     {

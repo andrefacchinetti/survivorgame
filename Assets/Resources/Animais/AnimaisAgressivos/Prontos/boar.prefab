@@ -1613,7 +1613,8 @@ GameObject:
   - component: {fileID: 4971284433828634}
   - component: {fileID: 2403930212865837581}
   - component: {fileID: 5619848708869821041}
-  m_Layer: 0
+  - component: {fileID: 5922702124215716961}
+  m_Layer: 30
   m_Name: WildBoar_Head_JawEndSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1670,6 +1671,33 @@ CapsuleCollider:
   m_Height: 0.4
   m_Direction: 1
   m_Center: {x: 0, y: -0.12, z: -0.06}
+--- !u!54 &5922702124215716961
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743200720692792}
+  serializedVersion: 4
+  m_Mass: 4
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1747218377634508
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,7 +2310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8691361c2bd7ff4e8382e130f0b3403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 40
   objPaiParaDestruir: {fileID: 0}
   dropsItems:
   - itemDefinition: {fileID: 1460890667258715926, guid: 5481010ef14c32f4cb7b6661b0c59fb4, type: 2}
@@ -2315,6 +2343,7 @@ MonoBehaviour:
     materialPersonalizado: {fileID: 0}
     qtdMinDrops: 1
     qtdMaxDrops: 2
+  dropsObjs: []
   dropPosition: {fileID: 3648455127775906702}
   direcaoDrop: 121
   isAttacking: 0
@@ -2328,6 +2357,8 @@ MonoBehaviour:
   construcaoStats: {fileID: 0}
   collisorSofreDano: {fileID: 0}
   tipoEstilhaco: 1
+  bloodController: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!114 &285760911688753407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2340,6 +2371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8372f093cadbaa4881ef4a241d359b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTubarao: 0
   distanciaDePerseguicao: 10
   distanciaDeAtaque: 2
   attackInterval: 1
@@ -2349,7 +2381,6 @@ MonoBehaviour:
   leadTime: 1.2
   leadDistance: 2
   estaFugindo: 0
-  genero: 0
 --- !u!114 &4627420912639711148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2393,6 +2424,7 @@ MonoBehaviour:
   targetCapturador: {fileID: 0}
   PV: {fileID: 0}
   detectionRadius: 40
+  preditorMultiplicador: 1.5
 --- !u!114 &514796166330748620
 MonoBehaviour:
   m_ObjectHideFlags: 0
